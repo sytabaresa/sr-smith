@@ -20,7 +20,7 @@ const AppLayout = ({ children, title = 'This is the default title' }: Props) => 
       </nav>
     </header>
     {children}
-    <Footer />
+    <Footer className="absolute bottom-0 left-0 ml-1 mb-1"/>
   </div>
 )
 
