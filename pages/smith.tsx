@@ -6,7 +6,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 const Smith: React.FC = () => {
     return (
         <AppLayout title="Smith Chart" >
+          <div className="h-screen flex">
             <SmithBoard />
+          </div>
         </AppLayout>
     );
 }
