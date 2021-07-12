@@ -1,19 +1,18 @@
 import { TextareaHTMLAttributes, useContext, useEffect, useState } from "react";
+import { useTranslation } from "next-i18next";
 import Editor from "react-simple-code-editor";
+import JXG from "jsxgraph/distrib/jsxgraphcore"
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
-import "prismjs/themes/prism-coy.css"; //Example style, you can use another
+import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "./context";
 import { initBoard } from "./Board";
-
-import JXG from "jsxgraph/distrib/jsxgraphcore"
-import { useTranslation } from "next-i18next";
 
 
 const exampleCode =
     `// test smith chart
-point(0, 0) << name: 'O' >>;
+point(0, 0) << name: 'O', fixed: true >>;
 Z1 = point(.5, .5) << name: 'Z1', color: 'green' >>;
 L = line(Z1, O);
 reflect = transform(PI, O) << type: 'rotate' >>;
@@ -23,7 +22,7 @@ circle(Y1, .3);
 export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 };
 
-const JCText: React.FC<IJCTextProps> = ({ className }) => {
+const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { t } = useTranslation('smith')
     const { board, setBoard, boxName } = useContext(SmithContext)
     // console.log(board)
@@ -33,15 +32,19 @@ const JCText: React.FC<IJCTextProps> = ({ className }) => {
     const parseExecute = () => {
         // console.log(board)
         if (board) {
-            JXG.JSXGraph.freeBoard(board);
-            const brd = initBoard(boxName)
-            brd.jc.parse(code);
-            setBoard(brd)
+            try {
+                JXG.JSXGraph.freeBoard(board);
+                const brd = initBoard(boxName)
+                setBoard(brd)
+                brd.jc.parse(code);
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 
     return (
-        <div className={"border border-black bg-white dark:bg-gray-800 rounded-xl p-2 " + className}>
+        <div className={"border border-black bg-white dark:bg-gray-800 rounded-xl p-2 flex flex-col " + className} style={style}>
             <Editor
                 value={code}
                 onValueChange={(code) => setCode(code)}
@@ -50,14 +53,14 @@ const JCText: React.FC<IJCTextProps> = ({ className }) => {
                 style={{
                     fontFamily: '"Fira code", "Fira Mono", monospace',
                     fontSize: 12,
+                    overflowY: 'auto'
                 }}
-                id="code"
-                textareaClassName="resize-y outline-none"
-            // cols={110}
-            // rows={31}
+                id="smith-code"
+                className="custom-scrollbar flex-1"
+                textareaClassName="outline-none"
             />
             <button
-                className="px-2 py-1 border border-black rounded-md"
+                className="px-2 py-1 border mt-2 border-black rounded-md hover:bg-gray-300 active:bg-black active:text-white"
                 onClick={parseExecute}
             >
                 {t('run')}

@@ -19,7 +19,7 @@ const Smith: React.FC = () => {
       <SmithContext.Provider value={context}>
         <div className="h-screen flex relative">
           <SmithBoard />
-          <JCText className="absolute top-0 left-0 ml-4 mt-4 w-96" />
+          <JCText className="absolute top-0 left-0 ml-4 mt-4 w-96" style={{ maxHeight: '90vh' }} />
         </div>
       </SmithContext.Provider>
     </AppLayout>
