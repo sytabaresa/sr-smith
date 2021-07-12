@@ -3,22 +3,15 @@ import { useTranslation } from "next-i18next";
 import Editor from "react-simple-code-editor";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
 import { highlight, languages } from "prismjs/components/prism-core";
+import { useMachine } from 'react-robot';
+
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "./context";
 import { initBoard } from "./Board";
+import machine from './fsm'
 
-
-const exampleCode =
-    `// test smith chart
-point(0, 0) << name: 'O', fixed: true >>;
-Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
-L = line(Z1, O);
-reflect = transform(PI, O) << type: 'rotate' >>;
-Y1 = point(Z1, reflect) << name: 'Y1' >>;
-circle(Y1, .3);
-`
 export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 };
 
@@ -27,28 +20,25 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { board, setBoard, boxName } = useContext(SmithContext)
     // console.log(board)
 
-    const [error, setError] = useState<boolean>(false);
-    const [errorMsg, setErrorMsg] = useState<string>("");
-    const [code, setCode] = useState(exampleCode);
+    const [current, send] = useMachine(machine);
+    const { code, errorMsg } = current.context
+    // console.log(current.name)
 
     const parseExecute = () => {
-        setError(false)
-        setTimeout(() => {
-            setErrorMsg("")
-            // console.log(board)
-            if (board) {
-                try {
-                    JXG.JSXGraph.freeBoard(board);
-                    const brd = initBoard(boxName)
-                    setBoard(brd)
-                    brd.jc.parse(code);
-                } catch (err) {
-                    setError(true)
-                    setErrorMsg(err.message)
-                    console.log(err)
-                }
+        send('PARSING')
+        // console.log(board)
+        if (board) {
+            try {
+                JXG.JSXGraph.freeBoard(board);
+                const brd = initBoard(boxName)
+                setBoard(brd)
+                brd.jc.parse(code);
+                send('PARSED')
+            } catch (err) {
+                console.log(err)
+                send({ type: 'ERROR', value: err })
             }
-        }, 500)
+        }
     }
 
     return (
@@ -56,7 +46,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
             <div className="overflow-y-auto custom-scrollbar flex-1 mb-1">
                 <Editor
                     value={code}
-                    onValueChange={(code) => setCode(code)}
+                    onValueChange={(code) => send({ type: "CODE", value: code })}
                     highlight={(code) => highlight(code, languages.js)}
                     padding={10}
                     style={{
@@ -68,8 +58,8 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
                     textareaClassName="outline-none"
                 />
             </div>
-            <div className={`bg-red-300 p-1 rounded rounded-md transition transition-opacity duration-500 
-            ${error ? "opacity-100" : "opacity-0"}`}>
+            <div className={`bg-red-300 p-1 rounded rounded-md transition transition-opacity duration-200 
+            ${current.name == 'error' ? "opacity-100" : "opacity-0"}`}>
                 {errorMsg}
             </div>
             <button

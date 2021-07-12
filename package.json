@@ -10,6 +10,7 @@
   "dependencies": {
     "jsxgraph": "^1.2.3",
     "next": "latest",
+    "next-compose-plugins": "^2.2.1",
     "next-i18next": "^8.5.3",
     "next-pwa": "^5.2.23",
     "next-transpile-modules": "^8.0.0",
