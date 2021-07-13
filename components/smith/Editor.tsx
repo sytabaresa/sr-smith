@@ -79,7 +79,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     };
 
     return (
-        <div className={"border border-principal bg-white dark:bg-gray-800 rounded-xl p-2 flex flex-col " + className} style={style}>
+        <div className={"border border-primary bg-white rounded-xl p-2 flex flex-col " + className} style={style}>
             <div className="overflow-y-auto custom-scrollbar flex-1 mb-1">
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -99,16 +99,17 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
                 </HotKeys>
             </div>
 
-            <div className={`bg-red-300 p-1 rounded-md transition-opacity duration-200 
-            ${current.name == 'error' ? "opacity-100" : "opacity-0"}`}>
+            <div className={`alert alert-error transition-opacity duration-200 
+            ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
                 {errorMsg}
             </div>
-            <Button
-                preset="outline"
+            <button
+                // preset="outline"
                 onClick={parseExecute}
+                className="btn btn-outline btn-primary"
             >
                 {t('run')}
-            </Button>
+            </button>
         </div>
     );
 }
