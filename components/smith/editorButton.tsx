@@ -24,8 +24,6 @@ const EditorButton: React.FC = () => {
         // onDisappear: close, // close the menu when the menu gets scrolled out of sight
         // overflowContainer: false, // keep the menu positioned inside the container
         auto: true, // automatically find the best placement
-        // placement: "top-end", // we prefer to place the menu "top-end"
-        // arrowOffset: 16 // let the arrow have some room to breath also
         placement: "bottom-start",
         triggerOffset: 9,
         arrowOffset: 4,
@@ -33,14 +31,14 @@ const EditorButton: React.FC = () => {
 
     return (
         <>
-            <Button
-                preset="filled"
+            <button
+                // preset="filled"
                 {...triggerProps}
-                className="px-4 py-2"
+                className={`btn ${isOpen && 'btn-active'}`}
                 onClick={() => setOpen(!isOpen)}
             >
                 {t('code')}
-            </Button>
+            </button>
             {renderLayer(
                 <>
                     {isOpen && (
@@ -51,14 +49,15 @@ const EditorButton: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                         >
-                            <Editor style={{ maxHeight: '90vh' }} />
+                            <Editor style={{ maxHeight: '80vh' }} />
                             <Arrow
                                 {...arrowProps}
                                 size={10}
                                 roundness={1}
-                                // className="border-principal"
                                 borderWidth={1}
+                                // borderColor={}
                                 style={{ ...arrowProps.style, bottom: '99.5%' }}
+                                className="border-primary"
                             />
                         </motion.div>
                     )}
