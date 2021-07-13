@@ -6,13 +6,12 @@ import { SmithContext } from "../components/smith/context";
 import { useTranslation } from "react-i18next";
 import EditorButton from "../components/smith/editorButton";
 import { ViewGridIcon, MenuAlt3Icon, DotsHorizontalIcon } from '@heroicons/react/outline'
-import FileMenu from "../components/smith/fileMenu";
 import Link from "next/link";
 
 const Smith: React.FC = () => {
   const { t } = useTranslation('smith')
   const [board, setBoard] = useState<any>(null);
-  
+
   const [code, setCode] = useState<string>(`// test smith chart
 point(0, 0) << name: 'O', fixed: true >>;
 Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
