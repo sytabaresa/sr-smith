@@ -12,6 +12,7 @@ import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "./context";
 import { initBoard } from "./Board";
 import machine from './fsm'
+import Button from '../button'
 
 const exampleCode =
     `// test smith chart
@@ -83,10 +84,10 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     };
 
     return (
-        <div className={"border border-black bg-white dark:bg-gray-800 rounded-xl p-2 flex flex-col " + className} style={style}>
+        <div className={"border border-principal bg-white dark:bg-gray-800 rounded-xl p-2 flex flex-col " + className} style={style}>
             <div className="overflow-y-auto custom-scrollbar flex-1 mb-1">
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
-                <HotKeys keyMap={keyMap} handlers={handlers}> 
+                <HotKeys keyMap={keyMap} handlers={handlers}>
                     <Editor
                         value={code}
                         onValueChange={(code) => send({ type: "CODE", value: code })}
@@ -107,12 +108,12 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
             ${current.name == 'error' ? "opacity-100" : "opacity-0"}`}>
                 {errorMsg}
             </div>
-            <button
-                className="mt-1 px-2 py-1 border border-black rounded-md hover:bg-gray-300 active:bg-black active:text-white"
+            <Button
+                preset="outline"
                 onClick={parseExecute}
             >
                 {t('run')}
-            </button>
+            </Button>
         </div>
     );
 }

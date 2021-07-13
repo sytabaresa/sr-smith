@@ -3,9 +3,11 @@ import AppLayout from "../components/smith/AppLayout";
 import SmithBoard from "../components/smith/Board";
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { SmithContext } from "../components/smith/context";
-import JCText from "../components/smith/Editor";
+import { useTranslation } from "react-i18next";
+import EditorButton from "../components/smith/editorButton";
 
 const Smith: React.FC = () => {
+  const { t } = useTranslation('common')
   const [board, setBoard] = useState<any>(null);
 
   const context = {
@@ -19,7 +21,9 @@ const Smith: React.FC = () => {
       <SmithContext.Provider value={context}>
         <div className="h-screen flex relative">
           <SmithBoard />
-          <JCText className="absolute top-0 left-0 ml-4 mt-4 w-96" style={{ maxHeight: '90vh' }} />
+          <div className="absolute top-0 left-0 ml-4 mt-4">
+            <EditorButton />
+          </div>
         </div>
       </SmithContext.Provider>
     </AppLayout>
