@@ -1,8 +1,8 @@
-import { ButtonHTMLAttributes, useRef, forwardRef } from "react";
+import { ButtonHTMLAttributes, forwardRef } from "react";
 
 export type ButtonPresetsTypes = 'default' | 'outline' | 'filled'
 
-export interface IButtonProps extends ButtonHTMLAttributes<HTMLElement> {
+export interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     preset?: ButtonPresetsTypes;
 };
 
@@ -13,7 +13,7 @@ export const ButtonPresetStyles: { [key: string]: any } = {
     filled: `${defaultStyle} bg-principal text-contrast hover:bg-principal-600 active:bg-principal-400`
 }
 
-const Button: React.FC<IButtonProps> = (props, ref) => {
+const Button = forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => {
     const { preset = 'default', className } = props
     const styleClasses = ButtonPresetStyles[preset]
 
@@ -25,6 +25,6 @@ const Button: React.FC<IButtonProps> = (props, ref) => {
         >
         </button>
     );
-}
+})
 
-export default forwardRef(Button);
+export default Button;

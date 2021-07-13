@@ -3,7 +3,7 @@ import Editor from "./Editor";
 import { useLayer, Arrow } from "react-laag";
 import Button from "../button";
 import { useTranslation } from "next-i18next";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const EditorButton: React.FC = () => {
     const [isOpen, setOpen] = useState(true);
@@ -36,6 +36,7 @@ const EditorButton: React.FC = () => {
             <Button
                 preset="filled"
                 {...triggerProps}
+                className="px-4 py-2"
                 onClick={() => setOpen(!isOpen)}
             >
                 {t('code')}
