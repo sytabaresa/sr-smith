@@ -14,15 +14,6 @@ import { initBoard } from "./Board";
 import machine from './fsm'
 import Button from '../button'
 
-const exampleCode =
-    `// test smith chart
-point(0, 0) << name: 'O', fixed: true >>;
-Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
-L = line(Z1, O);
-reflect = transform(PI, O) << type: 'rotate' >>;
-Y1 = point(Z1, reflect) << name: 'Y1' >>;
-circle(Y1, .3);`
-
 configure({
     /**
      * The level of logging of its own behaviour React HotKeys should perform.
@@ -37,23 +28,25 @@ configure({
 
 
 export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
+    // code: string;
 };
 
 const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { t } = useTranslation('smith')
-    const { board, setBoard, boxName } = useContext(SmithContext)
+    const { board, setBoard, boxName, code: contextCode, setCode } = useContext(SmithContext)
     // console.log(board)
 
     const [current, send] = useMachine(machine, {
+        code: contextCode,
         errorMsg: '',
-        code: exampleCode
     });
     const { code, errorMsg } = current.context
-    console.log(code)
+
+    // console.log(code)
     // console.log(current.name)
 
     const parseExecute = () => {
-        console.log(code)
+        // console.log(code)
         send('PARSING')
         // console.log(board)
         if (board) {
@@ -73,14 +66,16 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
             })
         }
     }
+    const setActualCode = (code) => {
+        send({ type: "CODE", value: code })
+        setCode(code) //TODO: update instantly? or with memo
+    }
 
     const keyMap = {
         RUN_CODE: "alt+down",
-        // LOG: "up",
     };
     const handlers = {
         RUN_CODE: parseExecute,
-        LOG: event => console.log("Move up hotkey called!")
     };
 
     return (
@@ -90,7 +85,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
                 <HotKeys keyMap={keyMap} handlers={handlers}>
                     <Editor
                         value={code}
-                        onValueChange={(code) => send({ type: "CODE", value: code })}
+                        onValueChange={setActualCode}
                         highlight={(code) => highlight(code, languages.js)}
                         padding={10}
                         style={{

@@ -1,5 +1,9 @@
 import { createMachine, state, transition, reduce, invoke } from 'robot3';
 
+export interface ContextType {
+    errorMsg: string;
+    code: string;
+}
 
 // fsm
 
@@ -24,7 +28,7 @@ export default createMachine('idle', {
     clearError: invoke(wait(200),
         transition('done', 'idle', clearErrorMsg)
     )
-}, (ctx) => ({
+}, (ctx: ContextType) => ({
     errorMsg: '',
     code: '',
     ...ctx,
