@@ -6,6 +6,11 @@ module.exports = {
   darkMode: 'class', // or  false, 'media' or 'class'
   theme: {
     extend: {
+      theme: {
+        maxWidth: {
+          'screen': '100vw'
+        }
+      }
       // colors: {
       //   principal: {
       //     DEFAULT: colors.blueGray[800],

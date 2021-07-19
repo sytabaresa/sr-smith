@@ -6,4 +6,6 @@ export const SmithContext = createContext({
     setBoard: (_board) => { },
     code: '',
     setCode: (code: string) => { },
+    boardOptions: {},
+    setBoardOptions: (options: any) => { },
 })

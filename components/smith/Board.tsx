@@ -3,12 +3,14 @@ import "jsxgraph/distrib/jsxgraph.css"
 
 import { useContext, useEffect } from "react";
 import { SmithContext } from "./context";
+import { brotliDecompress } from "zlib";
 
 export interface ISmithBoardProps { };
 
-export const initBoard = (boxName: string) => {
+export const initBoard = (boxName: string, boardOptions: any = {}) => {
     const brd = JXG.JSXGraph.initBoard(boxName, {
         boundingbox: [-2.5, 1.2, 2.5, -1.2],
+        maxBoundingBox: [-4, 2, 4, -2],
         keepaspectratio: true,
         grid: true,
         axis: true,
@@ -24,19 +26,31 @@ export const initBoard = (boxName: string) => {
             wheel: true,
             needShift: false,
             pinchSensitivity: 5,
-            max: 1000.0,
-            min: 0.8,
-        }
+            // max: 1000.0,
+            // min: 0.8,
+        },
+        ...boardOptions,
     });
+
     const tt = 1.185
     const x = 0.0025
     const y = -0.001
     brd.create('image', ['/images/smith-chart.svg',
         [-tt + x, -tt + y], [2 * tt + x, 2 * tt + y]],
         {
+            id: 'smith-chart-image',
+            name: 'smith-chart-image',
             fixed: true,
             highlight: false,
+            fillOpacity: 0.7,
+            // highlightCssClass: 'opacity-50',
+            // cssClass: 'opacity-50',
         });
+
+    if (typeof window !== "undefined") {
+        (window as any).board = brd
+    }
+
     return brd
 }
 

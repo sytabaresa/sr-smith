@@ -11,11 +11,12 @@ import Link from "next/link";
 const Smith: React.FC = () => {
   const { t } = useTranslation('smith')
   const [board, setBoard] = useState<any>(null);
+  const [boardOptions, setBoardOptions] = useState<any>(null)
 
   const [code, setCode] = useState<string>(`// test smith chart
 point(0, 0) << name: 'O', fixed: true >>;
 Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
-L = line(Z1, O);
+L1 = line(Z1, O);
 reflect = transform(PI, O) << type: 'rotate' >>;
 Y1 = point(Z1, reflect) << name: 'Y1' >>;
 circle(Y1, .3);`
@@ -27,6 +28,8 @@ circle(Y1, .3);`
     setBoard,
     code,
     setCode,
+    boardOptions,
+    setBoardOptions
   }
 
   return (
@@ -34,9 +37,9 @@ circle(Y1, .3);`
       <SmithContext.Provider value={context}>
         <div className="h-screen flex relative">
           <SmithBoard />
-          <div className="absolute top-0 left-0 ml-4 mt-4 w-96">
+          <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96">
             <div className="form-control">
-              <div className="flex space-x-2">
+              <div className="space-x-2 hidden md:flex">
                 <input type="text" placeholder={t('search')} className="w-full input input-primary input-bordered" />
                 <button className="btn btn-primary">{t('go')}</button>
               </div>
@@ -63,7 +66,7 @@ circle(Y1, .3);`
               <button className="btn"><DotsHorizontalIcon className="h-5 w-5" /></button>
             </div>
           </div>
-          <div className="absolute top-0 right-0 mr-4 mt-4">
+          <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
             <div className="flex items-center">
               <div className="avatar mr-4">
                 <div className="rounded-full ring ring-primary w-14 h-14">
