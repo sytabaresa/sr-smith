@@ -33,7 +33,14 @@ export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 
 const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { t } = useTranslation('smith')
-    const { board, setBoard, boxName, code: contextCode, setCode } = useContext(SmithContext)
+    const { board,
+        setBoard,
+        boxName,
+        code: contextCode,
+        setCode,
+        boardOptions,
+        setBoardOptions,
+    } = useContext(SmithContext)
     // console.log(board)
 
     const [current, send] = useMachine(machine, {
@@ -53,8 +60,9 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
             setBoard(board => {
                 let brd
                 try {
+                    const boundingBox = board.getBoundingBox()
                     JXG.JSXGraph.freeBoard(board);
-                    brd = initBoard(boxName)
+                    brd = initBoard(boxName, { boundingBox })
                     brd.jc.parse(code);
                     send('PARSED')
                     return brd

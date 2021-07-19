@@ -43,7 +43,7 @@ const EditorButton: React.FC = () => {
                 <>
                     {isOpen && (
                         <motion.div
-                            className="w-96"
+                            className="w-64 md:w-96 max-w-screen"
                             {...layerProps}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
