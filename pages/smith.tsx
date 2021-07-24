@@ -36,7 +36,7 @@ circle(Y1, .3);`
       <SmithContext.Provider value={context}>
         <div className="h-screen flex relative">
           <SmithBoard />
-          <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96">
+          <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
             <div className="form-control">
               <div className="space-x-2 hidden md:flex">
                 <input type="text" placeholder={t('search')} className="w-full input input-primary input-bordered" />

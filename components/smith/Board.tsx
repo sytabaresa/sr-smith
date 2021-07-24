@@ -1,15 +1,41 @@
+import { useContext, useEffect } from "react";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
 import "jsxgraph/distrib/jsxgraph.css"
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '../../tailwind.config.js'
+import { useMediaQuery } from "react-responsive"
 
-import { useContext, useEffect } from "react";
 import { SmithContext } from "./context";
-import { brotliDecompress } from "zlib";
+
+const fullConfig = resolveConfig(tailwindConfig)
 
 export interface ISmithBoardProps { };
 
-export const initBoard = (boxName: string, boardOptions: any = {}) => {
+const useScreen = () => {
+
+    const isBigMobile = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.sm })
+    const isTablet = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.md })
+    const isDesktop = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.lg })
+
+    if (isDesktop) return 'lg'
+    if (isTablet) return 'md'
+    if (isBigMobile) return 'sm'
+    return 'xs'
+
+}
+export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
+
+    const screenBoxSizes = {
+        'xs': [-1.2, 2, 1.2, -2],
+        'sm': [-1, 2, 1, -2],
+        'md': [-2, 3.5, 2, -2],
+        'lg': [-2.5, 1.2, 1.5, -1.2],
+    }
+
+    const boundingbox = screenBoxSizes[screenSize]
+
     const brd = JXG.JSXGraph.initBoard(boxName, {
-        boundingbox: [-2.5, 1.2, 2.5, -1.2],
+        boundingbox,
         // maxBoundingBox: [-4, 2, 4, -2], //TODO: revisr porque los eventos touch no funcionan bien con esto
         keepaspectratio: true,
         grid: true,
@@ -79,8 +105,10 @@ export const initBoard = (boxName: string, boardOptions: any = {}) => {
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     const { setBoard, boxName } = useContext(SmithContext)
 
+    const screenSize = useScreen()
+
     useEffect(() => {
-        const brd = initBoard(boxName)
+        const brd = initBoard(boxName, {}, screenSize)
         setBoard(brd)
 
         return () => { }

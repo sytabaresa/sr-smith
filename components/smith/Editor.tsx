@@ -12,7 +12,6 @@ import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "./context";
 import { initBoard } from "./Board";
 import machine from './fsm'
-import Button from '../button'
 
 configure({
     /**
