@@ -14,11 +14,10 @@ const Smith: React.FC = () => {
   const [boardOptions, setBoardOptions] = useState<any>(null)
 
   const [code, setCode] = useState<string>(`// test smith chart
-point(0, 0) << name: 'O', fixed: true >>;
 Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
-L1 = line(Z1, O);
 reflect = transform(PI, O) << type: 'rotate' >>;
 Y1 = point(Z1, reflect) << name: 'Y1' >>;
+L1 = segment(Z1, Y1);
 circle(Y1, .3);`
   );
 

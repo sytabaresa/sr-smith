@@ -32,6 +32,18 @@ export const initBoard = (boxName: string, boardOptions: any = {}) => {
         ...boardOptions,
     });
 
+    // brd.create('axis', [[0,0], [1,0]], {
+    //     ticks: {
+    //         type: 'polar',         // Polar grid
+    //         label: {               // Place the labels centered on the grid lines 
+    //             offset:[0, -3], 
+    //             anchorX: 'middle', 
+    //             anchorY: 'top'
+    //         }
+    //     }
+    // });
+
+
     const tt = 1.185
     const x = 0.0025
     const y = -0.001
@@ -46,6 +58,14 @@ export const initBoard = (boxName: string, boardOptions: any = {}) => {
             // highlightCssClass: 'opacity-50',
             // cssClass: 'opacity-50',
         });
+
+    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true })
+    brd.create('point', [1, 0], { name: 'X10', color: 'blue', size: 1, fixed: true })
+    brd.create('point', [0, 1], { name: 'X01', color: 'blue', size: 1, fixed: true })
+    brd.create('point', [-1, 0], { name: 'X-10', color: 'blue', size: 1, fixed: true })
+    brd.create('point', [0, -1], { name: 'X0-1', color: 'blue', size: 1, fixed: true })
+
+
 
     if (typeof window !== "undefined") {
         (window as any).board = brd
