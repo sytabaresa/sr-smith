@@ -10,7 +10,7 @@ export interface ISmithBoardProps { };
 export const initBoard = (boxName: string, boardOptions: any = {}) => {
     const brd = JXG.JSXGraph.initBoard(boxName, {
         boundingbox: [-2.5, 1.2, 2.5, -1.2],
-        maxBoundingBox: [-4, 2, 4, -2],
+        // maxBoundingBox: [-4, 2, 4, -2], //TODO: revisr porque los eventos touch no funcionan bien con esto
         keepaspectratio: true,
         grid: true,
         axis: true,
@@ -20,12 +20,14 @@ export const initBoard = (boxName: string, boardOptions: any = {}) => {
         pan: {
             enabled: true,
             needShift: false, // mouse panning needs pressing of the shift key
-            needTwoFingers: true, // panning is done with two fingers on touch devices
+            needTwoFingers: false, // panning is done with two fingers on touch devices
         },
         zoom: {
             wheel: true,
             needShift: false,
             pinchSensitivity: 5,
+            pinchHorizontal: false, // Allow pinch-to-zoom to zoom only horizontal axis
+            pinchVertical: false   // Allow pinch-to-zoom to zoom only vertical axis
             // max: 1000.0,
             // min: 0.8,
         },
