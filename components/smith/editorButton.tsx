@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import Editor from "./Editor";
 import { useLayer, Arrow } from "react-laag";
-import Button from "../button";
 import { useTranslation } from "next-i18next";
 import { motion } from "framer-motion";
 
 const EditorButton: React.FC = () => {
     const [isOpen, setOpen] = useState(true);
     const { t } = useTranslation('common')
-
-    function close() {
-        setOpen(false);
-    }
 
     const {
         renderLayer,
