@@ -17,7 +17,7 @@ const Smith: React.FC = () => {
 Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
 reflect = transform(PI, O) << type: 'rotate' >>;
 Y1 = point(Z1, reflect) << name: 'Y1' >>;
-L2 = segment(Z1, Y1);
+L1 = segment(Z1, Y1);
 circle(Y1, .3);`
   );
 
