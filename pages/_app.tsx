@@ -2,6 +2,7 @@ import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
 import 'tailwindcss/tailwind.css'
 import './main.css';
+import "jsxgraph/distrib/jsxgraph.css"
 
 function MyApp({ Component, pageProps }) {
 
