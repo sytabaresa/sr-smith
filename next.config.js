@@ -13,7 +13,11 @@ module.exports = withPlugins([withTM, withPWA], {
     }
 
     config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
-
+    
+    config.output = config.output || {};
+    config.output.devtoolModuleFilenameTemplate = function (info) {
+      return "file:///" + encodeURI(info.absoluteResourcePath);
+    }
     return config
   },
   i18n,
