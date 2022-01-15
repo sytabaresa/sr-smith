@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
-import "jsxgraph/distrib/jsxgraph.css"
 import resolveConfig from 'tailwindcss/resolveConfig'
 import tailwindConfig from '../../tailwind.config.js'
 import { useMediaQuery } from "react-responsive"

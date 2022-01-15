@@ -14,6 +14,22 @@ module.exports = withPlugins([withTM, withPWA], {
 
     config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
 
+    config.module.rules.push({
+
+      test: /\.node$/,
+
+      use: [
+
+        {
+
+          loader: "node-loader"
+
+        },
+
+      ],
+
+    })
+
     return config
   },
   i18n,
