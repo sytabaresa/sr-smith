@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Layout from '../components/Layout'
+import Layout from '../components/templates'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MainCard from '../components/Card';
 import { useTranslation } from 'next-i18next';
