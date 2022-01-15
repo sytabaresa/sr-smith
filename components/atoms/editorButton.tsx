@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Editor from "./Editor";
+import Editor from "../smith/Editor";
 import { useLayer, Arrow } from "react-laag";
 import { useTranslation } from "next-i18next";
 import { motion } from "framer-motion";
