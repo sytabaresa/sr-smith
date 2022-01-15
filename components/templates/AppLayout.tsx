@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import Footer from '../Layout/footer'
+import Footer from '../organisms/footer'
 
 type Props = {
   children?: ReactNode
