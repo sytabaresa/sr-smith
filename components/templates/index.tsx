@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
-import Footer from './footer'
+import Footer from '../organisms/footer'
 
 type Props = {
   children?: ReactNode
