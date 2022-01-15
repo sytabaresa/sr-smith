@@ -1,100 +1,137 @@
 import React, { useState } from "react";
-import AppLayout from "../components/smith/AppLayout";
+import AppLayout from "../components/templates/AppLayout";
 import SmithBoard from "../components/smith/Board";
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { SmithContext } from "../components/smith/context";
 import { useTranslation } from "react-i18next";
-import EditorButton from "../components/smith/editorButton";
-import { ViewGridIcon, MenuAlt3Icon, DotsHorizontalIcon } from '@heroicons/react/outline'
+import EditorButton from "../components/atoms/editorButton";
+import {
+  ViewGridIcon,
+  MenuAlt3Icon,
+  DotsHorizontalIcon,
+} from "@heroicons/react/outline";
 import Link from "next/link";
 
 const Smith: React.FC = () => {
-  const { t } = useTranslation('smith')
+  const { t } = useTranslation("smith");
   const [board, setBoard] = useState<any>(null);
-  const [boardOptions, setBoardOptions] = useState<any>(null)
+  const [boardOptions, setBoardOptions] = useState<any>(null);
 
   const [code, setCode] = useState<string>(`// test smith chart
 Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
 reflect = transform(PI, O) << type: 'rotate' >>;
 Y1 = point(Z1, reflect) << name: 'Y1' >>;
 L1 = segment(Z1, Y1);
-circle(Y1, .3);`
-  );
+circle(Y1, .3);`);
 
   const context = {
     board,
-    boxName: 'smith-box',
+    boxName: "smith-box",
     setBoard,
     code,
     setCode,
     boardOptions,
-    setBoardOptions
-  }
+    setBoardOptions,
+  };
 
   return (
-    <AppLayout title="Smith Chart" >
+    <AppLayout title="Smith Chart">
       <SmithContext.Provider value={context}>
-        <div className="h-screen flex relative">
-          <SmithBoard />
-          <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
-            <div className="form-control">
-              <div className="space-x-2 hidden md:flex">
-                <input type="text" placeholder={t('search')} className="w-full input input-primary input-bordered" />
-                <button className="btn btn-primary">{t('go')}</button>
-              </div>
-              <div className="form-control flex-row">
-
-                <label className="cursor-pointer label mr-6">
-                  <span className="label-text font-bold mr-2">{t('smith-mode')}</span>
-                  <div>
-                    <input type="checkbox" className="toggle toggle-primary" />
-                    <span className="toggle-mark"></span>
-                  </div>
-                </label>
-                <label className="cursor-pointer label mr-6">
-                  <span className="label-text font-bold mr-2">{t('option-2')}</span>
-                  <div>
-                    <input type="checkbox" className="toggle toggle-primary" />
-                    <span className="toggle-mark"></span>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div className="btn-group">
-              <EditorButton />
-              <button className="btn"><DotsHorizontalIcon className="h-5 w-5" /></button>
-            </div>
-          </div>
-          <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
-            <div className="flex items-center">
-              <div className="avatar mr-4">
-                <div className="rounded-full ring ring-primary w-14 h-14">
-                  <img src="https://s.gravatar.com/avatar/718ba64442e4dc180aa0be6b0a9617b1?s=80 " />
+        <div className="drawer drawer-end h-screen  relative">
+          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+          <div className="drawer-content flex">
+            <SmithBoard />
+            <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
+              <div className="form-control">
+                <div className="space-x-2 hidden md:flex">
+                  <input
+                    type="text"
+                    placeholder={t("search")}
+                    className="w-full input input-primary input-bordered"
+                  />
+                  <button className="btn btn-primary">{t("go")}</button>
+                </div>
+                <div className="form-control flex-row">
+                  <label className="cursor-pointer label mr-6">
+                    <span className="label-text font-bold mr-2">
+                      {t("smith-mode")}
+                    </span>
+                    <div>
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-primary"
+                      />
+                      <span className="toggle-mark"></span>
+                    </div>
+                  </label>
+                  <label className="cursor-pointer label mr-6">
+                    <span className="label-text font-bold mr-2">
+                      {t("option-2")}
+                    </span>
+                    <div>
+                      <input
+                        type="checkbox"
+                        className="toggle toggle-primary"
+                      />
+                      <span className="toggle-mark"></span>
+                    </div>
+                  </label>
                 </div>
               </div>
               <div className="btn-group">
-
-                <Link href="/">
-                  <button className="btn btn-lg btn-active"><ViewGridIcon className="h-5 w-5" /></button>
-                </Link>
-                {/* <div className="dropdown dropdown"> */}
-                <button className="btn btn-lg"><MenuAlt3Icon className="h-5 w-5" /></button>
-                {/* <FileMenu />
-            </div> */}
+                <EditorButton />
+                <button className="btn">
+                  <DotsHorizontalIcon className="h-5 w-5" />
+                </button>
               </div>
             </div>
+            <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
+              <div className="flex items-center">
+                <div className="avatar mr-4">
+                  <div className="rounded-full ring ring-primary w-14 h-14">
+                    <img src="https://s.gravatar.com/avatar/718ba64442e4dc180aa0be6b0a9617b1?s=80 " />
+                  </div>
+                </div>
+                <div className="btn-group drawer-content">
+                  <Link href="/">
+                    <button className="btn btn-lg btn-active">
+                      <ViewGridIcon className="h-5 w-5" />
+                    </button>
+                  </Link>
+                  {/* <div className="dropdown dropdown"> */}
+                  <label
+                    htmlFor="my-drawer"
+                    className="btn btn-lg drawer-button"
+                  >
+                    <MenuAlt3Icon className="h-5 w-5" />
+                  </label>
+                  {/* <FileMenu />
+            </div> */}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="drawer-side">
+            <label htmlFor="my-drawer" className="drawer-overlay"></label>
+            <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
+              <li>
+                <a>Menu Item</a>
+              </li>
+              <li>
+                <a>Menu Item</a>
+              </li>
+            </ul>
           </div>
         </div>
       </SmithContext.Provider>
     </AppLayout>
   );
-}
-
+};
 
 export async function getStaticProps({ locale }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale, ['common', 'smith', 'footer'])),
+      ...(await serverSideTranslations(locale, ["common", "smith", "footer"])),
       // Will be passed to the page component as props
     },
   };
