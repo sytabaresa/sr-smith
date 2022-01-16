@@ -1,44 +1,45 @@
 {
-  "name": "with-typescript",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "next",
-    "build": "next build",
-    "start": "next start",
-    "type-check": "tsc"
-  },
-  "dependencies": {
-    "@heroicons/react": "^1.0.2",
-    "canvas": "^2.8.0",
-    "daisyui": "^1.9.0",
+    "name": "with-typescript",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "next",
+        "build": "next build",
+        "start": "next start",
+        "type-check": "tsc"
+    },
+    "dependencies": {
+        "@heroicons/react": "^1.0.2",
+        "canvas": "^2.8.0",
+        "daisyui": "^1.9.0",
         "firebase": "^9.6.3",
-    "framer-motion": "^5.6.0",
-    "jsxgraph": "^1.4.0",
-    "next": "^12.0.8",
-    "next-compose-plugins": "^2.2.1",
-    "next-i18next": "^10.2.0",
-    "next-pwa": "^5.2.23",
-    "next-transpile-modules": "^9.0.0",
-    "node-loader": "^2.0.0",
-    "prismjs": "^1.24.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hotkeys": "^2.0.0",
-    "react-laag": "^2.0.3",
-    "react-responsive": "^8.2.0",
-    "react-robot": "^0.2.2",
-    "react-simple-code-editor": "^0.11.0",
-    "robot3": "^0.2.19"
-  },
-  "devDependencies": {
-    "@types/node": "^17.0.8",
-    "@types/react": "^17.0.2",
-    "@types/react-dom": "^17.0.1",
-    "@types/react-syntax-highlighter": "^13.5.2",
-    "autoprefixer": "^10.2.6",
-    "postcss": "^8.3.5",
-    "tailwindcss": "^3.0.15",
-    "typescript": "^4.5.4"
-  },
-  "license": "MIT"
+        "framer-motion": "^5.6.0",
+        "jsxgraph": "^1.4.0",
+        "next": "^12.0.8",
+        "next-compose-plugins": "^2.2.1",
+        "next-i18next": "^10.2.0",
+        "next-pwa": "^5.2.23",
+        "next-transpile-modules": "^9.0.0",
+        "node-loader": "^2.0.0",
+        "prismjs": "^1.24.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-hook-form": "^7.24.0",
+        "react-hotkeys": "^2.0.0",
+        "react-laag": "^2.0.3",
+        "react-responsive": "^8.2.0",
+        "react-robot": "^0.2.2",
+        "react-simple-code-editor": "^0.11.0",
+        "robot3": "^0.2.19"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.8",
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^17.0.1",
+        "@types/react-syntax-highlighter": "^13.5.2",
+        "autoprefixer": "^10.2.6",
+        "postcss": "^8.3.5",
+        "tailwindcss": "^3.0.15",
+        "typescript": "^4.5.4"
+    },
+    "license": "MIT"
 }
