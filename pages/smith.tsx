@@ -11,6 +11,8 @@ import {
   DotsHorizontalIcon,
 } from "@heroicons/react/outline";
 import Link from "next/link";
+import CodeTools from "../components/organisms/codeTools";
+import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
 
 const Smith: React.FC = () => {
   const { t } = useTranslation("smith");
@@ -41,50 +43,7 @@ circle(Y1, .3);`);
           <input id="my-drawer" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content flex">
             <SmithBoard />
-            <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
-              <div className="form-control">
-                <div className="space-x-2 hidden md:flex">
-                  <input
-                    type="text"
-                    placeholder={t("search")}
-                    className="w-full input input-primary input-bordered"
-                  />
-                  <button className="btn btn-primary">{t("go")}</button>
-                </div>
-                <div className="form-control flex-row">
-                  <label className="cursor-pointer label mr-6">
-                    <span className="label-text font-bold mr-2">
-                      {t("smith-mode")}
-                    </span>
-                    <div>
-                      <input
-                        type="checkbox"
-                        className="toggle toggle-primary"
-                      />
-                      <span className="toggle-mark"></span>
-                    </div>
-                  </label>
-                  <label className="cursor-pointer label mr-6">
-                    <span className="label-text font-bold mr-2">
-                      {t("option-2")}
-                    </span>
-                    <div>
-                      <input
-                        type="checkbox"
-                        className="toggle toggle-primary"
-                      />
-                      <span className="toggle-mark"></span>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              <div className="btn-group">
-                <EditorButton />
-                <button className="btn">
-                  <DotsHorizontalIcon className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
+            <CodeTools />
             <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
               <div className="flex items-center">
                 <div className="avatar mr-4">
@@ -98,30 +57,17 @@ circle(Y1, .3);`);
                       <ViewGridIcon className="h-5 w-5" />
                     </button>
                   </Link>
-                  {/* <div className="dropdown dropdown"> */}
                   <label
                     htmlFor="my-drawer"
                     className="btn btn-lg drawer-button"
                   >
                     <MenuAlt3Icon className="h-5 w-5" />
                   </label>
-                  {/* <FileMenu />
-            </div> */}
                 </div>
               </div>
             </div>
           </div>
-          <div className="drawer-side">
-            <label htmlFor="my-drawer" className="drawer-overlay"></label>
-            <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-              <li>
-                <a>Menu Item</a>
-              </li>
-              <li>
-                <a>Menu Item</a>
-              </li>
-            </ul>
-          </div>
+          <DrawerSmithOptions />
         </div>
       </SmithContext.Provider>
     </AppLayout>
