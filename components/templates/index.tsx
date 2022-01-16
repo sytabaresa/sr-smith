@@ -1,21 +1,21 @@
-import React, { ReactNode } from 'react'
+import React, { HTMLAttributes, ReactNode } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
 import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import Footer from '../organisms/footer'
 
-type Props = {
+interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
   title?: string
 }
 
-const Layout = ({ children, title = 'This is the default title' }: Props) => {
+const Layout = ({ children, title = 'This is the default title', className }: Props) => {
   const router = useRouter()
   const { t } = useTranslation('common');
 
   return (
-    <div>
+    <div className={`flex flex-col ${className}`}>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -26,15 +26,15 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
           <Link href="/">
             <a>{t('home')}</a>
           </Link>{' '}
-        |{' '}
+          |{' '}
           <Link href="/smith">
             <a>{t('smith')}</a>
           </Link>{' '}
-        |{' '}
+          |{' '}
           <Link href="/users">
             <a>{t('users')}</a>
           </Link>{' '}
-        |{' '}
+          |{' '}
           <Link
             href='/'
             locale={router.locale === 'en' ? 'es' : 'en'}
@@ -47,7 +47,7 @@ const Layout = ({ children, title = 'This is the default title' }: Props) => {
       </header>
       {children}
       <Footer />
-    </div>
+    </div >
   )
 
 }
