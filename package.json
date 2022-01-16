@@ -11,6 +11,7 @@
     "@heroicons/react": "^1.0.2",
     "canvas": "^2.8.0",
     "daisyui": "^1.9.0",
+        "firebase": "^9.6.3",
     "framer-motion": "^5.6.0",
     "jsxgraph": "^1.4.0",
     "next": "^12.0.8",
