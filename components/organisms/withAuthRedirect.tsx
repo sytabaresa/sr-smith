@@ -1,4 +1,4 @@
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'
@@ -31,6 +31,7 @@ const WithAuthRedirect = ({
   location,
 }: WithAuthRedirectProps) => {
   const WithAuthRedirectWrapper = (props) => {
+    const router = useRouter()
     const { loadingUser, user, isAuthenticated } = useUser()
 
     if (loadingUser) {
@@ -38,7 +39,10 @@ const WithAuthRedirect = ({
     }
 
     if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
-      Router.push(location)
+      Router.push(typeof location === 'string' ?
+        location :
+        { query: { redirect: router.pathname }, ...location }
+      )
       return <></>
     }
 

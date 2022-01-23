@@ -13,7 +13,7 @@ const WithAuth = (WrappedComponent, location?: UrlObject | string) => {
   //   const router = useRouter()
 
     if (!location) {
-      location = { pathname: '/login',  } //query: { redirect: router.pathname }
+      location = { pathname: '/login',  } 
     }
 
     return WithAuthRedirect({
