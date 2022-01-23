@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin'
+// import * as admin from 'firebase-admin'
 
 export const clientCredentials = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

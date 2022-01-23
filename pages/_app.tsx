@@ -1,5 +1,6 @@
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
+import UserProvider from '../context/userContext'
 import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
 import './main.css';
@@ -21,7 +22,11 @@ function MyApp({ Component, pageProps }) {
     //eslint-disable-next-line
     []);
 
-  return <Component {...pageProps} />
+  return (
+    <UserProvider>
+      <Component {...pageProps} />
+    </UserProvider>
+  )
 }
 
 export default appWithTranslation(MyApp)

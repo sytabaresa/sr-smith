@@ -5,19 +5,23 @@ import { useForm } from "react-hook-form";
 import Layout from '../components/templates'
 import app from "../firebase/clientApp"
 import { auth } from "../firebase/clientApp"
+import { useUser } from "../context/userContext";
+import { useRouter } from "next/router";
+import { UrlObject } from "url";
 
 interface LoginProps {
-
+    homePage: UrlObject | string
 }
 
-const Login = (props: LoginProps) => {
+const Login = ({ homePage = '/' }: LoginProps) => {
     const { t } = useTranslation()
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
+    const router = useRouter()
 
     const onsubmit = async (data) => {
         const { email, password } = data
-        
+
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
             // Signed in 
@@ -31,6 +35,15 @@ const Login = (props: LoginProps) => {
         }
     }
 
+    const { isAuthenticated } = useUser()
+
+    if (isAuthenticated) {
+        if (router.query?.redirect) {
+            router.push(router.query?.redirect as string)
+        } else {
+            router.push(homePage)
+        }
+    }
 
     return (
         <Layout title="Home | Sr Smith App" className="h-screen">
