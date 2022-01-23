@@ -29,17 +29,15 @@ const IndexPage = () => {
   return (
     <Layout title="Home | Sr Smith App">
       <h1 className="text-blue-500 text-xl">{t('main-title')}</h1>
-      <p>
-        <div className="w-full flex px-2 sm:px-10 mt-4 flex-wrap">
-          {apps.map(({ link, title, bgImage }) =>
-            <Link href={link}>
-              <div className="w-full sm:w-1/2 lg:w-1/4 p-2">
-                <MainCard title={tapps(title)} bgImage={bgImage} />
-              </div>
-            </Link>
-          )}
-        </div>
-      </p>
+      <div className="w-full flex px-2 sm:px-10 mt-4 flex-wrap">
+        {apps.map(({ link, title, bgImage }, index) =>
+          <Link href={link} key={index}>
+            <div className="w-full sm:w-1/2 lg:w-1/4 p-2">
+              <MainCard title={tapps(title)} bgImage={bgImage} />
+            </div>
+          </Link>
+        )}
+      </div>
     </Layout>
   )
 
