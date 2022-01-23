@@ -7,7 +7,6 @@ import 'firebase/performance' // If you need it
 import { clientCredentials } from './config';
 
 
-console.log(clientCredentials)
 export const app = initializeApp(clientCredentials)
 export const analytics = getAnalytics(app)
 export const auth = getAuth(app)
