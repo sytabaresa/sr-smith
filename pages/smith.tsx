@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import CodeTools from "../components/organisms/codeTools";
 import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
+import PrimitivesMenu from "../components/organisms/primitivesMenu";
 
 const Smith: React.FC = () => {
   const { t } = useTranslation("smith");
