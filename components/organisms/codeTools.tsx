@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useContext } from "react";
 import EditorButton from "../atoms/editorButton";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
+import PrimitivesMenu from "./primitivesMenu";
 
 const CodeTools = () => {
   const { t } = useTranslation("smith");
@@ -19,6 +20,7 @@ const CodeTools = () => {
             className="w-full input input-primary input-bordered"
           />
           <button className="btn btn-primary">{t("go")}</button>
+          <PrimitivesMenu />
         </div>
         <div className="form-control flex-row">
           <label className="cursor-pointer label mr-6">
