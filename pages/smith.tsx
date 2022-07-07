@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AppLayout from "../components/templates/AppLayout";
-import SmithBoard from "../components/smith/Board";
+import SmithBoard from "../components/molecules/smithBoard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { SmithContext } from "../components/smith/context";
+import { SmithContext } from "../components/providers/smithContext";
 import { useTranslation } from "react-i18next";
-import EditorButton from "../components/atoms/editorButton";
+import EditorPopup from "../components/organisms/editorPopup";
 import {
   ViewGridIcon,
   MenuAlt3Icon,

@@ -1,27 +1,5 @@
-import { useContext, useEffect } from "react";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
-import resolveConfig from 'tailwindcss/resolveConfig'
-import tailwindConfig from '../../tailwind.config.js'
-import { useMediaQuery } from "react-responsive"
 
-import { SmithContext } from "./context";
-
-const fullConfig = resolveConfig(tailwindConfig)
-
-export interface ISmithBoardProps { };
-
-const useScreen = () => {
-
-    const isBigMobile = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.sm })
-    const isTablet = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.md })
-    const isDesktop = useMediaQuery({ minDeviceWidth: fullConfig.theme.screens.lg })
-
-    if (isDesktop) return 'lg'
-    if (isTablet) return 'md'
-    if (isBigMobile) return 'sm'
-    return 'xs'
-
-}
 export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
 
     const screenBoxSizes = {
@@ -100,30 +78,3 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
 
     return brd
 }
-
-const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
-    const { setBoard, boxName } = useContext(SmithContext)
-
-    const screenSize = useScreen()
-
-    useEffect(() => {
-        const brd = initBoard(boxName, {}, screenSize)
-        setBoard(brd)
-
-        return () => { }
-    },
-        //eslint-disable-next-line
-        []);
-
-    return (
-        <div
-            id={boxName}
-            className="jxgbox h-full w-full"
-        // style={{ width: '500px', height: '500px' }}
-        >
-
-        </div>
-    );
-}
-
-export default SmithBoard;

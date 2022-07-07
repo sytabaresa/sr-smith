@@ -1,4 +1,5 @@
 import { createMachine, state, transition, reduce, invoke } from 'robot3';
+import { wait } from '../utils/time';
 
 export interface ContextType {
     errorMsg: string;
@@ -6,9 +7,6 @@ export interface ContextType {
 }
 
 // fsm
-
-const wait = ms => () => new Promise(resolve => setTimeout(resolve, ms));
-
 const clearErrorMsg = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: '' }))
 const setCode = reduce((ctx: any, ev: any) => ({ ...ctx, code: ev.value }))
 const setError = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: ev.value.message }))

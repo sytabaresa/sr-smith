@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useContext } from "react";
-import EditorButton from "../atoms/editorButton";
+import EditorPopup from "../organisms/editorPopup";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
 
@@ -40,7 +40,7 @@ const CodeTools = () => {
         </div>
       </div>
       <div className="btn-group">
-        <EditorButton />
+        <EditorPopup />
         <button className="btn">
           <DotsHorizontalIcon className="h-5 w-5" />
         </button>

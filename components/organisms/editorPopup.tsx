@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Editor from "../smith/Editor";
+import Editor from "./codeEditor";
 import { useLayer, Arrow } from "react-laag";
 import { useTranslation } from "next-i18next";
 import { motion } from "framer-motion";
 
-const EditorButton: React.FC = () => {
+const EditorPopup: React.FC = () => {
     const [isOpen, setOpen] = useState(true);
     const { t } = useTranslation('common')
 
@@ -62,4 +62,4 @@ const EditorButton: React.FC = () => {
     );
 }
 
-export default EditorButton;
+export default EditorPopup;
