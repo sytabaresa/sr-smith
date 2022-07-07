@@ -4,17 +4,9 @@ import SmithBoard from "../components/molecules/smithBoard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { SmithContext } from "../providers/smithContext";
 import { useTranslation } from "react-i18next";
-import {
-  ViewGridIcon,
-  MenuAlt3Icon,
-  DotsHorizontalIcon,
-} from "@heroicons/react/outline";
-import Link from "next/link";
-
 import CodeTools from "../components/organisms/codeTools";
 import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
 import { UserMenu } from "../components/organisms/userMenu";
-import PrimitivesMenu from "../components/organisms/primitivesMenu";
 
 const Smith: React.FC = () => {
   const { t } = useTranslation("smith");

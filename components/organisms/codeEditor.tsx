@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useContext, useEffect, useState } from "react";
+import { TextareaHTMLAttributes, useContext } from "react";
 import { useTranslation } from "next-i18next";
 import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";

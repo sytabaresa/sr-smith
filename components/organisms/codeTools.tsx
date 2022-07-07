@@ -1,9 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useContext } from "react";
 import EditorPopup from "../organisms/editorPopup";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
