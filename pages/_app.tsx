@@ -1,6 +1,6 @@
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
-import UserProvider from '../context/userContext'
+import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
 import './main.css';

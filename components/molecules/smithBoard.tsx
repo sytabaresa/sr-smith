@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { SmithContext } from "../providers/smithContext";
+import { SmithContext } from "../../providers/smithContext";
 import { initBoard } from "../utils/board";
 import { useScreen } from "../utils/screen";
 

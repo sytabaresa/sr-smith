@@ -2,7 +2,7 @@ import Router, { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'
-import { useUser } from '../../context/userContext'
+import { useUser } from '../../providers/userContext'
 import AuthLoading from '../atoms/authLoading'
 
 /**

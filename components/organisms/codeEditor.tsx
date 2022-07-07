@@ -9,7 +9,7 @@ import { useMachine } from 'react-robot';
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
-import { SmithContext } from "../providers/smithContext";
+import { SmithContext } from "../../providers/smithContext";
 import { initBoard } from "../utils/board";
 import machine from '../atoms/codeEditorFSM'
 
