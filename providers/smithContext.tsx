@@ -5,6 +5,7 @@ export const SmithContext = createContext({
     boxName: 'smith-box',
     setBoard: (_board) => { },
     code: '',
+    ui: null,
     setCode: (code: string) => { },
     boardOptions: {},
     setBoardOptions: (options: any) => { },

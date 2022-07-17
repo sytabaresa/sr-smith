@@ -7,10 +7,12 @@ import { useTranslation } from "react-i18next";
 import CodeTools from "../components/organisms/codeTools";
 import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
 import { UserMenu } from "../components/organisms/userMenu";
+import { JXGDrawer } from "../components/atoms/tooltipActions";
 
 const Smith: React.FC = () => {
   const { t } = useTranslation("smith");
-  const [board, setBoard] = useState<any>(null);
+  const [board, _setBoard] = useState<any>(null);
+  const [ui, setUi] = useState<any>(null)
   const [boardOptions, setBoardOptions] = useState<any>(null);
 
   const [code, setCode] = useState<string>(`// test smith chart
@@ -21,8 +23,14 @@ L1 = segment(Z1, Y1);
 circle(Y1, .3);`
   );
 
+  const setBoard = (brd) => {
+    _setBoard(brd)
+    setUi(new JXGDrawer(brd, {}))
+  }
+
   const context = {
     board,
+    ui,
     boxName: "smith-box",
     setBoard,
     code,
