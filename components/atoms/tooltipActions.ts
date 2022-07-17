@@ -12,12 +12,17 @@ export class JXGDrawer {
         this.board = board
         this.attributes = attributes
 
-        this.service = interpret(this.whiteboardMachine, () => {
-            console.log(`machine: {"prev": ${this.prevState}, "current": ${this.service.machine.current}}`)
-            this.prevState = this.service.machine.current
-        });
+        this.service = interpret(this.whiteboardMachine,
+            () => { }
+            //     () => {
+            //     console.log(`machine: {"prev": ${this.prevState}, "current": ${this.service.machine.current}}`)
+            //     this.prevState = this.service.machine.current
+            // }
+        );
 
         this.prevState = this.service.machine.current
+
+        //register canvas handlers:
         board.on('down', this.onDownHandler);
     }
 
