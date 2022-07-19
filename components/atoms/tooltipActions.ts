@@ -1,12 +1,13 @@
 // import { Board } from 'jsxgraph'
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { createMachine, state, state as final, transition, guard, interpret, Service, action, immediate, reduce, invoke } from 'robot3';
-import { getMouseCoords } from "../utils/board";
+import { initBoard } from "./boards";
 import { TooltipType } from "./tooltips/interfaces";
 import pointTooltip from "./tooltips/point";
 
 export class JXGDrawer {
     board: any
+    boardName: string
     prevState: string
     attributes: Record<string, any>
     initState: string = 'idle'
@@ -14,8 +15,7 @@ export class JXGDrawer {
     private tooltipPluginsNames: string[]
     private tooltipPluginMap: Record<string, TooltipType>
 
-    constructor(board, attributes) {
-        this.board = board
+    constructor(attributes = {}) {
         this.attributes = attributes
 
         this.service = interpret(this.whiteboardMachine,
@@ -28,8 +28,6 @@ export class JXGDrawer {
 
         this.prevState = this.service.machine.current
 
-        //register canvas handlers:
-        board.on('down', this.onDownHandler);
 
         //register plugins
         this.tooltipPlugins = [pointTooltip]
@@ -38,6 +36,26 @@ export class JXGDrawer {
         // other confs
         this.tooltipPluginMap = Object.fromEntries(this.tooltipPlugins.map((t) => [t.name(), t]))
         this.tooltipPluginsNames = Object.keys(this.tooltipPluginMap)
+    }
+
+    populateBoard() {
+        //register canvas handlers:
+        this.board.on('down', this.onDownHandler);
+    }
+
+    newBoard(boxName: string, boardOptions: any = {}, screenSize: string) {
+        this.boardName = boxName
+        this.board = initBoard(boxName, boardOptions, screenSize)
+        this.populateBoard()
+    }
+
+    recreateBoard() {
+        if (this.board != undefined) {
+            const boundingBox = this.board.getBoundingBox()
+            JXG.JSXGraph.freeBoard(this.board);
+            this.board = initBoard(this.boardName, { boundingBox })
+            this.populateBoard()
+        }
     }
 
     drawHander = (ctx, event) => {
@@ -111,7 +129,5 @@ export class JXGDrawer {
     setTooltip = (tooltip: string) => {
         this.service.send({ type: 'CHANGE_DRAW', value: tooltip })
     }
-
-
 }
 

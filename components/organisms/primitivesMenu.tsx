@@ -30,8 +30,6 @@ const PrimitivesMenu = ({
   onClickSegment,
 }: PrimitivesMenuProps) => {
 
-  const { ui } = useContext(SmithContext)
-
   return (
     <div className="dropdown">
       <button tabIndex={0} className="btn btn-primary">
