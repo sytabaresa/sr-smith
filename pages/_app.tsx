@@ -17,6 +17,12 @@ function MyApp({ Component, pageProps }) {
       document.documentElement.classList.remove('dark')
     }
 
+    //robot3 debuging mode
+    if(process.env.NODE_ENV == 'development') {
+      require('robot3/debug')
+      require('robot3/logging')
+  }
+
     return () => { }
   },
     //eslint-disable-next-line

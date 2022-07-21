@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BeakerIcon } from "@heroicons/react/outline";
 import point from "../../assets/icons/point.png";
 import line from "../../assets/icons/line.png";
@@ -10,6 +10,7 @@ import PointIcons from "../atoms/custom-icons/point";
 import SegmentIcon from "../atoms/custom-icons/segment";
 import LineIcon from "../atoms/custom-icons/line-icon";
 import AngleIcon from "../atoms/custom-icons/angle-icon";
+import { SmithContext } from "../../providers/smithContext";
 
 type PrimitivesMenuProps = {
   onClickPoint?: () => void;
@@ -28,14 +29,15 @@ const PrimitivesMenu = ({
   onClickPoint,
   onClickSegment,
 }: PrimitivesMenuProps) => {
+
   return (
     <div className="dropdown">
-      <button className="btn btn-primary">
+      <button tabIndex={0} className="btn btn-primary">
         <BeakerIcon className="w-6" />
       </button>
-      <ul className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li onClick={onClickPoint}>
-          <a>
+      <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+        <li>
+          <a onClick={onClickPoint}>
             <PointIcons width={30} /> <span className="ml-2">Punto</span>
           </a>
         </li>
@@ -70,7 +72,7 @@ const PrimitivesMenu = ({
       <div className="modal" id="modalCircleCenterRadius">
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">
-          Circunferencia: centro y radio
+            Circunferencia: centro y radio
           </h3>
           <input type="text" placeholder="Elija el Radio" className="input input-bordered w-full max-w-xs" />
           <div className="modal-action flex items-center">

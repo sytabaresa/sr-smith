@@ -1,19 +1,18 @@
 import { useContext, useEffect } from "react";
 import { SmithContext } from "../../providers/smithContext";
-import { initBoard } from "../utils/board";
+import { initBoard } from "../atoms/boards";
 import { useScreen } from "../utils/screen";
 
 export interface ISmithBoardProps { };
 
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
-    const { setBoard, boxName } = useContext(SmithContext)
+    const { ui } = useContext(SmithContext)
 
     const screenSize = useScreen()
 
+    const BOX_NAME = 'smith-box'
     useEffect(() => {
-        const brd = initBoard(boxName, {}, screenSize)
-        setBoard(brd)
-
+        ui.newBoard(BOX_NAME, {}, screenSize)
         return () => { }
     },
         //eslint-disable-next-line
@@ -21,7 +20,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
 
     return (
         <div
-            id={boxName}
+            id={BOX_NAME}
             className="jxgbox h-full w-full"
         // style={{ width: '500px', height: '500px' }}
         >
