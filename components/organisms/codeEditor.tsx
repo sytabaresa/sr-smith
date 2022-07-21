@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useContext, useEffect, useState } from "react";
+import { TextareaHTMLAttributes, useContext } from "react";
 import { useTranslation } from "next-i18next";
 import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";
@@ -9,9 +9,8 @@ import { useMachine } from 'react-robot';
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
-import { SmithContext } from "./context";
-import { initBoard } from "./Board";
-import machine from './fsm'
+import { SmithContext } from "../../providers/smithContext";
+import machine from '../atoms/codeEditorFSM'
 
 configure({
     /**
@@ -32,13 +31,12 @@ export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 
 const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { t } = useTranslation('smith')
-    const { board,
-        setBoard,
-        boxName,
+    const {
         code: contextCode,
         setCode,
-        boardOptions,
-        setBoardOptions,
+        ui,
+        // boardOptions,
+        // setBoardOptions,
     } = useContext(SmithContext)
     // console.log(board)
 
@@ -55,24 +53,16 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
         // console.log(code)
         send('PARSING')
         // console.log(board)
-        if (board) {
-            setBoard(board => {
-                let brd
-                try {
-                    const boundingBox = board.getBoundingBox()
-                    JXG.JSXGraph.freeBoard(board);
-                    brd = initBoard(boxName, { boundingBox })
-                    brd.jc.parse(code);
-                    send('PARSED')
-                    return brd
-                } catch (err) {
-                    console.log(err)
-                    send({ type: 'ERROR', value: err })
-                    return brd
-                }
-            })
+        try {
+            ui.recreateBoard()
+            ui.board.jc.parse(code);
+            send('PARSED')
+        } catch (err) {
+            console.log(err)
+            send({ type: 'ERROR', value: err })
         }
     }
+
     const setActualCode = (code) => {
         send({ type: "CODE", value: code })
         setCode(code) //TODO: update instantly? or with memo

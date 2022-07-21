@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import Layout from '../components/templates'
 import app from "../firebase/clientApp"
 import { auth } from "../firebase/clientApp"
-import { useUser } from "../context/userContext";
+import { useUser } from "../providers/userContext";
 import { useRouter } from "next/router";
 import { UrlObject } from "url";
 

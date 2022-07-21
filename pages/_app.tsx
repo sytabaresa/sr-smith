@@ -1,6 +1,6 @@
 import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
-import UserProvider from '../context/userContext'
+import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
 import './main.css';
@@ -16,6 +16,12 @@ function MyApp({ Component, pageProps }) {
     } else {
       document.documentElement.classList.remove('dark')
     }
+
+    //robot3 debuging mode
+    if(process.env.NODE_ENV == 'development') {
+      require('robot3/debug')
+      require('robot3/logging')
+  }
 
     return () => { }
   },
