@@ -1,7 +1,13 @@
+import { Machine } from "robot3"
 
 
-export interface TooltipType {
-    name: () => string,
-    validation: (board: any, e: any, attributes: Record<string, any>) => boolean,
-    action: (board: any, e: any, attributes: Record<string, any>) => void
+export interface TooltipType<S = {}, C = {}> {
+    name: string
+    // validation: (board: any, e: any, attributes: Record<string, any>) => boolean,
+    // action: (board: any, e: any, attributes: Record<string, any>) => void
+    machine: Machine<S, C, string>
+}
+
+export interface MachineCtx {
+    board: any
 }

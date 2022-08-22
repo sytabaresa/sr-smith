@@ -1,11 +1,14 @@
-import { TooltipType } from "./interfaces";
+import { MachineCtx, TooltipType } from "./interfaces";
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { getMouseCoords } from "../../utils/board";
+import { createMachine, guard, immediate, state, state as final, transition, action } from "robot3";
 
+class PointTooltip implements TooltipType {
+    objectSelected: any[]
+    name = 'point'
 
-const pointTooltip: TooltipType = {
-    name: () => 'point',
-    validation(board, event, attrs) {
+    validatePoint(ctx: MachineCtx, event) {
+        const { board } = event
         let index
         let canCreate = true
         if (event.value[JXG.touchProperty]) {
@@ -25,8 +28,10 @@ const pointTooltip: TooltipType = {
         }
 
         return canCreate
-    },
-    action: (board, event, attrs) => {
+    }
+
+    drawPoint(ctx: MachineCtx, event) {
+        const { board } = event
         let index
         if (event.value[JXG.touchProperty]) {
             // index of the finger that is used to extract the coordinates
@@ -37,6 +42,18 @@ const pointTooltip: TooltipType = {
 
         board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
     }
+
+    machine = createMachine({
+        idle: state(
+            immediate('drawPoint', guard(this.validatePoint)),
+            immediate('error')
+        ),
+        drawPoint: state(
+            immediate('end', action(this.drawPoint)),
+        ),
+        error: final(),
+        end: final(),
+    })
 }
 
-export default pointTooltip
+export default PointTooltip
