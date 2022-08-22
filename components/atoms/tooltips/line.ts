@@ -91,7 +91,7 @@ class LineTooltip implements TooltipType {
 
     machine = createMachine({
         selectOrDrawPoint1: state(
-            immediate('selectOrDrawPoint2', reduce(this.selectOrDrawPoint1)),
+            transition('DOWN', 'selectOrDrawPoint2', reduce(this.selectOrDrawPoint1)),
         ),
         selectOrDrawPoint2: state(
             transition('DOWN', 'end', reduce(this.selectOrDrawPoint2)),

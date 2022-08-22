@@ -45,8 +45,7 @@ class PointTooltip implements TooltipType {
 
     machine = createMachine({
         idle: state(
-            immediate('drawPoint', guard(this.validatePoint)),
-            immediate('error')
+            transition('DOWN', 'drawPoint', guard(this.validatePoint)),
         ),
         drawPoint: state(
             immediate('end', action(this.drawPoint)),

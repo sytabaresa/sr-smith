@@ -71,20 +71,14 @@ export class JXGDrawer {
 
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
-            transition('CHANGE_DRAW', 'pre_draw'),
+            transition('CHANGE_DRAW', 'draw'),
             transition('DOWN', 'idle') // only for don't display annoying errors in dev ;)
         ),
-        pre_draw: state(
-            immediate('draw', reduce((ctx: any, ev: any) => {
+        draw: state(
+            immediate('validatePlugin', reduce((ctx: any, ev: any) => {
                 // this.tooltipSelected = ev.value
                 return { ...ctx, tooltipSelected: ev.value }
             }))
-        ),
-        draw: state(
-            transition('CHANGE_DRAW', 'pre_draw'),
-            transition('CHANGE_DRAG', 'drag'),
-            transition('CHANGE_IDLE', 'idle'),
-            transition('DOWN', 'validatePlugin')
         ),
         validatePlugin: state(
             immediate('drawMachine', guard(this.pluginExist.bind(this))),
@@ -92,14 +86,15 @@ export class JXGDrawer {
         ),
         drawMachine: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
-            transition('done', 'draw'),
-            transition('CHANGE_DRAW', 'pre_draw'),
+            transition('done', 'drawMachine'),
+            transition('CHANGE_IDLE', 'idle'),
+            transition('CHANGE_DRAW', 'draw'),
         ),
         drag: state(
             transition('CHANGE_IDLE', 'idle')
         ),
         error: state(
-            immediate('draw')
+            immediate('idle', action((ctx, ev) => console.log("error", ev)))
         )
     }, () => ({
         tooltipSelected: '',
@@ -111,10 +106,7 @@ export class JXGDrawer {
     }
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here
-        if (this.service.child)
-            this.service.child.send({ type: event, value: payload, board: this.board })
-        else
-            this.service.send({ type: event, value: payload, board: this.board })
+        this.service.send({ type: event, value: payload, board: this.board })
     }
 
     setTooltip = (tooltip: string) => {

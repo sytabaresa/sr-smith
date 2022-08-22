@@ -209,6 +209,10 @@ function send(service, event) {
 
     if (state.transitions.has(eventName)) {
         return transitionTo(service, machine, event, state.transitions.get(eventName)) || machine;
+    } else if (service.child) {
+        service.child.machine = send(service.child, event)
+        service.child.onChange(service.child)
+        return service.machine
     } else {
         if (d._send) d._send(eventName, currentStateName);
     }
