@@ -1,7 +1,7 @@
 import { MachineCtx, TooltipType } from "./interfaces";
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { getMouseCoords } from "../../utils/board";
-import { createMachine, guard, immediate, state, state as final, transition, action } from "../machine";
+import { createMachine, guard, immediate, state, state as final, transition, action } from "../../fsm/machine";
 
 class PointTooltip implements TooltipType {
     objectSelected: any[]

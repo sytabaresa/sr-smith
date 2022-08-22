@@ -11,12 +11,11 @@ const CodeTools = () => {
 
   const [checked, setChecked] = useState(ui.whiteboardMachine.current == 'draw')
   useEffect(() => {
-    console.log('aa')
     setChecked(ui.whiteboardMachine.current == 'draw')
   }, [ui.whiteboardMachine.current])
   // ui && ui.setTooltip('point')
 
-  console.log(checked, ui.whiteboardMachine.current)
+  // console.log(checked, ui.whiteboardMachine.current)
   return (
     <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
       <div className="form-control">

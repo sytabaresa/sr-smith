@@ -1,6 +1,6 @@
 // import { Board } from 'jsxgraph'
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from './machine';
+import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from '../fsm/machine';
 import { Service } from "robot3"
 import { initBoard } from "./boards";
 import { TooltipType } from "./tooltips/interfaces";
@@ -39,8 +39,6 @@ export class JXGDrawer {
             new LineTooltip(),
         ]
 
-        let aa = new LineTooltip()
-        console.log(this.tooltipPlugins, aa)
         // other confs
         this.tooltipPluginMap = Object.fromEntries(this.tooltipPlugins.map((t) => [t.name, t]))
         this.tooltipPluginsNames = Object.keys(this.tooltipPluginMap)
@@ -67,7 +65,7 @@ export class JXGDrawer {
     }
 
     pluginExist = (ctx, event) => {
-        console.log(ctx, event)
+        // console.log(ctx, event)
         return this.tooltipPluginsNames.includes(ctx.tooltipSelected)
     }
 
@@ -113,9 +111,10 @@ export class JXGDrawer {
     }
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here
-        this.service.send({ type: event, value: payload, board: this.board })
-        // if (this.service.child)
-        //     this.service.child.send({ type: event, value: payload, board: this.board })
+        if (this.service.child)
+            this.service.child.send({ type: event, value: payload, board: this.board })
+        else
+            this.service.send({ type: event, value: payload, board: this.board })
     }
 
     setTooltip = (tooltip: string) => {
