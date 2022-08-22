@@ -1,6 +1,7 @@
 // import { Board } from 'jsxgraph'
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { createMachine, state, state as final, transition, guard, interpret, Service, action, immediate, reduce, invoke, Machine } from 'robot3';
+import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from './machine';
+import { Service } from "robot3"
 import { initBoard } from "./boards";
 import { TooltipType } from "./tooltips/interfaces";
 import LineTooltip from "./tooltips/line";
@@ -102,11 +103,9 @@ export class JXGDrawer {
         error: state(
             immediate('draw')
         )
-
-    }, (initialContext) => ({
+    }, () => ({
         tooltipSelected: '',
     }))
-
 
     onDownHandler = (e) => {
         // console.log('down event')

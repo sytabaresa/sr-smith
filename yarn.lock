@@ -3474,9 +3474,10 @@ robot-hooks@^0.3.6:
   resolved "https://registry.npmjs.org/robot-hooks/-/robot-hooks-0.3.7.tgz"
   integrity sha512-mxKIa+GIKYgOjW9p7RzVtSNUStOOFF6qGUl38j3f8wCEfEP0QhkSQoTxz3LkiIDNOTP9XKSJhzhwz9umKX31yA==
 
-robot3@sytabaresa/robot:
+robot3@^0.3.1:
   version "0.3.1"
-  resolved "https://codeload.github.com/sytabaresa/robot/tar.gz/7585e37ff1d9f6d15d6f250e82cbb17537587cca"
+  resolved "https://registry.yarnpkg.com/robot3/-/robot3-0.3.1.tgz#505cdf312be30aba276e1bc170d24cb1dd47df78"
+  integrity sha512-mhHnByhmiF1Fy3Dz6TndHP2yT8+C7PqgcJMpxZdoljXq3OBwXKElZvt97kZpS67gHprfbhO8b8851GXAKgXpqw==
 
 rollup-plugin-terser@^7.0.0:
   version "7.0.2"
