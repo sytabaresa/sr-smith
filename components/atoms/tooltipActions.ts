@@ -71,24 +71,24 @@ export class JXGDrawer {
 
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
-            transition('CHANGE_DRAW', 'draw'),
+            transition('CHANGE_DRAW', 'pre_draw'),
             transition('DOWN', 'idle') // only for don't display annoying errors in dev ;)
         ),
-        draw: state(
+        pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
                 // this.tooltipSelected = ev.value
                 return { ...ctx, tooltipSelected: ev.value }
             }))
         ),
         validatePlugin: state(
-            immediate('drawMachine', guard(this.pluginExist.bind(this))),
+            immediate('draw', guard(this.pluginExist.bind(this))),
             immediate('error', action(() => console.log("plugin not exists")))
         ),
-        drawMachine: invoke((ctx: any, event: any) =>
+        draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
-            transition('done', 'drawMachine'),
+            transition('done', 'draw'),
             transition('CHANGE_IDLE', 'idle'),
-            transition('CHANGE_DRAW', 'draw'),
+            transition('CHANGE_DRAW', 'pre_draw'),
         ),
         drag: state(
             transition('CHANGE_IDLE', 'idle')
