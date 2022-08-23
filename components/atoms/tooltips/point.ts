@@ -2,53 +2,18 @@ import { MachineCtx, TooltipType } from "./interfaces";
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { getMouseCoords } from "../../utils/board";
 import { createMachine, guard, immediate, state, state as final, transition, action } from "../../fsm/machine";
+import { selectOrDrawPoint } from "./common";
 
 class PointTooltip implements TooltipType {
     objectSelected: any[]
     name = 'point'
+    description = 'select position or line, curve, or other element'
 
-    validatePoint(ctx: MachineCtx, event) {
-        const { board } = event
-        let index
-        let canCreate = true
-        if (event.value[JXG.touchProperty]) {
-            // index of the finger that is used to extract the coordinates
-            index = 0;
-        }
-
-        const coords = getMouseCoords(event.value, index, board);
-
-        //TODO: validate more types of elements
-        for (let el in board.objects) {
-            if (JXG.isPoint(board.objects[el]) &&
-                board.objects[el].hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
-                canCreate = false;
-                break;
-            }
-        }
-
-        return canCreate
-    }
-
-    drawPoint(ctx: MachineCtx, event) {
-        const { board } = event
-        let index
-        if (event.value[JXG.touchProperty]) {
-            // index of the finger that is used to extract the coordinates
-            index = 0;
-        }
-
-        const coords = getMouseCoords(event.value, index, board);
-
-        board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
-    }
+    selectOrDrawPoint = selectOrDrawPoint
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'drawPoint', guard(this.validatePoint)),
-        ),
-        drawPoint: state(
-            immediate('end', action(this.drawPoint)),
+            transition('DOWN', 'end', guard(this.selectOrDrawPoint)),
         ),
         error: final(),
         end: final(),

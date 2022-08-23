@@ -2,41 +2,55 @@
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from '../fsm/machine';
 import { Service } from "robot3"
-import { initBoard } from "./boards";
-import { TooltipType } from "./tooltips/interfaces";
-import LineTooltip from "./tooltips/line";
-import PointTooltip from "./tooltips/point";
+import { initBoard } from "../atoms/boards";
+import { TooltipType } from "../atoms/tooltips/interfaces";
+import TwoPointsTooltip from "../atoms/tooltips/twoPoints";
+import PointTooltip from "../atoms/tooltips/point";
+import SegmentTooltip from "../atoms/tooltips/segment";
+import CircleTooltip from "../atoms/tooltips/circle";
+import { useMachine } from "../fsm/hooks";
+import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
+import LineTooltip from "../atoms/tooltips/line";
+import { wait } from "../utils/time";
+
+
+export function useDrawner() {
+    let out = new JXGDrawer()
+    out.useMachine()
+    return out
+}
 
 export class JXGDrawer {
     board: any
     boardName: string
-    prevState: string
     attributes: Record<string, any>
     initState: string = 'idle'
 
-    // private tooltipSelected: string = ''
+    tooltipSelected: TooltipType
     private tooltipPlugins: TooltipType[] = []
     private tooltipPluginsNames: string[] = []
     private tooltipPluginMap: Record<string, TooltipType> = {}
-    private service: Service<typeof this.whiteboardMachine>
+    service: Service<typeof this.whiteboardMachine>
 
     constructor(attributes = {}) {
         this.attributes = attributes
 
-        this.service = interpret(this.whiteboardMachine,
-            (service) => { },
-            //     (service) => {
-            //     console.log(`machine: {"prev": ${this.prevState}, "current": ${service.machine.current}}`)
-            //     this.prevState = service.machine.current
-            // },
-            {});
-
-        this.prevState = this.service.machine.current
+        // this.service = interpret(this.whiteboardMachine,
+        //     (service) => { },
+        //     //     (service) => {
+        //     //     console.log(`machine: {"prev": ${this.prevState}, "current": ${service.machine.current}}`)
+        //     //     this.prevState = service.machine.current
+        //     // },
+        //     {});
 
         //register plugins
         this.tooltipPlugins = [
             new PointTooltip(),
+            new TwoPointsTooltip(),
             new LineTooltip(),
+            new SegmentTooltip(),
+            new CircleTooltip(),
+            new CircleRadiusTooltip(),
         ]
 
         // other confs
@@ -44,9 +58,18 @@ export class JXGDrawer {
         this.tooltipPluginsNames = Object.keys(this.tooltipPluginMap)
     }
 
+    useMachine() {
+        console.log('use machine')
+        const out = useMachine(this.whiteboardMachine)
+        this.service = out[2]
+        // this.populateBoard()
+        return out
+    }
+
     populateBoard() {
         //register canvas handlers:
-        this.board.on('down', this.onDownHandler);
+        if (this.board)
+            this.board.on('down', this.onDownHandler);
     }
 
     newBoard(boxName: string, boardOptions: any = {}, screenSize: string) {
@@ -81,14 +104,21 @@ export class JXGDrawer {
             }))
         ),
         validatePlugin: state(
-            immediate('draw', guard(this.pluginExist.bind(this))),
-            immediate('error', action(() => console.log("plugin not exists")))
+            immediate('tooltipSelected', guard(this.pluginExist.bind(this)),
+                action((ctx) => console.log("plugin:", ctx.tooltipSelected)),
+                action((ctx) => this.tooltipSelected = this.tooltipPluginMap[ctx.tooltipSelected])),
+            immediate('error', action((ctx) => console.log("plugin not exists:", ctx.tooltipSelected)))
+        ),
+        tooltipSelected: invoke(
+            wait(100),
+            transition('done', 'draw')
         ),
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
             transition('done', 'draw'),
             transition('CHANGE_IDLE', 'idle'),
             transition('CHANGE_DRAW', 'pre_draw'),
+            transition('EXIT', 'idle'),
         ),
         drag: state(
             transition('CHANGE_IDLE', 'idle')
@@ -101,12 +131,28 @@ export class JXGDrawer {
     }))
 
     onDownHandler = (e) => {
-        // console.log('down event')
+        console.log('down event')
+        // this.useMachine()
         this.sendEvent('DOWN', e)
     }
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here
         this.service.send({ type: event, value: payload, board: this.board })
+    }
+
+    current = (deep = false) => {
+        if (!deep) return this.service.machine.current
+        let service = this.service
+        if (!service) return ''
+        let out = `${service.machine.current}`
+
+        let child = !!service.child
+        while (child) {
+            out = `${out}.${service.child.machine.current}`
+            service = service.child
+            child = !!service.child
+        }
+        return out
     }
 
     setTooltip = (tooltip: string) => {
