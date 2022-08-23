@@ -86,7 +86,7 @@ export class JXGDrawer {
         ),
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
-            transition('done', 'drawMachine'),
+            transition('done', 'draw'),
             transition('CHANGE_IDLE', 'idle'),
             transition('CHANGE_DRAW', 'pre_draw'),
         ),
