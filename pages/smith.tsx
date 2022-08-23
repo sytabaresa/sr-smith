@@ -64,7 +64,7 @@ circle(Y1, .3);`
             <div className="drawer-content flex">
               <SmithBoard />
               <CodeTools />
-              <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
+              <div className="absolute top-0 right-0 mr-4 mt-4">
                 <UserMenu />
               </div>
             </div>

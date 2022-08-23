@@ -17,7 +17,7 @@ const CodeTools = () => {
 
   // console.log(checked, ui.whiteboardMachine.current)
   return (
-    <div className="absolute top-0 left-0 pl-4 pt-4 w-full md:w-96 z-10">
+    <div className="absolute top-0 left-0 pl-4 pt-4 md:w-96 z-10">
       <div className="form-control">
         <div className="space-x-2 hidden md:flex">
           <input
@@ -26,10 +26,6 @@ const CodeTools = () => {
             className="w-full input input-primary input-bordered"
           />
           <button className="btn btn-primary" >{t("go")}</button>
-          <PrimitivesMenu
-            onClickPoint={() => ui.setTooltip('point')}
-            onClickLine={() => ui.setTooltip('line')}
-          />
         </div>
         <div className="form-control flex-row">
           <label className="cursor-pointer label mr-6">
@@ -53,11 +49,14 @@ const CodeTools = () => {
           </label>
         </div>
       </div>
-      <div className="btn-group">
-        <EditorPopup />
-        <button className="btn">
-          <DotsHorizontalIcon className="h-5 w-5" />
-        </button>
+      <div className="flex space-x-2">
+        <div className="btn-group">
+          <EditorPopup />
+          <button className="btn">
+            <DotsHorizontalIcon className="h-5 w-5" />
+          </button>
+        </div>
+        <PrimitivesMenu />
       </div>
     </div>
   );

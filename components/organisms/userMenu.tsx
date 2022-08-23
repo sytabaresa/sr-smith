@@ -7,10 +7,10 @@ export const UserMenu = () => {
 
     return (
         <div className="flex items-center">
-            <Avartar />
-            <div className="btn-group drawer-content">
+            <Avartar className="hidden md:block" />
+            <div className="btn-group">
                 <Link href="/">
-                    <button className="btn btn-lg btn-active">
+                    <button className="btn btn-lg btn-active hidden md:block">
                         <ViewGridIcon className="h-5 w-5" />
                     </button>
                 </Link>
