@@ -5,7 +5,7 @@ import { useTranslation } from "next-i18next";
 import { motion } from "framer-motion";
 
 const EditorPopup: React.FC = () => {
-    const [isOpen, setOpen] = useState(true);
+    const [isOpen, setOpen] = useState(false);
     const { t } = useTranslation('common')
 
     const {
