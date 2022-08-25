@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BeakerIcon } from "@heroicons/react/outline";
+import { BeakerIcon, HandIcon } from "@heroicons/react/outline";
 import CircleCenterRadius from "../atoms/custom-icons/circle-center-radius";
 import CircleCenterPoint from "../atoms/custom-icons/circle-center-point";
 import PointIcons from "../atoms/custom-icons/point";
@@ -8,7 +8,7 @@ import LineIcon from "../atoms/custom-icons/line-icon";
 import AngleIcon from "../atoms/custom-icons/angle-icon";
 import { SmithContext } from "../../providers/smithContext";
 
-type PrimitivesMenuProps = {
+interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
 
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
@@ -30,6 +30,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
 
   const [radius, setRadius] = useState("")
   const [showHelp, setShowHelp] = useState(false)
+  const [showMenu, setShowMenu] = useState(true)
 
   // console.log('render', ui.current(true))
 
@@ -42,41 +43,54 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   }, [ui.current()])
 
   return (
-    <div className="dropdown dropdown-hover">
-      <button tabIndex={0} className="btn btn-primary">
+    <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${props.className}`}>
+      <label
+        tabIndex={0}
+        className={`btn ${showMenu ? 'btn-primary' : ''}`}
+        onClick={() => setShowMenu(!showMenu)}>
         <BeakerIcon className="w-6" />
-      </button>
-      <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-        <li>
-          <a onClick={onClickPoint}>
-            <PointIcons width={30} /> <span className="ml-2">Punto</span>
+      </label>
+      <label
+        tabIndex={0}
+        className={`btn ${ui.current() == "idle" ? 'btn-primary' : ''} ml-1`}
+        onClick={() => ui.sendEvent('EXIT')}>
+        <HandIcon className="w-6" />
+      </label>
+      <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 shadow bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
+        <li onClick={onClickPoint}>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'point' ? 'bg-gray-200' : ''}`} data-tip="Punto">
+            <PointIcons width={30} />
+            <span className="ml-2 hidden">Punto</span>
           </a>
         </li>
         <li onClick={onClickSegment}>
-          <a>
-            <SegmentIcon width={30} /> <span className="ml-2">Segmento</span>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'segment' ? 'bg-gray-200' : ''}`} data-tip="Segmento">
+            <SegmentIcon width={30} />
+            <span className="ml-2 hidden">Segmento</span>
           </a>
         </li>
         <li onClick={onClickLine}>
-          <a>
-            <LineIcon width={30} /> <span className="ml-2">Recta</span>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2  ${ui.context().tooltipSelected == 'line' ? 'bg-gray-200' : ''}`} data-tip="Recta">
+            <LineIcon width={30} />
+            <span className="ml-2 hidden">Recta</span>
           </a>
         </li>
         <li onClick={onClickAngle}>
-          <a>
-            <AngleIcon width={30} /> <span className="ml-2">Angulo</span>{" "}
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'angle' ? 'bg-gray-200' : ''}`} data-tip="Ángulo">
+            <AngleIcon width={30} />
+            <span className="ml-2 hidden">Ángulo</span>{" "}
           </a>
         </li>
         <li onClick={onClickCircleCenterRadius}>
-          <a>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circleRadius' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia: centro y radio">
             <CircleCenterRadius width={30} />{" "}
-            <span className="ml-2">Circunferencia: centro y radio</span>{" "}
+            <span className="ml-2 hidden">Circunferencia: centro y radio</span>{" "}
           </a>
         </li>
         <li onClick={onClickCircleCenterPoint}>
-          <a>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circle' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia (centro, punto)">
             <CircleCenterPoint width={30} />{" "}
-            <span className="ml-2">Circunferencia (centro, punto)</span>{" "}
+            <span className="ml-2 hidden">Circunferencia (centro, punto)</span>{" "}
           </a>
         </li>
       </ul>
@@ -100,7 +114,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
       </div>
       {ui.tooltipSelected &&
-        <div className={`toast toast-start transition-opacity ${showHelp ? "opacity-1" : "opacity-0"}`}>
+        <div className={`toast toast-start transition-all ${!showHelp && "invisible"}`}>
           <div className="alert shadow-lg">
             <div className="!block">
               <h2 className="font-bold">{ui.tooltipSelected.name}</h2>

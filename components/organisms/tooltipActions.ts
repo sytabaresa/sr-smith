@@ -155,6 +155,9 @@ export class JXGDrawer {
         return out
     }
 
+    context = () =>
+        this.service.context
+
     setTooltip = (tooltip: string) => {
         this.sendEvent('CHANGE_DRAW', tooltip)
     }

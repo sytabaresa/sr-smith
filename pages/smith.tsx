@@ -53,7 +53,7 @@ circle(Y1, .3);`
   };
 
   ui.useMachine()
-  
+
   return (
     <AppLayout title="Smith Chart">
       <SmithContext.Provider value={context}>

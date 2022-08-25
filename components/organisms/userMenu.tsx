@@ -8,18 +8,19 @@ export const UserMenu = () => {
     return (
         <div className="flex items-center">
             <Avartar className="hidden md:block" />
-            <div className="btn-group">
+            <div className="md:btn-group">
                 <Link href="/">
                     <button className="btn btn-lg btn-active hidden md:block">
                         <ViewGridIcon className="h-5 w-5" />
                     </button>
                 </Link>
-                <label
-                    htmlFor="my-drawer"
-                    className="btn btn-lg drawer-button"
-                >
-                    <MenuAlt3Icon className="h-5 w-5" />
-                </label>
+                <button className="btn md:btn-lg drawer-button">
+                    <label
+                        htmlFor="my-drawer"
+                    >
+                        <MenuAlt3Icon className="h-5 w-5" />
+                    </label>
+                </button>
             </div>
         </div>
     )
