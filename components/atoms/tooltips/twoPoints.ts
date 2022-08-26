@@ -1,39 +1,27 @@
-import { MachineCtx, TooltipType } from "./interfaces";
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { getMouseCoords } from "../../utils/board";
+import { TooltipType } from "./interfaces";
 import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "../../fsm/machine";
-import { getIndexFinger, selectOrDrawPoint } from "./common";
+import { selectOrDrawPoint } from "./common";
 
 class TwoPointsTooltip implements TooltipType {
     name = ''
     description = 'Select two points or positions'
     jsxName = ''
 
-    selectOrDrawPoint1 = selectOrDrawPoint
-    selectOrDrawPoint2 = selectOrDrawPoint
-
     drawObject = (ctx, event) => {
         const { board, value } = event
+        const { objectSelected } = ctx
 
-        const index = getIndexFinger(ctx, event)
-        const coords = getMouseCoords(event.value, index, board)
+        board.create(this.jsxName, [objectSelected[0], objectSelected[1]])
 
-        if (ctx.objectSelected[1]) {
-            board.create(this.jsxName, [ctx.objectSelected[0], ctx.objectSelected[1]])
-        } else {
-            let point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]]);
-            board.create(this.jsxName, [ctx.objectSelected[0], point])
-        }
         return ctx
     }
 
-
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'secondPoint', reduce(this.selectOrDrawPoint1)),
+            transition('DOWN', 'secondPoint', reduce(selectOrDrawPoint)),
         ),
         secondPoint: state(
-            transition('DOWN', 'drawObject', reduce(this.selectOrDrawPoint2),
+            transition('DOWN', 'drawObject', reduce(selectOrDrawPoint),
             ),
         ),
         drawObject: state(
