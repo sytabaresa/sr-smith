@@ -59,7 +59,7 @@ circle(Y1, .3);`
       <SmithContext.Provider value={context}>
         <HotKeys keyMap={keyMap} handlers={handlers}>
 
-          <div className="drawer drawer-end h-screen  relative">
+          <div className="drawer drawer-end h-full relative">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex">
               <SmithBoard />

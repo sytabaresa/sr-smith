@@ -17,11 +17,19 @@ function MyApp({ Component, pageProps }) {
       document.documentElement.classList.remove('dark')
     }
 
+    let update = () => {
+      // We execute the same script as before
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    window.addEventListener('resize', update);
+    update()
+
     //robot3 debuging mode
-    if(process.env.NODE_ENV == 'development') {
+    if (process.env.NODE_ENV == 'development') {
       require('../components/fsm/debug')
       require('../components/fsm/logging')
-  }
+    }
 
     return () => { }
   },
