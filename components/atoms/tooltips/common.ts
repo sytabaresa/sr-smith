@@ -19,29 +19,38 @@ export function selectOrDrawPoint(ctx: any, event) {
     const index = getIndexFinger(ctx, event)
     const coords = getMouseCoords(event.value, index, board);
 
-
+    const invalidElements = ['image', 'ticks', 'grid', 'text']
     for (let el in board.objects) {
         object = board.objects[el]
+        if (invalidElements.includes(object.elType)) {
+            continue
+        }
         if (object.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
             if (JXG.isPoint(object)) {
                 point = el
                 break
             } else {
                 inCurve.push(object)
-                // break
             }
         }
     }
 
-    if (inCurve.length == 1) {
-        options.slideObject = object
-    } else if (inCurve.length >= 2) {
-        options = {
-            ...options,
-            fillColor: 'gray',
-            strokeColor: 'gray'
+    // interception and slider in elements
+    const validElements = ['curve', 'line', 'segment', 'circle']
+    if (validElements.includes(object.elType)) {
+        if (inCurve.length == 1) {
+            options.slideObject = object
+        } else if (inCurve.length >= 2) {
+            options = {
+                ...options,
+                fillColor: 'gray',
+                strokeColor: 'gray',
+                fixed: true,
+            }
+            const objects = inCurve.slice(0, 2)
+            if (validElements.includes(objects[0].elType) && validElements.includes(objects[1].elType))
+                point = board.create('intersection', [...objects, 0], options)
         }
-        point = board.create('intersection', [...inCurve.slice(0, 2), 0], options)
     }
 
     if (!point) {
