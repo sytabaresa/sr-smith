@@ -20,6 +20,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
         showFullscreen: true,
         showCopyRight: false,
         showScreenshot: true,
+        resize: {enabled: true, throttle: 200},
         pan: {
             enabled: true,
             needShift: false, // mouse panning needs pressing of the shift key

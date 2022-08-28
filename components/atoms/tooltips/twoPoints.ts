@@ -16,13 +16,26 @@ class TwoPointsTooltip implements TooltipType {
         return ctx
     }
 
+    differentPoints = (ctx, ev) => {
+        return ctx.objectSelected.at(-1) != ctx.objectSelected.at(-2)
+    }
+
+    removeLastObject = (ctx, ev) => {
+        ctx.objectSelected.pop()
+        return { ...ctx, objectSelected: ctx.objectSelected || [] }
+    }
+
     machine = createMachine({
         idle: state(
             transition('DOWN', 'secondPoint', reduce(selectOrDrawPoint)),
         ),
         secondPoint: state(
-            transition('DOWN', 'drawObject', reduce(selectOrDrawPoint),
+            transition('DOWN', 'checkLastPoint', reduce(selectOrDrawPoint),
             ),
+        ),
+        checkLastPoint: state(
+            immediate('drawObject', guard(this.differentPoints)),
+            immediate('secondPoint', reduce(this.removeLastObject))
         ),
         drawObject: state(
             immediate('end', reduce(this.drawObject.bind(this)))
@@ -31,6 +44,7 @@ class TwoPointsTooltip implements TooltipType {
         end: final(),
     }, (parentContext: any) => ({
         board: parentContext.board,
+        objectSelected: [],
     }))
 }
 

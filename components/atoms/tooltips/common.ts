@@ -27,7 +27,7 @@ export function selectOrDrawPoint(ctx: any, event) {
         }
         if (object.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
             if (JXG.isPoint(object)) {
-                point = el
+                point = object
                 break
             } else {
                 inCurve.push(object)
@@ -37,19 +37,28 @@ export function selectOrDrawPoint(ctx: any, event) {
 
     // interception and slider in elements
     const validElements = ['curve', 'line', 'segment', 'circle']
-    if (validElements.includes(object.elType)) {
-        if (inCurve.length == 1) {
+    if (inCurve.length == 1) {
+        // slider
+        if (validElements.includes(inCurve[0].elType)) {
             options.slideObject = object
-        } else if (inCurve.length >= 2) {
-            options = {
-                ...options,
-                fillColor: 'gray',
-                strokeColor: 'gray',
-                fixed: true,
+        }
+    } else if (inCurve.length >= 2) {
+        // intersect
+        options = {
+            ...options,
+            fillColor: 'gray',
+            strokeColor: 'gray',
+            fixed: true,
+        }
+        const objects = inCurve.slice(0, 2)
+        if (validElements.includes(objects[0].elType) && validElements.includes(objects[1].elType)) {
+            let point1 = board.create('intersection', [...objects, 0], options)
+            if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
+                point = point1
+            } else {
+                board.removeObject(point1)
+                point = board.create('intersection', [...objects, 1], options)
             }
-            const objects = inCurve.slice(0, 2)
-            if (validElements.includes(objects[0].elType) && validElements.includes(objects[1].elType))
-                point = board.create('intersection', [...objects, 0], options)
         }
     }
 
