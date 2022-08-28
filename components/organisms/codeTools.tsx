@@ -17,16 +17,16 @@ const CodeTools = () => {
 
   // console.log(checked, ui.whiteboardMachine.current)
   return (
-    <div className="absolute top-0 left-0 pl-2 pt-2 md:pl-4 md:pt-4 md:w-96 z-10">
+    <div className="absolute top-0 left-0 pl-2 pt-2 md:pl-4 md:pt-4 z-10">
       <div className="form-control">
-        <div className="space-x-2 hidden md:flex">
+        {/* <div className="space-x-2 hidden md:flex">
           <input
             type="text"
             placeholder={t("search")}
             className="w-full input input-primary input-bordered"
           />
           <button className="btn btn-primary" >{t("go")}</button>
-        </div>
+        </div> */}
         <div className="form-control flex-row">
           <label className="cursor-pointer label pt-0">
             <span className="label-text font-bold mr-2">smith <br /> mode</span>

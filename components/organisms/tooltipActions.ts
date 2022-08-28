@@ -99,7 +99,6 @@ export class JXGDrawer {
         ),
         pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
-                // this.tooltipSelected = ev.value
                 return { ...ctx, tooltipSelected: ev.value }
             }))
         ),
@@ -116,9 +115,14 @@ export class JXGDrawer {
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
             transition('done', 'draw'),
-            transition('CHANGE_IDLE', 'idle'),
+            transition('CHANGE_IDLE', 'post_draw'),
             transition('CHANGE_DRAW', 'pre_draw'),
-            transition('EXIT', 'idle'),
+            transition('EXIT', 'post_draw'),
+        ),
+        post_draw: state(
+            immediate('idle', reduce((ctx: any, ev: any) => {
+                return { ...ctx, tooltipSelected: '' }
+            }))
         ),
         drag: state(
             transition('CHANGE_IDLE', 'idle')

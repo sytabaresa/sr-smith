@@ -52,7 +52,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       </label>
       <label
         tabIndex={0}
-        className={`btn ${ui.current() == "idle" ? 'btn-primary' : ''} ml-1`}
+        className={`btn ${ui.current() == "idle" ? 'btn-primary hover:bg-primary' : ''} ml-1`}
         onClick={() => ui.sendEvent('EXIT')}>
         <HandIcon className="w-6" />
       </label>

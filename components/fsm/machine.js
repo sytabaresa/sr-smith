@@ -208,6 +208,7 @@ function send(service, event) {
     } = machine.state;
 
     if (state.transitions.has(eventName)) {
+        if (service.child) delete service.child
         return transitionTo(service, machine, event, state.transitions.get(eventName)) || machine;
     } else if (service.child) {
         service.child.machine = send(service.child, event)

@@ -12,7 +12,7 @@ export function getIndexFinger(ctx, event) {
 
 export function selectOrDrawPoint(ctx: any, event) {
     const { board } = event
-    let object, point
+    let point
     let options: any = {}
     let inCurve = []
 
@@ -21,7 +21,7 @@ export function selectOrDrawPoint(ctx: any, event) {
 
     const invalidElements = ['image', 'ticks', 'grid', 'text']
     for (let el in board.objects) {
-        object = board.objects[el]
+        const object = board.objects[el]
         if (invalidElements.includes(object.elType)) {
             continue
         }
@@ -40,7 +40,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     if (inCurve.length == 1) {
         // slider
         if (validElements.includes(inCurve[0].elType)) {
-            options.slideObject = object
+            options.slideObject = inCurve[0]
         }
     } else if (inCurve.length >= 2) {
         // intersect
