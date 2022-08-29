@@ -15,6 +15,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     let point
     let options: any = {}
     let inCurve = []
+    let objectSelected = ctx.objectSelected || []
 
     const index = getIndexFinger(ctx, event)
     const coords = getMouseCoords(event.value, index, board);
@@ -33,6 +34,13 @@ export function selectOrDrawPoint(ctx: any, event) {
                 inCurve.push(object)
             }
         }
+    }
+
+    // caution: this can be extracted to a new state in plugin machine if complexity increases
+    // in that case: separate select and draw logic with states, guards and reducers
+    if (point) {
+        objectSelected.push(point)
+        return { ...ctx, objectSelected }
     }
 
     // interception and slider in elements
@@ -66,9 +74,6 @@ export function selectOrDrawPoint(ctx: any, event) {
         point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], options);
     }
 
-
-    let objectSelected = ctx.objectSelected || []
     objectSelected.push(point)
-
     return { ...ctx, objectSelected }
 }

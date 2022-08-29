@@ -30,6 +30,8 @@ export class JXGDrawer {
     private tooltipPlugins: TooltipType[] = []
     private tooltipPluginsNames: string[] = []
     private tooltipPluginMap: Record<string, TooltipType> = {}
+    private touchTimer
+    private inTouch: boolean = false
     service: Service<typeof this.whiteboardMachine>
 
     constructor(attributes = {}) {
@@ -59,17 +61,38 @@ export class JXGDrawer {
     }
 
     useMachine() {
-        console.log('use machine')
+        // console.log('use machine')
         const out = useMachine(this.whiteboardMachine)
         this.service = out[2]
         // this.populateBoard()
         return out
     }
 
+    downHandler(e) {
+        // console.log('event:start')
+        if (this.touchTimer)
+            clearTimeout(this.touchTimer)
+        const handler = () => this.inTouch = false
+        this.touchTimer = setTimeout(handler.bind(this), 200)
+        this.inTouch = true
+    }
+
+    upHandler(e) {
+        // console.log('event:end')
+        if (this.inTouch) {
+            this.sendEvent('DOWN', e)
+            this.inTouch = false
+        }
+    }
+
     populateBoard() {
         //register canvas handlers:
-        if (this.board)
-            this.board.on('down', this.onDownHandler);
+        if (this.board) {
+            this.board.on('down', this.downHandler.bind(this));
+            this.board.on('up', this.upHandler.bind(this))
+            this.board.on('drag', (e) => this.sendEvent('DRAG', e));
+            // this.board.on('hit', (e) => this.sendEvent('HIT', e));
+        }
     }
 
     newBoard(boxName: string, boardOptions: any = {}, screenSize: string) {
@@ -133,12 +156,6 @@ export class JXGDrawer {
     }, () => ({
         tooltipSelected: '',
     }))
-
-    onDownHandler = (e) => {
-        console.log('down event')
-        // this.useMachine()
-        this.sendEvent('DOWN', e)
-    }
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here
         this.service.send({ type: event, value: payload, board: this.board })

@@ -75,12 +75,12 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             <span className="ml-2 hidden">Recta</span>
           </a>
         </li>
-        <li onClick={onClickAngle}>
+        {/* <li onClick={onClickAngle}>
           <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'angle' ? 'bg-gray-200' : ''}`} data-tip="Ángulo">
             <AngleIcon width={30} />
             <span className="ml-2 hidden">Ángulo</span>{" "}
           </a>
-        </li>
+        </li> */}
         <li onClick={onClickCircleCenterRadius}>
           <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circleRadius' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia: centro y radio">
             <CircleCenterRadius width={30} />{" "}
