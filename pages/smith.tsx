@@ -7,11 +7,25 @@ import { useTranslation } from "react-i18next";
 import CodeTools from "../components/organisms/codeTools";
 import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
 import { UserMenu } from "../components/organisms/userMenu";
-import { JXGDrawer } from "../components/atoms/tooltipActions";
+import { JXGDrawer } from "../components/organisms/tooltipActions";
+import { configure, HotKeys } from "react-hotkeys";
+
+configure({
+  /**
+   * The level of logging of its own behaviour React HotKeys should perform.
+   */
+  // logLevel: 'verbose',
+  ignoreTags: [],
+  // ignoreEventsCondition: (event) => { return false; }
+  stopEventPropagationAfterIgnoring: false,
+  stopEventPropagationAfterHandling: false,
+
+})
 
 const Smith: React.FC = () => {
   const { t } = useTranslation("smith");
   const [ui, setUi] = useState(new JXGDrawer)
+  // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
 
   const [code, setCode] = useState<string>(`// test smith chart
@@ -31,20 +45,32 @@ circle(Y1, .3);`
     setBoardOptions,
   };
 
+  const keyMap = {
+    EXIT: "esc",
+  };
+  const handlers = {
+    EXIT: () => ui.sendEvent('EXIT'),
+  };
+
+  ui.useMachine()
+
   return (
     <AppLayout title="Smith Chart">
       <SmithContext.Provider value={context}>
-        <div className="drawer drawer-end h-screen  relative">
-          <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-          <div className="drawer-content flex">
-            <SmithBoard />
-            <CodeTools />
-            <div className="absolute top-0 right-0 mr-4 mt-4 hidden md:block">
-              <UserMenu />
+        <HotKeys keyMap={keyMap} handlers={handlers}>
+
+          <div className="drawer drawer-end h-full relative">
+            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+            <div className="drawer-content flex">
+              <SmithBoard />
+              <CodeTools />
+              <div className="absolute top-0 right-0 mr-4 mt-4">
+                <UserMenu />
+              </div>
             </div>
+            <DrawerSmithOptions />
           </div>
-          <DrawerSmithOptions />
-        </div>
+        </HotKeys>
       </SmithContext.Provider>
     </AppLayout>
   );

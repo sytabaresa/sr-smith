@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { JXGDrawer } from "../components/atoms/tooltipActions";
+import { JXGDrawer } from "../components/organisms/tooltipActions";
 
 export const SmithContext = createContext({
     code: '',

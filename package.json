@@ -10,7 +10,7 @@
     "dependencies": {
         "@heroicons/react": "^1.0.2",
         "canvas": "^2.8.0",
-        "daisyui": "^1.9.0",
+        "daisyui": "^2.24.0",
         "firebase": "^9.6.3",
         "framer-motion": "^5.6.0",
         "jsxgraph": "^1.4.0",
@@ -29,7 +29,7 @@
         "react-responsive": "^8.2.0",
         "react-robot": "^0.2.2",
         "react-simple-code-editor": "^0.11.0",
-        "robot3": "^0.2.19"
+        "robot3": "^0.3.1"
     },
     "devDependencies": {
         "@types/node": "^17.0.8",
