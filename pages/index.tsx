@@ -11,7 +11,7 @@ const IndexPage = () => {
   const apps = [
     {
       title: 'smith',
-      link: '/smith',
+      link: '/projects',
       bgImage: "/images/smith-app.png"
     },
     {
