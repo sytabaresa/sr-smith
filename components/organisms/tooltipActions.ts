@@ -1,6 +1,6 @@
 // import { Board } from 'jsxgraph'
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from '../fsm/machine';
+import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
 import { initBoard } from "../atoms/boards";
 import { TooltipType } from "../atoms/tooltips/interfaces";
@@ -8,7 +8,7 @@ import TwoPointsTooltip from "../atoms/tooltips/twoPoints";
 import PointTooltip from "../atoms/tooltips/point";
 import SegmentTooltip from "../atoms/tooltips/segment";
 import CircleTooltip from "../atoms/tooltips/circle";
-import { useMachine } from "../fsm/hooks";
+import { useMachine } from "react-robot";
 import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
 import LineTooltip from "../atoms/tooltips/line";
 import { wait } from "../utils/time";
@@ -127,9 +127,9 @@ export class JXGDrawer {
         ),
         validatePlugin: state(
             immediate('tooltipSelected', guard(this.pluginExist.bind(this)),
-                action((ctx) => console.log("plugin:", ctx.tooltipSelected)),
-                action((ctx) => this.tooltipSelected = this.tooltipPluginMap[ctx.tooltipSelected])),
-            immediate('error', action((ctx) => console.log("plugin not exists:", ctx.tooltipSelected)))
+                action((ctx: any) => console.log("plugin:", ctx.tooltipSelected)),
+                action((ctx: any) => this.tooltipSelected = this.tooltipPluginMap[ctx.tooltipSelected])),
+            immediate('error', action((ctx: any) => console.log("plugin not exists:", ctx.tooltipSelected)))
         ),
         tooltipSelected: invoke(
             wait(100),

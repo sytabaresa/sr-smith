@@ -1,5 +1,5 @@
 import { TooltipType } from "./interfaces";
-import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "../../fsm/machine";
+import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "robot3";
 import { selectOrDrawPoint } from "./common";
 
 class TwoPointsTooltip implements TooltipType {
