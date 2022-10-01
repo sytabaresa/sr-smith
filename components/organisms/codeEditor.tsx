@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useContext } from "react";
+import { TextareaHTMLAttributes, useContext, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";
@@ -38,7 +38,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
         // boardOptions,
         // setBoardOptions,
     } = useContext(SmithContext)
-    // console.log(board)
+    // console.log('inner', contextCode)
 
     const [current, send] = useMachine(machine, {
         code: contextCode,
@@ -46,6 +46,11 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     });
     const { code, errorMsg } = current.context
 
+
+    useEffect(() => {
+        send({ type: "CODE", value: contextCode })
+    }, [contextCode])
+    
     // console.log(code)
     // console.log(current.name)
 

@@ -24,6 +24,7 @@ export default createMachine('idle', {
         transition("CODE", 'clearError', setCode),
     ),
     clearError: invoke(wait(200),
+        transition("CODE", 'clearError', setCode),
         transition('done', 'idle', clearErrorMsg)
     )
 }, (ctx: ContextType) => ({

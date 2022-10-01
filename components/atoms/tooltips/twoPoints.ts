@@ -1,6 +1,6 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "robot3";
-import { selectOrDrawPoint } from "./common";
+import { getCodefromObject, selectOrDrawPoint } from "./common";
 
 class TwoPointsTooltip implements TooltipType {
     name = ''
@@ -10,10 +10,12 @@ class TwoPointsTooltip implements TooltipType {
     drawObject = (ctx, event) => {
         const { board, value } = event
         const { objectSelected } = ctx
+        let code = ctx.code ?? ""
 
-        board.create(this.jsxName, [objectSelected[0], objectSelected[1]])
+        const element = board.create(this.jsxName, [objectSelected[0], objectSelected[1]])
+        code += getCodefromObject(element)
 
-        return ctx
+        return { ...ctx, code }
     }
 
     differentPoints = (ctx, ev) => {

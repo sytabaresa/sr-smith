@@ -36,7 +36,6 @@ L1 = segment(Z1, Y1);
 circle(Y1, .3);`
   );
 
-
   const context = {
     ui,
     code,
@@ -51,8 +50,6 @@ circle(Y1, .3);`
   const handlers = {
     EXIT: () => ui.sendEvent('EXIT'),
   };
-
-  ui.useMachine()
 
   return (
     <AppLayout title="Smith Chart">

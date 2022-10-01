@@ -2,7 +2,7 @@ import { MachineCtx, TooltipType } from "./interfaces";
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
 import { getMouseCoords } from "../../utils/board";
 import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "robot3";
-import { selectOrDrawPoint } from "./common";
+import { getCodefromObject, selectOrDrawPoint } from "./common";
 
 class CircleRadiusTooltip implements TooltipType {
     name = 'circleRadius'
@@ -13,10 +13,13 @@ class CircleRadiusTooltip implements TooltipType {
 
     drawCircle(ctx, event) {
         const { board, value } = event
+        let code = ctx.code ?? ""
 
-        board.create(this.jsxName, [ctx.objectSelected[0], value])
+        const element = board.create(this.jsxName, [ctx.objectSelected[0], value])
 
-        return ctx
+        code += getCodefromObject(element)
+
+        return { ...ctx, code }
     }
 
     machine = createMachine({

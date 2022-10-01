@@ -10,6 +10,8 @@ const CodeTools = () => {
   const { t } = useTranslation("smith");
   const { ui } = useContext(SmithContext)
 
+  ui.useMachine()
+
   const [checked, setChecked] = useState(ui.whiteboardMachine.current == 'draw')
   useEffect(() => {
     setChecked(ui.whiteboardMachine.current == 'draw')
