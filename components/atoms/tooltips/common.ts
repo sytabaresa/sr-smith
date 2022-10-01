@@ -15,7 +15,8 @@ export function selectOrDrawPoint(ctx: any, event) {
     let point
     let options: any = {}
     let inCurve = []
-    let objectSelected = ctx.objectSelected || []
+    let objectSelected = ctx.objectSelected ?? []
+    let code = ctx.code ?? ""
 
     const index = getIndexFinger(ctx, event)
     const coords = getMouseCoords(event.value, index, board);
@@ -63,17 +64,39 @@ export function selectOrDrawPoint(ctx: any, event) {
             let point1 = board.create('intersection', [...objects, 0], options)
             if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
                 point = point1
+                code += getCodefromObject(point)
             } else {
                 board.removeObject(point1)
                 point = board.create('intersection', [...objects, 1], options)
+                code += getCodefromObject(point)
             }
         }
     }
 
     if (!point) {
         point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], options);
+        code += getCodefromObject(point)
     }
 
     objectSelected.push(point)
-    return { ...ctx, objectSelected }
+    return { ...ctx, objectSelected, code }
+}
+
+export function getCodefromObject(ob): string {
+
+    let outStr = `${ob.name != '' ? `${ob.name} = ` : ''}${ob.elType}(`
+    switch (ob.type) {
+        case JXG.OBJECT_TYPE_POINT:
+            outStr += `${ob.coords.usrCoords[1]}, ${ob.coords.usrCoords[2]})`
+            break
+        case JXG.OBJECT_TYPE_CIRCLE:
+            outStr += `${ob.center.name},${ob.point2?.name ?? ob.circle?.name ?? ob.line?.name ?? ob.radius})`
+            break
+        case JXG.OBJECT_TYPE_LINE:
+            outStr += `${ob.point1.name}, ${ob.point2.name})`
+            break
+    }
+    outStr += ';\n'
+
+    return outStr
 }

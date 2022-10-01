@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useContext } from "react";
+import { TextareaHTMLAttributes, useContext, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";
@@ -38,7 +38,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
         // boardOptions,
         // setBoardOptions,
     } = useContext(SmithContext)
-    // console.log(board)
+    // console.log('inner', contextCode)
 
     const [current, send] = useMachine(machine, {
         code: contextCode,
@@ -46,6 +46,11 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     });
     const { code, errorMsg } = current.context
 
+
+    useEffect(() => {
+        send({ type: "CODE", value: contextCode })
+    }, [contextCode])
+    
     // console.log(code)
     // console.log(current.name)
 
@@ -76,10 +81,10 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     };
 
     return (
-        <div className={"border border-primary bg-white rounded-xl p-2 flex flex-col " + className} style={style}>
-            <div className="overflow-y-auto custom-scrollbar flex-1 mb-1">
-                {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
-                <HotKeys keyMap={keyMap} handlers={handlers}>
+        <HotKeys keyMap={keyMap} handlers={handlers}>
+            <div className={"border border-primary bg-white rounded-xl p-2 flex flex-col " + className} style={style}>
+                <div className="overflow-y-auto custom-scrollbar flex-1 flex mb-1">
+                    {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                     <Editor
                         value={code}
                         onValueChange={setActualCode}
@@ -92,22 +97,23 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
                         }}
                         id="smith-code"
                         textareaClassName="outline-none"
+                        className="flex-1"
                     />
-                </HotKeys>
-            </div>
+                </div>
 
-            <div className={`alert alert-error transition-opacity duration-200 
+                <div className={`alert alert-error transition-opacity duration-200 
             ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
-                {errorMsg}
+                    {errorMsg}
+                </div>
+                <button
+                    // preset="outline"
+                    onClick={parseExecute}
+                    className="btn btn-outline btn-primary"
+                >
+                    {t('run')}
+                </button>
             </div>
-            <button
-                // preset="outline"
-                onClick={parseExecute}
-                className="btn btn-outline btn-primary"
-            >
-                {t('run')}
-            </button>
-        </div>
+        </HotKeys>
     );
 }
 
