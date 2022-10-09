@@ -12,12 +12,13 @@ export type User = {
 }
 
 export type SmithProyect = {
+  id: string
   createAt?: Timestamp
   updateAt?: Timestamp
-  data?: String
-  description?: String
-  hashReference?: String
+  data?: string
+  description?: string
+  hashReference?: string
   isPubic?: boolean
-  name?: String
-  userId?: String
+  name?: string
+  userId?: string
 }
