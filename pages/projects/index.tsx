@@ -28,8 +28,7 @@ const Projects = () => {
         updateAt: Timestamp.now(),
         userId: user.uid,
       } as SmithProyect);
-      router.push("/smith");
-      console.log("Document written with ID: ", docRef.id);
+      router.push(`/projects/${docRef.id}`);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -58,7 +57,7 @@ const Projects = () => {
         onClick={goToSavedProjects}
       />
       <img
-        src="images/smith-app.png"
+        src="../images/smith-app.png"
         alt="smith-bg"
         className="absolute -z-10 right-0 left-0"
       />
