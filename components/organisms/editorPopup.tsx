@@ -44,7 +44,7 @@ const EditorPopup: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                         >
-                            <Editor style={{ maxHeight: '80vh' }} />
+                            <Editor className="max-h-[80vh]" />
                             <Arrow
                                 {...arrowProps}
                                 size={10}

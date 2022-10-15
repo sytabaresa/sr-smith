@@ -2746,10 +2746,9 @@ jsonfile@^6.0.1:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jsxgraph@^1.4.0:
-  version "1.4.5"
-  resolved "https://registry.npmjs.org/jsxgraph/-/jsxgraph-1.4.5.tgz"
-  integrity sha512-qDbb25FPFQjFtxcmiXANxZZkzfye6eGlQpXfzIeESoBesH9Sx9tGqghUY4EBbL8rFPtgltIioDI3Swk9gEWE1A==
+"jsxgraph@https://github.com/sytabaresa/jsxgraph":
+  version "1.4.6"
+  resolved "https://github.com/sytabaresa/jsxgraph#4c2d64b83064efa085ebbe03dc75ce7488d9b737"
 
 jszip@^3.6.0:
   version "3.10.0"
@@ -3513,10 +3512,9 @@ robot-hooks@^0.3.6:
   resolved "https://registry.npmjs.org/robot-hooks/-/robot-hooks-0.3.7.tgz"
   integrity sha512-mxKIa+GIKYgOjW9p7RzVtSNUStOOFF6qGUl38j3f8wCEfEP0QhkSQoTxz3LkiIDNOTP9XKSJhzhwz9umKX31yA==
 
-robot3@^0.3.1:
+"robot3@https://github.com/sytabaresa/robot#child-machine-send":
   version "0.3.1"
-  resolved "https://registry.yarnpkg.com/robot3/-/robot3-0.3.1.tgz#505cdf312be30aba276e1bc170d24cb1dd47df78"
-  integrity sha512-mhHnByhmiF1Fy3Dz6TndHP2yT8+C7PqgcJMpxZdoljXq3OBwXKElZvt97kZpS67gHprfbhO8b8851GXAKgXpqw==
+  resolved "https://github.com/sytabaresa/robot#2fe83f04292003989dac278e86a2a552c958e4af"
 
 rollup-plugin-terser@^7.0.0:
   version "7.0.2"

@@ -4,10 +4,13 @@ import EditorPopup from "../organisms/editorPopup";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
 import { SmithContext } from "../../providers/smithContext";
+import Editor from "./codeEditor";
 
 const CodeTools = () => {
   const { t } = useTranslation("smith");
   const { ui } = useContext(SmithContext)
+
+  ui.useMachine()
 
   const [checked, setChecked] = useState(ui.whiteboardMachine.current == 'draw')
   useEffect(() => {
@@ -28,13 +31,13 @@ const CodeTools = () => {
           <button className="btn btn-primary" >{t("go")}</button>
         </div> */}
         <div className="form-control flex-row">
-          <label className="cursor-pointer label pt-0">
+          {/* <label className="cursor-pointer label pt-0">
             <span className="label-text font-bold mr-2">smith <br /> mode</span>
             <div>
               <input type="checkbox" className="toggle toggle-primary" />
               <span className="toggle-mark"></span>
             </div>
-          </label>
+          </label> */}
           {/* <label className="cursor-pointer label mr-6">
             <span className="label-text font-bold mr-2">{t("draw")}</span>
             <div>
@@ -50,14 +53,18 @@ const CodeTools = () => {
         </div>
       </div>
       <div className="flex space-x-2">
-        <div className="btn-group">
+        <Editor className="hidden lg:flex h-[93vh] w-[30vw] max-w-[30rem]" />
+        <div className="lg:hidden btn-group">
           <EditorPopup />
           <button className="btn">
             <DotsHorizontalIcon className="h-5 w-5" />
           </button>
         </div>
+        <div className="m-2 hidden lg:block">
+          <PrimitivesMenu />
+        </div>
       </div>
-      <div className="mt-2">
+      <div className="m-2 lg:hidden">
         <PrimitivesMenu />
       </div>
     </div>

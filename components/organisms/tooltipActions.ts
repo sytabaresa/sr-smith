@@ -1,6 +1,6 @@
 // import { Board } from 'jsxgraph'
 import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from '../fsm/machine';
+import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
 import { initBoard } from "../atoms/boards";
 import { TooltipType } from "../atoms/tooltips/interfaces";
@@ -8,10 +8,12 @@ import TwoPointsTooltip from "../atoms/tooltips/twoPoints";
 import PointTooltip from "../atoms/tooltips/point";
 import SegmentTooltip from "../atoms/tooltips/segment";
 import CircleTooltip from "../atoms/tooltips/circle";
-import { useMachine } from "../fsm/hooks";
+import { useMachine } from "react-robot";
 import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
 import LineTooltip from "../atoms/tooltips/line";
 import { wait } from "../utils/time";
+import { useContext, useEffect } from "react";
+import { SmithContext } from "../../providers/smithContext";
 
 
 export function useDrawner() {
@@ -31,6 +33,7 @@ export class JXGDrawer {
     private tooltipPluginsNames: string[] = []
     private tooltipPluginMap: Record<string, TooltipType> = {}
     private touchTimer
+    private reactContext: Record<string, any>
     private inTouch: boolean = false
     service: Service<typeof this.whiteboardMachine>
 
@@ -62,8 +65,18 @@ export class JXGDrawer {
 
     useMachine() {
         // console.log('use machine')
+        this.reactContext = useContext(SmithContext)
         const out = useMachine(this.whiteboardMachine)
         this.service = out[2]
+
+        // const ctxCode = out[0].context.code
+        // useEffect(() => {
+        //     console.log('a', ctxCode)
+        //     if (ctxCode && ctxCode != '')
+        //         setCode(code => code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode)
+        // }, [setCode, out[0].context.code])
+
+
         // this.populateBoard()
         return out
     }
@@ -115,6 +128,13 @@ export class JXGDrawer {
         return this.tooltipPluginsNames.includes(ctx.tooltipSelected)
     }
 
+    recreateCode = (ctx, ev) => {
+        const ctxCode = ev.data.code
+        console.log('rec', ctxCode)
+        this.reactContext.setCode(code => code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode)
+        return { ...ctx, code: ctxCode }
+    }
+
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
             transition('CHANGE_DRAW', 'pre_draw'),
@@ -127,17 +147,19 @@ export class JXGDrawer {
         ),
         validatePlugin: state(
             immediate('tooltipSelected', guard(this.pluginExist.bind(this)),
-                action((ctx) => console.log("plugin:", ctx.tooltipSelected)),
-                action((ctx) => this.tooltipSelected = this.tooltipPluginMap[ctx.tooltipSelected])),
-            immediate('error', action((ctx) => console.log("plugin not exists:", ctx.tooltipSelected)))
+                action((ctx: any) => console.log("plugin:", ctx.tooltipSelected)),
+                action((ctx: any) => this.tooltipSelected = this.tooltipPluginMap[ctx.tooltipSelected])),
+            immediate('error', action((ctx: any) => console.log("plugin not exists:", ctx.tooltipSelected)))
         ),
         tooltipSelected: invoke(
             wait(100),
-            transition('done', 'draw')
+            transition('done', 'draw'),
+            transition('error', 'idle')
         ),
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
-            transition('done', 'draw'),
+            transition('done', 'draw', reduce(this.recreateCode)),
+            transition('error', 'idle'),
             transition('CHANGE_IDLE', 'post_draw'),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('EXIT', 'post_draw'),
@@ -155,6 +177,7 @@ export class JXGDrawer {
         )
     }, () => ({
         tooltipSelected: '',
+        code: '',
     }))
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here

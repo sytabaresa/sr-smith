@@ -27,8 +27,8 @@ function MyApp({ Component, pageProps }) {
 
     //robot3 debuging mode
     if (process.env.NODE_ENV == 'development') {
-      require('../components/fsm/debug')
-      require('../components/fsm/logging')
+      require('robot3/debug')
+      require('robot3/logging')
     }
 
     return () => { }
