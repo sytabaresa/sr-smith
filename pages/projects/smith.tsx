@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppLayout from "../../components/templates/AppLayout";
 import SmithBoard from "../../components/molecules/smithBoard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -10,6 +10,7 @@ import { UserMenu } from "../../components/organisms/userMenu";
 import { JXGDrawer } from "../../components/organisms/tooltipActions";
 import { configure, HotKeys } from "react-hotkeys";
 import { GetStaticPaths } from "next";
+import { useRouter } from "next/router";
 
 configure({
   /**
@@ -25,17 +26,17 @@ configure({
 
 const SmithProject: React.FC = () => {
   const { t } = useTranslation("smith");
+  const router = useRouter()
   const [ui, setUi] = useState(new JXGDrawer)
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
 
-  const [code, setCode] = useState<string>(`// test smith chart
-Z1 = point(.5, .5) <<name: 'Z1', color: 'green', size: 5>>;
-reflect = transform(PI, O) << type: 'rotate' >>;
-Y1 = point(Z1, reflect) << name: 'Y1' >>;
-L1 = segment(Z1, Y1);
-circle(Y1, .3);`
-  );
+  const [code, setCode] = useState<string>('');
+
+  useEffect(()=>{
+    //TODO save document
+    console.log(router.query)
+  },[])
 
 
   const context = {
@@ -84,17 +85,6 @@ export async function getStaticProps({ locale }) {
       // Will be passed to the page component as props
     },
   };
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  // Get the paths we want to pre-render based on users
-  const paths = [
-    '/projects/aUDXnJNUqXFX21PIFuXX',
-  ]
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: true }
 }
 
 

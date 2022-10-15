@@ -31,7 +31,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push(`/projects/${projectId}`)
+    router.push(`/projects/smith?id=${projectId}`)
   }
 
   const renderSavedProjects = (projects: SmithProyect[]) => {
