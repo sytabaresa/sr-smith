@@ -9,8 +9,10 @@ import DrawerSmithOptions from "../../components/organisms/drawerSmithOptions";
 import { UserMenu } from "../../components/organisms/userMenu";
 import { JXGDrawer } from "../../components/organisms/tooltipActions";
 import { configure, HotKeys } from "react-hotkeys";
-import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
+import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/clientApp";
+import { SmithProyect } from "../../interfaces";
 
 configure({
   /**
@@ -21,23 +23,43 @@ configure({
   // ignoreEventsCondition: (event) => { return false; }
   stopEventPropagationAfterIgnoring: false,
   stopEventPropagationAfterHandling: false,
-
-})
+});
 
 const SmithProject: React.FC = () => {
   const { t } = useTranslation("smith");
-  const router = useRouter()
-  const [ui, setUi] = useState(new JXGDrawer)
+  const router = useRouter();
+  const [ui, setUi] = useState(new JXGDrawer());
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
+  const [projectData, setProjectData] = useState(
+    (null as SmithProyect) || null
+  );
+  const [code, setCode] = useState<string>("");
 
-  const [code, setCode] = useState<string>('');
+  useEffect(() => {
+    setProjectData({ ...projectData, data: code });
+    updateDocument();
+  }, [code]);
 
-  useEffect(()=>{
-    //TODO save document
-    console.log(router.query)
-  },[])
+  useEffect(() => {
+    getProjectData();
+  }, []);
 
+  const getProjectData = async () => {
+    const docRef = doc(db, `projects/${router.query.id}`);
+    const docSnap = await getDoc(docRef);
+    const docData = docSnap.data() as SmithProyect;
+    setProjectData(docData);
+    setCode(docData.data);
+  };
+
+  const updateDocument = async () => {
+    const docRef = doc(db, `projects/${router.query.id}`);
+    await updateDoc(docRef, {
+      data: code,
+      updateAt: Timestamp.now()
+    } as SmithProyect);
+  };
 
   const context = {
     ui,
@@ -51,16 +73,15 @@ const SmithProject: React.FC = () => {
     EXIT: "esc",
   };
   const handlers = {
-    EXIT: () => ui.sendEvent('EXIT'),
+    EXIT: () => ui.sendEvent("EXIT"),
   };
 
-  ui.useMachine()
+  ui.useMachine();
 
   return (
     <AppLayout title="Smith Chart">
       <SmithContext.Provider value={context}>
         <HotKeys keyMap={keyMap} handlers={handlers}>
-
           <div className="drawer drawer-end h-full relative">
             <input id="my-drawer" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex">
@@ -86,6 +107,5 @@ export async function getStaticProps({ locale }) {
     },
   };
 }
-
 
 export default SmithProject;
