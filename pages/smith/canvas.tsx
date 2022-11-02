@@ -76,6 +76,7 @@ const SmithProject: React.FC = () => {
       setProjectData(docData);
       const [current, send] = editorMachine
       send({ type: 'CODE', value: docData.data });
+      send('PARSING')
     }
   };
 
