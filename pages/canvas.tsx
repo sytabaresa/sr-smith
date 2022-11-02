@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
-import AppLayout from "../../components/templates/AppLayout";
-import SmithBoard from "../../components/molecules/smithBoard";
+import AppLayout from "../components/templates/AppLayout";
+import SmithBoard from "../components/molecules/smithBoard";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { SmithContext } from "../../providers/smithContext";
+import { SmithContext } from "../providers/smithContext";
 import { useTranslation } from "react-i18next";
-import CodeTools from "../../components/organisms/codeTools";
-import DrawerSmithOptions from "../../components/organisms/drawerSmithOptions";
-import { UserMenu } from "../../components/organisms/userMenu";
-import { JXGDrawer } from "../../components/organisms/tooltipActions";
+import CodeTools from "../components/organisms/codeTools";
+import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
+import { UserMenu } from "../components/organisms/userMenu";
+import { JXGDrawer } from "../components/organisms/tooltipActions";
 import { configure, HotKeys } from "react-hotkeys";
 import { useRouter } from "next/router";
 import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
-import { db } from "../../firebase/clientApp";
-import { SmithProject } from "../../interfaces";
-import { useUser } from "../../providers/userContext";
+import { db } from "../firebase/clientApp";
+import { SmithProject } from "../interfaces";
+import { useUser } from "../providers/userContext";
 import { useMachine } from "react-robot";
-import machine from '../../components/atoms/codeEditorFSM'
+import machine from '../components/atoms/codeEditorFSM'
 
 
 configure({

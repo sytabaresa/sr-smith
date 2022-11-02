@@ -9,30 +9,30 @@ const {
 
 module.exports = withPlugins([withTM, withPWA], {
     // other next config
-    // webpack: (config, options) => {
-    //   if (options.isServer) {
-    //     config.externals = ['react', ...config.externals];
-    //   }
+    webpack: (config, options) => {
+        if (options.isServer) {
+            config.externals = ['react', ...config.externals];
+        }
 
-    //   config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
+        config.resolve.alias['react'] = path.resolve(__dirname, '.', 'node_modules', 'react');
 
-    //   config.module.rules.push({
+        config.module.rules.push({
 
-    //     test: /\.node$/,
+            test: /\.node$/,
 
-    //     use: [
+            use: [
 
-    //       {
+                {
 
-    //         loader: "node-loader"
+                    loader: "node-loader"
 
-    //       },
+                },
 
-    //     ],
+            ],
 
-    //   })
+        })
 
-    //   return config
-    // },
+        return config
+    },
     i18n,
 })

@@ -1,54 +1,65 @@
-import Link from 'next/link'
-import Layout from '../components/templates'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import MainCard from '../components/Card';
-import { useTranslation } from 'next-i18next';
+import React, { useState } from "react";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../firebase/clientApp";
+import { SmithProject } from "../interfaces";
+import { getAuth } from "firebase/auth";
+import { useRouter } from "next/router";
+import ProjectSelector from "../components/molecules/projectSelector";
+import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
+import NewProjectForm from "../components/organisms/newProjectForm";
 
-const IndexPage = () => {
-  const { t } = useTranslation("common")
-  const { t: tapps } = useTranslation("apps")
+const Projects = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  const router = useRouter();
 
-  const apps = [
-    {
-      title: 'smith',
-      link: '/projects',
-      bgImage: "/images/smith-app.png"
-    },
-    {
-      title: 'circuit-automata',
-      link: '/circuit',
-      bgImage: "/images/on-construction.jpeg"
-    },
-    {
-      title: 'antenna-patterns',
-      link: '/antenna-patterns',
-      bgImage: "/images/on-construction.jpeg"
+  const openNew = async (data) => {
+    const { projectName, projectDescription } = data;
+    try {
+      const docRef = await addDoc(collection(db, "projects"), {
+        createAt: Timestamp.now(),
+        data: "",
+        description: projectDescription,
+        hashReference: "",
+        isPubic: false,
+        name: projectName,
+        updateAt: Timestamp.now(),
+        userId: user.uid,
+      } as SmithProject);
+      router.push(`/canvas?id=${docRef.id}`);
+    } catch (e) {
+      console.error("Error adding document: ", e);
     }
-  ]
+  };
+
+  const goToSavedProjects = () => {
+    router.push("/saved");
+  };
 
   return (
-    <Layout title="Home | Sr Smith App">
-      <h1 className="text-blue-500 text-xl">{t('main-title')}</h1>
-      <div className="w-full flex px-2 sm:px-10 mt-4 flex-wrap">
-        {apps.map(({ link, title, bgImage }, index) =>
-          <Link href={link} key={index}>
-            <div className="w-full sm:w-1/2 lg:w-1/4 p-2">
-              <MainCard title={tapps(title)} bgImage={bgImage} />
-            </div>
-          </Link>
-        )}
-      </div>
-    </Layout>
-  )
+    <div className="flex flex-wrap items-center justify-center h-screen space-y-2 md:space-x-5 relative">
+      <ProjectSelector
+        title={"Nuevo Proyecto"}
+        image={
+          <FolderIcon className="h-10 w-10 md:h-20 md:w-20 text-gray-500" />
+        }
+        modalChild={<NewProjectForm onSubmit={openNew} />}
+        isModal
+      />
+      <ProjectSelector
+        title={"Abrir Proyecto"}
+        image={
+          <FolderAddIcon className="h-10 w-10 md:h-20 md:w-20 text-gray-500" />
+        }
+        onClick={goToSavedProjects}
+      />
+      <img
+        src="../images/smith-app.png"
+        alt="smith-bg"
+        className="absolute -z-10 right-0 left-0"
+      />
+    </div>
+  );
+};
 
-}
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common', 'apps', 'footer'])),
-      // Will be passed to the page component as props
-    },
-  };
-}
-
-export default IndexPage
+export default Projects;

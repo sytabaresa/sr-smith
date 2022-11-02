@@ -1,12 +1,12 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import WithAuth from "../../components/hoc/withAuth";
-import SavedProjectCard from "../../components/molecules/savedProjectCard";
-import { db } from "../../firebase/clientApp";
-import { SmithProject } from "../../interfaces";
-import { useUser } from "../../providers/userContext";
+import WithAuth from "../components/hoc/withAuth";
+import SavedProjectCard from "../components/molecules/savedProjectCard";
+import { db } from "../firebase/clientApp";
+import { SmithProject } from "../interfaces";
+import { useUser } from "../providers/userContext";
 
 const SavedProjects = () => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push(`/smith/canvas?id=${projectId}`)
+    router.push(`/canvas?id=${projectId}`)
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
