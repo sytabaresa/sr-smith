@@ -1,6 +1,7 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "robot3";
-import { getCodefromObject, selectOrDrawPoint } from "./common";
+import { normalizeName, selectOrDrawPoint, stringifyJC } from "./common";
+import JXG from "jsxgraph/distrib/jsxgraphsrc"
 
 class TwoPointsTooltip implements TooltipType {
     name = ''
@@ -50,4 +51,23 @@ class TwoPointsTooltip implements TooltipType {
     }))
 }
 
+function getCodefromObject(ob, options = null): string {
+    // console.log(ob.name, ob)
+
+    let outStr = `${ob.name != '' ? `${normalizeName(ob.name)} = ` : ''}${ob.elType}(`
+    switch (ob.type) {
+        case JXG.OBJECT_TYPE_CIRCLE:
+            outStr += `${normalizeName(ob.center.name)},${normalizeName(ob.point2?.name) ?? normalizeName(ob.circle?.name) ?? normalizeName(ob.line?.name) ?? ob.radius}`
+            break
+        case JXG.OBJECT_TYPE_LINE:
+            outStr += `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
+            break
+    }
+    const opStr = options ? ' ' + stringifyJC(options) : ''
+    outStr += `)${opStr};\n`
+    return outStr
+}
+
 export default TwoPointsTooltip
+
+
