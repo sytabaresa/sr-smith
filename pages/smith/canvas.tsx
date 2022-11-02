@@ -32,16 +32,14 @@ configure({
 const SmithProject: React.FC = () => {
   const { t } = useTranslation("smith");
   const router = useRouter();
-  const { user, isAuthenticated, loadingUser } = useUser()
+  const { loadingUser } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState(
     (null as SmithProject) || null
   );
-  // const [code, setCode] = useState<string>("");
-
-
+  const [timer, setTimer] = useState(null)
 
   const keyMap = {
     EXIT: "esc",
@@ -59,13 +57,15 @@ const SmithProject: React.FC = () => {
     ui,
   });
 
-  const updateDocument = async () => {
+  const updateDocument = async (data) => {
+    console.log('updating data')
     const docRef = doc(db, `projects/${router.query.id}`);
     await updateDoc(docRef, {
-      data: editorMachine[0].context.code,
+      data,
       updateAt: Timestamp.now()
     } as SmithProject);
   };
+
   // data retrievers
   const getProjectData = async () => {
     const docRef = doc(db, `projects/${router.query.id}`);
@@ -74,15 +74,17 @@ const SmithProject: React.FC = () => {
       const docData = docSnap.data() as SmithProject;
       // console.log(docData)
       setProjectData(docData);
-      const [context, send] = editorMachine
+      const [current, send] = editorMachine
       send({ type: 'CODE', value: docData.data });
     }
   };
 
   useEffect(() => {
     if (projectData) {
-      setProjectData({ ...projectData, data: editorMachine[0].context.code });
-      updateDocument();
+      const [current, send] = editorMachine
+      setProjectData({ ...projectData, data: current.context.code });
+      clearTimeout(timer)
+      setTimer(setTimeout(() => updateDocument(current.context.code), 3000))
     }
   }, [editorMachine[0].context.code]);
 
@@ -91,8 +93,6 @@ const SmithProject: React.FC = () => {
       getProjectData();
     }
   }, [loadingUser]);
-
-
 
   // all context
   const context = {

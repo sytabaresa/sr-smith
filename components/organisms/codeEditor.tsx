@@ -41,14 +41,11 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const [current, send] = editorMachine
     const { code, errorMsg } = current.context
 
-    console.log(code)
+    // console.log(code)
     // console.log(current.name)
 
     const parseExecute = () => send('PARSING')
-
-    const setActualCode = (code) => {
-        send({ type: "CODE", value: code })
-    }
+    const setActualCode = (code) => send({ type: "CODE", value: code })
 
     const keyMap = {
         RUN_CODE: "alt+down",
