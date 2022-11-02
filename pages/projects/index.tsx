@@ -28,7 +28,7 @@ const Projects = () => {
         updateAt: Timestamp.now(),
         userId: user.uid,
       } as SmithProyect);
-      router.push(`/projects/${docRef.id}`);
+      router.push(`/projects/smith?id=${docRef.id}`);
     } catch (e) {
       console.error("Error adding document: ", e);
     }

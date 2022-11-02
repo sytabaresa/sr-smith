@@ -1,7 +1,5 @@
-import { MachineCtx, TooltipType } from "./interfaces";
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { getMouseCoords } from "../../utils/board";
-import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "robot3";
+import { TooltipType } from "./interfaces";
+import { createMachine, state, state as final, transition, reduce } from "robot3";
 import { selectOrDrawPoint } from "./common";
 
 class PointTooltip implements TooltipType {

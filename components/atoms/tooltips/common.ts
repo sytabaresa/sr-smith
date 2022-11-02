@@ -87,7 +87,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     return { ...ctx, objectSelected, code }
 }
 
-function getCodefromObject(ob, options = null): string {
+export function getCodefromObject(ob, options = null): string {
     // console.log(ob.name, ob, options)
 
     let outStr = `${ob.name != '' ? `${normalizeName(ob.name)} = ` : ''}${ob.elType}(`
@@ -101,6 +101,12 @@ function getCodefromObject(ob, options = null): string {
         case JXG.OBJECT_TYPE_GLIDER:
             outStr += `${ob.coords.usrCoords[1].toFixed(3)}, ${ob.coords.usrCoords[2].toFixed(3)}, ${normalizeName(ob.board.select(ob.parents[0]).name)}`
             break
+        case JXG.OBJECT_TYPE_CIRCLE:
+            outStr += `${normalizeName(ob.center.name)},${normalizeName(ob.point2?.name) ?? normalizeName(ob.circle?.name) ?? normalizeName(ob.line?.name) ?? ob.radius}`
+            break
+        case JXG.OBJECT_TYPE_LINE:
+            outStr += `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
+            break
     }
     const opStr = (options && Object.keys(options).length != 0) ? ' ' + stringifyJC(options) : ''
     outStr += `)${opStr};\n`
@@ -110,7 +116,6 @@ function getCodefromObject(ob, options = null): string {
 export function normalizeName(name) {
     return name.replace('}', '').replace('{', '')
 }
-
 
 export function stringifyJC(ob) {
     if (!ob) return null
