@@ -12,7 +12,11 @@ import { configure, HotKeys } from "react-hotkeys";
 import { useRouter } from "next/router";
 import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
-import { SmithProyect } from "../../interfaces";
+import { SmithProject } from "../../interfaces";
+import { useUser } from "../../providers/userContext";
+import { useMachine } from "react-robot";
+import machine from '../../components/atoms/codeEditorFSM'
+
 
 configure({
   /**
@@ -28,46 +32,16 @@ configure({
 const SmithProject: React.FC = () => {
   const { t } = useTranslation("smith");
   const router = useRouter();
+  const { user, isAuthenticated, loadingUser } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState(
-    (null as SmithProyect) || null
+    (null as SmithProject) || null
   );
-  const [code, setCode] = useState<string>("");
+  // const [code, setCode] = useState<string>("");
 
-  useEffect(() => {
-    setProjectData({ ...projectData, data: code });
-    updateDocument();
-  }, [code]);
 
-  useEffect(() => {
-    getProjectData();
-  }, []);
-
-  const getProjectData = async () => {
-    const docRef = doc(db, `projects/${router.query.id}`);
-    const docSnap = await getDoc(docRef);
-    const docData = docSnap.data() as SmithProyect;
-    setProjectData(docData);
-    setCode(docData.data);
-  };
-
-  const updateDocument = async () => {
-    const docRef = doc(db, `projects/${router.query.id}`);
-    await updateDoc(docRef, {
-      data: code,
-      updateAt: Timestamp.now()
-    } as SmithProyect);
-  };
-
-  const context = {
-    ui,
-    code,
-    setCode,
-    boardOptions,
-    setBoardOptions,
-  };
 
   const keyMap = {
     EXIT: "esc",
@@ -76,7 +50,58 @@ const SmithProject: React.FC = () => {
     EXIT: () => ui.sendEvent("EXIT"),
   };
 
+  // machines
   ui.useMachine();
+
+  const editorMachine = useMachine(machine, {
+    code: '',
+    errorMsg: '',
+    ui,
+  });
+
+  const updateDocument = async () => {
+    const docRef = doc(db, `projects/${router.query.id}`);
+    await updateDoc(docRef, {
+      data: editorMachine[0].context.code,
+      updateAt: Timestamp.now()
+    } as SmithProject);
+  };
+  // data retrievers
+  const getProjectData = async () => {
+    const docRef = doc(db, `projects/${router.query.id}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const docData = docSnap.data() as SmithProject;
+      // console.log(docData)
+      setProjectData(docData);
+      const [context, send] = editorMachine
+      send({ type: 'CODE', value: docData.data });
+    }
+  };
+
+  useEffect(() => {
+    if (projectData) {
+      setProjectData({ ...projectData, data: editorMachine[0].context.code });
+      updateDocument();
+    }
+  }, [editorMachine[0].context.code]);
+
+  useEffect(() => {
+    if (!loadingUser) {
+      getProjectData();
+    }
+  }, [loadingUser]);
+
+
+
+  // all context
+  const context = {
+    ui,
+    code: editorMachine[0].context.code,
+    boardOptions,
+    setBoardOptions,
+    editorMachine,
+  };
 
   return (
     <AppLayout title="Smith Chart">

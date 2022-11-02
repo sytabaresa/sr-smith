@@ -130,8 +130,10 @@ export class JXGDrawer {
 
     recreateCode = (ctx, ev) => {
         const ctxCode = ev.data.code
-        console.log('rec', ctxCode)
-        this.reactContext.setCode(code => code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode)
+        // console.log('rec', ctxCode)
+        const [current, send] = this.reactContext.editorMachine
+        const code = current.context.code
+        send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
         return { ...ctx, code: ctxCode }
     }
 

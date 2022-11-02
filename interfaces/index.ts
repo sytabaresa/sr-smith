@@ -11,7 +11,7 @@ export type User = {
   name: string
 }
 
-export type SmithProyect = {
+export type SmithProject = {
   id: string
   createAt?: Timestamp
   updateAt?: Timestamp

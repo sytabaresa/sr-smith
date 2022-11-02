@@ -3,8 +3,9 @@ import { JXGDrawer } from "../components/organisms/tooltipActions";
 
 export const SmithContext = createContext({
     code: '',
-    setCode: (code: string) => { },
+    // setCode: (code: string) => { },
     ui: new JXGDrawer(),
     boardOptions: {},
     setBoardOptions: (options: any) => { },
+    editorMachine: null,
 })

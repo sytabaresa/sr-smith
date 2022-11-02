@@ -2,23 +2,22 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import WithAuth from "../../components/hoc/withAuth";
 import SavedProjectCard from "../../components/molecules/savedProjectCard";
 import { db } from "../../firebase/clientApp";
-import { SmithProyect } from "../../interfaces";
+import { SmithProject } from "../../interfaces";
+import { useUser } from "../../providers/userContext";
 
 const SavedProjects = () => {
   const router = useRouter();
   const auth = getAuth();
-  const [userProejects, setUserProjects] = useState([] as SmithProyect[]);
+  const [userProejects, setUserProjects] = useState([] as SmithProject[]);
+  const { user } = useUser()
 
   useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        getSavedProjects(user.uid)
-      } else {
-        router.replace("/login");
-      }
-    });
+    if (user) {
+      getSavedProjects(user.uid)
+    }
   }, [])
 
   const getSavedProjects = async (userUid: string) => {
@@ -26,17 +25,17 @@ const SavedProjects = () => {
       var q = query(collection(db, "projects"), where("userId", "==", userUid));
       const querySnapshot = await getDocs(q);
       const projectsList = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as SmithProyect
+        return { id: doc.id, ...doc.data() } as SmithProject
       });
       setUserProjects(projectsList);
     }
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push(`/projects/smith?id=${projectId}`)
+    router.push(`/smith/canvas?id=${projectId}`)
   }
 
-  const renderSavedProjects = (projects: SmithProyect[]) => {
+  const renderSavedProjects = (projects: SmithProject[]) => {
     if (projects.length == 0) {
       return <h3>No tienes proyectos guardados</h3>;
     } else {
@@ -68,4 +67,4 @@ const SavedProjects = () => {
   );
 };
 
-export default SavedProjects;
+export default WithAuth(SavedProjects);

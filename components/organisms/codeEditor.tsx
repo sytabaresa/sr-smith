@@ -4,13 +4,12 @@ import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
 import { highlight, languages } from "prismjs/components/prism-core";
-import { useMachine } from 'react-robot';
 
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "../../providers/smithContext";
-import machine from '../atoms/codeEditorFSM'
+import { useUser } from "../../providers/userContext";
 
 configure({
     /**
@@ -31,46 +30,24 @@ export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 
 const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { t } = useTranslation('smith')
+    const { user, isAuthenticated, loadingUser } = useUser()
+
     const {
-        code: contextCode,
-        setCode,
-        ui,
-        // boardOptions,
-        // setBoardOptions,
+        editorMachine,
     } = useContext(SmithContext)
     // console.log('inner', contextCode)
 
-    const [current, send] = useMachine(machine, {
-        code: contextCode,
-        errorMsg: '',
-    });
+
+    const [current, send] = editorMachine
     const { code, errorMsg } = current.context
 
-
-    useEffect(() => {
-        send({ type: "CODE", value: contextCode })
-    }, [contextCode])
-    
-    // console.log(code)
+    console.log(code)
     // console.log(current.name)
 
-    const parseExecute = () => {
-        // console.log(code)
-        send('PARSING')
-        // console.log(board)
-        try {
-            ui.recreateBoard()
-            ui.board.jc.parse(code);
-            send('PARSED')
-        } catch (err) {
-            console.log(err)
-            send({ type: 'ERROR', value: err })
-        }
-    }
+    const parseExecute = () => send('PARSING')
 
     const setActualCode = (code) => {
         send({ type: "CODE", value: code })
-        setCode(code) //TODO: update instantly? or with memo
     }
 
     const keyMap = {
@@ -103,7 +80,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
 
                 <div className={`alert alert-error transition-opacity duration-200 
             ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
-                    {errorMsg}
+                    {errorMsg.toString()}
                 </div>
                 <button
                     // preset="outline"

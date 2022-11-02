@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import MainCard from "../../components/Card";
-import smith from "../../assets/images/smith-app.png";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/clientApp";
-import { SmithProyect } from "../../interfaces";
+import { SmithProject } from "../../interfaces";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
 import ProjectSelector from "../../components/molecules/projectSelector";
@@ -27,16 +25,15 @@ const Projects = () => {
         name: projectName,
         updateAt: Timestamp.now(),
         userId: user.uid,
-      } as SmithProyect);
-      router.push(`/projects/smith?id=${docRef.id}`);
+      } as SmithProject);
+      router.push(`smith/canvas?id=${docRef.id}`);
     } catch (e) {
       console.error("Error adding document: ", e);
     }
   };
 
-
   const goToSavedProjects = () => {
-    router.push("/projects/saved");
+    router.push("smith/saved");
   };
 
   return (
@@ -46,8 +43,8 @@ const Projects = () => {
         image={
           <FolderIcon className="h-10 w-10 md:h-20 md:w-20 text-gray-500" />
         }
-        isModal={true}
         modalChild={<NewProjectForm onSubmit={openNew} />}
+        isModal
       />
       <ProjectSelector
         title={"Abrir Proyecto"}

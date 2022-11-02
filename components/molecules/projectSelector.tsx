@@ -27,7 +27,7 @@ const ProjectSelector = ({
         </span>
       </label>
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      {isModal ? (
+      {isModal ?? (
         <div className="modal">
           <div className="modal-box relative ">
             <label
@@ -39,7 +39,7 @@ const ProjectSelector = ({
             <div className="w-full">{modalChild}</div>
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 };
