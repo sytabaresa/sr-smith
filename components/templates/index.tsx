@@ -27,13 +27,13 @@ const Layout = ({ children, title = 'This is the default title', className }: Pr
             {t('home')}
           </Link>{' '}
           |{' '}
-          <Link href="/smith">
+          <Link href="/main-menu">
             {t('smith')}
           </Link>{' '}
-          |{' '}
+          {/* |{' '}
           <Link href="/users">
             {t('users')}
-          </Link>{' '}
+          </Link>{' '} */}
           |{' '}
           <Link
             href='/'

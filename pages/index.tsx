@@ -1,66 +1,138 @@
-import React, { useState } from "react";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import AppLayout from "../components/templates/AppLayout";
+import SmithBoard from "../components/molecules/smithBoard";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { SmithContext } from "../providers/smithContext";
+import { useTranslation } from "react-i18next";
+import CodeTools from "../components/organisms/codeTools";
+import DrawerSmithOptions from "../components/organisms/drawerSmithOptions";
+import { UserMenu } from "../components/organisms/userMenu";
+import { JXGDrawer } from "../components/organisms/tooltipActions";
+import { configure, HotKeys } from "react-hotkeys";
+import { useRouter } from "next/router";
+import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
-import { getAuth } from "firebase/auth";
-import { useRouter } from "next/router";
-import ModalContainer from "../components/molecules/modalContainer";
-import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
-import NewProjectForm from "../components/organisms/newProjectForm";
-import Layout from "../components/templates";
+import { useUser } from "../providers/userContext";
+import { useMachine } from "react-robot";
+import machine from '../components/atoms/codeEditorFSM'
 
-const Projects = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
+
+configure({
+  /**
+   * The level of logging of its own behaviour React HotKeys should perform.
+   */
+  // logLevel: 'verbose',
+  ignoreTags: [],
+  // ignoreEventsCondition: (event) => { return false; }
+  stopEventPropagationAfterIgnoring: false,
+  stopEventPropagationAfterHandling: false,
+});
+
+const SmithProject: React.FC = () => {
+  const { t } = useTranslation("smith");
   const router = useRouter();
+  const { loadingUser, isAuthenticated } = useUser()
+  const [ui, setUi] = useState(new JXGDrawer());
+  // const [ui, setUi] = useState(useDrawner())
+  const [boardOptions, setBoardOptions] = useState<any>(null);
+  const [projectData, setProjectData] = useState(
+    (null as SmithProject) || null
+  );
+  const [timer, setTimer] = useState(null)
 
-  const goToSavedProjects = () => {
-    router.push("/saved");
+  const keyMap = {
+    EXIT: "esc",
+  };
+  const handlers = {
+    EXIT: () => ui.sendEvent("EXIT"),
   };
 
-  const Child = ({ image, title }: { image: JSX.Element, title: string }) => {
-    return <div className="btn h-auto btn-large py-10 bg-gray-300  shadow-2xl">
-      <div className="text-lg font-semidbold text-center text-gray-500 flex items-center">
-        {image}
-        <span>
-          {title}
-        </span>
-      </div>
-    </div>
-  }
+  // machines
+  ui.useMachine();
+
+  const editorMachine = useMachine(machine, {
+    code: '',
+    errorMsg: '',
+    ui,
+  });
+
+  const updateDocument = async (data) => {
+    console.log('updating data')
+    const docRef = doc(db, `projects/${router.query.id}`);
+    await updateDoc(docRef, {
+      data,
+      updateAt: Timestamp.now()
+    } as SmithProject);
+  };
+
+  // data retrievers
+  const getProjectData = async () => {
+    const docRef = doc(db, `projects/${router.query.id}`);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const docData = docSnap.data() as SmithProject;
+      // console.log(docData)
+      setProjectData({ ...docData, id: router.query.id as string });
+      const [current, send] = editorMachine
+      send({ type: 'CODE', value: docData.data });
+      send('PARSING')
+    }
+  };
+
+  useEffect(() => {
+    if (projectData && isAuthenticated) {
+      const [current, send] = editorMachine
+      setProjectData(projectData => ({ ...projectData, data: current.context.code }))
+      clearTimeout(timer)
+      setTimer(setTimeout(() => updateDocument(current.context.code), 3000))
+    }
+  }, [editorMachine[0].context.code]);
+
+  useEffect(() => {
+    if (!loadingUser && isAuthenticated) {
+      getProjectData();
+    }
+  }, [loadingUser]);
+
+  // all context
+  const context = {
+    ui,
+    code: editorMachine[0].context.code,
+    boardOptions,
+    setBoardOptions,
+    editorMachine,
+    projectData,
+  };
 
   return (
-    <Layout title="Open | Sr Smith App" className="h-screen">
-      <div className="absolute right-0 left-0 w-full h-full bg-black">
-        <img
-          src="../images/smith-app.png"
-          alt="smith-bg"
-          className=" w-full h-full object-cover blur-sm opacity-40"
-        />
-      </div>
-      <div className="flex flex-wrap items-center justify-center h-screen space-y-2 md:space-x-5 relative">
-        <ModalContainer
-          className="w-10/12 md:w-3/12"
-          modalChild={<NewProjectForm />}
-          isModal
-        >
-          <Child
-            title={"Nuevo Proyecto"}
-            image={<FolderIcon className="h-10 w-10 md:h-20 md:w-20 text-gray-500" />}
-          />
-        </ModalContainer>
-        <ModalContainer
-          className="w-10/12 md:w-3/12"
-          onClick={goToSavedProjects}
-        >
-          <Child
-            title={"Abrir Proyecto"}
-            image={<FolderAddIcon className="h-10 w-10 md:h-20 md:w-20 text-gray-500" />}
-          />
-        </ModalContainer>
-      </div>
-    </Layout>
+    <AppLayout title="Smith Chart">
+      <SmithContext.Provider value={context}>
+        <HotKeys keyMap={keyMap} handlers={handlers}>
+          <div className="drawer drawer-end h-full relative">
+            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+            <div className="drawer-content flex">
+              <SmithBoard />
+              <CodeTools />
+              <div className="absolute top-0 right-0 mr-4 mt-4">
+                <UserMenu />
+              </div>
+            </div>
+            <DrawerSmithOptions />
+          </div>
+        </HotKeys>
+      </SmithContext.Provider>
+    </AppLayout>
   );
 };
 
-export default Projects;
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "smith", "footer"])),
+      // Will be passed to the page component as props
+    },
+  };
+}
+
+export default SmithProject;
