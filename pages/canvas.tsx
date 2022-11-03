@@ -32,7 +32,7 @@ configure({
 const SmithProject: React.FC = () => {
   const { t } = useTranslation("smith");
   const router = useRouter();
-  const { loadingUser } = useUser()
+  const { loadingUser, isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
@@ -73,7 +73,7 @@ const SmithProject: React.FC = () => {
     if (docSnap.exists()) {
       const docData = docSnap.data() as SmithProject;
       // console.log(docData)
-      setProjectData(docData);
+      setProjectData({ ...docData, id: router.query.id as string });
       const [current, send] = editorMachine
       send({ type: 'CODE', value: docData.data });
       send('PARSING')
@@ -81,16 +81,16 @@ const SmithProject: React.FC = () => {
   };
 
   useEffect(() => {
-    if (projectData) {
+    if (projectData && isAuthenticated) {
       const [current, send] = editorMachine
-      setProjectData({ ...projectData, data: current.context.code });
+      setProjectData(projectData => ({ ...projectData, data: current.context.code }))
       clearTimeout(timer)
       setTimer(setTimeout(() => updateDocument(current.context.code), 3000))
     }
   }, [editorMachine[0].context.code]);
 
   useEffect(() => {
-    if (!loadingUser) {
+    if (!loadingUser && isAuthenticated) {
       getProjectData();
     }
   }, [loadingUser]);
@@ -102,6 +102,7 @@ const SmithProject: React.FC = () => {
     boardOptions,
     setBoardOptions,
     editorMachine,
+    projectData,
   };
 
   return (
