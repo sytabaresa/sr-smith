@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import { JXGDrawer } from "../components/organisms/tooltipActions";
+import { SmithProject } from "../interfaces";
 
 export const SmithContext = createContext({
     code: '',
@@ -8,4 +9,5 @@ export const SmithContext = createContext({
     boardOptions: {},
     setBoardOptions: (options: any) => { },
     editorMachine: null,
+    projectData: {} as SmithProject,
 })

@@ -18,7 +18,7 @@ export type SmithProject = {
   data?: string
   description?: string
   hashReference?: string
-  isPubic?: boolean
+  isPublic?: boolean
   name?: string
   userId?: string
 }
