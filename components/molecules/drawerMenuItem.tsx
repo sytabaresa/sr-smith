@@ -8,10 +8,10 @@ type DrawerMenuItemProps = {
 
 const DrawerMenuItem = ({label, icon, onClick}: DrawerMenuItemProps) => {
     return(
-        <button className="flex items-center my-2" onClick={onClick}>
+        <div className="btn btn-ghost" onClick={onClick}>
             {icon}
             <span className="pl-3 text-xl">{label}</span>
-        </button>
+        </div>
     )
 }
 
