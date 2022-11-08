@@ -15,7 +15,9 @@ import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
 import { useUser } from "../providers/userContext";
 import { useMachine } from "react-robot";
-import machine from '../components/atoms/codeEditorFSM'
+import editorMachine from '../components/atoms/codeEditorFSM'
+import saveMachine from "../components/atoms/savingFSM";
+
 
 
 configure({
@@ -51,57 +53,47 @@ const SmithProject: React.FC = () => {
   // machines
   ui.useMachine();
 
-  const editorMachine = useMachine(machine, {
+  const editorService = useMachine(editorMachine, {
     code: '',
     errorMsg: '',
     ui,
   });
 
-  const updateDocument = async (data) => {
-    console.log('updating data')
-    const docRef = doc(db, `projects/${router.query.id}`);
-    await updateDoc(docRef, {
-      data,
-      updateAt: Timestamp.now()
-    } as SmithProject);
-  };
-
   // data retrievers
-  const getProjectData = async () => {
-    const docRef = doc(db, `projects/${router.query.id}`);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const docData = docSnap.data() as SmithProject;
-      // console.log(docData)
-      setProjectData({ ...docData, id: router.query.id as string });
-      const [current, send] = editorMachine
-      send({ type: 'CODE', value: docData.data });
-      send('PARSING')
-    }
-  };
+  const sendCode = (ctx, ev) => {
+    const [current, send] = editorService
+    send({ type: 'CODE', value: ctx.projectData.data });
+    send('PARSING')
+  }
+
+  const saveService = useMachine(saveMachine, {
+    id: router.query?.id as string,
+    projectData,
+    loadHandler: sendCode,
+  })
 
   useEffect(() => {
-    if (projectData && isAuthenticated) {
-      const [current, send] = editorMachine
-      setProjectData(projectData => ({ ...projectData, data: current.context.code }))
-      clearTimeout(timer)
-      setTimer(setTimeout(() => updateDocument(current.context.code), 3000))
-    }
-  }, [editorMachine[0].context.code]);
+    const [current, send] = editorService
+    setProjectData(projectData => ({ ...projectData, data: current.context.code }))
+    const [c, send2] = saveService
+    send2({ type: 'SAVE', value: current.context.code })
+  }, [editorService[0].context.code]);
 
   useEffect(() => {
-    if (!loadingUser && isAuthenticated) {
-      getProjectData();
+    if (isAuthenticated) {
+      const [current, send] = saveService
+      send({ type: 'LOAD', value: router.query?.id as string})
     }
-  }, [loadingUser]);
+  }, [isAuthenticated]);
 
   // all context
   const context = {
     ui,
-    code: editorMachine[0].context.code,
+    code: editorService[0].context.code,
     boardOptions,
     setBoardOptions,
-    editorMachine,
+    editorService,
+    saveService,
     projectData,
   };
 

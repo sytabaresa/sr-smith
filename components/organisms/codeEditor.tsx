@@ -33,12 +33,12 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
     const { user, isAuthenticated, loadingUser } = useUser()
 
     const {
-        editorMachine,
+        editorService,
     } = useContext(SmithContext)
     // console.log('inner', contextCode)
 
 
-    const [current, send] = editorMachine
+    const [current, send] = editorService
     const { code, errorMsg } = current.context
 
     // console.log(code)
