@@ -1,17 +1,44 @@
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { auth, db } from "../../firebase/clientApp";
+import { SmithProject } from "../../interfaces";
 
 type NewProjectFormProps = {
-  onSubmit: (data: any) => void;
+  // onSubmit: (data: any) => void;
 };
 
-const NewProjectForm = ({ onSubmit }: NewProjectFormProps) => {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-      } = useForm();
+const NewProjectForm = ({ }: NewProjectFormProps) => {
+  const router = useRouter()
+  const user = auth.currentUser;
+
+  const onSubmit = async (data) => {
+    const { projectName, projectDescription } = data;
+    try {
+      const docRef = await addDoc(collection(db, "projects"), {
+        createAt: Timestamp.now(),
+        data: "",
+        description: projectDescription,
+        hashReference: "",
+        isPublic: false,
+        name: projectName,
+        updateAt: Timestamp.now(),
+        userId: user.uid,
+      } as SmithProject);
+      router.push({ pathname: '/', query: { id: docRef.id } });
+      router.reload()
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+  };
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   return (
     <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="projectName" className="label">

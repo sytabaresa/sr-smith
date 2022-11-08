@@ -24,16 +24,16 @@ const Layout = ({ children, title = 'This is the default title', className }: Pr
       <header>
         <nav>
           <Link href="/">
-            <a>{t('home')}</a>
+            {t('home')}
           </Link>{' '}
           |{' '}
-          <Link href="/smith">
-            <a>{t('smith')}</a>
+          <Link href="/main-menu">
+            {t('smith')}
           </Link>{' '}
-          |{' '}
+          {/* |{' '}
           <Link href="/users">
-            <a>{t('users')}</a>
-          </Link>{' '}
+            {t('users')}
+          </Link>{' '} */}
           |{' '}
           <Link
             href='/'

@@ -13,7 +13,7 @@ import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
 import LineTooltip from "../atoms/tooltips/line";
 import { wait } from "../utils/time";
 import { useContext, useEffect } from "react";
-import { SmithContext } from "../../providers/smithContext";
+import { SmithContext, SmithContextType } from "../../providers/smithContext";
 
 
 export function useDrawner() {
@@ -33,7 +33,7 @@ export class JXGDrawer {
     private tooltipPluginsNames: string[] = []
     private tooltipPluginMap: Record<string, TooltipType> = {}
     private touchTimer
-    private reactContext: Record<string, any>
+    private reactContext: SmithContextType
     private inTouch: boolean = false
     service: Service<typeof this.whiteboardMachine>
 
@@ -131,7 +131,7 @@ export class JXGDrawer {
     recreateCode = (ctx, ev) => {
         const ctxCode = ev.data.code
         // console.log('rec', ctxCode)
-        const [current, send] = this.reactContext.editorMachine
+        const [current, send] = this.reactContext.editorService
         const code = current.context.code
         send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
         return { ...ctx, code: ctxCode }

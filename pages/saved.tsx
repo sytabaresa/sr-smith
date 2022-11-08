@@ -32,7 +32,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push(`/canvas?id=${projectId}`)
+    router.push({ pathname: '/', query: { id: projectId } });
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
@@ -41,9 +41,13 @@ const SavedProjects = () => {
     } else {
       return (
         <div className="flex flex-wrap justify-center">
-          {projects.map((item) => {
+          {projects.map((item, i) => {
             return (
-              <div className="w-4/12 md:w-2/12 m-2 md:m-4" onClick={() => { goToSavedProject(item.id) }}>
+              <div
+                key={i}
+                className="w-4/12 md:w-2/12 m-2 md:m-4"
+                onClick={() => { goToSavedProject(item.id) }}
+              >
                 <SavedProjectCard
                   title={item.name}
                   image="/images/smith-app.png"
