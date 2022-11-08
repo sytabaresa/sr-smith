@@ -7,6 +7,7 @@ import SegmentIcon from "../atoms/custom-icons/segment";
 import LineIcon from "../atoms/custom-icons/line-icon";
 import AngleIcon from "../atoms/custom-icons/angle-icon";
 import { SmithContext } from "../../providers/smithContext";
+import Circumcircle from "../atoms/custom-icons/circumcenter";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -22,6 +23,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const onClickSegment = () => ui.setTooltip('segment')
   const onClickCircleCenterPoint = () => ui.setTooltip('circle')
   const onClickCircleCenterRadius = () => ui.setTooltip('circleRadius')
+  const onClickCircumcircleRadius = () => ui.setTooltip('circumcircle')
+
   const onClickCircleCenterRadiusValue = (v: string) => {
     const n = parseFloat(v)
     n > 0 && ui.sendEvent("RADIUS", n)
@@ -90,6 +93,12 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         <li onClick={onClickCircleCenterPoint}>
           <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circle' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia (centro, punto)">
             <CircleCenterPoint width={30} />{" "}
+            <span className="ml-2 hidden">Circunferencia (centro, punto)</span>{" "}
+          </a>
+        </li>
+        <li onClick={onClickCircumcircleRadius}>
+          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circumcircle' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia por 3 puntos">
+            <Circumcircle width={30} />{" "}
             <span className="ml-2 hidden">Circunferencia (centro, punto)</span>{" "}
           </a>
         </li>

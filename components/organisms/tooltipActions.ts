@@ -4,16 +4,18 @@ import { createMachine, state, state as final, transition, guard, interpret, act
 import { Service } from "robot3"
 import { initBoard } from "../atoms/boards";
 import { TooltipType } from "../atoms/tooltips/interfaces";
-import TwoPointsTooltip from "../atoms/tooltips/twoPoints";
-import PointTooltip from "../atoms/tooltips/point";
-import SegmentTooltip from "../atoms/tooltips/segment";
-import CircleTooltip from "../atoms/tooltips/circle";
 import { useMachine } from "react-robot";
-import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
-import LineTooltip from "../atoms/tooltips/line";
 import { wait } from "../utils/time";
 import { useContext, useEffect } from "react";
 import { SmithContext, SmithContextType } from "../../providers/smithContext";
+
+// plugins
+import PointTooltip from "../atoms/tooltips/point";
+import SegmentTooltip from "../atoms/tooltips/segment";
+import LineTooltip from "../atoms/tooltips/line";
+import CircleTooltip from "../atoms/tooltips/circle";
+import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
+import CircumcircleTooltip from "../atoms/tooltips/circumcircle";
 
 
 export function useDrawner() {
@@ -51,11 +53,11 @@ export class JXGDrawer {
         //register plugins
         this.tooltipPlugins = [
             new PointTooltip(),
-            new TwoPointsTooltip(),
             new LineTooltip(),
             new SegmentTooltip(),
             new CircleTooltip(),
             new CircleRadiusTooltip(),
+            new CircumcircleTooltip(),
         ]
 
         // other confs
