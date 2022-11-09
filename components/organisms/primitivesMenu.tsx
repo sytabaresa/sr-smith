@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { BeakerIcon, HandIcon } from "@heroicons/react/outline";
-import CircleCenterRadius from "../atoms/custom-icons/circle-center-radius";
-import CircleCenterPoint from "../atoms/custom-icons/circle-center-point";
-import PointIcons from "../atoms/custom-icons/point";
-import SegmentIcon from "../atoms/custom-icons/segment";
-import LineIcon from "../atoms/custom-icons/line-icon";
-import AngleIcon from "../atoms/custom-icons/angle-icon";
 import { SmithContext } from "../../providers/smithContext";
-import Circumcircle from "../atoms/custom-icons/circumcenter";
+import PointTooltip from "../atoms/tooltips/point";
+import SegmentTooltip from "../atoms/tooltips/segment";
+import LineTooltip from "../atoms/tooltips/line";
+import CircleTooltip from "../atoms/tooltips/circle";
+import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
+import CircumcircleTooltip from "../atoms/tooltips/circumcircle";
+import SemicircleTooltip from "../atoms/tooltips/semicircle";
+import ArcTooltip from "../atoms/tooltips/arc";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -15,15 +16,6 @@ interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
 
   const { ui } = useContext(SmithContext)
-
-
-  const onClickPoint = () => ui.setTooltip('point')
-  const onClickLine = () => ui.setTooltip('line')
-  const onClickAngle = () => ui.setTooltip('angle')
-  const onClickSegment = () => ui.setTooltip('segment')
-  const onClickCircleCenterPoint = () => ui.setTooltip('circle')
-  const onClickCircleCenterRadius = () => ui.setTooltip('circleRadius')
-  const onClickCircumcircleRadius = () => ui.setTooltip('circumcircle')
 
   const onClickCircleCenterRadiusValue = (v: string) => {
     const n = parseFloat(v)
@@ -60,48 +52,19 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         <HandIcon className="w-6" />
       </label>
       <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 shadow bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
-        <li onClick={onClickPoint}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'point' ? 'bg-gray-200' : ''}`} data-tip="Punto">
-            <PointIcons width={30} />
-            <span className="ml-2 hidden">Punto</span>
-          </a>
-        </li>
-        <li onClick={onClickSegment}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'segment' ? 'bg-gray-200' : ''}`} data-tip="Segmento">
-            <SegmentIcon width={30} />
-            <span className="ml-2 hidden">Segmento</span>
-          </a>
-        </li>
-        <li onClick={onClickLine}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2  ${ui.context().tooltipSelected == 'line' ? 'bg-gray-200' : ''}`} data-tip="Recta">
-            <LineIcon width={30} />
-            <span className="ml-2 hidden">Recta</span>
-          </a>
-        </li>
-        {/* <li onClick={onClickAngle}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'angle' ? 'bg-gray-200' : ''}`} data-tip="Ángulo">
-            <AngleIcon width={30} />
-            <span className="ml-2 hidden">Ángulo</span>{" "}
-          </a>
-        </li> */}
-        <li onClick={onClickCircleCenterRadius}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circleRadius' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia: centro y radio">
-            <CircleCenterRadius width={30} />{" "}
-            <span className="ml-2 hidden">Circunferencia: centro y radio</span>{" "}
-          </a>
-        </li>
-        <li onClick={onClickCircleCenterPoint}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circle' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia (centro, punto)">
-            <CircleCenterPoint width={30} />{" "}
-            <span className="ml-2 hidden">Circunferencia (centro, punto)</span>{" "}
-          </a>
-        </li>
-        <li onClick={onClickCircumcircleRadius}>
-          <a className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == 'circumcircle' ? 'bg-gray-200' : ''}`} data-tip="Circunferencia por 3 puntos">
-            <Circumcircle width={30} />{" "}
-            <span className="ml-2 hidden">Circunferencia (centro, punto)</span>{" "}
-          </a>
-        </li>
+        {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
+        new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
+        new SemicircleTooltip(), new ArcTooltip()].map((plugin, index) =>
+          <li key={index} onClick={() => ui.setTooltip(plugin.name)}>
+            <a
+              className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
+              data-tip={plugin.tooltip}
+            >
+              <plugin.icon className="w-8" />
+              <span className="ml-2 hidden">Punto</span>
+            </a>
+          </li>
+        )}
       </ul>
       <div className={`modal ${ui.current(true) == "draw.drawCircle" && 'modal-open'}`}>
         <div className="modal-box">

@@ -1,11 +1,14 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, state, state as final, transition, reduce } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
+import { CircleCenterRadiusIcon } from "../custom-icons";
 
 class CircleRadiusTooltip implements TooltipType {
     name = 'circleRadius'
     description = 'Select center point, then enter radius'
     jsxName = 'circle'
+    tooltip = 'Circunferencia: centro y radio'
+    icon = CircleCenterRadiusIcon
 
     selectOrDrawPoint1 = selectOrDrawPoint
 

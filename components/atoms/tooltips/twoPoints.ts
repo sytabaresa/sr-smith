@@ -2,11 +2,9 @@ import { TooltipType } from "./interfaces";
 import { createMachine, guard, immediate, state, state as final, transition, reduce } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
 
-class TwoPointsTooltip implements TooltipType {
-    name = ''
-    description = 'Select two points or positions'
+class TwoPointsTooltip {
     jsxName = ''
-
+    
     drawObject = (ctx, event) => {
         const { board, value } = event
         const { objectSelected } = ctx

@@ -16,6 +16,8 @@ import LineTooltip from "../atoms/tooltips/line";
 import CircleTooltip from "../atoms/tooltips/circle";
 import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
 import CircumcircleTooltip from "../atoms/tooltips/circumcircle";
+import SemicircleTooltip from "../atoms/tooltips/semicircle";
+import ArcTooltip from "../atoms/tooltips/arc";
 
 
 export function useDrawner() {
@@ -56,8 +58,10 @@ export class JXGDrawer {
             new LineTooltip(),
             new SegmentTooltip(),
             new CircleTooltip(),
+            new SemicircleTooltip(),
             new CircleRadiusTooltip(),
             new CircumcircleTooltip(),
+            new ArcTooltip(),
         ]
 
         // other confs
