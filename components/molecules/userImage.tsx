@@ -10,6 +10,7 @@ interface UserImageProps extends HTMLAttributes<HTMLDivElement> {
 
 export function UserImage(props: UserImageProps) {
 
+    const { imageClasses, ...rest } = props
     const { user } = useUser()
     // console.log(user)
 
@@ -18,8 +19,8 @@ export function UserImage(props: UserImageProps) {
         profileUrl = gravatar.url('sdadasdsas@gmail.com', { d: 'identicon' })
     }
 
-    return <div {...props}>
-       <Avatar src={profileUrl} text={getInitials(user?.displayName)} className={props.imageClasses}/>
+    return <div {...rest}>
+        <Avatar src={profileUrl} text={getInitials(user?.displayName)} className={props.imageClasses} />
     </div>
 }
 

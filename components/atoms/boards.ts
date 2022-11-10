@@ -17,9 +17,10 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
         keepaspectratio: true,
         // grid: true,
         // axis: true,
-        showFullscreen: true,
+        // fullscreen: { id: 'outer' },
+        // showFullscreen: true,
+        // showScreenshot: true,
         showCopyRight: false,
-        showScreenshot: true,
         resize: { enabled: true, throttle: 200 },
         pan: {
             enabled: true,
