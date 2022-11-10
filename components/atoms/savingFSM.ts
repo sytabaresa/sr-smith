@@ -1,6 +1,6 @@
 import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
-import { db } from "../../firebase/firestore"
+import { db } from "../../firebase/clientApp"
 import { SmithProject } from '../../interfaces';
 import { wait } from '../utils/time';
 
@@ -69,7 +69,7 @@ function checkId(ctx: ContextType, ev: any) {
 async function getProjectData(ctx: ContextType) {
     console.log('loading data', ctx.id)
     try {
-        const docRef = doc(await db(), `projects/${ctx.id}`);
+        const docRef = doc(db, `projects/${ctx.id}`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             const projectData = docSnap.data() as SmithProject;
@@ -85,7 +85,7 @@ async function getProjectData(ctx: ContextType) {
 
 async function updateDocument(ctx: ContextType, ev: { value: string }) {
     console.log('updating data', ctx.code)
-    const docRef = doc(await db(), `projects/${ctx.id}`);
+    const docRef = doc(db, `projects/${ctx.id}`);
     await updateDoc(docRef, {
         data: ctx.code,
         updateAt: Timestamp.now()
