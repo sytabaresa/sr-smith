@@ -116,6 +116,10 @@ export function getCodefromObject(ob, options = null): string {
         case JXG.OBJECT_TYPE_CIRCLE:
             outStr += `${normalizeName(ob.center.name)},${normalizeName(ob.point2?.name) ?? normalizeName(ob.circle?.name) ?? normalizeName(ob.line?.name) ?? ob.radius}`
             break
+        case JXG.OBJECT_TYPE_IMAGINARY_CIRCLE:
+        case JXG.OBJECT_TYPE_REAL_CIRCLE:
+            outStr += `${normalizeName(ob.originPoint?.name)}`
+            break
         case JXG.OBJECT_TYPE_LINE:
             outStr += `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
             break

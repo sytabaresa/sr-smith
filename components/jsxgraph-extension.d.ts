@@ -140,7 +140,7 @@ declare namespace JXG {
 
     // real
     export interface ReCircle extends Circle {
-
+        originPoint: Point;
     }
     export interface ReCircleAttributes extends CircleAttributes {
 
@@ -149,10 +149,9 @@ declare namespace JXG {
 
     //imag
     export interface ImCircle extends Circle {
-
+        originPoint: Point;
     }
     export interface ImCircleAttributes extends CircleAttributes {
-
     }
     export function createImCircle(board: Board, parents: unknown[], attributes: ImCircleAttributes): ImCircle
 

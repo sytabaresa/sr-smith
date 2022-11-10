@@ -18,6 +18,8 @@ import CircleRadiusTooltip from "../atoms/tooltips/circleRadius";
 import CircumcircleTooltip from "../atoms/tooltips/circumcircle";
 import SemicircleTooltip from "../atoms/tooltips/semicircle";
 import ArcTooltip from "../atoms/tooltips/arc";
+import ReCircleTooltip from "../atoms/tooltips/reCircle";
+import ImCircleTooltip from "../atoms/tooltips/imCircle";
 
 
 export function useDrawner() {
@@ -62,6 +64,8 @@ export class JXGDrawer {
             new CircleRadiusTooltip(),
             new CircumcircleTooltip(),
             new ArcTooltip(),
+            new ReCircleTooltip(),
+            new ImCircleTooltip(),
         ]
 
         // other confs
@@ -143,12 +147,14 @@ export class JXGDrawer {
         return { ...ctx, code: ctxCode }
     }
 
+    smithModeChange = (ctx: any, ev: any) => {
+        return { ...ctx, smithMode: ev.value }
+    }
+
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
             transition('CHANGE_DRAW', 'pre_draw'),
-            transition('SMITH_MODE', 'idle', reduce((ctx: any, ev: any) => {
-                return { ...ctx, smithMode: ev.value }
-            })),
+            transition('SMITH_MODE', 'idle', reduce(this.smithModeChange)),
         ),
         pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
@@ -169,6 +175,7 @@ export class JXGDrawer {
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
             transition('done', 'draw', reduce(this.recreateCode)),
+            transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
             transition('error', 'idle'),
             transition('CHANGE_IDLE', 'post_draw'),
             transition('CHANGE_DRAW', 'pre_draw'),
