@@ -60,7 +60,7 @@ const CodeTools = () => {
             <DotsHorizontalIcon className="h-5 w-5" />
           </button>
         </div>
-        <div className="m-2 hidden lg:block">
+        <div className="mx-2 hidden lg:block">
           <PrimitivesMenu />
         </div>
       </div>
