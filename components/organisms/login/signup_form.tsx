@@ -1,13 +1,16 @@
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useTranslation } from "next-i18next";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { auth } from "../../../firebase/clientApp";
 
 type SignUpFormProps = {
-  onSubmit: (data: any) => void;
-  errorsRepeatPassword?: string;
+  // onSubmit?: (data: any) => void;
+  // errorsRepeatPassword?: string;
 };
 
-const SingUpForm = ({ onSubmit, errorsRepeatPassword }: SignUpFormProps) => {
+const SingUpForm = ({ }: SignUpFormProps) => {
   const { t } = useTranslation();
   const {
     register,
@@ -15,8 +18,35 @@ const SingUpForm = ({ onSubmit, errorsRepeatPassword }: SignUpFormProps) => {
     watch,
     formState: { errors },
   } = useForm();
+  const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
+  const router = useRouter();
+
+  const onSubmitSignUp = async (data) => {
+    const { email, password, repeatPassword } = data;
+    if (password != repeatPassword) {
+      setErrorsRepeatPassword("Passwords do not match");
+      return;
+    }
+    try {
+      setErrorsRepeatPassword("");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      // Signed in
+      const user = userCredential;
+      console.log('succefull created', user);
+      router.push('/smith');
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(error);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form-control">
+    <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <label htmlFor="user" className="label">
         <span className="label-text">{t("username")}</span>
       </label>

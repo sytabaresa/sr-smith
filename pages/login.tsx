@@ -1,15 +1,15 @@
-import { signInWithEmailAndPassword, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import Layout from "../components/templates";
-import app from "../firebase/clientApp";
 import { auth } from "../firebase/clientApp";
 import { useUser } from "../providers/userContext";
 import { useRouter } from "next/router";
 import { UrlObject } from "url";
 import SingUpForm from "../components/organisms/login/signup_form";
 import LoginForm from "../components/organisms/login/login_form";
+import provider from "../firebase/googleLogin";
 
 interface LoginProps {
   homePage: UrlObject | string;
@@ -24,52 +24,8 @@ const Login = ({ homePage = "/" }: LoginProps) => {
     formState: { errors },
   } = useForm();
   const [isLogin, setIsLogin] = useState(true);
-  const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
 
   const router = useRouter();
-
-  const onsubmitLogin = async (data) => {
-    const { email, password } = data;
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential.user;
-      // console.log(user);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    }
-  };
-
-  const onSubmitSignUp = async (data) => {
-    const { email, password, repeatPassword } = data;
-    if (password != repeatPassword) {
-      setErrorsRepeatPassword("Passwords do not match");
-      return;
-    }
-    try {
-      setErrorsRepeatPassword("");
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential;
-      console.log('succefull created', user);
-      router.push('/smith');
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    }
-  };
 
   const { isAuthenticated } = useUser();
 
@@ -92,9 +48,8 @@ const Login = ({ homePage = "/" }: LoginProps) => {
             {t("login")}
           </a>
           <a
-            className={`tab tab-lg tab-bordered ${
-              !isLogin ? "tab-active" : ""
-            }`}
+            className={`tab tab-lg tab-bordered ${!isLogin ? "tab-active" : ""
+              }`}
             onClick={() => setIsLogin(false)}
           >
             {t("Sign Up")}
@@ -102,12 +57,9 @@ const Login = ({ homePage = "/" }: LoginProps) => {
         </div>
         <div className="w-1/2">
           {isLogin ? (
-            <LoginForm onSubmit={onsubmitLogin} />
+            <LoginForm />
           ) : (
-            <SingUpForm
-              onSubmit={onSubmitSignUp}
-              errorsRepeatPassword={errorsRepeatPassword}
-            />
+            <SingUpForm />
           )}
         </div>
       </div>
