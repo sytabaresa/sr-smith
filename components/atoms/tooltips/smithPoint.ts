@@ -1,22 +1,13 @@
 import { TooltipType } from "./interfaces";
-import { createMachine, state, state as final, transition, reduce } from "robot3";
-import { selectOrDrawPoint } from "./common";
 import { PointIcon } from "../custom-icons";
+import PointTooltip from "./point";
 
-class PointTooltip implements TooltipType {
+class SmithPointTooltip extends PointTooltip implements TooltipType {
     objectSelected: any[]
     name = 'spoint'
     description = 'select position or line, curve, or other element'
     tooltip = 'sPoint'
     icon = PointIcon
-
-    machine = createMachine({
-        idle: state(
-            transition('DOWN', 'end', reduce(selectOrDrawPoint)),
-        ),
-        error: final(),
-        end: final(),
-    })
 }
 
-export default PointTooltip
+export default SmithPointTooltip
