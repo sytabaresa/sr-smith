@@ -1,4 +1,5 @@
 import JXG, { Board, Circle, GeometryElementAttributes, Point } from "jsxgraph"
+import { zImPart } from "./smith-utils";
 
 JXG.createImCircle = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
@@ -21,7 +22,7 @@ JXG.createImCircle = function (board, parents, attributes) {
         const f = function () {
             const a = p.X()
             const b = p.Y()
-            const r = (2 * b) / ((1 - a) * (1 - a) + b * b)
+            const r = zImPart(a, b)
             return 1 / r
         }
         var orig = board.create('point', [1, f], origAtt)

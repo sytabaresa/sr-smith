@@ -1,5 +1,6 @@
 import JXG from "jsxgraph"
 import { getMouseCoords } from "../../utils/board";
+import { zImPart, zRePart } from "../smith-utils";
 
 export function getIndexFinger(ctx, event) {
     let index
@@ -17,6 +18,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     let inCurve = []
     let objectSelected = ctx.objectSelected ?? []
     let code = ctx.code ?? ""
+    const smithMode = ctx.smithMode
 
     const index = getIndexFinger(ctx, event)
     const coords = getMouseCoords(event.value, index, board);
@@ -69,17 +71,24 @@ export function selectOrDrawPoint(ctx: any, event) {
             let point1 = board.create('intersection', [...objects, 0], options)
             if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
                 point = point1
-                code += getCodefromObject(point, options)
+                // code += getCodefromObject(point, options)
             } else {
                 board.removeObject(point1)
                 point = board.create('intersection', [...objects, 1], options)
-                code += getCodefromObject(point, options)
+                // code += getCodefromObject(point, options)
             }
         }
     }
 
     if (!point) {
-        point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], options);
+        if (smithMode) {
+            point = board.create('spoint', [
+                zRePart(coords.usrCoords[1], coords.usrCoords[2]),
+                zImPart(coords.usrCoords[1], coords.usrCoords[2])
+            ], options);
+        } else {
+            point = board.create('point', [coords.usrCoords[1], coords.usrCoords[2]], options);
+        }
         code += getCodefromObject(point, options)
     }
 
@@ -93,7 +102,10 @@ export function getCodefromObject(ob, options = null): string {
     let outStr = `${ob.name != '' ? `${normalizeName(ob.name)} = ` : ''}${ob.elType}(`
     switch (ob.type) {
         case JXG.OBJECT_TYPE_POINT:
-            outStr += `${ob.coords.usrCoords[1].toFixed(3)}, ${ob.coords.usrCoords[2].toFixed(3)}`
+            outStr += `${ob.X().toFixed(3)}, ${ob.X().toFixed(3)}`
+            break
+        case JXG.OBJECT_TYPE_SMITH_POINT:
+            outStr += `${ob.SX().toFixed(3)}, ${ob.SY().toFixed(3)}`
             break
         case JXG.OBJECT_TYPE_INTERSECTION:
             outStr += `${normalizeName(ob.board.select(ob.parents[0]).name)}, ${normalizeName(ob.board.select(ob.parents[1]).name)}, ${ob.intersectionNumbers[0]}`

@@ -45,6 +45,7 @@ class TwoPointsTooltip {
     }, (parentContext: any) => ({
         board: parentContext.board,
         objectSelected: [],
+        smithMode: parentContext.smithMode,
     }))
 }
 

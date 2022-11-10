@@ -5,6 +5,7 @@ import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
 import '../components/atoms/reCircle'
 import '../components/atoms/imCircle'
+import '../components/atoms/smithPoint'
 import './main.css';
 import JXG from 'jsxgraph';
 

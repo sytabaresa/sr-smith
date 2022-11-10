@@ -5,9 +5,9 @@ import { PointIcon } from "../custom-icons";
 
 class PointTooltip implements TooltipType {
     objectSelected: any[]
-    name = 'point'
+    name = 'spoint'
     description = 'select position or line, curve, or other element'
-    tooltip = 'Point'
+    tooltip = 'sPoint'
     icon = PointIcon
 
     machine = createMachine({
@@ -16,11 +16,7 @@ class PointTooltip implements TooltipType {
         ),
         error: final(),
         end: final(),
-    }, (parentContext: any) => ({
-        board: parentContext.board,
-        objectSelected: [],
-        smithMode: parentContext.smithMode,
-    }))
+    })
 }
 
 export default PointTooltip

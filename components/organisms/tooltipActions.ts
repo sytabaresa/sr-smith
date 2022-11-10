@@ -146,7 +146,9 @@ export class JXGDrawer {
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
             transition('CHANGE_DRAW', 'pre_draw'),
-            transition('DOWN', 'idle') // only for don't display annoying errors in dev ;)
+            transition('SMITH_MODE', 'idle', reduce((ctx: any, ev: any) => {
+                return { ...ctx, smithMode: ev.value }
+            })),
         ),
         pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
@@ -186,6 +188,7 @@ export class JXGDrawer {
     }, () => ({
         tooltipSelected: '',
         code: '',
+        smithMode: true,
     }))
 
     sendEvent = (event: string, payload: any = null) => { //TODO: types here

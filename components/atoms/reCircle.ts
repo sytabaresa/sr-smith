@@ -1,4 +1,5 @@
 import JXG, { Board, Circle, GeometryElementAttributes, Point } from "jsxgraph"
+import { zRePart } from "./smith-utils";
 
 JXG.createReCircle = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
@@ -21,13 +22,13 @@ JXG.createReCircle = function (board, parents, attributes) {
         var orig = board.create('point', [function () {
             const a = p.X()
             const b = p.Y()
-            const r = (1 - a * a - b * b) / ((1 - a) * (1 - a) + b * b)
+            const r = zRePart(a, b)
             return r / (r + 1)
         }, 0], origAtt)
         var c1 = board.create('circle', [orig, function () {
             const a = p.X()
             const b = p.Y()
-            const r = (1 - a * a - b * b) / ((1 - a) * (1 - a) + b * b)
+            const r = zRePart(a, b)
             return 1 / (r + 1)
         }], attributes);
 
