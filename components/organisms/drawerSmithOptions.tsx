@@ -16,6 +16,7 @@ import { useUser } from "../../providers/userContext";
 import ModalContainer from "../molecules/modalContainer";
 import NewProjectForm from "./newProjectForm";
 import PublishProjectForm from "./publishProjectForm";
+import { UserImage } from "../molecules/userImage";
 
 
 const DrawerSmithOptions = () => {
@@ -23,7 +24,7 @@ const DrawerSmithOptions = () => {
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
 
     const router = useRouter()
-    const { isAuthenticated } = useUser()
+    const { isAuthenticated, user } = useUser()
 
     const logout = async () => {
         try {
@@ -48,6 +49,13 @@ const DrawerSmithOptions = () => {
             <div className="p-4 overflow-y-auto w-52 bg-base-100 text-base-content flex flex-col items-start">
                 {isAuthenticated ?
                     <>
+                        {user && <div className="flex flex-col items-center mb-4">
+                            <UserImage className="mb-2" imageClasses="w-24 h-24" />
+                            <div className="w-44 text-center">
+                                <h1 className="font-bold break-words text-sm">{user?.email}</h1>
+                                {/* <h2 className="break-normal">{user?.displayName}</h2> */}
+                            </div>
+                        </div>}
                         <label htmlFor={NEW_PROJECT_LABEL}>
                             <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label="New" />
                         </label>
