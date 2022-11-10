@@ -1,5 +1,5 @@
 // import { Board } from 'jsxgraph'
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
+import JXG from "jsxgraph"
 import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
 import { initBoard } from "../atoms/boards";

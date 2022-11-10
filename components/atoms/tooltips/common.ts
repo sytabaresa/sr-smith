@@ -1,4 +1,4 @@
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
+import JXG from "jsxgraph"
 import { getMouseCoords } from "../../utils/board";
 
 export function getIndexFinger(ctx, event) {

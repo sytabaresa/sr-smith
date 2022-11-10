@@ -3,9 +3,13 @@ import { useEffect } from 'react';
 import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
+import '../components/atoms/reCircle'
+import '../components/atoms/imCircle'
 import './main.css';
+import JXG from 'jsxgraph';
 
 function MyApp({ Component, pageProps }) {
+
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
