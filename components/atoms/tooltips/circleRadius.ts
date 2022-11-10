@@ -11,9 +11,6 @@ class CircleRadiusTooltip implements TooltipType {
     icon = CircleCenterRadiusIcon
     paramsStr = (ob: any) => `${normalizeName(ob.center.name)},${ob.radius}`
 
-
-    selectOrDrawPoint1 = selectOrDrawPoint
-
     drawCircle(ctx, event) {
         const { board, value } = event
         let code = ctx.code ?? ""
@@ -27,7 +24,7 @@ class CircleRadiusTooltip implements TooltipType {
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'drawCircle', reduce(this.selectOrDrawPoint1.bind(this))),
+            transition('DOWN', 'drawCircle', reduce(selectOrDrawPoint)),
         ),
         drawCircle: state(
             transition('RADIUS', 'end', reduce(this.drawCircle.bind(this))),
@@ -37,6 +34,8 @@ class CircleRadiusTooltip implements TooltipType {
         end: final(),
     }, (parentContext: any) => ({
         board: parentContext.board,
+        objectSelected: [],
+        smithMode: parentContext.smithMode,
     }))
 }
 

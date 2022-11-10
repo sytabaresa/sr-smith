@@ -116,36 +116,13 @@ function getParamsStrPoint(ob) {
     }
     return outStr
 }
+
 export function getCodefromObject(paramsStr, ob, options = null): string {
     // console.log(ob.name, ob, options)
 
     let outStr = `${ob.name != '' ? `${normalizeName(ob.name)} = ` : ''}${ob.elType}(`
 
     outStr += paramsStr(ob)
-    // switch (ob.type) {
-    //     case JXG.OBJECT_TYPE_POINT:
-    //         outStr += `${ob.X().toFixed(3)}, ${ob.Y().toFixed(3)}`
-    //         break
-    //     case JXG.OBJECT_TYPE_SMITH_POINT:
-    //         outStr += `${ob.SX().toFixed(3)}, ${ob.SY().toFixed(3)}`
-    //         break
-    //     case JXG.OBJECT_TYPE_INTERSECTION:
-    //         outStr += `${normalizeName(ob.board.select(ob.parents[0]).name)}, ${normalizeName(ob.board.select(ob.parents[1]).name)}, ${ob.intersectionNumbers[0]}`
-    //         break
-    //     case JXG.OBJECT_TYPE_GLIDER:
-    //         outStr += `${ob.coords.usrCoords[1].toFixed(3)}, ${ob.coords.usrCoords[2].toFixed(3)}, ${normalizeName(ob.board.select(ob.parents[0]).name)}`
-    //         break
-    //     case JXG.OBJECT_TYPE_CIRCLE:
-    //         outStr += `${normalizeName(ob.center.name)},${normalizeName(ob.point2?.name) ?? normalizeName(ob.circle?.name) ?? normalizeName(ob.line?.name) ?? ob.radius}`
-    //         break
-    //     case JXG.OBJECT_TYPE_IMAGINARY_CIRCLE:
-    //     case JXG.OBJECT_TYPE_REAL_CIRCLE:
-    //         outStr += `${normalizeName(ob.originPoint?.name)}`
-    //         break
-    //     case JXG.OBJECT_TYPE_LINE:
-    //         outStr += `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
-    //         break
-    // }
     const opStr = (options && Object.keys(options).length != 0) ? ' ' + stringifyJC(options) : ''
     outStr += `)${opStr};\n`
     return outStr
