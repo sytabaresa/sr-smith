@@ -1,4 +1,6 @@
+import { Circumcircle } from "jsxgraph";
 import { CircumcircleIcon } from "../custom-icons";
+import { normalizeName } from "./common";
 import { TooltipType } from "./interfaces";
 import ThreePointsTooltip from "./threePoints";
 

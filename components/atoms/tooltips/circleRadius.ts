@@ -1,6 +1,6 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, state, state as final, transition, reduce } from "robot3";
-import { getCodefromObject, selectOrDrawPoint } from "./common";
+import { getCodefromObject, normalizeName, selectOrDrawPoint } from "./common";
 import { CircleCenterRadiusIcon } from "../custom-icons";
 
 class CircleRadiusTooltip implements TooltipType {
@@ -9,8 +9,7 @@ class CircleRadiusTooltip implements TooltipType {
     jsxName = 'circle'
     tooltip = 'Circunferencia: centro y radio'
     icon = CircleCenterRadiusIcon
-
-    selectOrDrawPoint1 = selectOrDrawPoint
+    paramsStr = (ob: any) => `${normalizeName(ob.center.name)},${ob.radius}`
 
     drawCircle(ctx, event) {
         const { board, value } = event
@@ -18,14 +17,14 @@ class CircleRadiusTooltip implements TooltipType {
 
         const element = board.create(this.jsxName, [ctx.objectSelected[0], value])
 
-        code += getCodefromObject(element)
+        code += getCodefromObject(this.paramsStr, element)
 
         return { ...ctx, code }
     }
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'drawCircle', reduce(this.selectOrDrawPoint1.bind(this))),
+            transition('DOWN', 'drawCircle', reduce(selectOrDrawPoint)),
         ),
         drawCircle: state(
             transition('RADIUS', 'end', reduce(this.drawCircle.bind(this))),
@@ -35,6 +34,8 @@ class CircleRadiusTooltip implements TooltipType {
         end: final(),
     }, (parentContext: any) => ({
         board: parentContext.board,
+        objectSelected: [],
+        smithMode: parentContext.smithMode,
     }))
 }
 

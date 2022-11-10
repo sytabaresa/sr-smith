@@ -15,12 +15,12 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
         boundingbox,
         // maxBoundingBox: [-4, 2, 4, -2], //TODO: revisr porque los eventos touch no funcionan bien con esto
         keepaspectratio: true,
-        grid: true,
-        axis: true,
+        // grid: true,
+        // axis: true,
         showFullscreen: true,
         showCopyRight: false,
         showScreenshot: true,
-        resize: {enabled: true, throttle: 200},
+        resize: { enabled: true, throttle: 200 },
         pan: {
             enabled: true,
             needShift: false, // mouse panning needs pressing of the shift key
@@ -61,15 +61,18 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
             fixed: true,
             highlight: false,
             fillOpacity: 0.7,
+            inmutable: true
             // highlightCssClass: 'opacity-50',
             // cssClass: 'opacity-50',
         });
 
-    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [1, 0], { name: 'X10', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [0, 1], { name: 'X01', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [-1, 0], { name: 'X-10', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [0, -1], { name: 'X0-1', color: 'blue', size: 1, fixed: true })
+    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [1, 0], { name: 'X1', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [-1, 0], { name: 'X3', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, -1], { name: 'X4', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true })
+    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true })
 
 
 

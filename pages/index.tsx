@@ -45,9 +45,12 @@ const SmithProject: React.FC = () => {
 
   const keyMap = {
     EXIT: "esc",
+    DELETE: "d",
   };
+
   const handlers = {
     EXIT: () => ui.sendEvent("EXIT"),
+    DELETE: () => ui.sendEvent("DELETE"),
   };
 
   // machines

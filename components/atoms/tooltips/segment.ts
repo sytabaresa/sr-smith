@@ -1,4 +1,6 @@
+import { Segment } from "jsxgraph";
 import { SegmentIcon } from "../custom-icons";
+import { normalizeName } from "./common";
 import { TooltipType } from "./interfaces";
 import TwoPointsTooltip from "./twoPoints";
 
@@ -8,6 +10,7 @@ class SegmentTooltip extends TwoPointsTooltip implements TooltipType {
     tooltip = 'Segment'
     description = ''
     icon = SegmentIcon
+    paramsStr = (ob: Segment) => `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
 }
 
 export default SegmentTooltip
