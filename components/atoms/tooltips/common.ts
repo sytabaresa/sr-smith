@@ -11,6 +11,17 @@ export function getIndexFinger(ctx, event) {
     return index
 }
 
+export function removeElement(board, event) {
+    // const index = getIndexFinger(ctx, event)
+    const coords = getMouseCoords(event, 0, board);
+    for (let el in board.objects) {
+        const object = board.objects[el]
+        if (object.hasPoint(coords.scrCoords[1], coords.scrCoords[2]) && !object.visProp.inmutable) {
+            board.removeObject(object)
+        }
+    }
+}
+
 export function selectOrDrawPoint(ctx: any, event) {
     const { board } = event
     let point

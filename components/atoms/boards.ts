@@ -61,17 +61,18 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
             fixed: true,
             highlight: false,
             fillOpacity: 0.7,
+            inmutable: true
             // highlightCssClass: 'opacity-50',
             // cssClass: 'opacity-50',
         });
 
-    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [1, 0], { name: 'X1', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [-1, 0], { name: 'X3', color: 'blue', size: 1, fixed: true })
-    brd.create('point', [0, -1], { name: 'X4', color: 'blue', size: 1, fixed: true })
-    brd.create('axis', [[0, 0], [0, 1]])
-    brd.create('axis', [[0, 0], [1, 0]])
+    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [1, 0], { name: 'X1', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [-1, 0], { name: 'X3', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, -1], { name: 'X4', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true })
+    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true })
 
 
 

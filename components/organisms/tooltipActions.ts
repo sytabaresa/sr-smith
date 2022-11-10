@@ -1,5 +1,5 @@
 // import { Board } from 'jsxgraph'
-import JXG from "jsxgraph"
+import JXG, { Board } from "jsxgraph"
 import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
 import { initBoard } from "../atoms/boards";
@@ -20,6 +20,7 @@ import SemicircleTooltip from "../atoms/tooltips/semicircle";
 import ArcTooltip from "../atoms/tooltips/arc";
 import ReCircleTooltip from "../atoms/tooltips/reCircle";
 import ImCircleTooltip from "../atoms/tooltips/imCircle";
+import { removeElement } from "../atoms/tooltips/common";
 
 
 export function useDrawner() {
@@ -29,7 +30,7 @@ export function useDrawner() {
 }
 
 export class JXGDrawer {
-    board: any
+    board: Board
     boardName: string
     attributes: Record<string, any>
     initState: string = 'idle'
@@ -41,18 +42,11 @@ export class JXGDrawer {
     private touchTimer
     private reactContext: SmithContextType
     private inTouch: boolean = false
+    private moveEvent: any
     service: Service<typeof this.whiteboardMachine>
 
     constructor(attributes = {}) {
         this.attributes = attributes
-
-        // this.service = interpret(this.whiteboardMachine,
-        //     (service) => { },
-        //     //     (service) => {
-        //     //     console.log(`machine: {"prev": ${this.prevState}, "current": ${service.machine.current}}`)
-        //     //     this.prevState = service.machine.current
-        //     // },
-        //     {});
 
         //register plugins
         this.tooltipPlugins = [
@@ -79,15 +73,6 @@ export class JXGDrawer {
         const out = useMachine(this.whiteboardMachine)
         this.service = out[2]
 
-        // const ctxCode = out[0].context.code
-        // useEffect(() => {
-        //     console.log('a', ctxCode)
-        //     if (ctxCode && ctxCode != '')
-        //         setCode(code => code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode)
-        // }, [setCode, out[0].context.code])
-
-
-        // this.populateBoard()
         return out
     }
 
@@ -108,12 +93,17 @@ export class JXGDrawer {
         }
     }
 
+    moveHandler(e) {
+        this.moveEvent = e
+    }
+
     populateBoard() {
         //register canvas handlers:
         if (this.board) {
             this.board.on('down', this.downHandler.bind(this));
             this.board.on('up', this.upHandler.bind(this))
             this.board.on('drag', (e) => this.sendEvent('DRAG', e));
+            this.board.on('hit', this.moveHandler.bind(this))
             // this.board.on('hit', (e) => this.sendEvent('HIT', e));
         }
     }
@@ -151,8 +141,15 @@ export class JXGDrawer {
         return { ...ctx, smithMode: ev.value }
     }
 
+    removeElement = (ctx: any, ev: any) => {
+        console.log('del')
+        removeElement(this.board, this.moveEvent)
+        return ctx
+    }
+
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
+            transition('DELETE', 'idle', reduce(this.removeElement)),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('SMITH_MODE', 'idle', reduce(this.smithModeChange)),
         ),
