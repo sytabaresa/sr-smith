@@ -1,4 +1,4 @@
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
+import JXG from "jsxgraph"
 
 export const getMouseCoords = (e, i, board) => {
     var cPos = board.getCoordsTopLeftCorner(e, i),

@@ -1,22 +1,26 @@
-import { MachineCtx, TooltipType } from "./interfaces";
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
-import { getMouseCoords } from "../../utils/board";
-import { createMachine, guard, immediate, state, state as final, transition, action, reduce } from "../../fsm/machine";
-import { selectOrDrawPoint } from "./common";
+import { TooltipType } from "./interfaces";
+import { createMachine, state, state as final, transition, reduce } from "robot3";
+import { getCodefromObject, selectOrDrawPoint } from "./common";
+import { CircleCenterRadiusIcon } from "../custom-icons";
 
 class CircleRadiusTooltip implements TooltipType {
     name = 'circleRadius'
     description = 'Select center point, then enter radius'
     jsxName = 'circle'
+    tooltip = 'Circunferencia: centro y radio'
+    icon = CircleCenterRadiusIcon
 
     selectOrDrawPoint1 = selectOrDrawPoint
 
     drawCircle(ctx, event) {
         const { board, value } = event
+        let code = ctx.code ?? ""
 
-        board.create(this.jsxName, [ctx.objectSelected[0], value])
+        const element = board.create(this.jsxName, [ctx.objectSelected[0], value])
 
-        return ctx
+        code += getCodefromObject(element)
+
+        return { ...ctx, code }
     }
 
     machine = createMachine({

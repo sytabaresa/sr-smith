@@ -4,20 +4,24 @@ import { getCodefromObject, selectOrDrawPoint } from "./common";
 
 class TwoPointsTooltip {
     jsxName = ''
-    
+
     drawObject = (ctx, event) => {
         const { board, value } = event
         const { objectSelected } = ctx
         let code = ctx.code ?? ""
 
-        const element = board.create(this.jsxName, [objectSelected[0], objectSelected[1]])
+        const element = board.create(this.jsxName, [objectSelected[0], objectSelected[1], objectSelected[2]])
         code += getCodefromObject(element)
 
         return { ...ctx, code }
     }
 
-    differentPoints = (ctx, ev) => {
+    differentPoints1 = (ctx, ev) => {
         return ctx.objectSelected.at(-1) != ctx.objectSelected.at(-2)
+    }
+
+    differentPoints2 = (ctx, ev) => {
+        return ctx.objectSelected.at(-1) != ctx.objectSelected.at(-2) != ctx.objectSelected.at(-3)
     }
 
     removeLastObject = (ctx, ev) => {
@@ -30,12 +34,18 @@ class TwoPointsTooltip {
             transition('DOWN', 'secondPoint', reduce(selectOrDrawPoint)),
         ),
         secondPoint: state(
-            transition('DOWN', 'checkLastPoint', reduce(selectOrDrawPoint),
-            ),
+            transition('DOWN', 'thirdPoint', reduce(selectOrDrawPoint),),
         ),
-        checkLastPoint: state(
-            immediate('drawObject', guard(this.differentPoints)),
+        checkSecondPoint: state(
+            immediate('thirdPoint', guard(this.differentPoints1)),
             immediate('secondPoint', reduce(this.removeLastObject))
+        ),
+        thirdPoint: state(
+            transition('DOWN', 'checkThirdPoint', reduce(selectOrDrawPoint)),
+        ),
+        checkThirdPoint: state(
+            immediate('drawObject', guard(this.differentPoints2)),
+            immediate('thirdPoint', reduce(this.removeLastObject))
         ),
         drawObject: state(
             immediate('end', reduce(this.drawObject.bind(this)))

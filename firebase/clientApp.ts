@@ -5,6 +5,7 @@ import 'firebase/firestore' // If you need it
 import 'firebase/storage' // If you need it
 import 'firebase/performance' // If you need it
 import { clientCredentials } from './config';
+import { getFirestore } from "firebase/firestore";
 
 
 export const app = initializeApp(clientCredentials)
@@ -19,6 +20,8 @@ if (typeof window !== 'undefined') {
     //   firebase.performance()
     // }
 }
+
+export const db = getFirestore(app);
 
 
 export default app

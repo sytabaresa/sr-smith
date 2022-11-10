@@ -3,9 +3,14 @@ import { useEffect } from 'react';
 import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
 import "jsxgraph/distrib/jsxgraph.css"
+import '../components/atoms/reCircle'
+import '../components/atoms/imCircle'
+import '../components/atoms/smithPoint'
 import './main.css';
+import JXG from 'jsxgraph';
 
 function MyApp({ Component, pageProps }) {
+
 
   useEffect(() => {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
@@ -27,8 +32,8 @@ function MyApp({ Component, pageProps }) {
 
     //robot3 debuging mode
     if (process.env.NODE_ENV == 'development') {
-      require('../components/fsm/debug')
-      require('../components/fsm/logging')
+      // require('robot3/debug')
+      require('robot3/logging')
     }
 
     return () => { }

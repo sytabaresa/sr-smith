@@ -4,7 +4,21 @@
 //
 // import { User } from 'path/to/interfaces';
 
+import { Timestamp } from "firebase/firestore"
+
 export type User = {
   id: number
   name: string
+}
+
+export type SmithProject = {
+  id: string
+  createAt?: Timestamp
+  updateAt?: Timestamp
+  data?: string
+  description?: string
+  hashReference?: string
+  isPublic?: boolean
+  name?: string
+  userId?: string
 }

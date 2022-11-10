@@ -1,4 +1,4 @@
-import JXG from "jsxgraph/distrib/jsxgraphsrc"
+import JXG from "jsxgraph"
 
 export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
 

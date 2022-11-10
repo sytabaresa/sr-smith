@@ -39,7 +39,7 @@ const Login = ({ homePage = "/" }: LoginProps) => {
       );
       // Signed in
       const user = userCredential.user;
-      console.log(user);
+      // console.log(user);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
