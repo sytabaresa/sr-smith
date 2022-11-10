@@ -50,11 +50,11 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     // });
 
 
-    const tt = 1.185
-    const x = 0.0025
-    const y = -0.001
+    const tt = 1.1555
+    // const x = 0.0025
+    // const y = -0.001
     brd.create('image', ['/images/smith-chart.svg',
-        [-tt + x, -tt + y], [2 * tt + x, 2 * tt + y]],
+        [-tt, -tt], [2 * tt, 2 * tt]],
         {
             id: 'smith-chart-image',
             name: 'smith-chart-image',
