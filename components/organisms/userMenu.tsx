@@ -7,7 +7,7 @@ export const UserMenu = () => {
 
     return (
         <div className="flex items-center">
-            <Avartar className="hidden md:block" />
+            <Avartar className="hidden md:block" src="https://s.gravatar.com/avatar/718ba64442e4dc180aa0be6b0a9617b1?s=80" text="ST" />
             <div className="md:btn-group">
                 {/* <Link href="/">
                     <button className="btn btn-lg btn-active hidden md:block">
