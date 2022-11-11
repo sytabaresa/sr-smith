@@ -17,13 +17,15 @@ import ModalContainer from "../molecules/modalContainer";
 import NewProjectForm from "./newProjectForm";
 import PublishProjectForm from "./publishProjectForm";
 import { UserImage } from "../molecules/userImage";
-
+import { useTranslation } from "next-export-i18n";
+import { LangMenu } from "../atoms/langMenu";
 
 const DrawerSmithOptions = () => {
     const NEW_PROJECT_LABEL = 'new-project-modal'
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
 
     const router = useRouter()
+    const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
 
     const logout = async () => {
@@ -46,35 +48,38 @@ const DrawerSmithOptions = () => {
     return <>
         <div className="drawer-side">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
-            <div className="p-4 overflow-y-auto w-52 bg-base-100 text-base-content flex flex-col items-start">
-                {isAuthenticated ?
-                    <>
-                        {user && <div className="flex flex-col items-center mb-4">
-                            <UserImage className="mb-2" imageClasses="w-24 h-24" />
-                            <div className="w-44 text-center">
-                                <h1 className="font-bold break-words text-sm">{user?.email}</h1>
-                                {/* <h2 className="break-normal">{user?.displayName}</h2> */}
-                            </div>
-                        </div>}
-                        <label htmlFor={NEW_PROJECT_LABEL}>
-                            <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label="New" />
-                        </label>
-                        {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
+            <div className="p-4 overflow-y-auto w-60 bg-base-100 text-base-content flex flex-col items-start">
+                <div className="flex flex-col items-start flex-grow">
+                    {isAuthenticated ?
+                        <>
+                            {user && <div className="flex flex-col items-center mb-4 ">
+                                <UserImage className="mb-2" imageClasses="w-24 h-24" />
+                                <div className="w-44 text-center">
+                                    <h1 className="font-bold break-words text-sm">{user?.email}</h1>
+                                    {/* <h2 className="break-normal">{user?.displayName}</h2> */}
+                                </div>
+                            </div>}
+                            <label htmlFor={NEW_PROJECT_LABEL}>
+                                <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t("New")} />
+                            </label>
+                            {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
 
-                        <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label="Open" onClick={open} />
-                        <label htmlFor={PUBLISH_PROJECT_LABEL}>
-                            <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Publish" />
-                        </label>
-                        <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label="Settings" />
+                            <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t("Open")} onClick={open} />
+                            <label htmlFor={PUBLISH_PROJECT_LABEL}>
+                                <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t("Publish")} />
+                            </label>
+                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
 
-                        {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
-                        <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label="Logout" onClick={logout} />
-                    </> :
-                    <>
-                        <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label="Login" onClick={login} />
-                        <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label="Settings" />
-                    </>
-                }
+                            {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
+                            <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t("Logout")} onClick={logout} />
+                        </> :
+                        <>
+                            <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t("Login")} onClick={login} />
+                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                        </>
+                    }
+                </div>
+                <LangMenu className="dropdown-top ml-4"/>
             </div>
         </div>
         <ModalContainer

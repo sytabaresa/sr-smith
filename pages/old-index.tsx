@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import Layout from '../components/templates'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import MainCard from '../components/Card';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from "next-export-i18n";
 
 const IndexPage = () => {
   const { t } = useTranslation("common")
@@ -41,14 +40,6 @@ const IndexPage = () => {
     </Layout>
   )
 
-}
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common', 'apps', 'footer'])),
-      // Will be passed to the page component as props
-    },
-  };
 }
 
 export default IndexPage

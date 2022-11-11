@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+  formState: { errors },
   } = useForm();
   const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
   const router = useRouter();
@@ -80,7 +80,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text">{t("repeat password")}</span>
+        <span className="label-text">{t("repeat-password")}</span>
       </label>
       <input
         id="repeatPassword"

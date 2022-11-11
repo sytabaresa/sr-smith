@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { auth } from "../../../firebase/clientApp";
@@ -109,7 +109,7 @@ const LoginForm = ({ }: LoginFormProps) => {
         <div className="w-6 h-6 fill-white mr-4">
           <GoogleIcon />
         </div>
-        Login por Google
+        {t("google-login")}
       </button>
     </form >
   )

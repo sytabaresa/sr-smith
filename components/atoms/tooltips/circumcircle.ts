@@ -8,7 +8,6 @@ class CircumcircleTooltip extends ThreePointsTooltip implements TooltipType {
     name = 'circumcircle'
     jsxName = 'circumcircle'
     tooltip = 'Circunferencia por 3 puntos'
-    description = ''
     icon = CircumcircleIcon
 }
 

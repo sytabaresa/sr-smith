@@ -7,8 +7,10 @@ import SavedProjectCard from "../components/molecules/savedProjectCard";
 import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
 import { useUser } from "../providers/userContext";
+import { useTranslation } from "next-export-i18n"
 
 const SavedProjects = () => {
+  const { t } = useTranslation()
   const router = useRouter();
   const auth = getAuth();
   const [userProejects, setUserProjects] = useState([] as SmithProject[]);
@@ -37,7 +39,7 @@ const SavedProjects = () => {
 
   const renderSavedProjects = (projects: SmithProject[]) => {
     if (projects.length == 0) {
-      return <h3>No tienes proyectos guardados</h3>;
+      return <h3>{t("no projects")}</h3>;
     } else {
       return (
         <div className="flex flex-wrap justify-center">
@@ -64,7 +66,7 @@ const SavedProjects = () => {
   return (
     <div className="overflow-y-hidden ">
       <h1 className="text-xl font-bold text-center my-2">
-        Proyectos Anteriores
+        {t('Previous Projects')}
       </h1>
       {renderSavedProjects(userProejects)}
     </div>

@@ -1,4 +1,3 @@
-import { appWithTranslation } from 'next-i18next';
 import { useEffect } from 'react';
 import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
@@ -42,4 +41,4 @@ function MyApp({ Component, pageProps }) {
   )
 }
 
-export default appWithTranslation(MyApp)
+export default MyApp

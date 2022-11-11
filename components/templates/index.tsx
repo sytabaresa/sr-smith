@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from "next-export-i18n";
 import { useRouter } from 'next/router'
 import Footer from '../organisms/footer'
 
@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const Layout = ({ children, title = 'This is the default title', className }: Props) => {
   const router = useRouter()
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <div className={`flex flex-col ${className}`}>

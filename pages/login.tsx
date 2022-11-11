@@ -1,6 +1,5 @@
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import Layout from "../components/templates";
 import { auth } from "../firebase/clientApp";
@@ -9,7 +8,7 @@ import { useRouter } from "next/router";
 import { UrlObject } from "url";
 import SingUpForm from "../components/organisms/login/signup_form";
 import LoginForm from "../components/organisms/login/login_form";
-import provider from "../firebase/googleLogin";
+import { useTranslation } from "next-export-i18n";
 
 interface LoginProps {
   homePage: UrlObject | string;
@@ -45,7 +44,7 @@ const Login = ({ homePage = "/" }: LoginProps) => {
             className={`tab tab-lg tab-bordered ${isLogin ? "tab-active" : ""}`}
             onClick={() => setIsLogin(true)}
           >
-            {t("login")}
+            {t("Login")}
           </a>
           <a
             className={`tab tab-lg tab-bordered ${!isLogin ? "tab-active" : ""
