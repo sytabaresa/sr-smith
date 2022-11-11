@@ -1,4 +1,15 @@
-import JXG from "jsxgraph"
+import JXG, { PointOptions } from "jsxgraph"
+
+// default style for intercep objects
+JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
+    fillColor: 'gray',
+    strokeColor: 'gray',
+}) as PointOptions
+
+JXG.Options.glider = JXG.merge(JXG.Options.glider, {
+    fillColor: 'gray',
+    strokeColor: 'gray',
+}) as PointOptions
 
 export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
 
@@ -12,6 +23,8 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     const boundingbox = screenBoxSizes[screenSize]
 
     const brd = JXG.JSXGraph.initBoard(boxName, {
+        title: 'Smith Chart canvas',
+        description: 'An canvas with a smith chart, you can create points, lines, circles and other geometric contruct on top of it',
         boundingbox,
         // maxBoundingBox: [-4, 2, 4, -2], //TODO: revisr porque los eventos touch no funcionan bien con esto
         keepaspectratio: true,

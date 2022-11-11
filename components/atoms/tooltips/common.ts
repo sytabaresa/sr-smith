@@ -63,22 +63,11 @@ export function selectOrDrawPoint(ctx: any, event) {
     // interception and slider in elements
     if (inCurve.length == 1) {
         // glider
-        options = {
-            ...options,
-            fillColor: 'gray',
-            strokeColor: 'gray',
-        }
         point = board.create('glider', [coords.usrCoords[1], coords.usrCoords[2], inCurve[0]], options)
         code += getCodefromObject(getParamsStrPoint, point, options)
     } else if (inCurve.length >= 2) {
         const objects = inCurve.slice(0, 2)
         // intersect
-        options = {
-            ...options,
-            fillColor: 'gray',
-            strokeColor: 'gray',
-            fixed: true,
-        }
         let point1 = board.create('intersection', [...objects, 0], options)
         if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
             point = point1

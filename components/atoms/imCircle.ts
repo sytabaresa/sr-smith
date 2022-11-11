@@ -1,4 +1,4 @@
-import JXG, { Board, Circle, GeometryElementAttributes, ImCircle, Point } from "jsxgraph"
+import JXG, { ImCircle, Point } from "jsxgraph"
 import { zImPart } from "./smith-utils";
 
 JXG.OBJECT_TYPE_REAL_CIRCLE = 98
@@ -10,9 +10,11 @@ JXG.createImCircle = function (board, parents, attributes) {
 
         if (!JXG.exists(attributes))
             attributes = {};
+        const attr = JXG.copyAttributes(attributes, board.options, 'imcircle');
+
 
         var orig = board.create('point', [1, 1 / r], origAtt)
-        var c1: any = board.create('circle', [orig, 1 / r], attributes);
+        var c1: any = board.create('circle', [orig, 1 / r], attr);
 
         c1.type = JXG.OBJECT_TYPE_IMAGINARY_CIRCLE
         c1.elType = 'imcircle'
@@ -23,6 +25,8 @@ JXG.createImCircle = function (board, parents, attributes) {
 
         if (!JXG.exists(attributes))
             attributes = {};
+        const attr = JXG.copyAttributes(attributes, board.options, 'imcircle');
+
 
         const f = function () {
             const a = p.X()
@@ -31,7 +35,7 @@ JXG.createImCircle = function (board, parents, attributes) {
             return 1 / r
         }
         var orig = board.create('point', [1, f], origAtt)
-        var c1: any = board.create('circle', [orig, () => Math.abs(f())], attributes);
+        var c1: any = board.create('circle', [orig, () => Math.abs(f())], attr);
 
         c1.originPoint = p
         c1.type = JXG.OBJECT_TYPE_IMAGINARY_CIRCLE
@@ -45,3 +49,5 @@ JXG.createImCircle = function (board, parents, attributes) {
 
 JXG.registerElement('imcircle', JXG.createImCircle);
 
+JXG.Options.imcircle = {
+}
