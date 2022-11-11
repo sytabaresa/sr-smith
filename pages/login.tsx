@@ -38,7 +38,7 @@ const Login = ({ homePage = "/" }: LoginProps) => {
   }
 
   return (
-    <Layout title="Login | Sr Smith App" className="relative h-screen overflow-hidden">
+    <Layout title="Saved | Sr Smith App" className="relative h-screen overflow-hidden">
       <div className="absolute w-full h-full blur-[3px] lg:blur-sm">
         <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] bottom-[-4rem] opacity-40 hover:opacity-100 stroke-success trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
         <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] top-[2rem] opacity-40 hover:opacity-100 stroke-error motion-safe:animate-pulse hover:animate-none" />
