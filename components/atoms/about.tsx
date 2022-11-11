@@ -25,8 +25,8 @@ export const About = () => {
                     href="https://www.linkedin.com/in/sytabaresa"
                 >
                     @sytabares
-                </a>{" "}
-                -
+                </a>
+                {" - "}
                 <a className="link-primary link link-hover" href="https://github.com/kellar1896">
                     @cbarreto
                 </a>

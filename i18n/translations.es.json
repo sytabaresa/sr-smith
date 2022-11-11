@@ -38,11 +38,11 @@
     "this work is under": "Esta obra está bajo",
     "License CC 4_0": "Licencia Creative Commons Atribución 4.0 Internacional",
     "Authors": "Autores",
-    "username": "Usuario",
-    "email": "Email",
-    "email-required": "Email Requerido",
-    "password": "Contraseña",
-    "password-required": "Contraseña Reqerida",
+    "username": "usuario",
+    "email": "email",
+    "email-required": "email requerido",
+    "password": "contraseña",
+    "password-required": "contraseña reqerida",
     "google-login": "Iniciar por Google",
-    "repeat-password": "Repita Contraseña"
+    "repeat-password": "repita contraseña"
 }

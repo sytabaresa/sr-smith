@@ -7,5 +7,9 @@
     "home": "Home",
     "users": "Users",
     "change-locale": "Change Locale",
-    "run": "Run"
+    "run": "Run",
+    "google-login": "Login by Google",
+    "repeat-password": "Repeat Password",
+    "SmithMode": "Smith Mode",
+    "MakePublic": "Make Public"
 }
