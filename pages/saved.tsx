@@ -17,7 +17,7 @@ const SavedProjects = () => {
   const [query2] = useLanguageQuery()
   const router = useRouter();
   const auth = getAuth();
-  const [userProejects, setUserProjects] = useState(null as SmithProject[]);
+  const [userProjects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
 
   useEffect(() => {
@@ -82,7 +82,7 @@ const SavedProjects = () => {
         <h1 className="text-2xl lg:text-3xl font-bold text-center my-4 lg:mt-4 lg:mb-8">
           {t('Previous Projects')}
         </h1>
-        {renderSavedProjects(userProejects)}
+        {renderSavedProjects(userProjects)}
       </div>
     </Layout>
   );

@@ -43,7 +43,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${props.className}`}>
       <div className="form-control">
         <label className="label cursor-pointer pt-0">
-          <span className="label-text w-4">{t("SmithMode")}</span>
+          <span className="label-text w-4">{t("Smith Mode")}</span>
           <input type="checkbox" className="toggle toggle-primary" checked={ui.context().smithMode} onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)} />
         </label>
       </div>
