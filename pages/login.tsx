@@ -1,15 +1,15 @@
-import { signInWithEmailAndPassword, getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import Layout from "../components/templates";
-import app from "../firebase/clientApp";
 import { auth } from "../firebase/clientApp";
 import { useUser } from "../providers/userContext";
 import { useRouter } from "next/router";
 import { UrlObject } from "url";
 import SingUpForm from "../components/organisms/login/signup_form";
 import LoginForm from "../components/organisms/login/login_form";
+import { useTranslation } from "next-export-i18n";
+import { SmithImage } from "../components/atoms/smithImage";
 
 interface LoginProps {
   homePage: UrlObject | string;
@@ -24,52 +24,8 @@ const Login = ({ homePage = "/" }: LoginProps) => {
     formState: { errors },
   } = useForm();
   const [isLogin, setIsLogin] = useState(true);
-  const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
 
   const router = useRouter();
-
-  const onsubmitLogin = async (data) => {
-    const { email, password } = data;
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential.user;
-      // console.log(user);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    }
-  };
-
-  const onSubmitSignUp = async (data) => {
-    const { email, password, repeatPassword } = data;
-    if (password != repeatPassword) {
-      setErrorsRepeatPassword("Passwords do not match");
-      return;
-    }
-    try {
-      setErrorsRepeatPassword("");
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential;
-      console.log('succefull created', user);
-      router.push('/smith');
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    }
-  };
 
   const { isAuthenticated } = useUser();
 
@@ -82,32 +38,33 @@ const Login = ({ homePage = "/" }: LoginProps) => {
   }
 
   return (
-    <Layout title="Home | Sr Smith App" className="h-screen">
-      <div className="flex-grow flex flex-col items-center justify-center">
+    <Layout title="Saved | Sr Smith App" className="relative h-screen overflow-hidden">
+      <div className="absolute w-full h-full blur-[3px] lg:blur-sm">
+        <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] bottom-[-4rem] opacity-40 hover:opacity-100 stroke-success trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
+        <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] top-[2rem] opacity-40 hover:opacity-100 stroke-error motion-safe:animate-pulse hover:animate-none" />
+      </div>
+
+      <div className="flex-grow flex flex-col items-center justify-start mt-20 lg:mt-40">
         <div className="tabs">
           <a
             className={`tab tab-lg tab-bordered ${isLogin ? "tab-active" : ""}`}
             onClick={() => setIsLogin(true)}
           >
-            {t("login")}
+            {t("Login")}
           </a>
           <a
-            className={`tab tab-lg tab-bordered ${
-              !isLogin ? "tab-active" : ""
-            }`}
+            className={`tab tab-lg tab-bordered ${!isLogin ? "tab-active" : ""
+              }`}
             onClick={() => setIsLogin(false)}
           >
             {t("Sign Up")}
           </a>
         </div>
-        <div className="w-1/2">
+        <div className="w-full px-4 sm:w-2/3 md:w-1/2 lg:w-1/3 z-10">
           {isLogin ? (
-            <LoginForm onSubmit={onsubmitLogin} />
+            <LoginForm />
           ) : (
-            <SingUpForm
-              onSubmit={onSubmitSignUp}
-              errorsRepeatPassword={errorsRepeatPassword}
-            />
+            <SingUpForm />
           )}
         </div>
       </div>

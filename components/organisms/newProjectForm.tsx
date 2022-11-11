@@ -27,7 +27,10 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         userId: user.uid,
       } as SmithProject);
       router.push({ pathname: '/', query: { id: docRef.id } });
-      router.reload()
+      setTimeout(() => {
+        router.reload()
+
+      }, 1000)
     } catch (e) {
       console.error("Error adding document: ", e);
     }

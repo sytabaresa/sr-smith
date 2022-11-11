@@ -26,7 +26,10 @@ const clearErrorMsg = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: '' }))
 const setCode = reduce((ctx: any, ev: any) => ({ ...ctx, code: ev.value }))
 const setError = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: ev.error }))
 
-export default createMachine('idle', {
+export default createMachine('init', {
+    init: state(
+        transition('PARSING', 'parsing'),
+        transition("CODE", 'init', setCode)),
     idle: state(
         transition('PARSING', 'parsing', clearErrorMsg),
         transition("CODE", 'idle', setCode)),

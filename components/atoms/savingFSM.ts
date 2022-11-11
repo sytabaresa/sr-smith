@@ -1,6 +1,6 @@
 import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
-import { db } from '../../firebase/clientApp';
+import { db } from "../../firebase/clientApp"
 import { SmithProject } from '../../interfaces';
 import { wait } from '../utils/time';
 
@@ -9,6 +9,15 @@ export interface ContextType {
     projectData: SmithProject;
     loadHandler: (ctx: ContextType, ev: any) => void;
     code?: string;
+}
+
+// cancelable timeout
+let timer = null // not concurrent
+const cancelableTimeout = (ctx, ev) => {
+    return new Promise(resolve => {
+        clearTimeout(timer)
+        timer = setTimeout(resolve, 3000)
+    });
 }
 
 export default createMachine('anon', {
@@ -33,8 +42,8 @@ export default createMachine('anon', {
     tmpSaving: state(
         immediate('saving'),
     ),
-    saving: invoke(wait(3000),
-        transition('SAVE', 'tmpSaving'),
+    saving: invoke(cancelableTimeout,
+        transition('SAVE', 'tmpSaving', reduce(saveCode)),
         transition('done', 'doc', action(updateDocument)),
         transition('error', 'doc'),
     ),
@@ -75,7 +84,7 @@ async function getProjectData(ctx: ContextType) {
 };
 
 async function updateDocument(ctx: ContextType, ev: { value: string }) {
-    console.log('updating data')
+    console.log('updating data', ctx.code)
     const docRef = doc(db, `projects/${ctx.id}`);
     await updateDoc(docRef, {
         data: ctx.code,

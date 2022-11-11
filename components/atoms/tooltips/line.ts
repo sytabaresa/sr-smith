@@ -8,7 +8,6 @@ class LineTooltip extends TwoPointsTooltip implements TooltipType {
     name = 'line'
     jsxName = 'line'
     tooltip = 'Line'
-    description = ''
     icon = LineIcon
     paramsStr = (ob:Line) => `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
 }

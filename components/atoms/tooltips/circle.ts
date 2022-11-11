@@ -7,8 +7,7 @@ import TwoPointsTooltip from "./twoPoints";
 class CircleTooltip extends TwoPointsTooltip implements TooltipType {
     name = 'circle'
     jsxName = 'circle'
-    tooltip = 'Circunferencia (centro, punto)'
-    description = ''
+    tooltip = 'Circle (center, point)'
     icon = CircleCenterPointIcon
     paramsStr = (ob: any) => `${normalizeName(ob.center.name)},${normalizeName(ob.point2?.name) ?? normalizeName(ob.circle?.name) ?? normalizeName(ob.line?.name)}`
 }

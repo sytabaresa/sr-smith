@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Editor from "./codeEditor";
 import { useLayer, Arrow } from "react-laag";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 import { motion } from "framer-motion";
 
 const EditorPopup: React.FC = () => {
     const [isOpen, setOpen] = useState(false);
-    const { t } = useTranslation('common')
+    const { t } = useTranslation()
 
     const {
         renderLayer,

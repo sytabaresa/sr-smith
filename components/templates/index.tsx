@@ -1,9 +1,10 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
-import Link from 'next/link'
 import Head from 'next/head'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from "next-export-i18n";
 import { useRouter } from 'next/router'
 import Footer from '../organisms/footer'
+import { LangMenu } from '../atoms/langMenu';
+import { ArrowLeftIcon } from '@heroicons/react/outline';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
@@ -12,7 +13,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const Layout = ({ children, title = 'This is the default title', className }: Props) => {
   const router = useRouter()
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -21,32 +22,14 @@ const Layout = ({ children, title = 'This is the default title', className }: Pr
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <header>
-        <nav>
-          <Link href="/">
-            {t('home')}
-          </Link>{' '}
-          |{' '}
-          <Link href="/main-menu">
-            {t('smith')}
-          </Link>{' '}
-          {/* |{' '}
-          <Link href="/users">
-            {t('users')}
-          </Link>{' '} */}
-          |{' '}
-          <Link
-            href='/'
-            locale={router.locale === 'en' ? 'es' : 'en'}
-          >
-            <button>
-              {t('change-locale')}
-            </button>
-          </Link>
+      <header className='z-10'>
+        <nav className="navbar">
+          <div className="btn btn-ghost flex" onClick={() => router.back()}><ArrowLeftIcon className='h-4 w-4 mr-2'/>{t('back')}</div>
+          <LangMenu className='ml-2' />
         </nav>
       </header>
       {children}
-      <Footer />
+      <Footer className='mb-2' />
     </div >
   )
 

@@ -5,7 +5,7 @@ JXG.OBJECT_TYPE_REAL_CIRCLE = 98
 
 JXG.createReCircle = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
-    if (JXG.isNumber(parents[0])) {
+    if (JXG.isNumber(parents[0]) && parents[0] > 0) {
         var r = parents[0]
 
         if (!JXG.exists(attributes))
@@ -34,7 +34,7 @@ JXG.createReCircle = function (board, parents, attributes) {
             const a = p.X()
             const b = p.Y()
             const r = zRePart(a, b)
-            return 1 / (r + 1)
+            return Math.abs(1 / (r + 1))
         }], attributes);
 
         c1.originPoint = p

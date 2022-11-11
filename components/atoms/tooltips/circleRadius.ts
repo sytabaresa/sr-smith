@@ -5,9 +5,9 @@ import { CircleCenterRadiusIcon } from "../custom-icons";
 
 class CircleRadiusTooltip implements TooltipType {
     name = 'circleRadius'
-    description = 'Select center point, then enter radius'
     jsxName = 'circle'
-    tooltip = 'Circunferencia: centro y radio'
+    tooltip = 'Circle (center, radio)'
+    description = 'Select center point, then enter radius'
     icon = CircleCenterRadiusIcon
     paramsStr = (ob: any) => `${normalizeName(ob.center.name)},${ob.radius}`
 

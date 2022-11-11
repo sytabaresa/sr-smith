@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-export-i18n";
 import EditorPopup from "../organisms/editorPopup";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
@@ -7,7 +7,7 @@ import { SmithContext } from "../../providers/smithContext";
 import Editor from "./codeEditor";
 
 const CodeTools = () => {
-  const { t } = useTranslation("smith");
+  const { t } = useTranslation();
   const { ui } = useContext(SmithContext)
 
   ui.useMachine()
@@ -60,7 +60,7 @@ const CodeTools = () => {
             <DotsHorizontalIcon className="h-5 w-5" />
           </button>
         </div>
-        <div className="m-2 hidden lg:block">
+        <div className="mx-2 hidden lg:block">
           <PrimitivesMenu />
         </div>
       </div>

@@ -3,6 +3,7 @@ import { getCodefromObject, normalizeName, selectOrDrawPoint } from "./common";
 
 class TwoPointsTooltip {
     jsxName = ''
+    description = "Select three points"
     paramsStr = (ob) => `${normalizeName(ob.board.select(ob.parents[0]).name)},${normalizeName(ob.board.select(ob.parents[1]).name)},${normalizeName(ob.board.select(ob.parents[2]).name)}`
 
     drawObject = (ctx, event) => {

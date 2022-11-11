@@ -1,13 +1,14 @@
 import MenuAlt3Icon from "@heroicons/react/outline/MenuAlt3Icon"
 import ViewGridIcon from "@heroicons/react/outline/ViewGridIcon"
-import Link from "next/link"
-import { Avartar } from "../atoms/avatar"
+import { useUser } from "../../providers/userContext"
+import { UserImage } from "../molecules/userImage"
 
 export const UserMenu = () => {
+    const { user } = useUser()
 
     return (
         <div className="flex items-center">
-            <Avartar className="hidden md:block" />
+            {user && <UserImage className="hidden md:block mr-4" />}
             <div className="md:btn-group">
                 {/* <Link href="/">
                     <button className="btn btn-lg btn-active hidden md:block">

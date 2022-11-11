@@ -7,11 +7,16 @@ import SavedProjectCard from "../components/molecules/savedProjectCard";
 import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
 import { useUser } from "../providers/userContext";
+import { useTranslation } from "next-export-i18n"
+import Layout from "../components/templates";
+import { SmithImage } from "../components/atoms/smithImage";
+import { RefreshIcon } from "@heroicons/react/outline";
 
 const SavedProjects = () => {
+  const { t } = useTranslation()
   const router = useRouter();
   const auth = getAuth();
-  const [userProejects, setUserProjects] = useState([] as SmithProject[]);
+  const [userProejects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
 
   useEffect(() => {
@@ -36,38 +41,49 @@ const SavedProjects = () => {
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
-    if (projects.length == 0) {
-      return <h3>No tienes proyectos guardados</h3>;
-    } else {
-      return (
-        <div className="flex flex-wrap justify-center">
-          {projects.map((item, i) => {
-            return (
+    return <>
+      {!projects ? <div className="flex items-center justify-center">
+        <RefreshIcon className="animate-spin w-8 h-8 mr-2 my-4" />
+        <h3 className="text-xl">{t("loading")}...</h3>
+      </div> :
+        (projects.length == 0 ?
+          <div className="my-4">
+            <h3 className="text-center text-xl">{t("no projects")}</h3>
+          </div>
+          : <div className="flex flex-wrap justify-center">
+            {projects.map((item, i) =>
               <div
                 key={i}
-                className="w-4/12 md:w-2/12 m-2 md:m-4"
+                className="m-4"
                 onClick={() => { goToSavedProject(item.id) }}
               >
                 <SavedProjectCard
                   title={item.name}
+                  description={item.description}
                   image="/images/smith-app.png"
                   id={""}
                 />
               </div>
-            );
-          })}
-        </div>
-      );
-    }
-  };
+            )}
+          </div>
+        )
+      }
+    </>
+  }
 
   return (
-    <div className="overflow-y-hidden ">
-      <h1 className="text-xl font-bold text-center my-2">
-        Proyectos Anteriores
-      </h1>
-      {renderSavedProjects(userProejects)}
-    </div>
+    <Layout title="Projects | Sr Smith App" className="h-screen relative overflow-hidden">
+      <div className="absolute w-full h-full blur-[3px] lg:blur-sm -z-10">
+        <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] top-[-15rem] opacity-40 hover:opacity-100 stroke-error trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
+        <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
+      </div>
+      <div className="overflow-y-auto flex-grow">
+        <h1 className="text-2xl lg:text-3xl font-bold text-center my-4 lg:mt-4 lg:mb-8">
+          {t('Previous Projects')}
+        </h1>
+        {renderSavedProjects(userProejects)}
+      </div>
+    </Layout>
   );
 };
 

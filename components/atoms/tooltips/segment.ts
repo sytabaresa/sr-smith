@@ -8,7 +8,6 @@ class SegmentTooltip extends TwoPointsTooltip implements TooltipType {
     name = 'segment'
     jsxName = 'segment'
     tooltip = 'Segment'
-    description = ''
     icon = SegmentIcon
     paramsStr = (ob: Segment) => `${normalizeName(ob.point1.name)}, ${normalizeName(ob.point2.name)}`
 }

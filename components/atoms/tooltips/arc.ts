@@ -6,7 +6,7 @@ class ArcTooltip extends ThreePointsTooltip implements TooltipType  {
     name = 'arc'
     jsxName = 'arc'
     tooltip = 'Arc'
-    description = ''
+    description = 'Select origin,fist point and point for angle'
     icon = ArcIcon
 }
 

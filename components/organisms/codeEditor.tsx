@@ -1,5 +1,5 @@
 import { TextareaHTMLAttributes, useContext, useEffect } from "react";
-import { useTranslation } from "next-i18next";
+import { useTranslation } from "next-export-i18n";
 import { HotKeys, configure } from "react-hotkeys";
 import Editor from "react-simple-code-editor";
 import JXG from "jsxgraph/distrib/jsxgraphcore"
@@ -29,7 +29,7 @@ export interface IJCTextProps extends TextareaHTMLAttributes<HTMLElement> {
 };
 
 const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
-    const { t } = useTranslation('smith')
+    const { t } = useTranslation()
     const { user, isAuthenticated, loadingUser } = useUser()
 
     const {
