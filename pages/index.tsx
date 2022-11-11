@@ -15,7 +15,9 @@ import editorMachine from '../components/atoms/codeEditorFSM'
 import saveMachine from "../components/atoms/savingFSM";
 import { useTranslation } from "next-export-i18n";
 
-
+import "../components/atoms/smithPoint"
+import "../components/atoms/reCircle"
+import "../components/atoms/imCircle"
 
 configure({
   /**
