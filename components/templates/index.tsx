@@ -29,7 +29,7 @@ const Layout = ({ children, title = 'This is the default title', className }: Pr
         </nav>
       </header>
       {children}
-      <Footer className='mb-2' />
+      <Footer className='mb-2 z-10' />
     </div >
   )
 

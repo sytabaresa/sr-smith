@@ -44,7 +44,7 @@ const SmithProject: React.FC = () => {
 
   const keyMap = {
     EXIT: "esc",
-    DELETE: "d",
+    DELETE: "shift+d",
   };
 
   const handlers = {

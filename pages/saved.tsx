@@ -50,7 +50,7 @@ const SavedProjects = () => {
           <div className="my-4">
             <h3 className="text-center text-xl">{t("no projects")}</h3>
           </div>
-          : <div className="flex flex-wrap justify-center">
+          : <div className="flex flex-wrap justify-center lg:justify-start lg:mx-8">
             {projects.map((item, i) =>
               <div
                 key={i}
