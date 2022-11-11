@@ -8,6 +8,7 @@ import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
 import { useUser } from "../providers/userContext";
 import { useTranslation } from "next-export-i18n"
+import Layout from "../components/templates";
 
 const SavedProjects = () => {
   const { t } = useTranslation()
@@ -64,12 +65,14 @@ const SavedProjects = () => {
   };
 
   return (
-    <div className="overflow-y-hidden ">
-      <h1 className="text-xl font-bold text-center my-2">
-        {t('Previous Projects')}
-      </h1>
-      {renderSavedProjects(userProejects)}
-    </div>
+    <Layout title="Projects | Sr Smith App" className="h-screen">
+      <div className="overflow-y-hidden flex-grow">
+        <h1 className="text-xl font-bold text-center my-2">
+          {t('Previous Projects')}
+        </h1>
+        {renderSavedProjects(userProejects)}
+      </div>
+    </Layout>
   );
 };
 

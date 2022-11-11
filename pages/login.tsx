@@ -9,6 +9,7 @@ import { UrlObject } from "url";
 import SingUpForm from "../components/organisms/login/signup_form";
 import LoginForm from "../components/organisms/login/login_form";
 import { useTranslation } from "next-export-i18n";
+import { SmithImage } from "../components/atoms/smithImage";
 
 interface LoginProps {
   homePage: UrlObject | string;
@@ -37,8 +38,13 @@ const Login = ({ homePage = "/" }: LoginProps) => {
   }
 
   return (
-    <Layout title="Home | Sr Smith App" className="h-screen">
-      <div className="flex-grow flex flex-col items-center justify-center">
+    <Layout title="Login | Sr Smith App" className="relative h-screen overflow-hidden">
+      <div className="absolute w-full h-full blur-[3px] lg:blur-sm">
+        <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] bottom-[-4rem] opacity-40 hover:opacity-100 stroke-success trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
+        <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] top-[2rem] opacity-40 hover:opacity-100 stroke-error motion-safe:animate-pulse hover:animate-none" />
+      </div>
+
+      <div className="flex-grow flex flex-col items-center justify-start mt-20 lg:mt-40">
         <div className="tabs">
           <a
             className={`tab tab-lg tab-bordered ${isLogin ? "tab-active" : ""}`}
@@ -54,7 +60,7 @@ const Login = ({ homePage = "/" }: LoginProps) => {
             {t("Sign Up")}
           </a>
         </div>
-        <div className="w-1/2">
+        <div className="w-full px-4 sm:w-2/3 md:w-1/2 lg:w-1/3 z-10">
           {isLogin ? (
             <LoginForm />
           ) : (

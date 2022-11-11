@@ -92,7 +92,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       <label className="label">
         <span className="label-text-alt">{errorsRepeatPassword}</span>
       </label>
-      <button className="btn btn-primary mt-10 w-1/2 self-center" type="submit">
+      <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
         {t("Sign up")}
       </button>
     </form>

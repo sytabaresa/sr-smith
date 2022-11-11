@@ -100,13 +100,13 @@ const LoginForm = ({ }: LoginFormProps) => {
         </label>
       )}
       <button
-        className="btn btn-primary mt-10 w-1/2 self-center"
+        className="btn btn-primary mt-10 w-full lg:btn-wide self-center"
         type="submit"
       >
         {t("login")}
       </button>
-      <button className="btn bg-red-600  mt-2 w-1/2 self-center" onClick={onGoogleLogin}>
-        <div className="w-6 h-6 fill-white mr-4">
+      <button className="group btn btn-outline bg-white btn-error w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>
+        <div className="w-6 h-6 fill-red-500 group-hover:fill-white mr-4">
           <GoogleIcon />
         </div>
         {t("google-login")}
