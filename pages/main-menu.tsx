@@ -8,14 +8,16 @@ import ModalContainer from "../components/molecules/modalContainer";
 import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
 import NewProjectForm from "../components/organisms/newProjectForm";
 import Layout from "../components/templates";
+import { useLanguageQuery } from "next-export-i18n";
 
 const Projects = () => {
   const auth = getAuth();
   const user = auth.currentUser;
   const router = useRouter();
+  const[query] = useLanguageQuery()
 
   const goToSavedProjects = () => {
-    router.push("/saved");
+    router.push({pathname:"/saved", query});
   };
 
   const Child = ({ image, title }: { image: JSX.Element, title: string }) => {

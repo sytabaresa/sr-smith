@@ -17,7 +17,7 @@ import ModalContainer from "../molecules/modalContainer";
 import NewProjectForm from "./newProjectForm";
 import PublishProjectForm from "./publishProjectForm";
 import { UserImage } from "../molecules/userImage";
-import { useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { LangMenu } from "../atoms/langMenu";
 
 const DrawerSmithOptions = () => {
@@ -25,6 +25,7 @@ const DrawerSmithOptions = () => {
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
 
     const router = useRouter()
+    const [query] = useLanguageQuery()
     const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
 
@@ -38,11 +39,11 @@ const DrawerSmithOptions = () => {
     }
 
     const login = () => {
-        router.push('/login')
+        router.push({ pathname: '/login', query })
     }
 
     const open = () => {
-        router.push('/saved')
+        router.push({ pathname: '/saved', query })
     }
 
     return <>
@@ -79,7 +80,7 @@ const DrawerSmithOptions = () => {
                         </>
                     }
                 </div>
-                <LangMenu className="dropdown-top ml-4"/>
+                <LangMenu className="dropdown-top ml-4" />
             </div>
         </div>
         <ModalContainer

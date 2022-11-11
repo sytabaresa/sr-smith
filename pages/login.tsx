@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { UrlObject } from "url";
 import SingUpForm from "../components/organisms/login/signup_form";
 import LoginForm from "../components/organisms/login/login_form";
-import { useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { SmithImage } from "../components/atoms/smithImage";
 
 interface LoginProps {
@@ -17,6 +17,7 @@ interface LoginProps {
 
 const Login = ({ homePage = "/" }: LoginProps) => {
   const { t } = useTranslation();
+  const [query] = useLanguageQuery()
   const {
     register,
     handleSubmit,
@@ -31,9 +32,9 @@ const Login = ({ homePage = "/" }: LoginProps) => {
 
   if (isAuthenticated) {
     if (router.query?.redirect) {
-      router.push(router.query?.redirect as string);
+      router.push({ pathname: router.query?.redirect as string, query });
     } else {
-      router.push(homePage);
+      router.push({ pathname: homePage as string, query });
     }
   }
 

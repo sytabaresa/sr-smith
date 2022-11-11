@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ type SignUpFormProps = {
 
 const SingUpForm = ({ }: SignUpFormProps) => {
   const { t } = useTranslation();
+  const[query] = useLanguageQuery()
   const {
     register,
     handleSubmit,
@@ -37,7 +38,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       // Signed in
       const user = userCredential;
       console.log('succefull created', user);
-      router.push('/smith');
+      router.push({pathname:'/smith', query});
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;

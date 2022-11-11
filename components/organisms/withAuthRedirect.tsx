@@ -1,3 +1,4 @@
+import { useLanguageQuery } from 'next-export-i18n'
 import Router, { useRouter } from 'next/router'
 import { ReactNode } from 'react'
 import { ReactComponent } from 'react-hotkeys'
@@ -30,8 +31,10 @@ const WithAuthRedirect = ({
   expectedAuth,
   location,
 }: WithAuthRedirectProps) => {
+  
   const WithAuthRedirectWrapper = (props) => {
     const router = useRouter()
+    const[query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
 
     if (loadingUser) {
@@ -41,7 +44,7 @@ const WithAuthRedirect = ({
     if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
       Router.push(typeof location === 'string' ?
         location :
-        { query: { redirect: router.pathname }, ...location }
+        { query: { redirect: router.pathname }, ...location, ...query }
       )
       return <></>
     }
