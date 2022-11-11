@@ -1,6 +1,7 @@
-import JXG, { PointOptions } from "jsxgraph"
+import JXG, { JXGOptions, PointOptions } from "jsxgraph"
+import darkTheme  from "./dark-theme"
 
-// default style for intercep objects
+// default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
     fillColor: 'gray',
     strokeColor: 'gray',
@@ -10,6 +11,9 @@ JXG.Options.glider = JXG.merge(JXG.Options.glider, {
     fillColor: 'gray',
     strokeColor: 'gray',
 }) as PointOptions
+
+// Theme build
+// JXG.Options = JXG.merge(JXG.Options, darkTheme) as JXGOptions
 
 export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
 
