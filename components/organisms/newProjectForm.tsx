@@ -4,16 +4,30 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { auth, db } from "../../firebase/clientApp";
 import { SmithProject } from "../../interfaces";
+import { useTranslation } from "next-export-i18n"
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
 };
 
+
 const NewProjectForm = ({ }: NewProjectFormProps) => {
+  const { t } = useTranslation()
   const router = useRouter()
   const user = auth.currentUser;
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    clearErrors,
+    setError,
+    formState: { errors, isSubmitted, isSubmitting },
+  } = useForm();
+
   const onSubmit = async (data) => {
+    if (isSubmitting) return
+    // clearErrors()
     const { projectName, projectDescription } = data;
     try {
       const docRef = await addDoc(collection(db, "projects"), {
@@ -29,23 +43,18 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
       router.push({ pathname: '/', query: { id: docRef.id } });
       setTimeout(() => {
         router.reload()
-
       }, 1000)
     } catch (e) {
       console.error("Error adding document: ", e);
+      setError('projectName', { type: 'custom', message: e })
+      reset({ keepValues: true })
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
   return (
     <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="projectName" className="label">
-        <span className="label-text">Nombre del Projecto *</span>
+        <span className="label-text">{t('Project Name')}*</span>
       </label>
       <input
         id="projectName"
@@ -56,11 +65,11 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
       />
       {errors.projectName && (
         <label className="label">
-          <span className="label-text-alt">Campo Requerido</span>
+          <span className="label-text-alt">{t('Required Field')}</span>
         </label>
       )}
       <label htmlFor="projectDescription" className="label">
-        <span className="label-text">Descripcion del Projecto</span>
+        <span className="label-text">{t('Project Description')}</span>
       </label>
       <textarea
         id="projectDescription"
@@ -69,7 +78,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         {...register("projectDescription", { required: false })}
       />
       <button className="btn btn-primary mt-10 w-1/2 self-center" type="submit">
-        Crear
+        {isSubmitting ? t('Creating') + "..." : isSubmitted ? t('Done') : t('Create')}
       </button>
     </form>
   );

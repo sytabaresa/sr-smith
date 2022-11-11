@@ -46,5 +46,9 @@
     "password": "contraseña",
     "password-required": "contraseña reqerida",
     "google-login": "Iniciar por Google",
-    "repeat-password": "repita contraseña"
+    "repeat-password": "repita contraseña",
+    "Required Field": "Campo Requerido",
+    "Project Description": "Descripcion del Projecto",
+    "Project Name": "Nombre del Projecto",
+    "Done": "Hecho"
 }
