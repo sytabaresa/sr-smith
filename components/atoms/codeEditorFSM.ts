@@ -30,7 +30,9 @@ const setError = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: ev.error }))
 export default createMachine('init', {
     init: state(
         transition('PARSING', 'parsing'),
-        transition("CODE", 'init', setCode)),
+        transition("CODE", 'init', setCode),
+        transition("THEME", 'idle', setTheme)
+    ),
     idle: state(
         transition('PARSING', 'parsing', clearErrorMsg),
         transition("CODE", 'idle', setCode),
