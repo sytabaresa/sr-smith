@@ -19,10 +19,12 @@ import PublishProjectForm from "./publishProjectForm";
 import { UserImage } from "../molecules/userImage";
 import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { LangMenu } from "../atoms/langMenu";
+import ConfigsForm from "./configForm";
 
 const DrawerSmithOptions = () => {
     const NEW_PROJECT_LABEL = 'new-project-modal'
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
+    const CONFIGS_LABEL = 'configs-label'
 
     const router = useRouter()
     const [query] = useLanguageQuery()
@@ -69,8 +71,9 @@ const DrawerSmithOptions = () => {
                             <label htmlFor={PUBLISH_PROJECT_LABEL}>
                                 <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t("Publish")} />
                             </label>
-                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
-
+                            <label htmlFor={CONFIGS_LABEL}>
+                                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            </label>
                             {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
                             <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t("Logout")} onClick={logout} />
                         </> :
@@ -94,6 +97,13 @@ const DrawerSmithOptions = () => {
             className="w-10/12 md:w-3/12"
             modalChild={<PublishProjectForm />}
             modalName={PUBLISH_PROJECT_LABEL}
+            isModal
+        >
+        </ModalContainer>
+        <ModalContainer
+            className="w-10/12 md:w-3/12"
+            modalChild={<ConfigsForm />}
+            modalName={CONFIGS_LABEL}
             isModal
         >
         </ModalContainer>
