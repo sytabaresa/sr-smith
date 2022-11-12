@@ -12,12 +12,12 @@ type SignUpFormProps = {
 
 const SingUpForm = ({ }: SignUpFormProps) => {
   const { t } = useTranslation();
-  const[query] = useLanguageQuery()
+  const [query] = useLanguageQuery()
   const {
     register,
     handleSubmit,
     watch,
-  formState: { errors },
+    formState: { errors },
   } = useForm();
   const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
   const router = useRouter();
@@ -38,7 +38,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       // Signed in
       const user = userCredential;
       console.log('succefull created', user);
-      router.push({pathname:'/smith', query});
+      router.push({ pathname: '/smith', query });
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -57,11 +57,12 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         type="email"
         placeholder="test@example.com"
         className="input input-bordered"
+        aria-invalid={errors.email ? "true" : "false"}
         {...register("email", { required: true })}
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt">{t("email-required")}</span>
+          <span className="label-text-alt" role="alert">{t("email-required")}</span>
         </label>
       )}
 
@@ -73,21 +74,23 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         name="password"
         type="password"
         className="input input-bordered"
+        aria-invalid={errors.password ? "true" : "false"}
         {...register("password", { required: true })}
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt">{t("password-required")}</span>
+          <span className="label-text-alt" role="alert">{t("password-required")}</span>
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text">{t("repeat-password")}</span>
+        <span className="label-text" role="alert">{t("repeat-password")}</span>
       </label>
       <input
         id="repeatPassword"
         name="repeatPassword"
         type="password"
         className="input input-bordered"
+        aria-invalid={errors.repeatPassword ? "true" : "false"}
         {...register("repeatPassword", { required: true })}
       />
       <label className="label">
