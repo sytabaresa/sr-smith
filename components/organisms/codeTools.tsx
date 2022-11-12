@@ -56,9 +56,9 @@ const CodeTools = () => {
         <Editor className="hidden lg:flex h-[93vh] w-[30vw] max-w-[30rem]" />
         <div className="lg:hidden btn-group">
           <EditorPopup />
-          <button className="btn">
+          {/* <button className="btn">
             <DotsHorizontalIcon className="h-5 w-5" />
-          </button>
+          </button> */}
         </div>
         <div className="mx-2 hidden lg:block">
           <PrimitivesMenu />

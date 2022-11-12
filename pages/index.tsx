@@ -20,6 +20,7 @@ import "../components/atoms/reCircle"
 import "../components/atoms/imCircle"
 import { useConfig } from "../components/atoms/useConfig";
 import { useTheme } from "../components/atoms/useTheme";
+import { initializeWebWorker } from "../components/pwa";
 
 configure({
   /**
@@ -92,6 +93,10 @@ const SmithProject: React.FC = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
+
+    // web worker lifecycle
+    initializeWebWorker()
+
     setTimeout(() => {
 
       const [current, send] = editorService

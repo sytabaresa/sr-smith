@@ -30,6 +30,7 @@ const ModalContainer = ({
           <div className="modal-box relative ">
             <label
               htmlFor={modalName}
+              aria-hidden="true"
               className="btn btn-sm btn-circle absolute right-2 top-2"
             >
               ✕
