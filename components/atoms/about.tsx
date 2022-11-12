@@ -6,17 +6,17 @@ export const About = () => {
 
     return <div className="card">
         <div className="card-body">
-            <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+            <a rel="license" href="https://www.gnu.org/licenses/gpl-3.0.en.html">
                 <img
-                    alt="Licencia Creative Commons"
+                    alt="Licencia GPLv3"
                     style={{ borderWidth: 0, paddingRight: 5 }}
-                    src="https://i.creativecommons.org/l/by/4.0/88x31.png"
+                    src="https://www.gnu.org/graphics/gplv3-127x51.png"
                 />
             </a>
             <span className="pr-1">{t("this work is under")}</span>
-            <a rel="license" className="link" href="http://creativecommons.org/licenses/by/4.0/">
+            <a rel="license" className="link" href="https://www.gnu.org/licenses/gpl-3.0.en.html">
                 {" "}
-                {t("License CC 4_0")}.
+                {t("License GPLv3")}.
             </a>
             <h2 className="font-bold">{t("Authors")}:</h2>
             <span>

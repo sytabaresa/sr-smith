@@ -19,6 +19,7 @@ import "../components/atoms/smithPoint"
 import "../components/atoms/reCircle"
 import "../components/atoms/imCircle"
 import { useConfig } from "../components/atoms/useConfig";
+import { useTheme } from "../components/atoms/useTheme";
 
 configure({
   /**
@@ -36,6 +37,7 @@ const SmithProject: React.FC = () => {
   const router = useRouter();
   const { loadingUser, isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
+  const [theme] = useTheme()
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState(
@@ -65,6 +67,7 @@ const SmithProject: React.FC = () => {
   // data retrievers
   const sendCode = (ctx, ev) => {
     const [current, send] = editorService
+    send({ type: 'THEME', value: theme })
     send({ type: 'CODE', value: ctx.projectData.data });
     send('PARSING')
   }
@@ -94,7 +97,7 @@ const SmithProject: React.FC = () => {
     coordPrecision: 3,
   }
   useConfig(smithOptions)
-  
+
   // all context
   const context = {
     ui,

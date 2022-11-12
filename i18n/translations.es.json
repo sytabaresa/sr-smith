@@ -38,7 +38,7 @@
     "Previous Projects": "Proyectos Anteriores",
     "no projects": "No tienes proyectos guardados",
     "this work is under": "Esta obra está bajo",
-    "License CC 4_0": "Licencia Creative Commons Atribución 4.0 Internacional",
+    "License GPLv3": "Licencia GPL (GNU General Public License) versión 3",
     "Authors": "Autores",
     "username": "usuario",
     "email": "email",
@@ -50,5 +50,7 @@
     "Required Field": "Campo Requerido",
     "Project Description": "Descripcion del Projecto",
     "Project Name": "Nombre del Projecto",
-    "Done": "Hecho"
+    "Done": "Hecho",
+    "precision": "Precisión",
+    "Save": "Guardar"
 }

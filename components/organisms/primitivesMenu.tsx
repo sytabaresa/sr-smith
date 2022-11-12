@@ -60,7 +60,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         <HandIcon className="w-6" />
       </label>
 
-      <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 shadow bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
+      <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 border-primary border bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
         {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
         new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
         new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
