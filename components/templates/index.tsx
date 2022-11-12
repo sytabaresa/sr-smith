@@ -25,9 +25,11 @@ const Layout = ({ children, title = 'This is the default title', className }: Pr
       </Head>
       <header className='z-10'>
         <nav className="navbar">
-          <div className="btn btn-ghost flex" onClick={() => router.back()}><ArrowLeftIcon className='h-4 w-4 mr-2'/>{t('back')}</div>
+          <button className="btn btn-ghost flex" onClick={() => router.back()}>
+            <ArrowLeftIcon className='h-4 w-4 mr-2' />{t('back')}
+          </button>
           <LangMenu className='mx-2' />
-          <ThemeSwitcher className=''/>
+          <ThemeSwitcher className='' />
         </nav>
       </header>
       {children}

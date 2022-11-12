@@ -67,7 +67,6 @@ const SmithProject: React.FC = () => {
   // data retrievers
   const sendCode = (ctx, ev) => {
     const [current, send] = editorService
-    send({ type: 'THEME', value: theme })
     send({ type: 'CODE', value: ctx.projectData.data });
     send('PARSING')
   }
@@ -91,6 +90,15 @@ const SmithProject: React.FC = () => {
       send({ type: 'LOAD', value: router.query?.id as string })
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    setTimeout(() => {
+
+      const [current, send] = editorService
+      send({ type: 'THEME', value: theme })
+    }, 1000)
+
+  }, [])
 
   // configs
   const smithOptions = {

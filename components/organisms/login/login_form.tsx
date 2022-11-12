@@ -72,11 +72,12 @@ const LoginForm = ({ }: LoginFormProps) => {
         type="email"
         placeholder="test@example.com"
         className="input input-bordered"
+        aria-invalid={errors.email ? "true" : "false"}
         {...register("email", { required: true })}
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt">
+          <span className="label-text-alt" role="alert">
             {t("email-required")}
           </span>
         </label>
@@ -90,11 +91,12 @@ const LoginForm = ({ }: LoginFormProps) => {
         name="password"
         type="password"
         className="input input-bordered"
+        aria-invalid={errors.password ? "true" : "false"}
         {...register("password", { required: true })}
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt">
+          <span className="label-text-alt" role="alert">
             {t("password-required")}
           </span>
         </label>

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import UserProvider from '../providers/userContext'
 import 'tailwindcss/tailwind.css'
 import './main.css';
+import '../components/animations.css'
 
 function MyApp({ Component, pageProps }) {
 

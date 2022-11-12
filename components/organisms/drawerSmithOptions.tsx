@@ -50,13 +50,13 @@ const DrawerSmithOptions = () => {
     }
 
     return <>
-        <div className="drawer-side">
+        <div className="drawer-side overflow-x-hidden">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
             <div className="p-4 overflow-y-auto w-60 bg-base-100 text-base-content flex flex-col items-start">
-                <div className="flex flex-col items-start flex-grow">
+                <div className="flex flex-col items-start flex-grow w-full">
                     {isAuthenticated ?
                         <>
-                            {user && <div className="flex flex-col items-center mb-4 ">
+                            {user && <div className="flex flex-col items-center mb-4 w-full">
                                 <UserImage className="mb-2" imageClasses="w-24 h-24" />
                                 <div className="w-44 text-center">
                                     <h1 className="font-bold break-words text-sm">{user?.email}</h1>
