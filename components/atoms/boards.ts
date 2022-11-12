@@ -86,7 +86,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     // const x = 0.0025
     // const y = -0.001
     brd.create('image', [imgTheme[boardOptions.theme] || imgTheme.light,
-        [-tt, -tt], [2 * tt, 2 * tt]],
+    [-tt, -tt], [2 * tt, 2 * tt]],
         {
             id: 'smith-chart-image',
             name: 'smith-chart-image',
@@ -103,8 +103,8 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [-1, 0], { name: 'X3', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [0, -1], { name: 'X4', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true })
-    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true })
+    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true, name: 'x' })
+    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true, name: 'y' })
 
 
 
