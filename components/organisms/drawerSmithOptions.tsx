@@ -20,6 +20,7 @@ import { UserImage } from "../molecules/userImage";
 import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { LangMenu } from "../atoms/langMenu";
 import ConfigsForm from "./configForm";
+import { ThemeSwitcher } from "../molecules/themeSwitcher";
 
 const DrawerSmithOptions = () => {
     const NEW_PROJECT_LABEL = 'new-project-modal'
@@ -79,11 +80,16 @@ const DrawerSmithOptions = () => {
                         </> :
                         <>
                             <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t("Login")} onClick={login} />
-                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            <label htmlFor={CONFIGS_LABEL}>
+                                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            </label>
                         </>
                     }
                 </div>
-                <LangMenu className="dropdown-top ml-4" />
+                <div className="flex w-full">
+                    <LangMenu className="dropdown-top ml-4 flex-grow" />
+                    <ThemeSwitcher />
+                </div>
             </div>
         </div>
         <ModalContainer
