@@ -5,6 +5,9 @@ export function useTheme(defaultTheme: string = 'light'): [string, (theme: strin
         let item
         if (typeof window !== "undefined") {
             item = window.localStorage.getItem('theme')
+            if (!item) {
+                window.localStorage.setItem('theme', defaultTheme)
+            }
         }
         return item || defaultTheme
     })
