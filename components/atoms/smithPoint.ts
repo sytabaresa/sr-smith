@@ -9,10 +9,11 @@ JXG.createSmithPoint = function (board, parents, attributes) {
 
         if (!JXG.exists(attributes))
             attributes = {};
+        const attr = JXG.copyAttributes(attributes, board.options, 'spoint');
 
         const re = reflecRePart(a, b)
         const im = reflecImPart(a, b)
-        var sp: any = board.create('point', [re, im], attributes)
+        var sp: any = board.create('point', [re, im], attr)
 
         sp.type = JXG.OBJECT_TYPE_SMITH_POINT
         sp.elType = 'spoint'
@@ -27,3 +28,7 @@ JXG.createSmithPoint = function (board, parents, attributes) {
 JXG.registerElement('spoint', JXG.createSmithPoint);
 JXG.registerElement('cpoint', JXG.createPoint);
 
+JXG.Options.spoint = {
+    strokeColor: 'blue',
+    fillColor: 'blue',
+}

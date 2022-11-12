@@ -39,13 +39,11 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     }
   }, [ui.current()])
 
-  const smithMode = t("SmithMode").split(" ")
-
   return (
     <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${props.className}`}>
       <div className="form-control">
         <label className="label cursor-pointer pt-0">
-          <span className="label-text"><>{smithMode[0]}</> <br></br> <>{smithMode[1]}</></span>
+          <span className="label-text w-4">{t("Smith Mode")}</span>
           <input type="checkbox" className="toggle toggle-primary" checked={ui.context().smithMode} onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)} />
         </label>
       </div>
@@ -72,7 +70,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
               className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
               data-tip={t(plugin.tooltip)}
             >
-              <plugin.icon className="w-8 h-8 fill-amber-500" />
+              <plugin.icon className="w-8 h-8 stroke-accent fill-accent" />
             </a>
           </li>
         )}

@@ -25,7 +25,7 @@ export function removeElement(board, event) {
 export function selectOrDrawPoint(ctx: any, event) {
     const { board } = event
     let point
-    let options: any = {}
+    let options: Record<string, any> = {}
     let inCurve = []
     let objectSelected = ctx.objectSelected ?? []
     let code = ctx.code ?? ""
@@ -34,6 +34,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     const index = getIndexFinger(ctx, event)
     const coords = getMouseCoords(event.value, index, board);
 
+    // get list of elements that exist in that location (inCurve list)
     const invalidElements = ['image', 'ticks', 'grid', 'text']
     for (let el in board.objects) {
         const object = board.objects[el]
@@ -42,9 +43,11 @@ export function selectOrDrawPoint(ctx: any, event) {
         }
         if (object.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
             if (JXG.isPoint(object)) {
+                // if the element is a point, break and select it
                 point = object
                 break
             } else {
+                // else, accumulate to create a glider or interception
                 inCurve.push(object)
             }
         }
@@ -58,39 +61,25 @@ export function selectOrDrawPoint(ctx: any, event) {
     }
 
     // interception and slider in elements
-    const validElements = ['curve', 'line', 'segment', 'circle']
     if (inCurve.length == 1) {
-        // slider
-        if (validElements.includes(inCurve[0].elType)) {
-            options = {
-                ...options,
-                slideObject: inCurve[0],
-                fillColor: 'gray',
-                strokeColor: 'gray',
-            }
-        }
+        // glider
+        point = board.create('glider', [coords.usrCoords[1], coords.usrCoords[2], inCurve[0]], options)
+        code += getCodefromObject(getParamsStrPoint, point, options)
     } else if (inCurve.length >= 2) {
-        // intersect
-        options = {
-            ...options,
-            fillColor: 'gray',
-            strokeColor: 'gray',
-            fixed: true,
-        }
         const objects = inCurve.slice(0, 2)
-        if (validElements.includes(objects[0].elType) && validElements.includes(objects[1].elType)) {
-            let point1 = board.create('intersection', [...objects, 0], options)
-            if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
-                point = point1
-                code += getCodefromObject(getParamsStrPoint, point, options)
-            } else {
-                board.removeObject(point1)
-                point = board.create('intersection', [...objects, 1], options)
-                code += getCodefromObject(getParamsStrPoint, point, options)
-            }
+        // intersect
+        let point1 = board.create('intersection', [...objects, 0], options)
+        if (point1.hasPoint(coords.scrCoords[1], coords.scrCoords[2])) {
+            point = point1
+            code += getCodefromObject(getParamsStrPoint, point, options)
+        } else {
+            board.removeObject(point1)
+            point = board.create('intersection', [...objects, 1], options)
+            code += getCodefromObject(getParamsStrPoint, point, options)
         }
     }
 
+    // smith mode behavior (create a smith point if point doesn't exists)
     if (!point) {
         if (smithMode) {
             point = board.create('spoint', [
@@ -103,6 +92,7 @@ export function selectOrDrawPoint(ctx: any, event) {
         code += getCodefromObject(getParamsStrPoint, point, options)
     }
 
+    //  push the new selected/created point
     objectSelected.push(point)
     return { ...ctx, objectSelected, code }
 }

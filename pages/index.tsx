@@ -18,6 +18,7 @@ import { useTranslation } from "next-export-i18n";
 import "../components/atoms/smithPoint"
 import "../components/atoms/reCircle"
 import "../components/atoms/imCircle"
+import { useConfig } from "../components/atoms/useConfig";
 
 configure({
   /**
@@ -84,10 +85,16 @@ const SmithProject: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const [current, send] = saveService
-      send({ type: 'LOAD', value: router.query?.id as string})
+      send({ type: 'LOAD', value: router.query?.id as string })
     }
   }, [isAuthenticated]);
 
+  // configs
+  const smithOptions = {
+    coordPrecision: 3,
+  }
+  useConfig(smithOptions)
+  
   // all context
   const context = {
     ui,

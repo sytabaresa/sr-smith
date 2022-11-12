@@ -165,4 +165,12 @@ declare namespace JXG {
     }
     export function createSmithPoint(board: Board, parents: unknown[], attributes: SmithPointAttributes): SmithPoint
     export function createPoint(board: Board, parents: unknown[], attributes: PointAttributes): Point
+
+    export interface JXGOptions {
+        recircle: CircleOptions | GeometryElementAttributes;
+        imcircle: CircleOptions | GeometryElementAttributes;
+        spoint: PointOptions | GeometryElementAttributes;
+    }
+
+    export let Options: JXGOptions;
 }

@@ -17,14 +17,18 @@ import ModalContainer from "../molecules/modalContainer";
 import NewProjectForm from "./newProjectForm";
 import PublishProjectForm from "./publishProjectForm";
 import { UserImage } from "../molecules/userImage";
-import { useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { LangMenu } from "../atoms/langMenu";
+import ConfigsForm from "./configForm";
+import { ThemeSwitcher } from "../molecules/themeSwitcher";
 
 const DrawerSmithOptions = () => {
     const NEW_PROJECT_LABEL = 'new-project-modal'
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
+    const CONFIGS_LABEL = 'configs-label'
 
     const router = useRouter()
+    const [query] = useLanguageQuery()
     const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
 
@@ -38,11 +42,11 @@ const DrawerSmithOptions = () => {
     }
 
     const login = () => {
-        router.push('/login')
+        router.push({ pathname: '/login', query })
     }
 
     const open = () => {
-        router.push('/saved')
+        router.push({ pathname: '/saved', query })
     }
 
     return <>
@@ -68,18 +72,24 @@ const DrawerSmithOptions = () => {
                             <label htmlFor={PUBLISH_PROJECT_LABEL}>
                                 <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t("Publish")} />
                             </label>
-                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
-
+                            <label htmlFor={CONFIGS_LABEL}>
+                                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            </label>
                             {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
                             <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t("Logout")} onClick={logout} />
                         </> :
                         <>
                             <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t("Login")} onClick={login} />
-                            <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            <label htmlFor={CONFIGS_LABEL}>
+                                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t("Settings")} />
+                            </label>
                         </>
                     }
                 </div>
-                <LangMenu className="dropdown-top ml-4"/>
+                <div className="flex w-full">
+                    <LangMenu className="dropdown-top ml-4 flex-grow" />
+                    <ThemeSwitcher />
+                </div>
             </div>
         </div>
         <ModalContainer
@@ -93,6 +103,13 @@ const DrawerSmithOptions = () => {
             className="w-10/12 md:w-3/12"
             modalChild={<PublishProjectForm />}
             modalName={PUBLISH_PROJECT_LABEL}
+            isModal
+        >
+        </ModalContainer>
+        <ModalContainer
+            className="w-10/12 md:w-3/12"
+            modalChild={<ConfigsForm />}
+            modalName={CONFIGS_LABEL}
             isModal
         >
         </ModalContainer>

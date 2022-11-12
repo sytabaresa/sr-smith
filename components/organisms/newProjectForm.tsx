@@ -4,7 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { auth, db } from "../../firebase/clientApp";
 import { SmithProject } from "../../interfaces";
-import { useTranslation } from "next-export-i18n"
+import { useLanguageQuery, useTranslation } from "next-export-i18n"
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -13,6 +13,7 @@ type NewProjectFormProps = {
 
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
+  const[query] = useLanguageQuery()
   const router = useRouter()
   const user = auth.currentUser;
 
@@ -40,7 +41,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         updateAt: Timestamp.now(),
         userId: user.uid,
       } as SmithProject);
-      router.push({ pathname: '/', query: { id: docRef.id } });
+      router.push({ pathname: '/', query: { id: docRef.id, ...query } });
       setTimeout(() => {
         router.reload()
       }, 1000)

@@ -1,22 +1,31 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SmithContext } from "../../providers/smithContext";
-import { initBoard } from "../atoms/boards";
+import { changeBoardTheme, initBoard } from "../atoms/boards";
+import { useTheme } from "../atoms/useTheme";
 import { useScreen } from "../utils/screen";
 
 export interface ISmithBoardProps { };
 
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
-    const { ui } = useContext(SmithContext)
-
+    const { ui, editorService } = useContext(SmithContext)
+    const [theme] = useTheme()
     const screenSize = useScreen()
-
+    const [_theme, _setTheme] = useState(theme)
     const BOX_NAME = 'smith-box'
+
     useEffect(() => {
-        ui.newBoard(BOX_NAME, {}, screenSize)
+        ui.newBoard(BOX_NAME, { theme }, screenSize)
         return () => { }
-    },
-        //eslint-disable-next-line
-        []);
+    }, []);
+
+    useEffect(() => {
+        if (ui.board && _theme != theme) {
+            _setTheme(theme)
+            const [current, send] = editorService
+            send({ type: "THEME", value: theme })
+            send('PARSING')
+        }
+    }, [theme])
 
     return (
         <div

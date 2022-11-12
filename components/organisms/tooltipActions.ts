@@ -114,11 +114,11 @@ export class JXGDrawer {
         this.populateBoard()
     }
 
-    recreateBoard() {
+    recreateBoard(options) {
         if (this.board != undefined) {
             const boundingBox = this.board.getBoundingBox()
             JXG.JSXGraph.freeBoard(this.board);
-            this.board = initBoard(this.boardName, { boundingBox })
+            this.board = initBoard(this.boardName, { ...options, boundingBox })
             this.populateBoard()
         }
     }
@@ -142,7 +142,7 @@ export class JXGDrawer {
     }
 
     removeElement = (ctx: any, ev: any) => {
-        console.log('del')
+        // console.log('del')
         removeElement(this.board, this.moveEvent)
         return ctx
     }

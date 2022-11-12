@@ -56,7 +56,7 @@ const JCText: React.FC<IJCTextProps> = ({ className, style }) => {
 
     return (
         <HotKeys keyMap={keyMap} handlers={handlers}>
-            <div className={"border border-primary bg-white rounded-xl p-2 flex flex-col " + className} style={style}>
+            <div className={"border border-primary bg-base-100 card p-2 flex flex-col " + className} style={style}>
                 <div className="overflow-y-auto custom-scrollbar flex-1 flex mb-1">
                     {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                     <Editor

@@ -7,16 +7,17 @@ import SavedProjectCard from "../components/molecules/savedProjectCard";
 import { db } from "../firebase/clientApp";
 import { SmithProject } from "../interfaces";
 import { useUser } from "../providers/userContext";
-import { useTranslation } from "next-export-i18n"
+import { useLanguageQuery, useTranslation } from "next-export-i18n"
 import Layout from "../components/templates";
 import { SmithImage } from "../components/atoms/smithImage";
 import { RefreshIcon } from "@heroicons/react/outline";
 
 const SavedProjects = () => {
   const { t } = useTranslation()
+  const [query2] = useLanguageQuery()
   const router = useRouter();
   const auth = getAuth();
-  const [userProejects, setUserProjects] = useState(null as SmithProject[]);
+  const [userProjects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
 
   useEffect(() => {
@@ -30,14 +31,14 @@ const SavedProjects = () => {
       var q = query(collection(db, "projects"), where("userId", "==", userUid));
       const querySnapshot = await getDocs(q);
       const projectsList = querySnapshot.docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as SmithProject
+        return { id: doc.id, ...doc.data() as any } as SmithProject
       });
       setUserProjects(projectsList);
     }
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push({ pathname: '/', query: { id: projectId } });
+    router.push({ pathname: '/', query: { id: projectId, ...query2 } });
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
@@ -81,7 +82,7 @@ const SavedProjects = () => {
         <h1 className="text-2xl lg:text-3xl font-bold text-center my-4 lg:mt-4 lg:mb-8">
           {t('Previous Projects')}
         </h1>
-        {renderSavedProjects(userProejects)}
+        {renderSavedProjects(userProjects)}
       </div>
     </Layout>
   );
