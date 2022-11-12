@@ -70,7 +70,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
               className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
               data-tip={t(plugin.tooltip)}
             >
-              <plugin.icon className="w-8 h-8 fill-amber-500" />
+              <plugin.icon className="w-8 h-8 stroke-accent fill-accent" />
             </a>
           </li>
         )}

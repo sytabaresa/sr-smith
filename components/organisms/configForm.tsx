@@ -32,7 +32,7 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     } = useForm({ defaultValues: config.smithOptions });
 
     const onSubmit = async (smithOptions) => {
-        console.log(smithOptions)
+        // console.log(smithOptions)
         setConfig(op => ({ ...op, smithOptions }))
     }
 

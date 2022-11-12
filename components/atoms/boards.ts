@@ -1,5 +1,5 @@
-import JXG, { JXGOptions, PointOptions } from "jsxgraph"
-import darkTheme  from "./dark-theme"
+import JXG, { Board, JXGOptions, PointOptions } from "jsxgraph"
+import { lightTheme, darkTheme } from "./boardThemes"
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -13,9 +13,19 @@ JXG.Options.glider = JXG.merge(JXG.Options.glider, {
 }) as PointOptions
 
 // Theme build
-// JXG.Options = JXG.merge(JXG.Options, darkTheme) as JXGOptions
+
+export const changeBoardTheme = (theme: string) => {
+    // console.log(theme)
+    // debugger
+    if (theme == 'dark') {
+        JXG.Options = JXG.merge(JXG.Options, darkTheme) as JXGOptions
+    } else if (theme == 'light') {
+        JXG.Options = JXG.merge(JXG.Options, lightTheme) as JXGOptions
+    }
+}
 
 export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
+    changeBoardTheme(boardOptions.theme)
 
     const screenBoxSizes = {
         'xs': [-1.2, 2, 1.2, -2],
@@ -68,10 +78,14 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     // });
 
 
+    const imgTheme = {
+        'dark': '/images/smith-chart-dark.svg',
+        'light': '/images/smith-chart.svg'
+    }
     const tt = 1.1555
     // const x = 0.0025
     // const y = -0.001
-    brd.create('image', ['/images/smith-chart.svg',
+    brd.create('image', [imgTheme[boardOptions.theme] || imgTheme.light,
         [-tt, -tt], [2 * tt, 2 * tt]],
         {
             id: 'smith-chart-image',

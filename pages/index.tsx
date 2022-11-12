@@ -89,7 +89,7 @@ const SmithProject: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  // 
+  // configs
   const smithOptions = {
     coordPrecision: 3,
   }
@@ -105,7 +105,6 @@ const SmithProject: React.FC = () => {
     saveService,
     projectData,
   };
-
 
   return (
     <AppLayout title="Smith Chart">

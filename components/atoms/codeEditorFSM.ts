@@ -12,7 +12,7 @@ const parseExecute = async (ctx, ev) => {
     // console.log(code)
     // console.log(board)
     try {
-        ctx.ui.recreateBoard()
+        ctx.ui.recreateBoard({ theme: ctx.theme })
         ctx.ui.board.jc.parse(ctx.code);
     } catch (err) {
         console.log(err)
@@ -24,6 +24,7 @@ const parseExecute = async (ctx, ev) => {
 // fsm
 const clearErrorMsg = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: '' }))
 const setCode = reduce((ctx: any, ev: any) => ({ ...ctx, code: ev.value }))
+const setTheme = reduce((ctx: any, ev: any) => ({ ...ctx, theme: ev.value }))
 const setError = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: ev.error }))
 
 export default createMachine('init', {
@@ -32,7 +33,9 @@ export default createMachine('init', {
         transition("CODE", 'init', setCode)),
     idle: state(
         transition('PARSING', 'parsing', clearErrorMsg),
-        transition("CODE", 'idle', setCode)),
+        transition("CODE", 'idle', setCode),
+        transition("THEME", 'idle', setTheme)
+    ),
     parsing: invoke(parseExecute,
         transition('done', 'idle'),
         transition('error', 'error', setError)
@@ -48,5 +51,6 @@ export default createMachine('init', {
 }, (ctx: ContextType) => ({
     errorMsg: '',
     code: '',
+    theme: '',
     ...ctx,
 }))
