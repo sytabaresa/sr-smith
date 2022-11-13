@@ -10,7 +10,6 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     const { ui, editorService } = useContext(SmithContext)
     const [theme] = useTheme()
     const screenSize = useScreen()
-    const [_theme, _setTheme] = useState(theme)
     const BOX_NAME = 'smith-box'
 
     useEffect(() => {
@@ -19,12 +18,10 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     }, []);
 
     useEffect(() => {
-        if (ui.board && _theme != theme) {
-            _setTheme(theme)
-            const [current, send] = editorService
-            send({ type: "THEME", value: theme })
-            send('PARSING')
-        }
+        // console.log(theme)
+        const [current, send] = editorService
+        send({ type: "THEME", value: theme })
+        send('PARSING')
     }, [theme])
 
     return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import DrawerMenuItem from "../molecules/drawerMenuItem";
 import {
     PlusIcon,
@@ -10,7 +10,7 @@ import {
     LoginIcon
 } from "@heroicons/react/outline";
 import { auth } from "../../firebase/clientApp";
-import { signOut } from "firebase/auth";
+import { parseActionCodeURL, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useUser } from "../../providers/userContext";
 import ModalContainer from "../molecules/modalContainer";
@@ -21,12 +21,14 @@ import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { LangMenu } from "../atoms/langMenu";
 import ConfigsForm from "./configForm";
 import { ThemeSwitcher } from "../molecules/themeSwitcher";
+import { SmithContext } from "../../providers/smithContext";
 
 const DrawerSmithOptions = () => {
     const NEW_PROJECT_LABEL = 'new-project-modal'
     const PUBLISH_PROJECT_LABEL = 'publish-project-modal'
     const CONFIGS_LABEL = 'configs-label'
 
+    const { saveService } = useContext(SmithContext)
     const router = useRouter()
     const [query] = useLanguageQuery()
     const { t } = useTranslation();
@@ -35,18 +37,19 @@ const DrawerSmithOptions = () => {
     const logout = async () => {
         try {
             await signOut(auth)
-            // router.push('/login')
+            saveService[1]('LOGOUT')
+            router.push({ pathname: '/', query: { lang: query.lang } })
         } catch (err) {
             console.log('logout error', err)
         }
     }
 
     const login = () => {
-        router.push({ pathname: '/login', query })
+        router.push({ pathname: '/login', query: { lang: query.lang } })
     }
 
     const open = () => {
-        router.push({ pathname: '/saved', query })
+        router.push({ pathname: '/saved', query: { lang: query.lang } })
     }
 
     return <>

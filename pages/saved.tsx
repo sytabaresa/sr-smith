@@ -38,7 +38,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push({ pathname: '/', query: { id: projectId, ...query2 } });
+    router.push({ pathname: '/', query: { ...query2, id: projectId } });
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {

@@ -1,14 +1,17 @@
 import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
-import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
+import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { db } from "../../firebase/clientApp"
 import { SmithProject } from '../../interfaces';
 import { wait } from '../utils/time';
+import { EditorContextType } from './codeEditorFSM';
 
-export interface ContextType {
+export interface SavingContextType {
     id: string;
     projectData: SmithProject;
-    loadHandler: (ctx: ContextType, ev: any) => void;
+    // loadHandler: (ctx: SavingContextType, ev: any) => void;
     code?: string;
+    saveCounter?: number;
+    editorService: [{ context: EditorContextType }, SendFunction, Service<any>]
 }
 
 // cancelable timeout
@@ -29,44 +32,62 @@ export default createMachine('anon', {
         immediate('noDoc'),
     ),
     checkDoc: invoke(getProjectData,
-        transition('done', 'doc', reduce(saveData), action((ctx: ContextType, ev) => ctx.loadHandler(ctx, ev))),
+        transition('done', 'doc', reduce(saveData), action(sendCode)),
         transition('error', 'noDoc'),
     ),
     noDoc: state(
-        transition('LOGOUT', 'anon'),
+        transition('LOGOUT', 'anon', action(logout)),
     ),
     doc: state(
-        transition('LOGOUT', 'anon'),
+        transition('LOGOUT', 'anon', action(logout)),
         transition('SAVE', 'tmpSaving', reduce(saveCode)),
     ),
     tmpSaving: state(
-        immediate('saving'),
+        immediate('saving', guard(checkFirstSave)),
+        immediate('doc'),
     ),
     saving: invoke(cancelableTimeout,
         transition('SAVE', 'tmpSaving', reduce(saveCode)),
-        transition('done', 'doc', action(updateDocument)),
+        transition('done', 'doc', action(saveDocument)),
         transition('error', 'doc'),
     ),
-}, (ctx: ContextType) => ({
-    ...ctx
-}))
+}, (ctx: SavingContextType) => ({
+    ...ctx,
+    saveCounter: 0,
+}) as SavingContextType)
 
-function saveData(ctx: ContextType, ev: any) {
+function saveData(ctx: SavingContextType, ev: any) {
     return { ...ctx, projectData: ev.data }
 }
 
-function saveCode(ctx: ContextType, ev: any) {
-    return { ...ctx, code: ev.value }
+function saveCode(ctx: SavingContextType, ev: any) {
+    console.log('enter')
+    return { ...ctx, code: ev.value, saveCounter: ctx.saveCounter + 1 }
 }
 
-function saveId(ctx: ContextType, ev: any) {
+function saveId(ctx: SavingContextType, ev: any) {
     return { ...ctx, id: ev.value }
 }
-function checkId(ctx: ContextType, ev: any) {
+function checkId(ctx: SavingContextType, ev: any) {
     return !!ctx.id
 }
+function sendCode(ctx: SavingContextType, ev) {
+    const [current, send] = ctx.editorService
+    send({ type: 'CODE', value: ctx.projectData.data });
+    send('PARSING')
+}
 
-async function getProjectData(ctx: ContextType) {
+function logout(ctx: SavingContextType, ev) {
+    const [current, send] = ctx.editorService
+    send({ type: 'CODE', value: '' });
+    send('PARSING')
+}
+
+function checkFirstSave(ctx: SavingContextType, ev) {
+    return ctx.saveCounter > 1
+}
+
+async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
     try {
         const docRef = doc(db, `projects/${ctx.id}`);
@@ -83,11 +104,12 @@ async function getProjectData(ctx: ContextType) {
     }
 };
 
-async function updateDocument(ctx: ContextType, ev: { value: string }) {
-    console.log('updating data', ctx.code)
+async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
+    console.log('saving data...')
     const docRef = doc(db, `projects/${ctx.id}`);
     await updateDoc(docRef, {
         data: ctx.code,
         updateAt: Timestamp.now()
     } as SmithProject);
+    console.log('saving done.')
 };

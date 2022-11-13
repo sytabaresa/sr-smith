@@ -2,13 +2,14 @@ import { createMachine, state, transition, reduce, invoke } from 'robot3';
 import { JXGDrawer } from '../organisms/tooltipActions';
 import { wait } from '../utils/time';
 
-export interface ContextType {
-    errorMsg: string;
+export interface EditorContextType {
+    errorMsg?: string;
     code: string;
     ui: JXGDrawer;
+    theme?: string;
 }
 
-const parseExecute = async (ctx, ev) => {
+const parseExecute = async (ctx:EditorContextType, ev) => {
     // console.log(code)
     // console.log(board)
     try {
@@ -27,12 +28,7 @@ const setCode = reduce((ctx: any, ev: any) => ({ ...ctx, code: ev.value }))
 const setTheme = reduce((ctx: any, ev: any) => ({ ...ctx, theme: ev.value }))
 const setError = reduce((ctx: any, ev: any) => ({ ...ctx, errorMsg: ev.error }))
 
-export default createMachine('init', {
-    init: state(
-        transition('PARSING', 'parsing'),
-        transition("CODE", 'init', setCode),
-        transition("THEME", 'idle', setTheme)
-    ),
+export default createMachine('idle', {
     idle: state(
         transition('PARSING', 'parsing', clearErrorMsg),
         transition("CODE", 'idle', setCode),
@@ -50,9 +46,9 @@ export default createMachine('init', {
         transition("CODE", 'clearError', setCode),
         transition('done', 'idle', clearErrorMsg)
     )
-}, (ctx: ContextType) => ({
+}, (ctx: EditorContextType) => ({
     errorMsg: '',
     code: '',
     theme: '',
     ...ctx,
-}))
+}) as EditorContextType)

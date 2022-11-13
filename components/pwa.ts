@@ -1,4 +1,4 @@
-export const initializeWebWorker = () => {
+export const initializeServiceWorker = () => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
         const wb = window.workbox
         // add event listeners to handle any of PWA lifecycle event

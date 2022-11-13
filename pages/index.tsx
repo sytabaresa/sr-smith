@@ -20,7 +20,7 @@ import "../components/atoms/reCircle"
 import "../components/atoms/imCircle"
 import { useConfig } from "../components/atoms/useConfig";
 import { useTheme } from "../components/atoms/useTheme";
-import { initializeWebWorker } from "../components/pwa";
+import { initializeServiceWorker } from "../components/pwa";
 
 configure({
   /**
@@ -34,17 +34,13 @@ configure({
 });
 
 const SmithProject: React.FC = () => {
-  const { t } = useTranslation();
   const router = useRouter();
-  const { loadingUser, isAuthenticated } = useUser()
+  const { isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
   const [theme] = useTheme()
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
-  const [projectData, setProjectData] = useState(
-    (null as SmithProject) || null
-  );
-  const [timer, setTimer] = useState(null)
+  const [projectData, setProjectData] = useState((null as SmithProject) || null);
 
   const keyMap = {
     EXIT: "esc",
@@ -61,28 +57,20 @@ const SmithProject: React.FC = () => {
 
   const editorService = useMachine(editorMachine, {
     code: '',
-    errorMsg: '',
     ui,
+    theme,
   });
-
-  // data retrievers
-  const sendCode = (ctx, ev) => {
-    const [current, send] = editorService
-    send({ type: 'CODE', value: ctx.projectData.data });
-    send('PARSING')
-  }
 
   const saveService = useMachine(saveMachine, {
     id: router.query?.id as string,
     projectData,
-    loadHandler: sendCode,
+    editorService,
   })
 
   useEffect(() => {
-    const [current, send] = editorService
-    setProjectData(projectData => ({ ...projectData, data: current.context.code }))
-    const [c, send2] = saveService
-    send2({ type: 'SAVE', value: current.context.code })
+    setProjectData(projectData => ({ ...projectData, data: editorService[0].context.code}))
+    const [c, send] = saveService
+    send({ type: 'SAVE', value: editorService[0].context.code})
   }, [editorService[0].context.code]);
 
   useEffect(() => {
@@ -93,16 +81,8 @@ const SmithProject: React.FC = () => {
   }, [isAuthenticated]);
 
   useEffect(() => {
-
-    // web worker lifecycle
-    initializeWebWorker()
-
-    setTimeout(() => {
-
-      const [current, send] = editorService
-      send({ type: 'THEME', value: theme })
-    }, 1000)
-
+    // service worker lifecycle handlers
+    initializeServiceWorker()
   }, [])
 
   // configs

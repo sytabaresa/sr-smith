@@ -115,7 +115,7 @@ export class JXGDrawer {
     }
 
     recreateBoard(options) {
-        if (this.board != undefined) {
+        if (this.board != undefined && this.board.inUpdate) {
             const boundingBox = this.board.getBoundingBox()
             JXG.JSXGraph.freeBoard(this.board);
             this.board = initBoard(this.boardName, { ...options, boundingBox })
