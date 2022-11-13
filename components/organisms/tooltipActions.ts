@@ -34,6 +34,7 @@ export class JXGDrawer {
     boardName: string
     attributes: Record<string, any>
     initState: string = 'idle'
+    recreatingBoard: boolean = false
 
     tooltipSelected: TooltipType
     private tooltipPlugins: TooltipType[] = []
@@ -109,17 +110,33 @@ export class JXGDrawer {
     }
 
     newBoard(boxName: string, boardOptions: any = {}, screenSize: string) {
-        this.boardName = boxName
-        this.board = initBoard(boxName, boardOptions, screenSize)
-        this.populateBoard()
+        try {
+            if (!this.recreatingBoard) {
+                this.recreatingBoard = true
+                this.boardName = boxName
+                this.board = initBoard(boxName, boardOptions, screenSize)
+                this.populateBoard()
+            }
+        } catch (err) {
+            console.log(err)
+        } finally {
+            this.recreatingBoard = false
+        }
     }
 
     recreateBoard(options) {
-        if (this.board != undefined && this.board.inUpdate) {
-            const boundingBox = this.board.getBoundingBox()
-            JXG.JSXGraph.freeBoard(this.board);
-            this.board = initBoard(this.boardName, { ...options, boundingBox })
-            this.populateBoard()
+        try {
+            if (this.board != undefined && !this.recreatingBoard) {
+                this.recreatingBoard = true
+                const boundingBox = this.board.getBoundingBox()
+                JXG.JSXGraph.freeBoard(this.board);
+                this.board = initBoard(this.boardName, { ...options, boundingBox })
+                this.populateBoard()
+            }
+        } catch (err) {
+            console.log(err)
+        } finally {
+            this.recreatingBoard = false
         }
     }
 
@@ -165,7 +182,7 @@ export class JXGDrawer {
             immediate('error', action((ctx: any) => console.log("plugin not exists:", ctx.tooltipSelected)))
         ),
         tooltipSelected: invoke(
-            wait(100),
+            () => wait(100),
             transition('done', 'draw'),
             transition('error', 'idle')
         ),

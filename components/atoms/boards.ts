@@ -66,6 +66,8 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
         ...boardOptions,
     });
 
+    brd.suspendUpdate()
+
     // brd.create('axis', [[0,0], [1,0]], {
     //     ticks: {
     //         type: 'polar',         // Polar grid
@@ -98,6 +100,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
             // cssClass: 'opacity-50',
         });
 
+    // debugger
     brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [1, 0], { name: 'X1', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true, inmutable: true })
@@ -106,7 +109,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     brd.create('axis', [[0, 0], [1, 0]], { inmutable: true, name: 'x' })
     brd.create('axis', [[0, 0], [0, 1]], { inmutable: true, name: 'y' })
 
-
+    brd.unsuspendUpdate()
 
     if (typeof window !== "undefined") {
         (window as any).board = brd

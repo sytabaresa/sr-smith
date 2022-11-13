@@ -172,5 +172,9 @@ declare namespace JXG {
         spoint: PointOptions | GeometryElementAttributes;
     }
 
+    export interface Board {
+        flagged: boolean;
+    }
+
     export let Options: JXGOptions;
 }
