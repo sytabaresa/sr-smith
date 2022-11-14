@@ -7,6 +7,7 @@ const withPWA = require('next-pwa')({
     dest: 'public',
     register: false,
     skipWaiting: false,
+    reloadOnOnline: false, // better to not lost work in canvas 
 })
 
 module.exports = withBundleAnalyzer(withPWA({

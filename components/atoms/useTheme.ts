@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export function useTheme(defaultTheme: string = 'light'): [string, (theme: string) => void] {
-    const [theme, setTheme] = useState(() => {
+    const [_theme, _setTheme] = useState(() => {
         let item
         if (typeof window !== "undefined") {
             item = window.localStorage.getItem('theme')
@@ -17,7 +17,7 @@ export function useTheme(defaultTheme: string = 'light'): [string, (theme: strin
             const item = window.localStorage.getItem('theme')
 
             if (item) {
-                setTheme(item)
+                _setTheme(item)
             }
         }
 
@@ -29,10 +29,18 @@ export function useTheme(defaultTheme: string = 'light'): [string, (theme: strin
     }, [])
 
     useEffect(() => {
-        window.localStorage.setItem("theme", theme)
-        window.dispatchEvent(new Event("storage")); //This is the important part
-        document.documentElement.setAttribute("data-theme", theme);
-    }, [theme])
+        setTheme(_theme)
+    }, [_theme])
 
-    return [theme, setTheme]
+    return [_theme, _setTheme]
+}
+
+export function setTheme(theme: string) {
+    window.localStorage.setItem("theme", theme)
+    document.documentElement.setAttribute("data-theme", theme);
+    window.dispatchEvent(new Event("storage")); //This is the important part
+}
+
+export function getTheme(): string {
+    return window.localStorage.getItem("theme") as string
 }
