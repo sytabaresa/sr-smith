@@ -10,7 +10,7 @@ export const About = () => {
                 <img
                     alt="Licencia GPLv3"
                     style={{ borderWidth: 0, paddingRight: 5 }}
-                    src="https://www.gnu.org/graphics/gplv3-127x51.png"
+                    src="/images/gplv3.png"
                 />
             </a>
             <span className="pr-1">{t("this work is under")}</span>

@@ -13,14 +13,12 @@ import { useUser } from "../providers/userContext";
 import { useMachine } from "react-robot";
 import editorMachine from '../components/atoms/codeEditorFSM'
 import saveMachine from "../components/atoms/savingFSM";
-import { useTranslation } from "next-export-i18n";
 
 import "../components/atoms/smithPoint"
 import "../components/atoms/reCircle"
 import "../components/atoms/imCircle"
 import { useConfig } from "../components/atoms/useConfig";
 import { useTheme } from "../components/atoms/useTheme";
-import { initializeServiceWorker } from "../components/pwa";
 
 configure({
   /**
@@ -79,11 +77,6 @@ const SmithProject: React.FC = () => {
       send({ type: 'LOAD', value: router.query?.id as string })
     }
   }, [isAuthenticated]);
-
-  useEffect(() => {
-    // service worker lifecycle handlers
-    initializeServiceWorker()
-  }, [])
 
   // configs
   const smithOptions = {

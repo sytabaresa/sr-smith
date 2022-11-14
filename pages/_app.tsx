@@ -5,6 +5,7 @@ import './main.css';
 import '../components/animations.css'
 import { useRouter } from 'next/router';
 import { useTheme, setTheme, getTheme } from '../components/atoms/useTheme';
+import { initializeServiceWorker } from '../components/pwa';
 
 function MyApp({ Component, pageProps }) {
   const [isOnline, setIsOnline] = useState(true)
@@ -44,6 +45,11 @@ function MyApp({ Component, pageProps }) {
         })
       }
     }
+
+    //register SW
+    // service worker lifecycle handlers
+    initializeServiceWorker()
+    
     return () => { }
   }, []);
 
