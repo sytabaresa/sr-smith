@@ -9,7 +9,7 @@ const withPWA = require('next-pwa')({
     skipWaiting: false,
     reloadOnOnline: false, // better to not lost work in canvas 
     // cacheOnFrontEndNav: true,
-    runtimeCaching: require('./cache.js')
+    runtimeCaching: require('./sw/cache.js')
 })
 
 module.exports = withBundleAnalyzer(withPWA({
