@@ -12,7 +12,6 @@ type PublishProjectFormProps = {
 const PublishProjectForm = ({ }: PublishProjectFormProps) => {
   const { t } = useTranslation()
   const { projectData } = useContext(SmithContext)
-  const user = auth.currentUser;
   const [publicState, setPublicState] = useState(projectData?.isPublic || false)
   const [error, setError] = useState("")
   const [info, setInfo] = useState("")

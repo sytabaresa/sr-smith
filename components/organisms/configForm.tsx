@@ -18,8 +18,6 @@ type ConfigsFormProps = {
 const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     const { t } = useTranslation()
     const [query] = useLanguageQuery()
-    const router = useRouter()
-    const user = auth.currentUser;
     const [config, setConfig] = useConfig()
 
     const {

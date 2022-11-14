@@ -15,7 +15,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const[query] = useLanguageQuery()
   const router = useRouter()
-  const user = auth.currentUser;
+  const user = auth?.currentUser;
 
   const {
     register,
