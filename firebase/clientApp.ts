@@ -27,9 +27,10 @@ if (typeof window !== 'undefined') {
         });
     // Subsequent queries will use persistence, if it was enabled successfully
 
+    // auth = getAuth() 
     auth = initializeAuth(app, {
         persistence: indexedDBLocalPersistence,
-        popupRedirectResolver: browserPopupRedirectResolver,
+        // popupRedirectResolver: browserPopupRedirectResolver,
         // No popupRedirectResolver defined
     });
 

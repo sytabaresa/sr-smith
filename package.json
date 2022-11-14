@@ -1,6 +1,6 @@
 {
-    "name": "with-typescript",
-    "version": "1.0.0",
+    "name": "sr-smith",
+    "version": "0.0.5",
     "scripts": {
         "dev": "next",
         "build": "next build",

@@ -1,5 +1,5 @@
 import { Dispatch, useEffect, useState } from "react";
-import { isEqual } from "lodash"
+import isEqual from "lodash/isEqual"
 
 export function useConfig(defaultConfig: Record<string, any> = {}): [Record<string, any>, (config: Record<string, any>) => void] {
     const [config, _setConfig] = useState<Record<string, any>>(() => {
