@@ -93,8 +93,8 @@ const SavedProjects = () => {
       </h1>
       {renderSavedProjects(userProjects)}
     </div>
-    <label htmlFor={NEW_PROJECT_LABEL} className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center" onClick={newProject}>
-      <div id="add" className="btn lg:grap-2 btn-lg shadow-lg">
+    <label htmlFor={NEW_PROJECT_LABEL} className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center tooltip" data-tip={t('create project')} onClick={newProject}>
+      <div role="button" className="btn lg:grap-2 btn-lg shadow-lg">
         <span className="mr-4 hidden lg:block">{t('create project')}</span>
         <PlusIcon className="h-8 w-8" />
       </div>
