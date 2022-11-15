@@ -13,7 +13,7 @@ type NewProjectFormProps = {
 
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
-  const[query] = useLanguageQuery()
+  const [query] = useLanguageQuery()
   const router = useRouter()
   const user = auth?.currentUser;
 
@@ -41,10 +41,8 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         updateAt: Timestamp.now(),
         userId: user.uid,
       } as SmithProject);
-      router.push({ pathname: '/', query: { id: docRef.id, ...query } });
-      setTimeout(() => {
-        router.reload()
-      }, 1000)
+      await router.push({ pathname: '/', query: { id: docRef.id, ...query } });
+      router.reload()
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })

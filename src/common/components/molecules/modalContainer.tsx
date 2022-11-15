@@ -31,7 +31,7 @@ const ModalContainer = ({
             <label
               htmlFor={modalName}
               aria-hidden="true"
-              className="btn btn-sm btn-circle absolute right-2 top-2"
+              className="btn btn-sm btn-ghost absolute right-2 top-2"
             >
               ✕
             </label>

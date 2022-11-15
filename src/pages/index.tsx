@@ -3,7 +3,7 @@ import Layout from "../common/components/templates/default";
 import SmithBoard from "../common/components/molecules/smithBoard";
 import { SmithContext } from "../common/providers/smithContext";
 import CodeTools from "../common/components/organisms/codeTools";
-import DrawerSmithOptions from "../common/components/organisms/drawerSmithOptions";
+import DrawerSmithMenu from "../common/components/organisms/drawerSmithOptions";
 import { UserMenu } from "../common/components/organisms/userMenu";
 import { JXGDrawer } from "../modules/core/fsm/tooltipActionsFSM";
 import { configure, HotKeys } from "react-hotkeys";
@@ -20,6 +20,10 @@ import Footer from "../common/components/organisms/footer";
 import "../modules/core/elements/smithPoint"
 import "../modules/core/elements/reCircle"
 import "../modules/core/elements/imCircle"
+import ModalContainer from "../common/components/molecules/modalContainer";
+import NewProjectForm from "../common/components/organisms/newProjectForm";
+import PublishProjectForm from "../common/components/organisms/publishProjectForm";
+import ConfigsForm from "../common/components/organisms/configForm";
 
 configure({
   /**
@@ -96,28 +100,54 @@ const SmithProject: React.FC = () => {
     projectData,
   };
 
+  const labels = {
+    NEW_PROJECT_LABEL: 'new-project-modal',
+    PUBLISH_PROJECT_LABEL: 'publish-project-modal',
+    CONFIGS_LABEL: 'configs-label'
+  }
+
   return (
-    <Layout 
-    title="Smith Chart" 
-    footerComponent={<Footer className="absolute bottom-0 left-0 ml-1 mb-1" />}
-    navbar={false}
-    >
-      <SmithContext.Provider value={context}>
-        <HotKeys keyMap={keyMap} handlers={handlers}>
-          <div className="drawer drawer-end h-full relative">
-            <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-            <div className="drawer-content flex">
-              <SmithBoard />
-              <CodeTools />
-              <div className="absolute top-0 right-0 mr-4 mt-4">
-                <UserMenu />
-              </div>
-            </div>
-            <DrawerSmithOptions />
+    <SmithContext.Provider value={context}>
+      <HotKeys keyMap={keyMap} handlers={handlers}>
+        <Layout
+          title="Smith Chart"
+          footerComponent={<Footer className="absolute bottom-0 left-0 ml-1 mb-1" />}
+          navbar={false}
+          className=""
+          drawerMenu={<DrawerSmithMenu labels={labels} />}
+        >
+          {/* <div className="h-full relative"> */}
+          <SmithBoard />
+          <CodeTools />
+          <div className="absolute top-0 right-0 mr-4 mt-4">
+            <UserMenu />
           </div>
-        </HotKeys>
-      </SmithContext.Provider>
-    </Layout>
+          {/* </div> */}
+
+        </Layout>
+        <ModalContainer
+          className="w-10/12 md:w-3/12"
+          modalChild={<NewProjectForm />}
+          modalName={labels.NEW_PROJECT_LABEL}
+          isModal
+        >
+        </ModalContainer>
+        <ModalContainer
+          className="w-10/12 md:w-3/12"
+          modalChild={<PublishProjectForm />}
+          modalName={labels.PUBLISH_PROJECT_LABEL}
+          isModal
+        >
+        </ModalContainer>
+        <ModalContainer
+          className="w-10/12 md:w-3/12"
+          modalChild={<ConfigsForm />}
+          modalName={labels.CONFIGS_LABEL}
+          isModal
+        >
+        </ModalContainer>
+      </HotKeys>
+    </SmithContext.Provider>
   );
 };
 
