@@ -11,6 +11,7 @@ import { useLanguageQuery, useTranslation } from "next-export-i18n"
 import Layout from "../common/components/templates/default";
 import { SmithImage } from "../common/components/atoms/smithImage";
 import { RefreshIcon } from "@heroicons/react/outline";
+import { SmithContext } from "../common/providers/smithContext";
 
 const SavedProjects = () => {
   const { t } = useTranslation()
@@ -72,20 +73,21 @@ const SavedProjects = () => {
     </>
   }
 
-  return (
-    <Layout title="Projects | Sr Smith App" className="h-screen relative overflow-hidden">
-      <div className="absolute w-full h-full blur-[3px] lg:blur-sm -z-10">
-        <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] top-[-15rem] opacity-40 hover:opacity-100 stroke-error trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
-        <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
-      </div>
-      <div className="overflow-y-auto flex-grow">
-        <h1 className="text-2xl lg:text-3xl font-bold text-center my-4 lg:mt-4 lg:mb-8">
-          {t('Previous Projects')}
-        </h1>
-        {renderSavedProjects(userProjects)}
-      </div>
-    </Layout>
-  );
+  return <Layout
+    title="Projects | Sr Smith App"
+    className="h-screen relative overflow-hidden"
+    header={<div className="absolute w-full h-full blur-[3px] lg:blur-sm -z-10">
+      <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] top-[-15rem] opacity-40 hover:opacity-100 stroke-error trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
+      <SmithImage className="absolute w-60 lg:w-[30rem] right-0 lg:right-[1rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
+    </div>}
+  >
+    <div className="overflow-y-auto flex-grow">
+      <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8">
+        {t('Previous Projects')}
+      </h1>
+      {renderSavedProjects(userProjects)}
+    </div>
+  </Layout>
 };
 
 export default WithAuth(SavedProjects);
