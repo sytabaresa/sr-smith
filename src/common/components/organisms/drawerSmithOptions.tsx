@@ -44,13 +44,6 @@ const DrawerSmithMenu = (props) => {
     return <div className="flex flex-col items-start flex-grow w-full">
         {isAuthenticated ?
             <>
-                {user && <div className="flex flex-col items-center mb-4 w-full">
-                    <UserImage className="mb-2" imageClasses="w-24 h-24" />
-                    <div className="w-44 text-center">
-                        <h1 className="font-bold break-words text-sm">{user?.email}</h1>
-                        {/* <h2 className="break-normal">{user?.displayName}</h2> */}
-                    </div>
-                </div>}
                 <label htmlFor={labels.NEW_PROJECT_LABEL}>
                     <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t("New")} />
                 </label>

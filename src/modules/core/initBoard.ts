@@ -30,7 +30,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
     const screenBoxSizes = {
         'xs': [-1.2, 2, 1.2, -2],
         'sm': [-1, 2, 1, -2],
-        'md': [-2, 3.5, 2, -2],
+        'md': [-2, 2, 2, -2],
         'lg': [-2.5, 1.2, 1.5, -1.2],
     }
 

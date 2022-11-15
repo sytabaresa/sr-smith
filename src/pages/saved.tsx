@@ -10,10 +10,12 @@ import { useUser } from "../common/components/organisms/userContext";
 import { useLanguageQuery, useTranslation } from "next-export-i18n"
 import Layout from "../common/components/templates/default";
 import { SmithImage } from "../common/components/atoms/smithImage";
-import { RefreshIcon } from "@heroicons/react/outline";
-import { SmithContext } from "../common/providers/smithContext";
+import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
+import ModalContainer from "../common/components/molecules/modalContainer";
+import NewProjectForm from "../common/components/organisms/newProjectForm";
 
 const SavedProjects = () => {
+  const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
   const [query2] = useLanguageQuery()
   const router = useRouter();
@@ -40,6 +42,10 @@ const SavedProjects = () => {
 
   const goToSavedProject = (projectId: string) => {
     router.push({ pathname: '/', query: { ...query2, id: projectId } });
+  }
+
+  const newProject = async (e) => {
+
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
@@ -87,6 +93,18 @@ const SavedProjects = () => {
       </h1>
       {renderSavedProjects(userProjects)}
     </div>
+    <label htmlFor={NEW_PROJECT_LABEL} className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center" onClick={newProject}>
+      <div id="add" className="btn lg:grap-2 btn-lg shadow-lg">
+        <span className="mr-4 hidden lg:block">{t('create project')}</span>
+        <PlusIcon className="h-8 w-8" />
+      </div>
+    </label>
+    <ModalContainer
+      className="w-10/12 md:w-3/12"
+      modalChild={<NewProjectForm />}
+      modalName={NEW_PROJECT_LABEL}
+      isModal
+    />
   </Layout>
 };
 
