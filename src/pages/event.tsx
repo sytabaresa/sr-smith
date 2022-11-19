@@ -52,7 +52,7 @@ export default function Event(props: EventProps) {
                 </div>
             </div>
             <div className="flex flex-wrap px-4 w-full lg:w-2/3 lg:ml-40">
-                <div className="text-white text-left font-['Inter'] w-full lg:w-1/2 mt-4 text-2xl lg:text-3xl xl:text-4xl">
+                <div className="text-white text-left font-['Inter'] w-full lg:w-1/2 mt-4 text-xl lg:text-3xl xl:text-4xl">
                     <div className="leading-none inline-block">
                         <p className="font-medium leading-none">
                             Por:
@@ -62,6 +62,9 @@ export default function Event(props: EventProps) {
                             Sebastián Tabares
                             <br />
                             Cristian Barreto
+                        </p>
+                        <p className="font-medium leading-none">
+                            Director: <span className="font-extralight">Elvis Eduardo Gaona PhD</span>
                         </p>
                     </div>
                 </div>
