@@ -86,25 +86,25 @@ export default function Event(props: EventProps) {
                 <div className="flex items-center justify-center md:flex-grow my-6 gap-5 text-center auto-cols-max text-white">
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-4xl lg:text-7xl xl:text-8xl">
-                            <span style={{ "--value": diff.days }}></span>
+                            <span style={{ "--value": diff.days } as any}></span>
                         </span>
                         days
                     </div>
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-4xl lg:text-7xl xl:text-8xl">
-                            <span style={{ "--value": diff.hours }}></span>
+                            <span style={{ "--value": diff.hours } as any}></span>
                         </span>
                         hours
                     </div>
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-4xl lg:text-7xl xl:text-8xl">
-                            <span style={{ "--value": diff.minutes }}></span>
+                            <span style={{ "--value": diff.minutes } as any}></span>
                         </span>
                         min
                     </div>
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-4xl lg:text-7xl xl:text-8xl">
-                            <span style={{ "--value": diff.seconds }}></span>
+                            <span style={{ "--value": diff.seconds } as any}></span>
                         </span>
                         sec
                     </div>
