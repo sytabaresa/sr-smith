@@ -113,9 +113,9 @@ export default function Event(props: EventProps) {
                     className="btn btn-outline btn-lg border-white text-white rounded-full hover:bg-white hover:text-[rgba(18,18,18,1)]"
                 >
                     {diff.done ? <a target="_blank" href="https://www.youtube.com/watch?v=nWUvzj8HGC4">
-                        ver evento online aquí
+                        Transmisión en vivo
                     </a> : <a target="_blank" href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=N2Fkc3FyamVtMmQ3Z2QxOTkxMGRkZzc1c3Mgc3l0YWJhcmVzYUBt&amp;tmsrc=sytabaresa%40gmail.com">
-                        agendar evento en calendar
+                        Agendar evento en calendar <br/> (transmisión en vivo)
                     </a>}
                 </button>
             </div>
@@ -133,9 +133,9 @@ export default function Event(props: EventProps) {
                         Apoyan:
                     </p>
                     <div className="flex items-end gap-[60px] flex-wrap">
+                        <img className="h-28 m-auto" src="https://uortjlczjmucmpaqqhqm.supabase.co/storage/v1/object/public/firejet-converted-images/images/d0c63684018771995c52ac5c13efa5a0bda8d446:0.webp" alt="gitud" />
                         <img className="h-28 m-auto" src="https://uortjlczjmucmpaqqhqm.supabase.co/storage/v1/object/public/firejet-converted-images/images/a4891cb95f32da6c52056490dc775497e417b8a0.webp" alt="gitud" />
                         <img className="h-28 m-auto" src="https://uortjlczjmucmpaqqhqm.supabase.co/storage/v1/object/public/firejet-converted-images/images/3be9486b4b8febcce719d4610b4e54cff5806496:0.webp" alt="gitud" />
-                        <img className="h-28 m-auto" src="https://uortjlczjmucmpaqqhqm.supabase.co/storage/v1/object/public/firejet-converted-images/images/d0c63684018771995c52ac5c13efa5a0bda8d446:0.webp" alt="gitud" />
                         <img className="h-28 m-auto" src="https://uortjlczjmucmpaqqhqm.supabase.co/storage/v1/object/public/firejet-converted-images/images/c260dad9fdad9bf1fc733c8ba4443fc9259662a8.webp" alt="gitud" />
                     </div>
                 </div>
