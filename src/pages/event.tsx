@@ -28,7 +28,7 @@ export default function Event(props: EventProps) {
                 <img className="relative opacity-30 w-[200vw] left-1/2 -translate-x-1/2 max-w-none lg:w-full top-[130px]" src="/images/smith-chart-dark.svg" alt="smith-chart-background" />
             </div>
             <div className="relative flex flex-col self-start md:ml-32">
-                <div className="text-white text-left font-bold font-['Inter'] py-6 xl:py-8 pl-6">
+                <div className="text-white text-left font-bold font-['Inter'] pt-6 xl:py-8 pl-6">
                     <p
                         className="leading-none text-5xl lg:text-[5rem] xl:text-[6rem]"
                     >
@@ -52,7 +52,7 @@ export default function Event(props: EventProps) {
                 </div>
             </div>
             <div className="flex flex-wrap px-4 w-full lg:w-2/3 lg:ml-40">
-                <div className="text-white text-left font-['Inter'] w-full lg:w-1/2 mt-4 text-2xl lg:text-3xl xl:text-5xl">
+                <div className="text-white text-left font-['Inter'] w-full lg:w-1/2 mt-4 text-2xl lg:text-3xl xl:text-4xl">
                     <div className="leading-none inline-block">
                         <p className="font-medium leading-none">
                             Por:
@@ -65,7 +65,7 @@ export default function Event(props: EventProps) {
                         </p>
                     </div>
                 </div>
-                <div className="text-white text-right font-['Inter'] w-full lg:w-1/2 mt-4 text-2xl lg:text-3xl xl:text-5xl">
+                <div className="text-white text-right font-['Inter'] w-full lg:w-1/2 mt-4 text-xl lg:text-2xl xl:text-3xl">
                     <p className="font-medium inline m-0">
                         {"Fecha: "}
                     </p>
@@ -80,10 +80,15 @@ export default function Event(props: EventProps) {
                         <br />
                         {"salón 402 | sala IEEE UD"}
                     </p>
+                    <p className="font-bold inline m-0">
+                        11:00
+                        <br />
+                        {"Universidad Distrital - sede ingeniería (Cr 8 # 40 - 78)"}
+                    </p>
                 </div>
             </div>
             <div className="flex flex-grow flex-wrap mt-4 items-center w-full md:w-2/3  justify-center">
-                <div className="flex items-center justify-center md:flex-grow my-6 gap-5 text-center auto-cols-max text-white">
+                <div className="flex items-center justify-center md:flex-grow my-2 lg:my-6 gap-5 text-center auto-cols-max text-white">
                     <div className="flex flex-col">
                         <span className="countdown font-mono text-4xl lg:text-7xl xl:text-8xl">
                             <span style={{ "--value": diff.days } as any}></span>

@@ -42,6 +42,7 @@ const DrawerSmithMenu = (props) => {
     }
 
     return <div className="flex flex-col items-start flex-grow w-full">
+
         {isAuthenticated ?
             <>
                 <label htmlFor={labels.NEW_PROJECT_LABEL}>
@@ -66,6 +67,10 @@ const DrawerSmithMenu = (props) => {
                 </label>
             </>
         }
+        <a className="btn btn-warning btn-outline mt-10 text-right " href="/event">
+            <div className="w-4 h-4 bg-red-500 rounded-full mr-1"></div> Sustentación <br/> tesis
+        </a>
+
     </div>
 }
 
