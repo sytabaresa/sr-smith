@@ -12,6 +12,9 @@ import ArcTooltip from "../../../modules/core/tooltips/arc";
 import ReCircleTooltip from "../../../modules/core/tooltips/reCircle";
 import ImCircleTooltip from "../../../modules/core/tooltips/imCircle";
 import { useTranslation } from "next-export-i18n"
+import ImCircleAdTooltip from "../../../modules/core/tooltips/imCircleAd";
+import ReCircleAdTooltip from "../../../modules/core/tooltips/reCircleAd";
+
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
 
@@ -64,7 +67,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
         new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
         new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
-        new ImCircleTooltip()].map((plugin, index) =>
+        new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
           <li key={index} onClick={() => ui.setTooltip(plugin.name)}>
             <a
               className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}

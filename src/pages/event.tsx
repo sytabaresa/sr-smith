@@ -120,11 +120,9 @@ export default function Event(props: EventProps) {
                 <button
                     className="btn btn-outline btn-lg border-white text-white rounded-full hover:bg-white hover:text-[rgba(18,18,18,1)]"
                 >
-                    {diff.done ? <a target="_blank" href="https://www.youtube.com/watch?v=nWUvzj8HGC4">
+                    <a target="_blank" href="https://www.youtube.com/watch?v=nWUvzj8HGC4">
                         Transmisión en vivo
-                    </a> : <a target="_blank" href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=N2Fkc3FyamVtMmQ3Z2QxOTkxMGRkZzc1c3Mgc3l0YWJhcmVzYUBt&amp;tmsrc=sytabaresa%40gmail.com">
-                        Agendar evento en calendar <br/> (transmisión en vivo)
-                    </a>}
+                    </a>
                 </button>
             </div>
             <div className="flex flex-wrap items-start justify-start lg:justify-center text-white font-bold font-['Inter'] w-full gap-[60px] mb-4 px-4">

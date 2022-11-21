@@ -20,6 +20,9 @@ import Footer from "../common/components/organisms/footer";
 import "../modules/core/elements/smithPoint"
 import "../modules/core/elements/reCircle"
 import "../modules/core/elements/imCircle"
+import "../modules/core/elements/imCircleAd"
+import "../modules/core/elements/reCircleAd"
+
 import ModalContainer from "../common/components/molecules/modalContainer";
 import NewProjectForm from "../common/components/organisms/newProjectForm";
 import PublishProjectForm from "../common/components/organisms/publishProjectForm";
