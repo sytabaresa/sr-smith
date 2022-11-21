@@ -133,6 +133,7 @@ declare namespace JXG {
     export const GENTYPE_CTX_SNAPWIDTH: number;
     export const GENTYPE_CTX_SNAPTOGRID: number;
 
+    export const OBJECT_TYPE_COMPLEX: number;
     // custom
     export let OBJECT_TYPE_SMITH_POINT: number;
     export let OBJECT_TYPE_REAL_CIRCLE: number;
@@ -167,6 +168,7 @@ declare namespace JXG {
     }
     export function createSmithPoint(board: Board, parents: unknown[], attributes: SmithPointAttributes): SmithPoint
     export function createPoint(board: Board, parents: unknown[], attributes: PointAttributes): Point
+    export function createComplex(board: Board, parents: unknown[], attributes: PointAttributes): Point
 
     export interface JXGOptions {
         recircle: CircleOptions | GeometryElementAttributes;
@@ -174,6 +176,7 @@ declare namespace JXG {
         recirclead: CircleOptions | GeometryElementAttributes;
         imcirclead: CircleOptions | GeometryElementAttributes;
         spoint: PointOptions | GeometryElementAttributes;
+        complex: PointOptions | GeometryElementAttributes;
     }
 
     export interface Board {

@@ -1,7 +1,7 @@
 import JXG, { ImCircle, Point } from "jsxgraph"
 import { zImPart, zImPart2 } from "../utils/transforms";
 
-JXG.OBJECT_TYPE_REAL_CIRCLE = 98
+JXG.OBJECT_TYPE_REAL_CIRCLE = 92
 
 JXG.createImCircleAd = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
