@@ -1,7 +1,7 @@
 import JXG, { Point, ReCircle } from "jsxgraph"
 import { zRePart, zRePart2 } from "../utils/transforms";
 
-JXG.OBJECT_TYPE_REAL_CIRCLE = 98
+JXG.OBJECT_TYPE_REAL_CIRCLE = 91
 
 JXG.createReCircleAd = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
