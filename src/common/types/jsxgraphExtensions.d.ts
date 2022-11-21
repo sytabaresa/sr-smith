@@ -146,6 +146,7 @@ declare namespace JXG {
 
     }
     export function createReCircle(board: Board, parents: unknown[], attributes: ReCircleAttributes): ReCircle
+    export function createReCircleAd(board: Board, parents: unknown[], attributes: ReCircleAttributes): ReCircle
 
     //imag
     export interface ImCircle extends Circle {
@@ -154,6 +155,7 @@ declare namespace JXG {
     export interface ImCircleAttributes extends CircleAttributes {
     }
     export function createImCircle(board: Board, parents: unknown[], attributes: ImCircleAttributes): ImCircle
+    export function createImCircleAd(board: Board, parents: unknown[], attributes: ImCircleAttributes): ImCircle
 
     // smith point
     export interface SmithPoint extends Point {
@@ -169,6 +171,8 @@ declare namespace JXG {
     export interface JXGOptions {
         recircle: CircleOptions | GeometryElementAttributes;
         imcircle: CircleOptions | GeometryElementAttributes;
+        recirclead: CircleOptions | GeometryElementAttributes;
+        imcirclead: CircleOptions | GeometryElementAttributes;
         spoint: PointOptions | GeometryElementAttributes;
     }
 

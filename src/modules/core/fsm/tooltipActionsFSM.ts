@@ -21,6 +21,8 @@ import SemicircleTooltip from "../tooltips/semicircle";
 import ArcTooltip from "../tooltips/arc";
 import ReCircleTooltip from "../tooltips/reCircle";
 import ImCircleTooltip from "../tooltips/imCircle";
+import ImCircleAdTooltip from "../tooltips/imCircleAd";
+import ReCircleAdTooltip from "../tooltips/reCircleAd";
 import { removeElement } from "../utils/board";
 
 
@@ -62,6 +64,8 @@ export class JXGDrawer {
             new ArcTooltip(),
             new ReCircleTooltip(),
             new ImCircleTooltip(),
+            new ReCircleAdTooltip(),
+            new ImCircleAdTooltip(),
         ]
 
         // other confs
