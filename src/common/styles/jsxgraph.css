@@ -1,0 +1,10 @@
+.JXGinfobox {
+  @apply card border border-primary bg-base-100 p-2 !text-base-content !z-10;
+  /* z-index: 10; */
+    /* padding:10px; */
+    /* border: solid black 2px; */
+    /* border-radius: 10px; */
+    /* background-color: #dddddd; */
+    /* color: blue; */
+    /* font-size: 16px; */
+  }
