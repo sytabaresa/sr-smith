@@ -12,7 +12,7 @@ export function zRePart(a: number, b: number): number {
     return (1 - a * a - b * b) / ((1 - a) * (1 - a) + b * b)
 }
 
-export function zRePart2(a: number, b: number): number {
+export function zRePartAd(a: number, b: number): number {
     return (1 - a * a - b * b) / ((1 + a) * (1 + a) + b * b)
 }
 
@@ -20,6 +20,6 @@ export function zRePart2(a: number, b: number): number {
 export function zImPart(a: number, b: number): number {
     return (2 * b) / ((1 - a) * (1 - a) + b * b)
 }
-export function zImPart2(a: number, b: number): number {
+export function zImPartAd(a: number, b: number): number {
     return (2 * b) / ((1 + a) * (1 + a) + b * b)
 }

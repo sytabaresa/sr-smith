@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import 'tailwindcss/tailwind.css'
 import '../common/styles/main.css';
-import '../common/styles/animations.css'
+import '../common/styles/animations.css';
+import '../common/styles/jsxgraph.css';
+
 import { useRouter } from 'next/router';
 import UserProvider from '../common/components/organisms/userContext'
 import { useTheme, setTheme, getTheme } from '../common/hooks/useTheme';

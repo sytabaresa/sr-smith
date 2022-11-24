@@ -1,5 +1,6 @@
-import JXG, { Board, JXGOptions, PointOptions } from "jsxgraph"
+import JXG, { autoDigits, Board, JXGOptions, PointOptions } from "jsxgraph"
 import { lightTheme, darkTheme } from "./utils/themes"
+import { zImPart, zRePart } from "./utils/transforms"
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -24,7 +25,13 @@ export const changeBoardTheme = (theme: string) => {
     }
 }
 
-export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: string = 'lg') => {
+export interface boardOptionsProps {
+    theme: string;
+    digits: number;
+}
+
+
+export const initBoard = (boxName: string, boardOptions: boardOptionsProps, screenSize: string = 'lg') => {
     changeBoardTheme(boardOptions.theme)
 
     const screenBoxSizes = {
@@ -47,7 +54,7 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
         // fullscreen: { id: 'outer' },
         // showFullscreen: true,
         // showScreenshot: true,
-        showCopyRight: false,
+        showCopyright: false,
         resize: { enabled: true, throttle: 200 },
         pan: {
             enabled: true,
@@ -63,10 +70,33 @@ export const initBoard = (boxName: string, boardOptions: any = {}, screenSize: s
             // max: 1000.0,
             // min: 0.8,
         },
+        showInfobox: true,
+        infoboxDigits: boardOptions.digits || 3,
+
         ...boardOptions,
-    });
+    } as any);
 
     brd.suspendUpdate()
+
+    // JXG.Options.infobox.anchorY = 'bottom';
+    // JXG.Options.infobox.anchorX = 'right';
+    // JXG.Options.infobox.strokeColor = 'red';
+
+    brd.highlightInfobox = function (x, y, el) {
+        const sx = zRePart(x,y).toFixed(3)
+        const sy = zImPart(x,y).toFixed(3)
+        const body = () => {
+            return `card: (${x},${y}) <br>
+            smith: (${sx},${sy})`
+        }
+        this.infobox.setText(body());
+        return this
+    };
+
+    autoDigits
+    brd.infobox.distanceX = 0;
+    brd.infobox.distanceY = 10;
+    
 
     // brd.create('axis', [[0,0], [1,0]], {
     //     ticks: {
