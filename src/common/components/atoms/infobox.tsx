@@ -18,9 +18,9 @@ export function Infobox(props: InfoboxProps) {
     return <div className="flex">
         <div className="flex flex-col mr-1">
             <div>Γ:</div>
-            <div>smith:</div>
+            <div>z:</div>
             <div>∠:</div>
-            <div>|Γ|</div>
+            <div>|Γ|:</div>
         </div>
         <div className="flex flex-col items-end">
             <div>{`(${formatN(x as number)},${formatN(y as number)})`}</div>
