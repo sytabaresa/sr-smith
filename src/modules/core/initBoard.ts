@@ -15,6 +15,10 @@ JXG.Options.glider = JXG.merge(JXG.Options.glider, {
     strokeColor: 'gray',
 }) as PointOptions
 
+// other styles
+JXG.Options.infobox.anchorY = 'bottom';
+JXG.Options.infobox.anchorX = 'right';
+
 // Theme build
 
 export const changeBoardTheme = (theme: string) => {
@@ -80,8 +84,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
     brd.suspendUpdate()
 
-    JXG.Options.infobox.anchorY = 'bottom';
-    JXG.Options.infobox.anchorX = 'right';
+
     // JXG.Options.infobox.strokeColor = 'red';
 
     brd.highlightInfobox = function (x, y, el) {
