@@ -20,6 +20,19 @@ export function zRePartAd(a: number, b: number): number {
 export function zImPart(a: number, b: number): number {
     return (2 * b) / ((1 - a) * (1 - a) + b * b)
 }
+
 export function zImPartAd(a: number, b: number): number {
     return (2 * b) / ((1 + a) * (1 + a) + b * b)
 }
+
+export function angle(x: number, y: number) {
+    return Math.atan2(y, x) * 180 / Math.PI
+}
+
+export function lambda(x: number, y: number) {
+    return Math.atan2(y, x)
+}
+
+export function abs(x: number, y: number) {
+    return Math.sqrt(x * x + y * y)
+} 

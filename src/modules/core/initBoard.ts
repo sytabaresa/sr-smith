@@ -1,6 +1,8 @@
-import JXG, { autoDigits, Board, JXGOptions, PointOptions } from "jsxgraph"
+import JXG, { JXGOptions, PointOptions } from "jsxgraph"
 import { lightTheme, darkTheme } from "./utils/themes"
-import { zImPart, zRePart } from "./utils/transforms"
+import ReactDOMServer from 'react-dom/server'
+import { Infobox } from "../../common/components/atoms/infobox"
+import React from "react"
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -78,25 +80,22 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
     brd.suspendUpdate()
 
-    // JXG.Options.infobox.anchorY = 'bottom';
-    // JXG.Options.infobox.anchorX = 'right';
+    JXG.Options.infobox.anchorY = 'bottom';
+    JXG.Options.infobox.anchorX = 'right';
     // JXG.Options.infobox.strokeColor = 'red';
 
     brd.highlightInfobox = function (x, y, el) {
-        const sx = zRePart(x,y).toFixed(3)
-        const sy = zImPart(x,y).toFixed(3)
-        const body = () => {
-            return `card: (${x},${y}) <br>
-            smith: (${sx},${sy})`
-        }
-        this.infobox.setText(body());
+
+        const body = ReactDOMServer.renderToStaticMarkup(
+            React.createElement(Infobox, { x, y })
+        )
+        this.infobox.setText(body);
+
         return this
     };
-
-    autoDigits
-    brd.infobox.distanceX = 0;
-    brd.infobox.distanceY = 10;
     
+    (brd.infobox as any).distanceX = 0;
+    (brd.infobox as any).distanceY = 10;
 
     // brd.create('axis', [[0,0], [1,0]], {
     //     ticks: {

@@ -1,7 +1,7 @@
 import JXG, { Board, Circle, GeometryElementAttributes, Point, SmithPoint } from "jsxgraph"
 import { reflecImPart, reflecRePart, zImPart, zRePart } from "../utils/transforms";
 
-// JXG.OBJECT_TYPE_COMPLEX = 90
+JXG.OBJECT_TYPE_COMPLEX = 90
 JXG.createComplex = function (board, parents, attributes) {
     if (JXG.isNumber(parents[0]) && JXG.isNumber(parents[1])) {
         var a = parents[0]
