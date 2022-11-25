@@ -133,7 +133,7 @@ declare namespace JXG {
     export const GENTYPE_CTX_SNAPWIDTH: number;
     export const GENTYPE_CTX_SNAPTOGRID: number;
 
-    export const OBJECT_TYPE_COMPLEX: number;
+    export let OBJECT_TYPE_COMPLEX: number;
     // custom
     export let OBJECT_TYPE_SMITH_POINT: number;
     export let OBJECT_TYPE_REAL_CIRCLE: number;
@@ -181,7 +181,9 @@ declare namespace JXG {
 
     export interface Board {
         flagged: boolean;
+        infobox: any;
     }
 
     export let Options: JXGOptions;
+    
 }
