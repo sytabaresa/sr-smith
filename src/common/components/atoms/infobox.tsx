@@ -15,18 +15,18 @@ export function Infobox(props: InfoboxProps) {
 
     const formatN = (x: number) => Number.isNaN(x) ? '∞' : typeof x == 'number' ? x.toFixed(3) : x
 
-    return <div className="flex">
-        <div className="flex flex-col mr-1">
-            <div>Γ:</div>
-            <div>z:</div>
-            <div>∠:</div>
-            <div>|Γ|:</div>
+    return <div className="flex font-mono">
+        <div className="flex flex-col mr-2 items-center">
+            <div>z</div>
+            <div>Γ</div>
+            <div>|Γ|</div>
+            <div>∠</div>
         </div>
         <div className="flex flex-col items-end">
             <div>{`(${formatN(x as number)},${formatN(y as number)})`}</div>
             <div>{`(${formatN(sx)},${formatN(sy)})`}</div>
-            <div>{`${formatN(ang)}˚`}</div>
             <div>{`${formatN(abss)}`}</div>
+            <div>{`${formatN(ang)}˚`}</div>
         </div>
     </div>
 }

@@ -87,7 +87,7 @@ export class JXGDrawer {
         if (this.touchTimer)
             clearTimeout(this.touchTimer)
         const handler = () => this.inTouch = false
-        this.touchTimer = setTimeout(handler.bind(this), 200)
+        this.touchTimer = setTimeout(handler.bind(this), 100)
         this.inTouch = true
     }
 
