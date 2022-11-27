@@ -30,7 +30,7 @@ class PointTooltip implements TooltipType {
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'drawObject', reduce(selectOrDrawPoint)),
+            transition('CLICK', 'drawObject', reduce(selectOrDrawPoint)),
         ),
         drawObject: state(
             immediate('end', guard(this.checkDrawObject), reduce(this.drawObject.bind(this))),

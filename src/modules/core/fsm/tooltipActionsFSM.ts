@@ -46,7 +46,7 @@ export class JXGDrawer {
     private touchTimer
     private reactContext: SmithContextType
     private inTouch: boolean = false
-    private moveEvent: any
+    private hitElement: any
     service: Service<typeof this.whiteboardMachine>
 
     constructor(attributes = {}) {
@@ -86,21 +86,24 @@ export class JXGDrawer {
         // console.log('event:start')
         if (this.touchTimer)
             clearTimeout(this.touchTimer)
-        const handler = () => this.inTouch = false
-        this.touchTimer = setTimeout(handler.bind(this), 100)
+        this.touchTimer = setTimeout(() => this.inTouch = false, 100)
         this.inTouch = true
+        // this.board.update
     }
 
     upHandler(e) {
-        // console.log('event:end')
-        if (this.inTouch) {
-            this.sendEvent('DOWN', e)
-            this.inTouch = false
+        // console.log('event:end', e.pointerType)
+        if (!(e.pointerType == 'mouse' || this.inTouch)) {
+            return
         }
+        this.inTouch = false
+        this.sendEvent('CLICK', e)
     }
 
-    moveHandler(e) {
-        this.moveEvent = e
+    moveHandler(e, el) {
+        // console.log('hit:', e, el)
+        this.board.updateInfobox(el)
+        this.hitElement = e
     }
 
     populateBoard() {
@@ -164,8 +167,8 @@ export class JXGDrawer {
     }
 
     removeElement = (ctx: any, ev: any) => {
-        // console.log('del')
-        removeElement(this.board, this.moveEvent)
+        // console.log('del',this.hitElement)
+        removeElement(this.board, this.hitElement)
         return ctx
     }
 
