@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-import Editor from "./codeEditor";
+import React, { HTMLAttributes, useState } from "react";
+import CodeEditor from "./codeEditor";
 import { useLayer, Arrow } from "react-laag";
 import { useTranslation } from "next-export-i18n";
 import { motion } from "framer-motion";
 
-const EditorPopup: React.FC = () => {
+export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
+
+}
+
+const EditorPopup = (props: EditorPopupProps) => {
     const [isOpen, setOpen] = useState(false);
     const { t } = useTranslation()
 
@@ -25,7 +29,7 @@ const EditorPopup: React.FC = () => {
     });
 
     return (
-        <>
+        <div {...props}>
             <button
                 // preset="filled"
                 {...triggerProps}
@@ -44,7 +48,7 @@ const EditorPopup: React.FC = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                         >
-                            <Editor className="max-h-[80vh]" />
+                            <CodeEditor className="max-h-[80vh]" />
                             <Arrow
                                 {...arrowProps}
                                 size={10}
@@ -58,7 +62,7 @@ const EditorPopup: React.FC = () => {
                     )}
                 </>
             )}
-        </>
+        </div>
     );
 }
 

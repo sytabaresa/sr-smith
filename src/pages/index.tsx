@@ -32,7 +32,7 @@ configure({
   /**
    * The level of logging of its own behaviour React HotKeys should perform.
    */
-  // logLevel: 'verbose',
+  logLevel: process.env.NODE_ENV == 'development' ? 'debug' : 'warn',
   ignoreTags: [],
   // ignoreEventsCondition: (event) => { return false; }
   stopEventPropagationAfterIgnoring: false,
@@ -48,16 +48,6 @@ const SmithProject: React.FC = () => {
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState((null as SmithProject) || null);
 
-  const keyMap = {
-    EXIT: "esc",
-    DELETE: "shift+d",
-  };
-
-  const handlers = {
-    EXIT: () => ui.sendEvent("EXIT"),
-    DELETE: () => ui.sendEvent("DELETE"),
-  };
-
   // machines
   ui.useMachine();
 
@@ -66,6 +56,19 @@ const SmithProject: React.FC = () => {
     ui,
     theme,
   });
+
+
+  const keyMap = {
+    EXIT: "esc",
+    DELETE: "del",
+    EXEC: "ctrl+enter",
+  };
+
+  const handlers = {
+    EXIT: () => ui.sendEvent("EXIT"),
+    DELETE: () => ui.sendEvent("DELETE"),
+    EXEC: () => editorService[1]('PARSING')
+  };
 
   const saveService = useMachine(saveMachine, {
     id: router.query?.id as string,

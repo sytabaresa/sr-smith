@@ -103,7 +103,7 @@ export class JXGDrawer {
     moveHandler(e, el) {
         // console.log('hit:', e, el)
         this.board.updateInfobox(el)
-        this.hitElement = e
+        this.hitElement = el
     }
 
     populateBoard() {
@@ -167,8 +167,9 @@ export class JXGDrawer {
     }
 
     removeElement = (ctx: any, ev: any) => {
-        // console.log('del',this.hitElement)
-        removeElement(this.board, this.hitElement)
+        console.log('del',this.hitElement)
+        // removeElement(this.board, this.hitElement)
+        this.board.removeObject(this.hitElement)
         return ctx
     }
 
@@ -197,11 +198,12 @@ export class JXGDrawer {
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
             transition('done', 'draw', reduce(this.recreateCode)),
-            transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
             transition('error', 'idle'),
+            transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
             transition('CHANGE_IDLE', 'post_draw'),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('EXIT', 'post_draw'),
+            transition('DELETE', 'draw', reduce(this.removeElement)),
         ),
         post_draw: state(
             immediate('idle', reduce((ctx: any, ev: any) => {

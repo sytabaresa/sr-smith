@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { BeakerIcon, HandIcon } from "@heroicons/react/outline";
+import { HandIcon, ReplyIcon, TemplateIcon, TrashIcon } from "@heroicons/react/outline";
 import { SmithContext } from "../../../common/providers/smithContext";
 import PointTooltip from "../../../modules/core/tooltips/point";
 import SegmentTooltip from "../../../modules/core/tooltips/segment";
@@ -19,6 +19,7 @@ interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
 
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
+  const { className, ...rest } = props
   const { t } = useTranslation()
   const { ui } = useContext(SmithContext)
 
@@ -43,26 +44,47 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   }, [ui.current()])
 
   return (
-    <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${props.className}`}>
-      <div className="form-control">
-        <label className="label cursor-pointer pt-0">
-          <span className="label-text w-4">{t("Smith Mode")}</span>
-          <input type="checkbox" className="toggle toggle-primary" checked={ui.context().smithMode} onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)} />
-        </label>
+    <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${className}`} {...rest}>
+      <div className="flex gap-2 mb-2">
+        <div className="btn-group">
+          <button
+            aria-label={t("undo")}
+            tabIndex={0}
+            className={`btn btn-square`}
+            onClick={() => ui.sendEvent('UNDO')}>
+            <ReplyIcon className="w-6" />
+          </button>
+        </div>
+        <div className="btn-group">
+          <button
+            aria-label={t("delete")}
+            tabIndex={0}
+            className={`btn btn-square`}
+            onClick={() => ui.sendEvent('DELETE')}>
+            <TrashIcon className="w-6" />
+          </button>
+        </div>
       </div>
-      <label
-        tabIndex={0}
-        className={`btn ${showMenu ? 'btn-primary' : ''}`}
-        onClick={() => setShowMenu(!showMenu)}>
-        <BeakerIcon className="w-6" />
-      </label>
-      <label
-        tabIndex={0}
-        className={`btn ${ui.current() == "idle" ? 'btn-primary hover:bg-primary' : ''} ml-1`}
-        onClick={() => ui.sendEvent('EXIT')}>
-        <HandIcon className="w-6" />
-      </label>
-
+      <div className="flex gap-2">
+        <div className="btn-group">
+          <button
+            aria-label={t("show menu")}
+            tabIndex={0}
+            className={`btn btn-square ${showMenu ? 'btn-active' : ''}`}
+            onClick={() => setShowMenu(!showMenu)}>
+            <TemplateIcon className="w-6" />
+          </button>
+        </div>
+        <div className="btn-group">
+          <button
+            aria-label={t("move")}
+            tabIndex={0}
+            className={`btn btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
+            onClick={() => ui.sendEvent('EXIT')}>
+            <HandIcon className="w-6" />
+          </button>
+        </div>
+      </div>
       <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 border-primary border bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
         {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
         new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
