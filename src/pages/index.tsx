@@ -32,7 +32,7 @@ configure({
   /**
    * The level of logging of its own behaviour React HotKeys should perform.
    */
-  // logLevel: 'verbose',
+  logLevel: process.env.NODE_ENV == 'development' ? 'debug' : 'warn',
   ignoreTags: [],
   // ignoreEventsCondition: (event) => { return false; }
   stopEventPropagationAfterIgnoring: false,
@@ -48,16 +48,6 @@ const SmithProject: React.FC = () => {
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState((null as SmithProject) || null);
 
-  const keyMap = {
-    EXIT: "esc",
-    DELETE: "shift+d",
-  };
-
-  const handlers = {
-    EXIT: () => ui.sendEvent("EXIT"),
-    DELETE: () => ui.sendEvent("DELETE"),
-  };
-
   // machines
   ui.useMachine();
 
@@ -66,6 +56,19 @@ const SmithProject: React.FC = () => {
     ui,
     theme,
   });
+
+
+  const keyMap = {
+    EXIT: "esc",
+    DELETE: "del",
+    EXEC: "ctrl+enter",
+  };
+
+  const handlers = {
+    EXIT: () => ui.sendEvent("EXIT"),
+    DELETE: () => ui.sendEvent("DELETE"),
+    EXEC: () => editorService[1]('PARSING')
+  };
 
   const saveService = useMachine(saveMachine, {
     id: router.query?.id as string,
@@ -114,7 +117,7 @@ const SmithProject: React.FC = () => {
       <HotKeys keyMap={keyMap} handlers={handlers}>
         <Layout
           title="Smith Chart"
-          footerComponent={<Footer className="absolute bottom-0 left-0 ml-1 mb-1" />}
+          footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
           navbar={false}
           className=""
           drawerMenu={<DrawerSmithMenu labels={labels} />}
@@ -122,7 +125,7 @@ const SmithProject: React.FC = () => {
           {/* <div className="h-full relative"> */}
           <SmithBoard />
           <CodeTools />
-          <div className="absolute top-0 right-0 mr-4 mt-4">
+          <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
             <UserMenu />
           </div>
           {/* </div> */}

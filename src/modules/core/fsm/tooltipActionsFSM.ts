@@ -46,7 +46,7 @@ export class JXGDrawer {
     private touchTimer
     private reactContext: SmithContextType
     private inTouch: boolean = false
-    private moveEvent: any
+    private hitElement: any
     service: Service<typeof this.whiteboardMachine>
 
     constructor(attributes = {}) {
@@ -86,21 +86,24 @@ export class JXGDrawer {
         // console.log('event:start')
         if (this.touchTimer)
             clearTimeout(this.touchTimer)
-        const handler = () => this.inTouch = false
-        this.touchTimer = setTimeout(handler.bind(this), 200)
+        this.touchTimer = setTimeout(() => this.inTouch = false, 100)
         this.inTouch = true
+        // this.board.update
     }
 
     upHandler(e) {
-        // console.log('event:end')
-        if (this.inTouch) {
-            this.sendEvent('DOWN', e)
-            this.inTouch = false
+        // console.log('event:end', e.pointerType)
+        if (!(e.pointerType == 'mouse' || this.inTouch)) {
+            return
         }
+        this.inTouch = false
+        this.sendEvent('CLICK', e)
     }
 
-    moveHandler(e) {
-        this.moveEvent = e
+    moveHandler(e, el) {
+        // console.log('hit:', e, el)
+        this.board.updateInfobox(el)
+        this.hitElement = el
     }
 
     populateBoard() {
@@ -164,16 +167,28 @@ export class JXGDrawer {
     }
 
     removeElement = (ctx: any, ev: any) => {
-        // console.log('del')
-        removeElement(this.board, this.moveEvent)
+        console.log('del', this.hitElement)
+        const invalidElements = ['image', 'ticks', 'grid', 'text', 'axis']
+
+        // removeElement(this.board, this.hitElement)
+        if (!invalidElements.includes(this.hitElement?.elType))
+            this.board.removeObject(this.hitElement)
         return ctx
     }
 
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
             transition('DELETE', 'idle', reduce(this.removeElement)),
+            transition('DELETE_MODE', 'delete'),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('SMITH_MODE', 'idle', reduce(this.smithModeChange)),
+        ),
+        delete: state(
+            transition('DELETE', 'idle', reduce(this.removeElement)),
+            transition('SMITH_MODE', 'delete', reduce(this.smithModeChange)),
+            transition('CHANGE_DRAW', 'pre_draw'),
+            transition('EXIT', 'idle'),
+            transition('CLICK', 'delete', reduce(this.removeElement))
         ),
         pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
@@ -194,19 +209,17 @@ export class JXGDrawer {
         draw: invoke((ctx: any, event: any) =>
             this.tooltipPluginMap[ctx.tooltipSelected].machine,
             transition('done', 'draw', reduce(this.recreateCode)),
-            transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
             transition('error', 'idle'),
-            transition('CHANGE_IDLE', 'post_draw'),
+            transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('EXIT', 'post_draw'),
+            transition('DELETE', 'draw', reduce(this.removeElement)),
+            transition('DELETE_MODE', 'delete'),
         ),
         post_draw: state(
             immediate('idle', reduce((ctx: any, ev: any) => {
                 return { ...ctx, tooltipSelected: '' }
             }))
-        ),
-        drag: state(
-            transition('CHANGE_IDLE', 'idle')
         ),
         error: state(
             immediate('idle', action((ctx, ev) => console.log("error", ev)))

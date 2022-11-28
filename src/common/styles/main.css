@@ -1,29 +1,10 @@
 
 /*
- *  STYLE 2
- */
+ *  */
 
-.custom-scrollbar::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
-    border-radius: 5px;
-    background-color: #F5F5F5;
-}
 
-.custom-scrollbar::-webkit-scrollbar
-{
-    width: 6px;
-    background-color: #F5F5F5;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb
-{
-    border-radius: 5px;
-    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,.3);
-    background-color: black;
-}
-
-  .full-screen-div {
+ /* NEcesary in mobile, for full (no overflow) size of canvas */
+ .full-screen-div {
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
   }

@@ -37,7 +37,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     // in that case: separate select and draw logic with states, guards and reducers
     if (point) {
         objectSelected.push(point)
-        return { ...ctx, objectSelected }
+        return { ...ctx, objectSelected, code }
     }
 
     // interception and slider in elements

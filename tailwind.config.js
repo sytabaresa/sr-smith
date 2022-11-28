@@ -1,3 +1,4 @@
+const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
@@ -10,6 +11,12 @@ module.exports = {
                 maxWidth: {
                     'screen': '100vw'
                 }
+            },
+            screens: {
+                'xsh': {
+                    'raw': '(max-height: 450px)'
+                },
+                ...defaultTheme.screens,
             }
             // colors: {
             //   principal: {
@@ -25,6 +32,9 @@ module.exports = {
     },
     plugins: [
         require('daisyui'),
+        require('tailwind-scrollbar')({
+            nocompatible: true
+        })
     ],
     daisyui: {
         // darkTheme: 'black',

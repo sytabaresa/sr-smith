@@ -33,17 +33,17 @@ class TwoPointsTooltip {
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'secondPoint', reduce(selectOrDrawPoint)),
+            transition('CLICK', 'secondPoint', reduce(selectOrDrawPoint)),
         ),
         secondPoint: state(
-            transition('DOWN', 'thirdPoint', reduce(selectOrDrawPoint),),
+            transition('CLICK', 'thirdPoint', reduce(selectOrDrawPoint),),
         ),
         checkSecondPoint: state(
             immediate('thirdPoint', guard(this.differentPoints1)),
             immediate('secondPoint', reduce(this.removeLastObject))
         ),
         thirdPoint: state(
-            transition('DOWN', 'checkThirdPoint', reduce(selectOrDrawPoint)),
+            transition('CLICK', 'checkThirdPoint', reduce(selectOrDrawPoint)),
         ),
         checkThirdPoint: state(
             immediate('drawObject', guard(this.differentPoints2)),

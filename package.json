@@ -14,7 +14,6 @@
         "canvas": "^2.8.0",
         "daisyui": "^2.39.0",
         "firebase": "^9",
-        "framer-motion": "^5.6.0",
         "gravatar": "^1.8.2",
         "jsxgraph": "https://github.com/sytabaresa/jsxgraph",
         "lodash": "^4.17.21",
@@ -27,11 +26,11 @@
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.24.0",
         "react-hotkeys": "^2.0.0",
-        "react-laag": "^2.0.3",
         "react-responsive": "^8.2.0",
         "react-robot": "^0.2.2",
         "react-simple-code-editor": "^0.11.0",
-        "robot3": "https://github.com/sytabaresa/robot#child-machine-send"
+        "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
+        "tailwind-scrollbar": "2.1.0-preview.0"
     },
     "devDependencies": {
         "@next/bundle-analyzer": "^13.0.2",

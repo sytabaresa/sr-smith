@@ -30,10 +30,10 @@ class TwoPointsTooltip {
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'secondPoint', reduce(selectOrDrawPoint)),
+            transition('CLICK', 'secondPoint', reduce(selectOrDrawPoint)),
         ),
         secondPoint: state(
-            transition('DOWN', 'checkLastPoint', reduce(selectOrDrawPoint),
+            transition('CLICK', 'checkLastPoint', reduce(selectOrDrawPoint),
             ),
         ),
         checkLastPoint: state(

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { BeakerIcon, HandIcon } from "@heroicons/react/outline";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { HandIcon, ReplyIcon, TemplateIcon, TrashIcon } from "@heroicons/react/outline";
 import { SmithContext } from "../../../common/providers/smithContext";
 import PointTooltip from "../../../modules/core/tooltips/point";
 import SegmentTooltip from "../../../modules/core/tooltips/segment";
@@ -19,6 +19,7 @@ interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
 
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
+  const { className, ...rest } = props
   const { t } = useTranslation()
   const { ui } = useContext(SmithContext)
 
@@ -29,6 +30,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const onClickCircleCenterRadiusCancel = () => ui.sendEvent('CANCEL')
 
   const [radius, setRadius] = useState("")
+  const [offset, setOffset] = useState(0)
+
+  const ref = useRef()
   const [showHelp, setShowHelp] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
 
@@ -42,43 +46,91 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     }
   }, [ui.current()])
 
-  return (
-    <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${props.className}`}>
-      <div className="form-control">
-        <label className="label cursor-pointer pt-0">
-          <span className="label-text w-4">{t("Smith Mode")}</span>
-          <input type="checkbox" className="toggle toggle-primary" checked={ui.context().smithMode} onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)} />
-        </label>
-      </div>
-      <label
-        tabIndex={0}
-        className={`btn ${showMenu ? 'btn-primary' : ''}`}
-        onClick={() => setShowMenu(!showMenu)}>
-        <BeakerIcon className="w-6" />
-      </label>
-      <label
-        tabIndex={0}
-        className={`btn ${ui.current() == "idle" ? 'btn-primary hover:bg-primary' : ''} ml-1`}
-        onClick={() => ui.sendEvent('EXIT')}>
-        <HandIcon className="w-6" />
-      </label>
+  const offsetCalc = (e) => {
+    // console.log(e?.offsetTop)
+    if (e?.offsetTop)
+      setOffset(e.offsetTop + 50)
+  }
 
-      <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 border-primary border bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
-        {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
-        new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
-        new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
-        new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
-          <li key={index} onClick={() => ui.setTooltip(plugin.name)}>
-            <a
-              className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
-              data-tip={t(plugin.tooltip)}
-            >
-              <plugin.icon className="w-8 h-8 stroke-accent fill-accent" />
-            </a>
-          </li>
-        )}
-      </ul>
-      <div className={`modal ${ui.current(true) == "draw.drawCircle" && 'modal-open'}`}>
+  const _delete = (e) => {
+    ui.sendEvent('EXIT')
+    ui.sendEvent('DELETE_MODE')
+  }
+
+  useEffect(() => {
+    if (typeof window != 'undefined')
+      window.addEventListener('resize', () => offsetCalc(ref.current));
+    offsetCalc(ref.current)
+  }, [])
+
+  return (
+    <div className={`flex flex-col ${className}`} {...rest}>
+      <div className=" flex gap-2 lg:mt-0 mt-2 mb-2 flex-0">
+
+        <div className="btn-group">
+          <button
+            aria-label={t("undo")}
+            tabIndex={0}
+            className={`btn btn-square btn-disabled`}
+            onClick={() => ui.sendEvent('UNDO')}>
+            <ReplyIcon className="w-6" />
+          </button>
+        </div>
+        <div className="btn-group">
+          <button
+            aria-label={t("delete")}
+            tabIndex={0}
+            className={`btn btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
+            onClick={_delete}>
+            <TrashIcon className="w-6" />
+          </button>
+        </div>
+      </div>
+      <div className="flex gap-2 flex-0">
+        <div className={`btn-group `}>
+          <button
+            aria-label={t("show menu")}
+            tabIndex={0}
+            className={`btn btn-square ${showMenu ? 'btn-active' : ''}`}
+            onClick={() => setShowMenu(!showMenu)}>
+            <TemplateIcon className="w-6" />
+          </button>
+        </div>
+        <div className="btn-group">
+          <button
+            aria-label={t("move")}
+            tabIndex={0}
+            className={`btn btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
+            onClick={() => ui.sendEvent('EXIT')}>
+            <HandIcon className="w-6" />
+          </button>
+        </div>
+      </div>
+      <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] ${showMenu ? 'dropdown-open' : ''}`}>
+        <div className="dropdown-content mt-2 border-primary border bg-base-100">
+          <ul
+            tabIndex={0}
+            style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
+            className={`p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full overflow-x-hidden scrollbar-thin !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
+          flex-nowrap   ${showMenu ? '' : 'hidden'}`}
+          >
+            {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
+            new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
+            new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
+            new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
+              // figure out how to show clipped tooltip
+              <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t(plugin.tooltip)}>
+                <button
+                  className={`p-0 py-2 md:px-2 btn btn-ghost ${ui.context().tooltipSelected == plugin.name ? 'btn-active' : ''}`}
+                >
+                  <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
+                </button>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+      <div className={`modal ${ui.current(true) == "draw.drawCircle" ? 'modal-open' : ''}`}>
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">
             Circunferencia: centro y radio
@@ -98,8 +150,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
       </div>
       {ui.tooltipSelected &&
-        <div className={`toast toast-start transition-all ${!showHelp && "invisible"}`}>
-          <div className="alert shadow-lg">
+        <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>
+          <div className="alert max-w-[70vw] shadow-lg">
             <div className="!block">
               <h2 className="font-bold">{t(ui.tooltipSelected.tooltip)}</h2>
               <p>

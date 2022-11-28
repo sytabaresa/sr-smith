@@ -25,7 +25,7 @@ class CircleRadiusTooltip implements TooltipType {
 
     machine = createMachine({
         idle: state(
-            transition('DOWN', 'drawCircle', reduce(selectOrDrawPoint)),
+            transition('CLICK', 'drawCircle', reduce(selectOrDrawPoint)),
         ),
         drawCircle: state(
             transition('RADIUS', 'end', reduce(this.drawCircle.bind(this))),
