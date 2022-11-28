@@ -167,17 +167,28 @@ export class JXGDrawer {
     }
 
     removeElement = (ctx: any, ev: any) => {
-        console.log('del',this.hitElement)
+        console.log('del', this.hitElement)
+        const invalidElements = ['image', 'ticks', 'grid', 'text', 'axis']
+
         // removeElement(this.board, this.hitElement)
-        this.board.removeObject(this.hitElement)
+        if (!invalidElements.includes(this.hitElement.elType))
+            this.board.removeObject(this.hitElement)
         return ctx
     }
 
     whiteboardMachine = createMachine(this.initState as any, {
         idle: state(
             transition('DELETE', 'idle', reduce(this.removeElement)),
+            transition('DELETE_MODE', 'delete'),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('SMITH_MODE', 'idle', reduce(this.smithModeChange)),
+        ),
+        delete: state(
+            transition('DELETE', 'idle', reduce(this.removeElement)),
+            transition('SMITH_MODE', 'delete', reduce(this.smithModeChange)),
+            transition('CHANGE_DRAW', 'pre_draw'),
+            transition('EXIT', 'idle'),
+            transition('CLICK', 'delete', reduce(this.removeElement))
         ),
         pre_draw: state(
             immediate('validatePlugin', reduce((ctx: any, ev: any) => {
@@ -200,18 +211,15 @@ export class JXGDrawer {
             transition('done', 'draw', reduce(this.recreateCode)),
             transition('error', 'idle'),
             transition('SMITH_MODE', 'draw', reduce(this.smithModeChange)),
-            transition('CHANGE_IDLE', 'post_draw'),
             transition('CHANGE_DRAW', 'pre_draw'),
             transition('EXIT', 'post_draw'),
             transition('DELETE', 'draw', reduce(this.removeElement)),
+            transition('DELETE_MODE', 'delete'),
         ),
         post_draw: state(
             immediate('idle', reduce((ctx: any, ev: any) => {
                 return { ...ctx, tooltipSelected: '' }
             }))
-        ),
-        drag: state(
-            transition('CHANGE_IDLE', 'idle')
         ),
         error: state(
             immediate('idle', action((ctx, ev) => console.log("error", ev)))

@@ -1,8 +1,6 @@
 import React, { HTMLAttributes, useState } from "react";
 import CodeEditor from "./codeEditor";
-import { useLayer, Arrow } from "react-laag";
 import { useTranslation } from "next-export-i18n";
-import { motion } from "framer-motion";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 

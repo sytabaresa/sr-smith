@@ -47,24 +47,31 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   }, [ui.current()])
 
   const offsetCalc = (e) => {
-    // console.log(e.offsetTop)
-    setOffset(e.offsetTop + 50)
+    // console.log(e?.offsetTop)
+    if (e?.offsetTop)
+      setOffset(e.offsetTop + 50)
+  }
+
+  const _delete = (e) => {
+    ui.sendEvent('EXIT')
+    ui.sendEvent('DELETE_MODE')
   }
 
   useEffect(() => {
     if (typeof window != 'undefined')
       window.addEventListener('resize', () => offsetCalc(ref.current));
-
+    offsetCalc(ref.current)
   }, [])
 
   return (
-    <div className={`flex flex-col `}>
+    <div className={`flex flex-col ${className}`} {...rest}>
       <div className=" flex gap-2 lg:mt-0 mt-2 mb-2 flex-0">
+
         <div className="btn-group">
           <button
             aria-label={t("undo")}
             tabIndex={0}
-            className={`btn btn-square`}
+            className={`btn btn-square btn-disabled`}
             onClick={() => ui.sendEvent('UNDO')}>
             <ReplyIcon className="w-6" />
           </button>
@@ -73,8 +80,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t("delete")}
             tabIndex={0}
-            className={`btn btn-square`}
-            onClick={() => ui.sendEvent('DELETE')}>
+            className={`btn btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
+            onClick={_delete}>
             <TrashIcon className="w-6" />
           </button>
         </div>
@@ -113,11 +120,11 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
               // figure out how to show clipped tooltip
               <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t(plugin.tooltip)}>
-                <a
-                  className={`p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
+                <button
+                  className={`p-0 py-2 md:px-2 btn btn-ghost ${ui.context().tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
-                </a>
+                </button>
               </li>
             )}
           </ul>
