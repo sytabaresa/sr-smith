@@ -106,12 +106,12 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </button>
         </div>
       </div>
-      <div ref={ref} className={`dropdown ${showMenu ? 'dropdown-open' : ''}`}>
+      <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] ${showMenu ? 'dropdown-open' : ''}`}>
         <div className="dropdown-content mt-2 border-primary border bg-base-100">
           <ul
             tabIndex={0}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
-            className={`p-2 menu overflow-y-auto overflow-x-hidden scrollbar-thin !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
+            className={`p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full overflow-x-hidden scrollbar-thin !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
           flex-nowrap   ${showMenu ? '' : 'hidden'}`}
           >
             {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),

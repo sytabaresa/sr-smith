@@ -117,7 +117,7 @@ const SmithProject: React.FC = () => {
       <HotKeys keyMap={keyMap} handlers={handlers}>
         <Layout
           title="Smith Chart"
-          footerComponent={<Footer className="absolute bottom-0 left-0 ml-1 mb-1" />}
+          footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
           navbar={false}
           className=""
           drawerMenu={<DrawerSmithMenu labels={labels} />}

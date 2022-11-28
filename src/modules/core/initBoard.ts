@@ -61,6 +61,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         // showFullscreen: true,
         // showScreenshot: true,
         showCopyright: false,
+        // showNavigation: false,
         resize: { enabled: true, throttle: 200 },
         pan: {
             enabled: true,

@@ -8,3 +8,7 @@
     /* color: blue; */
     /* font-size: 16px; */
   }
+
+  .JXG_navigation {
+    @apply !z-0;
+  }

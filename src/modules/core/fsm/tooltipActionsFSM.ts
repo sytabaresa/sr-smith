@@ -171,7 +171,7 @@ export class JXGDrawer {
         const invalidElements = ['image', 'ticks', 'grid', 'text', 'axis']
 
         // removeElement(this.board, this.hitElement)
-        if (!invalidElements.includes(this.hitElement.elType))
+        if (!invalidElements.includes(this.hitElement?.elType))
             this.board.removeObject(this.hitElement)
         return ctx
     }
