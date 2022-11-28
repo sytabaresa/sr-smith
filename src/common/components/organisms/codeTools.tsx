@@ -18,15 +18,11 @@ const CodeTools = () => {
   }, [ui.whiteboardMachine.current])
 
   return (
-    <div className="absolute top-0 left-0 pl-2 pt-2 md:pl-4 md:pt-4 z-10">
-      <div className="flex">
-        <CodeEditor className="hidden lg:flex h-[93vh] w-[30vw] max-w-[30rem]" />
-        <div className="flex flex-col">
-          <EditorPopup className="lg:hidden btn-group" />
-          <div>
-            <PrimitivesMenu className="lg:mx-2 mt-2 lg:mt-0" />
-          </div>
-        </div>
+    <div className="absolute top-0 left-0 pl-2 py-2 md:pl-4 md:pt-4 z-10 flex">
+      <CodeEditor className="hidden lg:flex h-[93vh] w-[30vw] max-w-[30rem]" />
+      <div className="flex flex-col lg:mx-2 lg:mt-0 flex-1">
+        <EditorPopup className="lg:hidden btn-group flex-0" />
+        <PrimitivesMenu />
       </div>
     </div>
   );

@@ -125,7 +125,7 @@ const SmithProject: React.FC = () => {
           {/* <div className="h-full relative"> */}
           <SmithBoard />
           <CodeTools />
-          <div className="absolute top-0 right-0 mr-4 mt-4">
+          <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
             <UserMenu />
           </div>
           {/* </div> */}

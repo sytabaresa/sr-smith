@@ -12,57 +12,25 @@ const EditorPopup = (props: EditorPopupProps) => {
     const [isOpen, setOpen] = useState(false);
     const { t } = useTranslation()
 
-    const {
-        renderLayer,
-        triggerProps,
-        layerProps,
-        arrowProps
-    } = useLayer({
-        isOpen,
-        // onOutsideClick: close, // close the menu when the user clicks outside
-        // onDisappear: close, // close the menu when the menu gets scrolled out of sight
-        // overflowContainer: false, // keep the menu positioned inside the container
-        auto: true, // automatically find the best placement
-        placement: "bottom-start",
-        triggerOffset: 9,
-        arrowOffset: 4,
-    });
+    const exit = (e) => {
+        if (e.target === e.currentTarget) {
+            setOpen(false)
+        }
+    }
 
     return (
         <div {...props}>
             <button
                 // preset="filled"
-                {...triggerProps}
-                className={`btn ${isOpen && 'btn-active'}`}
+                className={`btn ${isOpen ? 'btn-active' : ''}`}
                 onClick={() => setOpen(!isOpen)}
             >
                 {t('code')}
             </button>
-            {renderLayer(
-                <>
-                    {isOpen && (
-                        <motion.div
-                            className="w-64 md:w-96 max-w-screen z-10"
-                            {...layerProps}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                        >
-                            <CodeEditor className="max-h-[80vh]" />
-                            <Arrow
-                                {...arrowProps}
-                                size={10}
-                                roundness={1}
-                                borderWidth={1}
-                                // borderColor={}
-                                style={{ ...arrowProps.style, bottom: '99.5%' }}
-                                className="border-primary"
-                            />
-                        </motion.div>
-                    )}
-                </>
-            )}
-        </div>
+            <div className={`p-2 bg-transparent lg:hidden z-[999] w-full h-[50vh] ${isOpen ? 'fixed bottom-0 left-0' : 'hidden'}`}>
+                <CodeEditor className="h-full" />
+            </div>
+        </div >
     );
 }
 

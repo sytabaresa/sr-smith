@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { HandIcon, ReplyIcon, TemplateIcon, TrashIcon } from "@heroicons/react/outline";
 import { SmithContext } from "../../../common/providers/smithContext";
 import PointTooltip from "../../../modules/core/tooltips/point";
@@ -30,6 +30,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const onClickCircleCenterRadiusCancel = () => ui.sendEvent('CANCEL')
 
   const [radius, setRadius] = useState("")
+  const [offset, setOffset] = useState(0)
+
+  const ref = useRef()
   const [showHelp, setShowHelp] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
 
@@ -43,9 +46,20 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     }
   }, [ui.current()])
 
+  const offsetCalc = (e) => {
+    // console.log(e.offsetTop)
+    setOffset(e.offsetTop + 50)
+  }
+
+  useEffect(() => {
+    if (typeof window != 'undefined')
+      window.addEventListener('resize', () => offsetCalc(ref.current));
+
+  }, [])
+
   return (
-    <div className={`dropdown ${showMenu ? ' dropdown-open' : ''} ${className}`} {...rest}>
-      <div className="flex gap-2 mb-2">
+    <div className={`flex flex-col `}>
+      <div className=" flex gap-2 lg:mt-0 mt-2 mb-2 flex-0">
         <div className="btn-group">
           <button
             aria-label={t("undo")}
@@ -65,8 +79,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </button>
         </div>
       </div>
-      <div className="flex gap-2">
-        <div className="btn-group">
+      <div className="flex gap-2 flex-0">
+        <div className={`btn-group `}>
           <button
             aria-label={t("show menu")}
             tabIndex={0}
@@ -85,22 +99,31 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </button>
         </div>
       </div>
-      <ul tabIndex={0} className={`dropdown-content menu p-2 mt-2 border-primary border bg-base-100 rounded-box ${showMenu ? '' : 'hidden'}`}>
-        {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
-        new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
-        new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
-        new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
-          <li key={index} onClick={() => ui.setTooltip(plugin.name)}>
-            <a
-              className={`tooltip tooltip-right p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
-              data-tip={t(plugin.tooltip)}
-            >
-              <plugin.icon className="w-8 h-8 stroke-accent fill-accent" />
-            </a>
-          </li>
-        )}
-      </ul>
-      <div className={`modal ${ui.current(true) == "draw.drawCircle" && 'modal-open'}`}>
+      <div ref={ref} className={`dropdown ${showMenu ? 'dropdown-open' : ''}`}>
+        <div className="dropdown-content mt-2 border-primary border bg-base-100">
+          <ul
+            tabIndex={0}
+            style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
+            className={`p-2 menu overflow-y-auto overflow-x-hidden scrollbar-thin !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
+          flex-nowrap   ${showMenu ? '' : 'hidden'}`}
+          >
+            {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
+            new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
+            new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
+            new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
+              // figure out how to show clipped tooltip
+              <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t(plugin.tooltip)}>
+                <a
+                  className={`p-0 py-2 md:px-2 ${ui.context().tooltipSelected == plugin.name ? 'bg-gray-200' : ''}`}
+                >
+                  <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
+                </a>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+      <div className={`modal ${ui.current(true) == "draw.drawCircle" ? 'modal-open' : ''}`}>
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">
             Circunferencia: centro y radio
@@ -120,8 +143,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
       </div>
       {ui.tooltipSelected &&
-        <div className={`toast toast-start transition-all ${!showHelp && "invisible"}`}>
-          <div className="alert shadow-lg">
+        <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>
+          <div className="alert max-w-[70vw] shadow-lg">
             <div className="!block">
               <h2 className="font-bold">{t(ui.tooltipSelected.tooltip)}</h2>
               <p>

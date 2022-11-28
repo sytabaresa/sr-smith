@@ -25,7 +25,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     return (
         <div
             id={BOX_NAME}
-            className="jxgbox full-screen-div w-full"
+            className="jxgbox h-screen w-full"
         // style={{ width: '500px', height: '500px' }}
         >
 
