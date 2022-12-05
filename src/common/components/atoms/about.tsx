@@ -21,13 +21,13 @@ export const About = () => {
             <h2 className="font-bold">{t("Authors")}:</h2>
             <span>
                 <a
-                    className="link-primary link link-hover"
+                    className="link"
                     href="https://www.linkedin.com/in/sytabaresa"
                 >
                     @sytabares
                 </a>
                 {" - "}
-                <a className="link-primary link link-hover" href="https://github.com/kellar1896">
+                <a className="link" href="https://github.com/kellar1896">
                     @cbarreto
                 </a>
             </span>
