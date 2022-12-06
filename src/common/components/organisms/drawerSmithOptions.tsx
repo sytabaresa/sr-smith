@@ -10,7 +10,6 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import { useUser } from "./userContext";
-import { UserImage } from "../molecules/userImage";
 import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { SmithContext } from "../../../common/providers/smithContext";
 import { useLogout } from "../../hooks/useLogout";

@@ -95,7 +95,7 @@ async function getProjectData(ctx: SavingContextType) {
             id: ctx.id,
         })
 
-        console.log(projectData)
+        // console.log(projectData)
         if (projectData) {
             return projectData
         } else

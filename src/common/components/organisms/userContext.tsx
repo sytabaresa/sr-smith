@@ -19,7 +19,7 @@ export default function UserContextComp({ children }) {
 
         const sw = getSW()
         const unregister = sw.addEventListener('message', (event) => {
-            console.log(user)
+            // console.log(user)
             if (event.data.type == 'auth') {
                 const user = event.data.payload
                 try {

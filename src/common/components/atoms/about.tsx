@@ -9,6 +9,7 @@ export const About = () => {
             <a rel="license" href="https://www.gnu.org/licenses/gpl-3.0.en.html">
                 <img
                     alt="Licencia GPLv3"
+                    className="w-32"
                     style={{ borderWidth: 0, paddingRight: 5 }}
                     src="/images/gplv3.png"
                 />
