@@ -1,9 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useLanguageQuery, useTranslation } from "next-export-i18n";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { auth } from "../../../../modules/auth/clientApp";
+import { useAuthProvider } from "../../../hooks/useAuthProvider";
 
 type SignUpFormProps = {
   // onSubmit?: (data: any) => void;
@@ -19,6 +18,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     watch,
     formState: { errors },
   } = useForm();
+  const { register: signUp } = useAuthProvider()
   const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
   const router = useRouter();
 
@@ -29,14 +29,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       return;
     }
     try {
-      setErrorsRepeatPassword("");
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential;
+      const user = await signUp(data)
       console.log('succefull created', user);
       router.push({ pathname: '/smith', query });
     } catch (error) {

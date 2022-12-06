@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import UserProvider from '../common/components/organisms/userContext'
 import { useTheme, setTheme, getTheme } from '../common/hooks/useTheme';
 import { initializeServiceWorker } from '../modules/pwa/lifecycle';
+import { initFirebase } from '../modules/pwa/init';
 
 function App({ Component, pageProps }) {
   const [isOnline, setIsOnline] = useState(true)
@@ -50,7 +51,12 @@ function App({ Component, pageProps }) {
 
     //register SW
     // service worker lifecycle handlers
-    initializeServiceWorker()
+    const _async = async () => {
+      await initializeServiceWorker()
+      await initFirebase() //await
+      
+    }
+    _async()
 
 
     // const res = () =>

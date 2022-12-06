@@ -43,10 +43,10 @@ export const initializeServiceWorker = () => {
 
         // ISSUE - this is not working as expected, why?
         // I could only make message event listenser work when I manually add this listenser into sw.js file
-        wb.addEventListener('message', event => {
-            console.log(`Event ${event.type} is triggered.`)
-            console.log(event)
-        })
+        // wb.addEventListener('message', event => {
+        //     console.log(`Event ${event.type} is triggered.`)
+        //     console.log(event)
+        // })
 
         /*
         wb.addEventListener('redundant', event => {

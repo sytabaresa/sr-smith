@@ -1,10 +1,11 @@
-import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { auth, db } from "../../../modules/auth/clientApp";
 import { SmithProject } from "../../types/smith";
 import { useLanguageQuery, useTranslation } from "next-export-i18n"
+import { useDataProvider } from "../../hooks/useDataProvider";
+import { Timestamp } from "firebase/firestore";
+import { useAuthProvider } from "../../hooks/useAuthProvider";
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -15,7 +16,8 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const [query] = useLanguageQuery()
   const router = useRouter()
-  const user = auth?.currentUser;
+  const { getUserIdentity } = useAuthProvider()
+  const { create } = useDataProvider()
 
   const {
     register,
@@ -30,17 +32,22 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     if (isSubmitting) return
     // clearErrors()
     const { projectName, projectDescription } = data;
+    const user = await getUserIdentity(null)
+
     try {
-      const docRef = await addDoc(collection(db, "projects"), {
-        createAt: Timestamp.now(),
-        data: "",
-        description: projectDescription,
-        hashReference: "",
-        isPublic: false,
-        name: projectName,
-        updateAt: Timestamp.now(),
-        userId: user.uid,
-      } as SmithProject);
+      const docRef = await create({
+        resource: "projects",
+        variables: {
+          createAt: Timestamp.now(),
+          data: "",
+          description: projectDescription,
+          hashReference: "",
+          isPublic: false,
+          name: projectName,
+          updateAt: Timestamp.now(),
+          userId: user.uid,
+        } as SmithProject
+      })
       await router.push({ pathname: '/', query: { id: docRef.id, ...query } });
       router.reload()
     } catch (e) {

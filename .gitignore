@@ -39,3 +39,4 @@ yarn-error.log*
 **/public/sw.js
 **/public/worker-*.js
 **/public/fallback-*.js
+**/public/*.LICENSE.txt

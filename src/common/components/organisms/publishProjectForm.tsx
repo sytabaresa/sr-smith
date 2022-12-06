@@ -1,9 +1,9 @@
-import { doc, Timestamp, updateDoc } from "firebase/firestore";
 import React, { useContext, useState } from "react";
-import { auth, db } from "../../../modules/auth/clientApp";
 import { SmithProject } from "../../types/smith";
 import { SmithContext } from "../../../common/providers/smithContext";
 import { useTranslation } from "next-export-i18n"
+import { useDataProvider } from "../../hooks/useDataProvider";
+import { Timestamp } from "firebase/firestore";
 
 type PublishProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -12,6 +12,7 @@ type PublishProjectFormProps = {
 const PublishProjectForm = ({ }: PublishProjectFormProps) => {
   const { t } = useTranslation()
   const { projectData } = useContext(SmithContext)
+  const { update } = useDataProvider()
   const [publicState, setPublicState] = useState(projectData?.isPublic || false)
   const [error, setError] = useState("")
   const [info, setInfo] = useState("")
@@ -23,11 +24,14 @@ const PublishProjectForm = ({ }: PublishProjectFormProps) => {
     setError("")
     setInfo('')
     try {
-      const docRef = doc(db, `projects/${projectData.updateAt}`);
-      const res = await updateDoc(docRef, {
-        isPublic: publicState,
-        updateAt: Timestamp.now()
-      } as SmithProject);
+      const res = await update({
+        resource: 'projects',
+        id: projectData.updateAt.toString(),
+        variables: {
+          isPublic: publicState,
+          updateAt: Timestamp.now()
+        } as SmithProject
+      })
       console.log('changed sucessfully')
       setInfo('ok!')
     } catch (err) {

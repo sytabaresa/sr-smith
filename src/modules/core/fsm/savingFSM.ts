@@ -1,8 +1,8 @@
-import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
-import { db } from "../../auth/clientApp"
 import { SmithProject } from '../../../common/types/smith';
 import { EditorContextType } from './codeEditorFSM';
+import { dataProvider } from '../../../common/hooks/useDataProvider';
+import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {
     id: string;
@@ -88,11 +88,15 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
     try {
-        const docRef = doc(db, `projects/${ctx.id}`);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const projectData = docSnap.data() as SmithProject;
-            // console.log(docData)
+        const { getOne } = dataProvider
+
+        const projectData: SmithProject = await getOne({
+            resource: 'projects',
+            id: ctx.id,
+        })
+
+        console.log(projectData)
+        if (projectData) {
             return projectData
         } else
             return Promise.reject('document not exists')
@@ -104,10 +108,14 @@ async function getProjectData(ctx: SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const docRef = doc(db, `projects/${ctx.id}`);
-    await updateDoc(docRef, {
-        data: ctx.code,
-        updateAt: Timestamp.now()
-    } as SmithProject);
+    const { update } = dataProvider
+    await update({
+        resource: 'projects',
+        id: ctx.id,
+        variables: {
+            data: ctx.code,
+            updateAt: Timestamp.now()
+        } as SmithProject
+    })
     console.log('saving done.')
 };

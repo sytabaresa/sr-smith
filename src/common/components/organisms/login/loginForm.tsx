@@ -1,9 +1,7 @@
-import { browserPopupRedirectResolver, getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect } from "firebase/auth";
 import { useTranslation } from "next-export-i18n";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { auth } from "../../../../modules/auth/clientApp";
-import provider from "../../../../modules/auth/googleLogin";
+import { useAuthProvider } from "../../../hooks/useAuthProvider";
 import { GoogleIcon } from "../../atoms/icons";
 
 type LoginFormProps = {
@@ -18,49 +16,23 @@ const LoginForm = ({ }: LoginFormProps) => {
     watch,
     formState: { errors },
   } = useForm();
+  const { login } = useAuthProvider()
 
-  const onsubmitLogin = async (data) => {
+  const onSubmitLogin = async (data) => {
     const { email, password } = data;
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential.user;
-      // console.log(user);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-    }
+    const user = await login(data)
+    // Signed in
+    // console.log(user);
+
   };
 
   const onGoogleLogin = async (data) => {
-    signInWithPopup(auth, provider, browserPopupRedirectResolver)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        // ...
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-      });
+    const user = await login({ ...data, provider: 'google' })
   }
 
   return (
-    <form onSubmit={handleSubmit(onsubmitLogin)} className="form-control">
+    <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control">
       <label htmlFor="user" className="label">
         <span className="label-text">{t("username")}</span>
       </label>

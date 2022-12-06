@@ -1,9 +1,8 @@
-import { signOut } from "firebase/auth"
 import { useEffect } from "react"
-import { auth } from "../modules/auth/clientApp"
 import { useRouter } from "next/router";
 import { UrlObject } from "url";
 import { useLanguageQuery } from "next-export-i18n";
+import { useAuthProvider } from "../common/hooks/useAuthProvider";
 
 interface LogoutProps {
     redirect?: UrlObject | string
@@ -12,10 +11,14 @@ interface LogoutProps {
 const Logout = ({ redirect = '/' }: LogoutProps) => {
     const router = useRouter()
     const [query] = useLanguageQuery()
+    const { logout } = useAuthProvider()
 
     useEffect(() => {
-        signOut(auth)
-        router.push({ pathname: redirect as string, query })
+        const f = async () => {
+            await logout(null)
+            router.push({ pathname: redirect as string, query })
+        }
+        f()
     }, [])
     return (
         <></>

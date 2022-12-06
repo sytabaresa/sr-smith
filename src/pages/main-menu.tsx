@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
 import ModalContainer from "../common/components/molecules/modalContainer";
 import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
@@ -8,8 +7,6 @@ import Layout from "../common/components/templates/default";
 import { useLanguageQuery } from "next-export-i18n";
 
 const Projects = () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
   const router = useRouter();
   const[query] = useLanguageQuery()
 

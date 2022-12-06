@@ -17,7 +17,8 @@ const withPWA = require('next-pwa')({
     skipWaiting: false,
     reloadOnOnline: false, // better to not lost work in canvas 
     // cacheOnFrontEndNav: true,
-    runtimeCaching: require('./sw/cache.js')
+    runtimeCaching: require('./sw/cache.js'),
+    customWorkerDir: './src/modules/pwa/worker'
 })
 
 module.exports =
