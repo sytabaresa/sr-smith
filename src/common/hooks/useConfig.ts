@@ -1,5 +1,4 @@
 import { Dispatch, useEffect, useState } from "react";
-import isEqual from "lodash/isEqual"
 
 export function useConfig(defaultConfig: Record<string, any> = {}): [Record<string, any>, (config: Record<string, any>) => void] {
     const [config, _setConfig] = useState<Record<string, any>>(() => {
@@ -31,8 +30,9 @@ export function useConfig(defaultConfig: Record<string, any> = {}): [Record<stri
     }, [])
 
     useEffect(() => {
-        const old = JSON.parse(window.localStorage.getItem('config'))
-        if (!isEqual(config, old)) {
+        const oldStr = window.localStorage.getItem('config')
+        const old = JSON.parse(oldStr)
+        if (oldStr != JSON.stringify(config)) {
             window.localStorage.setItem("config", JSON.stringify(config))
             window.dispatchEvent(new Event("storage"));
         }

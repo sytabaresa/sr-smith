@@ -1,7 +1,6 @@
 import { HTMLAttributes, TextareaHTMLAttributes, useContext, useEffect } from "react";
 import { useTranslation } from "next-export-i18n";
 import Editor from "react-simple-code-editor";
-import JXG from "jsxgraph/distrib/jsxgraphcore"
 import { highlight, languages } from "prismjs/components/prism-core";
 
 import "prismjs/components/prism-clike";

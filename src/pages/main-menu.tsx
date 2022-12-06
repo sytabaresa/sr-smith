@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db } from "../modules/auth/clientApp";
-import { SmithProject } from "../common/types/smith";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
 import ModalContainer from "../common/components/molecules/modalContainer";

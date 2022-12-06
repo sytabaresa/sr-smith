@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+// const defaultTheme = require('tailwindcss/defaultTheme')
 const colors = require('tailwindcss/colors')
 
 module.exports = {
@@ -12,12 +12,8 @@ module.exports = {
                     'screen': '100vw'
                 }
             },
-            screens: {
-                'xsh': {
-                    'raw': '(max-height: 450px)'
-                },
-                ...defaultTheme.screens,
-            }
+            screens: require('./screens.json'),
+            // ...defaultTheme.screens
             // colors: {
             //   principal: {
             //     DEFAULT: colors.blueGray[800],
