@@ -14,7 +14,7 @@ const LoginForm = ({ }: LoginFormProps) => {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm();
   const { login } = useAuthProvider()
 
@@ -75,7 +75,7 @@ const LoginForm = ({ }: LoginFormProps) => {
         className="btn btn-primary mt-10 w-full lg:btn-wide self-center"
         type="submit"
       >
-        {t("login")}
+        {isSubmitting ? t('Logging in') + "..." : isSubmitSuccessful ? t('Done') : t('Login')}
       </button>
       <button className="group btn btn-outline bg-base-100 text-red-400
        hover:bg-red-400 hover:border-red-400 w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>

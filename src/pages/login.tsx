@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../common/components/templates/default";
 import { useUser } from "../common/components/organisms/userContext";
@@ -16,25 +16,21 @@ interface LoginProps {
 const Login = ({ homePage = "/saved" }: LoginProps) => {
   const { t } = useTranslation();
   const [query] = useLanguageQuery()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
   const [isLogin, setIsLogin] = useState(true);
 
   const router = useRouter();
 
   const { isAuthenticated } = useUser();
 
-  if (isAuthenticated) {
-    if (router.query?.redirect) {
-      router.push({ pathname: router.query?.redirect as string, query });
-    } else {
-      router.push({ pathname: homePage as string, query });
+  useEffect(() => {
+    if (isAuthenticated) {
+      if (router.query?.redirect) {
+        router.push({ pathname: router.query?.redirect as string, query });
+      } else {
+        router.push({ pathname: homePage as string, query });
+      }
     }
-  }
+  }, [isAuthenticated])
 
   return <Layout
     title="Saved | Sr Smith App"

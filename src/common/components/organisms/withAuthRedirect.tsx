@@ -38,14 +38,20 @@ const WithAuthRedirect = ({
     const { loadingUser, user, isAuthenticated } = useUser()
 
     useEffect(() => {
-      setTimeout(() => {
-        if (!loadingUser)
+      const watchDog = setTimeout(() => {
+        if (!loadingUser) {
+          console.log('watchdog!!')
           router.reload()
+        }
       }, 10000)
+
+      return () => {
+        clearTimeout(watchDog)
+      }
     }, [])
 
     useEffect(() => {
-      if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
+      if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
         Router.push(typeof location === 'string' ?
           location :
           { query: { redirect: router.pathname }, ...location, ...query }
@@ -58,7 +64,7 @@ const WithAuthRedirect = ({
     // }
 
     return <div>
-      {(loadingUser || true) && <progress className="progress h-1 fixed w-full progress-warning"></progress>}
+      {loadingUser && <progress className="progress h-1 fixed w-full progress-warning"></progress>}
       <WrappedComponent {...props} />
     </div>
   }
