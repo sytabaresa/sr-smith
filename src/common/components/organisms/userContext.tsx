@@ -21,6 +21,7 @@ export default function UserContextComp({ children }) {
         const unregister = sw.addEventListener('message', (event) => {
             // console.log(user)
             if (event.data.type == 'auth') {
+                console.log('auth loaded')
                 const user = event.data.payload
                 try {
                     if (user) {

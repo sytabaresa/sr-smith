@@ -1,6 +1,6 @@
 import { useLanguageQuery } from 'next-export-i18n'
 import Router, { useRouter } from 'next/router'
-import { ReactNode } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'
 import { useUser } from './userContext'
@@ -31,25 +31,35 @@ const WithAuthRedirect = ({
   expectedAuth,
   location,
 }: WithAuthRedirectProps) => {
-  
+
   const WithAuthRedirectWrapper = (props) => {
     const router = useRouter()
-    const[query] = useLanguageQuery()
+    const [query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
+
+    // useEffect(() => {
+    //   setTimeout(() => {
+    //     if (!loadingUser)
+    //       router.reload()
+    //   }, 10000)
+    // }, [])
 
     if (loadingUser) {
       return <LoadingComponent {...props} />
     }
+    
+    useEffect(() => {
+      if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
+        Router.push(typeof location === 'string' ?
+          location :
+          { query: { redirect: router.pathname }, ...location, ...query }
+        )
+      }
+    }, [isAuthenticated])
 
-    if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
-      Router.push(typeof location === 'string' ?
-        location :
-        { query: { redirect: router.pathname }, ...location, ...query }
-      )
-      return <></>
-    }
-
-    return <WrappedComponent {...props} />
+    return <div>
+      <WrappedComponent {...props} />
+    </div>
   }
 
   return WithAuthRedirectWrapper
