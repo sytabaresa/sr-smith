@@ -24,6 +24,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   drawer?: boolean
   drawerMenu?: React.ReactNode
   header?: React.ReactNode
+  showComplement?: boolean
 }
 
 const Layout = (props: Props) => {
@@ -39,6 +40,7 @@ const Layout = (props: Props) => {
     footer = true,
     footerComponent,
     navbarComponent,
+    showComplement,
     navbar = true,
     drawer = true,
     drawerMenu = <>
@@ -48,9 +50,9 @@ const Layout = (props: Props) => {
     ...rest
   } = props
 
-  if (reloadOnline) {
-    reloadOnOnline()
-  }
+  // if (reloadOnline) {
+  //   reloadOnOnline()
+  // }
 
   return (
     <div className={`flex flex-col relative overflow-hidden full-screen-div ${className}`} {...rest}>
@@ -63,15 +65,15 @@ const Layout = (props: Props) => {
       <div className="drawer drawer-end h-full relative">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="relative drawer-content flex flex-col flex-1 overflow-hidden">
-            <header className='z-10'>
-              {navbar && (navbarComponent || <Navbar />)}
-            </header>
+          <header className='z-10'>
+            {navbar && (navbarComponent || <Navbar showComplement={showComplement} />)}
+          </header>
           <div className="flex flex-col flex-grow overflow-hidden">
             <div className='flex-grow overflow-hidden'>
               {children}
             </div>
           </div>
-            {footer && (footerComponent || <Footer className='mb-2 z-10' />)}
+          {footer && (footerComponent || <Footer className='mb-2 z-10' />)}
         </div>
         {drawer &&
           <div className="drawer-side overflow-x-hidden">

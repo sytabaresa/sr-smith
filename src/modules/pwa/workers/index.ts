@@ -12,7 +12,7 @@ export async function initFirst() {
 
     if (!app) {
         app = initApp()
-        const db = initDB(app)
+        const db = await initDB(app)
         const _auth = initAuth(app)
         const provider = getProvider(_auth)
         auth = new FireAuthWrapper(_auth, provider)

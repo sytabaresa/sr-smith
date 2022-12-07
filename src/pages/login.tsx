@@ -33,6 +33,7 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   }, [isAuthenticated])
 
   return <Layout
+    showComplement
     title="Saved | Sr Smith App"
     className="relative h-screen overflow-hidden"
     header={<div className="absolute w-full h-full blur-[6px] lg:blur-[6px]">

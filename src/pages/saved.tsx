@@ -25,11 +25,12 @@ const SavedProjects = () => {
     if (user) {
       getSavedProjects(user.uid)
     }
-  }, [])
+  }, [user])
 
   const getSavedProjects = async (userUid: string) => {
-      const projectsList: SmithProject[] = await getList({ resource: 'projects', filters: [{ v1: 'userId', op: '==', v2: userUid }] })
-      setUserProjects(projectsList);
+    console.log('a')
+    const projectsList: SmithProject[] = await getList({ resource: 'projects', filters: [{ v1: 'userId', op: '==', v2: userUid }] })
+    setUserProjects(projectsList);
   };
 
   const goToSavedProject = (projectId: string) => {
@@ -79,7 +80,7 @@ const SavedProjects = () => {
       <SmithImage className="absolute w-60 lg:w-[30rem] right-0 lg:right-[1rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
     </div>}
   >
-    <div className="overflow-y-auto flex-grow">
+    <div className="overflow-y-auto h-full scrollbar-thin scrollbar-track-base-100 scrollbar-thumb-base-content flex-grow">
       <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8">
         {t('Previous Projects')}
       </h1>

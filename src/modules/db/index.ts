@@ -1,15 +1,15 @@
 import { FirebaseApp } from "firebase/app";
 import { addDoc, collection, deleteDoc, doc, enableIndexedDbPersistence, Firestore, getDoc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
 
-export function initDB(app: FirebaseApp) {
+export async function initDB(app: FirebaseApp) {
     const db = getFirestore(app)
-    enableOffline(db)
+    await enableOffline(db)
     return db
 }
 
 function enableOffline(db: Firestore) {
 
-    enableIndexedDbPersistence(db, { forceOwnership: true })
+    return enableIndexedDbPersistence(db, { forceOwnership: true })
         .catch((err) => {
             if (err.code == 'failed-precondition') {
                 // Multiple tabs open, persistence can only be enabled

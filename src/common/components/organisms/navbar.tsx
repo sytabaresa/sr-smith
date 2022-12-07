@@ -8,11 +8,11 @@ import { UserImage } from "../molecules/userImage";
 import { useUser } from "./userContext";
 
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {
-
+    showComplement?: boolean
 }
 
 export default function Navbar(props: NavbarProps) {
-    const { className = '', ...rest } = props
+    const { className = '', showComplement, ...rest } = props
 
     const router = useRouter()
     const { t } = useTranslation()
@@ -23,16 +23,18 @@ export default function Navbar(props: NavbarProps) {
             <button className="btn btn-ghost flex" onClick={() => router.back()}>
                 <ArrowLeftIcon className='h-4 w-4 mr-2' />{t('back')}
             </button>
-            {/* <LangMenu className='mx-2' />
-            <ThemeSwitcher className='' /> */}
+            {showComplement && <>
+                <LangMenu className='mx-2' />
+                <ThemeSwitcher className='' />
+            </>}
         </div>
         <div className="flex-none">
             {user && <label
                 htmlFor="my-drawer"
-                // className="btn"
+            // className="btn"
             >
                 <UserImage className="hidden md:block mr-4" />
-                <MenuAlt2Icon className="block md:hidden h-8 w-8 mr-2"/>
+                <MenuAlt2Icon className="block md:hidden h-8 w-8 mr-2" />
             </label>}
         </div>
     </nav>
