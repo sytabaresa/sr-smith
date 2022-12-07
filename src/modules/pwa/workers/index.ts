@@ -7,8 +7,8 @@ let app: FirebaseApp
 let store: FirebaseWrapper
 let auth: FireAuthWrapper
 
-
-self.addEventListener('install', async event => {
+export async function initFirst() {
+    console.log('initializing app...')
 
     if (!app) {
         app = initApp()
@@ -30,7 +30,10 @@ self.addEventListener('install', async event => {
         console.log('auth onChange initialized')
     }
 
+}
 
+self.addEventListener('install', async event => {
+    await initFirst()
 })
 
 self.addEventListener('message', async event => {
@@ -51,6 +54,12 @@ self.addEventListener('message', async event => {
                 }
             })
         )
+    }
+
+    switch (data.cmd) {
+        case "initializeApp":
+            await initFirst()
+            break
     }
 
     if (data.type == 'db' && data.cmd) {
