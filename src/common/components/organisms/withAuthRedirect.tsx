@@ -37,17 +37,13 @@ const WithAuthRedirect = ({
     const [query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
 
-    // useEffect(() => {
-    //   setTimeout(() => {
-    //     if (!loadingUser)
-    //       router.reload()
-    //   }, 10000)
-    // }, [])
+    useEffect(() => {
+      setTimeout(() => {
+        if (!loadingUser)
+          router.reload()
+      }, 10000)
+    }, [])
 
-    if (loadingUser) {
-      return <LoadingComponent {...props} />
-    }
-    
     useEffect(() => {
       if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
         Router.push(typeof location === 'string' ?
@@ -57,7 +53,12 @@ const WithAuthRedirect = ({
       }
     }, [isAuthenticated])
 
+    // if (loadingUser) {
+    //   return <LoadingComponent {...props} />
+    // }
+
     return <div>
+      {(loadingUser || true) && <progress className="progress h-1 fixed w-full progress-warning"></progress>}
       <WrappedComponent {...props} />
     </div>
   }
