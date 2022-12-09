@@ -21,6 +21,7 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   const router = useRouter();
 
   const { isAuthenticated } = useUser();
+  console.log(isAuthenticated)
 
   useEffect(() => {
     if (isAuthenticated) {

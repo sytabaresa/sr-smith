@@ -30,7 +30,7 @@ export class FireAuthWrapper {
         this.provider = provider
     }
 
-    async onAuthChange(callback) {
+    onAuthChange(callback) {
         // Listen authenticated user
         const unsubscriber = this.auth.onAuthStateChanged(async (user) => {
             if (user)
@@ -39,7 +39,7 @@ export class FireAuthWrapper {
                 callback(null)
         })
         // Unsubscribe auth listener on unmount
-        // return () => unsubscriber()u
+        return unsubscriber
     }
 
     async login(data) {

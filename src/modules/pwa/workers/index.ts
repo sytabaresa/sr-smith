@@ -6,8 +6,9 @@ import { FirebaseWrapper, initDB } from "../../db";
 let app: FirebaseApp
 let store: FirebaseWrapper
 let auth: FireAuthWrapper
+let ob
 
-export async function initFirst() {
+export async function initFirst(event) {
     console.log('initializing app...')
 
     if (!app) {
@@ -19,10 +20,10 @@ export async function initFirst() {
         store = new FirebaseWrapper(db)
         console.log('firebase initialized')
     }
-    if (auth) {
-        await auth.onAuthChange(async (user) => {
-            // console.log(user)
+    if (auth && !ob) {
+        ob = auth.onAuthChange(async (user) => {
             const clients = await (self as any).clients.matchAll({ type: 'window' });
+            console.log(clients)
             for (const client of clients) {
                 client.postMessage({ type: 'auth', payload: user });
             }
@@ -33,7 +34,11 @@ export async function initFirst() {
 }
 
 self.addEventListener('install', async event => {
-    await initFirst()
+    (event as any).waitUntil(async () => await initFirst(event))
+})
+
+self.addEventListener('activated', async event => {
+    await initFirst(event)
 })
 
 self.addEventListener('message', async event => {
@@ -56,10 +61,8 @@ self.addEventListener('message', async event => {
         )
     }
 
-    switch (data.cmd) {
-        case "initializeApp":
-            await initFirst()
-            break
+    if (data.cmd == 'initializeApp') {
+        await initFirst(event)
     }
 
     if (data.type == 'db' && data.cmd) {
