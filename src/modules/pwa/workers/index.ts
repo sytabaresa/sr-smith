@@ -20,16 +20,10 @@ export async function initFirst(event) {
         store = new FirebaseWrapper(db)
         console.log('firebase initialized')
     }
-    if (auth && !ob) {
-        ob = auth.onAuthChange(async (user) => {
-            const clients = await (self as any).clients.matchAll({ type: 'window' });
-            console.log(clients)
-            for (const client of clients) {
-                client.postMessage({ type: 'auth', payload: user });
-            }
-        })
-        console.log('auth onChange initialized')
-    }
+    // if (auth && !ob) {
+        // ob = auth.onAuthChange()
+        // console.log('auth onChange initialized')
+    // }
 
 }
 
@@ -67,14 +61,17 @@ self.addEventListener('message', async event => {
 
     if (data.type == 'db' && data.cmd) {
         event.ports[0].postMessage(await store[data.cmd](data.payload))
-        return
     }
 
     if (data.type == 'auth' && data.cmd) {
-        event.ports[0].postMessage(await auth[data.cmd](data.payload))
-        return
+        event.ports[0].postMessage(await auth[data.cmd](data.payload))  
     }
 
+    const clients = await (self as any).clients.matchAll({ type: 'window' });
+    console.log(clients)
+    for (const client of clients) {
+        client.postMessage({ type: 'auth', payload: await auth.getUserIdentity() });
+    }
 }, false)
 
 
