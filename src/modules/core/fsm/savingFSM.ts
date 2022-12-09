@@ -1,7 +1,7 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { SmithProject } from '../../../common/types/smith';
 import { EditorContextType } from './codeEditorFSM';
-import { dataProvider } from '../../../common/hooks/useDataProvider';
+import { DataProvider } from '../../../common/hooks/useDataProvider';
 import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {
@@ -88,7 +88,7 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
     try {
-        const { getOne } = dataProvider
+        const { getOne } = new DataProvider()
 
         const projectData: SmithProject = await getOne({
             resource: 'projects',
@@ -108,7 +108,7 @@ async function getProjectData(ctx: SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update } = dataProvider
+    const { update } = new DataProvider()
     await update({
         resource: 'projects',
         id: ctx.id,

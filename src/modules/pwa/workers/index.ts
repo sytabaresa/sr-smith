@@ -21,14 +21,14 @@ export async function initFirst(event) {
         console.log('firebase initialized')
     }
     // if (auth && !ob) {
-        // ob = auth.onAuthChange()
-        // console.log('auth onChange initialized')
+    // ob = auth.onAuthChange()
+    // console.log('auth onChange initialized')
     // }
 
 }
 
 self.addEventListener('install', async event => {
-    (event as any).waitUntil(async () => await initFirst(event))
+    await initFirst(event)
 })
 
 self.addEventListener('activated', async event => {
@@ -60,11 +60,11 @@ self.addEventListener('message', async event => {
     }
 
     if (data.type == 'db' && data.cmd) {
-        event.ports[0].postMessage(await store[data.cmd](data.payload))
+        event.ports[0].postMessage({ type: 'db', payload: await store[data.cmd](data.payload) })
     }
 
     if (data.type == 'auth' && data.cmd) {
-        event.ports[0].postMessage(await auth[data.cmd](data.payload))  
+        event.ports[0].postMessage({ type: 'auth', payload: await auth[data.cmd](data.payload) })
     }
 
     const clients = await (self as any).clients.matchAll({ type: 'window' });

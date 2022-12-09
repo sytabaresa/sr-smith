@@ -25,7 +25,7 @@ const SavedProjects = () => {
     if (user) {
       getSavedProjects(user.uid)
     }
-  }, [user])
+  }, [user?.uid])
 
   const getSavedProjects = async (userUid: string) => {
     const projectsList: SmithProject[] = await getList({ resource: 'projects', filters: [{ v1: 'userId', op: '==', v2: userUid }] })

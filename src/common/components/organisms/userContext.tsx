@@ -18,10 +18,10 @@ export default function UserContextComp({ children }) {
     useEffect(() => {
 
         const userHandler = (event) => {
-            console.log("add")
-            if (event.data.type == 'auth') {
+            console.log("add", event)
+            if (event.type == 'auth') {
                 console.log('auth loaded')
-                const user = event.data.payload
+                const user = event.payload
                 try {
                     if (user) {
                         // User is signed in.
@@ -46,7 +46,7 @@ export default function UserContextComp({ children }) {
         const sw = getSW()
 
         // recurrent auth messages
-        const unregister = sw.addEventListener('message', user)
+        const unregister = sw.addEventListener('message', (event) => userHandler(event.data))
 
         // first auth message
         sw.messageSW({ type: 'auth', cmd: 'getUserIdentity' }).then(userHandler)
