@@ -43,18 +43,21 @@ export class FireAuthWrapper {
     }
 
     async login(data) {
+        console.log(data)
         if (data.provider == 'google') {
             try {
-                const result = await signInWithPopup(this.auth, this.provider, browserPopupRedirectResolver)
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                const token = credential.accessToken;
-                // The signed-in user info.
-                const user = result.user;
-                return user.toJSON()
+                if (typeof window != 'undefined') {
+                    const result = await signInWithPopup(this.auth, this.provider, browserPopupRedirectResolver)
+                    // This gives you a Google Access Token. You can use it to access the Google API.
+                    const credential = GoogleAuthProvider.credentialFromResult(result);
+                    const token = credential.accessToken;
+                    // The signed-in user info.
+                    const user = result.user;
+                    return user.toJSON()
+                }
                 // ...
             } catch (error) {
-                // console.log(error);
+                console.log(error);
                 // Handle Errors here.
                 const errorCode = error.code;
                 const errorMessage = error.message;
@@ -65,23 +68,24 @@ export class FireAuthWrapper {
                 // ...
                 return Promise.reject(error)
             }
-        }
-        try {
-            const { email, password } = data;
+        } else {
+            try {
+                const { email, password } = data;
 
-            const userCredential = await signInWithEmailAndPassword(
-                this.auth,
-                email,
-                password
-            );
-            // console.log(userCredential.user.toJSON())
-            // Signed in
-            return userCredential.user.toJSON();
-        } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // console.log(error);
-            return Promise.reject(error)
+                const userCredential = await signInWithEmailAndPassword(
+                    this.auth,
+                    email,
+                    password
+                );
+                // console.log(userCredential.user.toJSON())
+                // Signed in
+                return userCredential.user.toJSON();
+            } catch (error) {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // console.log(error);
+                return Promise.reject(error)
+            }
         }
     }
 

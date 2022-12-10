@@ -6,7 +6,6 @@ import { FirebaseWrapper, initDB } from "../../db";
 let app: FirebaseApp
 let store: FirebaseWrapper
 let auth: FireAuthWrapper
-let ob
 
 export async function initFirst(event) {
     console.log('initializing app...')
@@ -20,11 +19,6 @@ export async function initFirst(event) {
         store = new FirebaseWrapper(db)
         console.log('firebase initialized')
     }
-    // if (auth && !ob) {
-    // ob = auth.onAuthChange()
-    // console.log('auth onChange initialized')
-    // }
-
 }
 
 self.addEventListener('install', async event => {
@@ -68,7 +62,7 @@ self.addEventListener('message', async event => {
     }
 
     const clients = await (self as any).clients.matchAll({ type: 'window' });
-    console.log(clients)
+    // console.log(clients)
     for (const client of clients) {
         client.postMessage({ type: 'auth', payload: await auth.getUserIdentity() });
     }

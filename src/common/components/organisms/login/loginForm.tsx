@@ -28,7 +28,7 @@ const LoginForm = ({ }: LoginFormProps) => {
   };
 
   const onGoogleLogin = async (data) => {
-    const user = await login({ ...data, provider: 'google' })
+    const user = await login({ provider: 'google' })
   }
 
   return (

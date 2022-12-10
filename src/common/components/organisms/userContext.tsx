@@ -21,9 +21,7 @@ export default function UserContextComp({ children }) {
 
 
     const userHandler = (event) => {
-        console.log("add", event)
         if (event.type == 'auth') {
-            console.log('auth loaded')
             const user = event.payload
             try {
                 if (user) {
