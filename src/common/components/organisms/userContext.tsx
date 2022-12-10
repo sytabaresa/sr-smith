@@ -10,51 +10,71 @@ export interface UserContextType {
 }
 export const UserContext = createContext<UserContextType>(null)
 
+var timeout
+
 export default function UserContextComp({ children }) {
     const [user, setUser] = useState<User>(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loadingUser, setLoadingUser] = useState(true) // Helpful, to update the UI accordingly.
+    const [sw, setSW] = useState(null as any)
+    const wb = getSW()
 
-    useEffect(() => {
 
-        const userHandler = (event) => {
-            console.log("add", event)
-            if (event.type == 'auth') {
-                console.log('auth loaded')
-                const user = event.payload
-                try {
-                    if (user) {
-                        // User is signed in.
-                        // const { uid, displayName, email, photoURL } = user
-                        // You could also look for the user doc in your Firestore (if you have one):
-                        // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
-                        // setUser({ uid, displayName, email, photoURL })
-                        setUser(user)
-                        setIsAuthenticated(true)
-                    } else {
-                        setUser(null)
-                        setIsAuthenticated(false)
-                    }
-                } catch (error) {
-                    // Most probably a connection error. Handle appropriately.
-                } finally {
-                    setLoadingUser(false)
+    const userHandler = (event) => {
+        console.log("add", event)
+        if (event.type == 'auth') {
+            console.log('auth loaded')
+            const user = event.payload
+            try {
+                if (user) {
+                    // User is signed in.
+                    // const { uid, displayName, email, photoURL } = user
+                    // You could also look for the user doc in your Firestore (if you have one):
+                    // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
+                    // setUser({ uid, displayName, email, photoURL })
+                    setUser(user)
+                    setIsAuthenticated(true)
+                } else {
+                    setUser(null)
+                    setIsAuthenticated(false)
                 }
+            } catch (error) {
+                // Most probably a connection error. Handle appropriately.
+            } finally {
+                setLoadingUser(false)
             }
         }
+    }
 
-        const sw = getSW()
-
+    useEffect(() => {
         // recurrent auth messages
-        const unregister = sw.addEventListener('message', (event) => userHandler(event.data))
+        const unregister = wb.addEventListener('message', (event) => userHandler(event.data))
 
         // first auth message
-        sw.messageSW({ type: 'auth', cmd: 'getUserIdentity' }).then(userHandler)
+        const f = async () => {
+            const w = await wb.getSW() as Worker
+            setSW((sw) => w)
+        }
 
+        f()
         return () => {
-            sw.removeEventListener(unregister)
+            wb.removeEventListener(unregister)
+            clearTimeout(timeout)
         }
     }, [])
+
+    useEffect(() => {
+        clearTimeout(timeout)
+        if (!sw || sw?.state == 'activated')
+            return
+        timeout = setInterval(() => {
+            if (sw?.state == 'activated')
+                clearTimeout(timeout)
+
+            wb.messageSW({ type: 'auth', cmd: 'getUserIdentity' }).then(userHandler)
+
+        }, 1000)
+    }, [sw?.state])
 
     return (
         <UserContext.Provider value={{ user, setUser, loadingUser, isAuthenticated }}>
