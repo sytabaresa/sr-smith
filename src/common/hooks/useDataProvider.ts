@@ -1,4 +1,4 @@
-import { list, oneData, selectMany, selectOne } from "../../modules/db"
+import { list, oneData, selectMany, selectOne } from "../../modules/db/db"
 import { getSW } from "../utils/sw"
 
 export class DataProvider {

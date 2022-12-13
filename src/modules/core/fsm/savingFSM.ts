@@ -2,7 +2,7 @@ import { createMachine, state, transition, reduce, invoke, guard, action, immedi
 import { SmithProject } from '../../../common/types/smith';
 import { EditorContextType } from './codeEditorFSM';
 import { DataProvider } from '../../../common/hooks/useDataProvider';
-import { Timestamp } from 'firebase/firestore';
+// import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {
     id: string;
@@ -114,7 +114,7 @@ async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
         id: ctx.id,
         variables: {
             data: ctx.code,
-            updateAt: Timestamp.now()
+            updateAt: new Date()
         } as SmithProject
     })
     console.log('saving done.')

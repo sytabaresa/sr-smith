@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { SmithProject } from "../../types/smith";
 import { useLanguageQuery, useTranslation } from "next-export-i18n"
 import { useDataProvider } from "../../hooks/useDataProvider";
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
 import { useAuthProvider } from "../../hooks/useAuthProvider";
 
 type NewProjectFormProps = {
@@ -38,13 +38,13 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
       const docRef = await create({
         resource: "projects",
         variables: {
-          createAt: Timestamp.now(),
+          createAt: new Date(),
           data: "",
           description: projectDescription,
           hashReference: "",
           isPublic: false,
           name: projectName,
-          updateAt: Timestamp.now(),
+          updateAt: new Date(),
           userId: user.uid,
         } as SmithProject
       })

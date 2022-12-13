@@ -1,5 +1,9 @@
 import { FirebaseApp } from "firebase/app";
-import { addDoc, collection, deleteDoc, doc, enableIndexedDbPersistence, Firestore, getDoc, getDocs, getFirestore, query, updateDoc, where } from "firebase/firestore";
+import {
+    addDoc, collection, deleteDoc, doc, enableIndexedDbPersistence, Firestore,
+    getDoc, getDocs, getFirestore, query, updateDoc, where
+} from "firebase/firestore";
+import { DataProvider, list, oneData, selectMany, selectOne } from "./db";
 
 export async function initDB(app: FirebaseApp) {
     const db = getFirestore(app)
@@ -22,41 +26,6 @@ function enableOffline(db: Firestore) {
             }
         })
 
-}
-
-export interface oneData {
-    resource: string
-    variables?: Record<string, any>
-    metaData?: Record<string, any>
-}
-
-export interface selectOne extends oneData {
-    id: string
-}
-
-export interface selectMany extends oneData {
-    ids: string[]
-}
-
-export interface list {
-    resource: string
-    pagination?: { current: number, pageSize: number }
-    hasPagination?: boolean
-    sort?: { field: string, order: "desc" | "asc" | "null" }
-    filters?: { op: string, v1: any, v2: any }[]
-    metaData?: Record<string, any>
-}
-
-export interface DataProvider {
-    create(data: oneData): Promise<Record<string, any>>
-    createMany(data: oneData): Promise<Record<string, any>[]>
-    deleteOne(data: selectOne): Promise<void>
-    deleteMany(data: selectMany): Promise<void>
-    getList(data: list): Promise<Record<string, any>[]>
-    getMany(data: selectMany): Promise<Record<string, any>[]>
-    getOne(data: selectOne): Promise<Record<string, any>>
-    update(data: selectOne): Promise<void>
-    updateMany(data: selectMany): Promise<void>
 }
 
 export class FirebaseWrapper implements DataProvider {

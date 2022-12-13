@@ -3,7 +3,7 @@ import { SmithProject } from "../../types/smith";
 import { SmithContext } from "../../../common/providers/smithContext";
 import { useTranslation } from "next-export-i18n"
 import { useDataProvider } from "../../hooks/useDataProvider";
-import { Timestamp } from "firebase/firestore";
+// import { Timestamp } from "firebase/firestore";
 
 type PublishProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -29,7 +29,7 @@ const PublishProjectForm = ({ }: PublishProjectFormProps) => {
         id: projectData.updateAt.toString(),
         variables: {
           isPublic: publicState,
-          updateAt: Timestamp.now()
+          updateAt: new Date()
         } as SmithProject
       })
       console.log('changed sucessfully')
