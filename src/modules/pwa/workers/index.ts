@@ -2,10 +2,14 @@ import { FirebaseApp } from "firebase/app";
 import { initApp } from "../../app";
 import { FireAuthWrapper, getProvider, initAuth } from "../../auth";
 import { FirebaseWrapper, initDB } from "../../db";
+import { RxDBWrapper, initDB as initRxDB } from "../../db/rxdb";
+
 
 let app: FirebaseApp
 let store: FirebaseWrapper
 let auth: FireAuthWrapper
+// let rxdb: RxDBWrapper
+
 
 export async function initFirst(event) {
     console.log('initializing app...')
@@ -13,10 +17,12 @@ export async function initFirst(event) {
     if (!app) {
         app = initApp()
         const db = await initDB(app)
+        // const _rxdb = await initRxDB()
         const _auth = initAuth(app)
         const provider = getProvider(_auth)
         auth = new FireAuthWrapper(_auth, provider)
         store = new FirebaseWrapper(db)
+        // rxdb = new RxDBWrapper(_rxdb)
         console.log('firebase initialized')
     }
 }
@@ -56,6 +62,9 @@ self.addEventListener('message', async event => {
     if (data.type == 'db' && data.cmd) {
         event.ports[0].postMessage({ type: 'db', payload: await store[data.cmd](data.payload) })
     }
+    // if (data.type == 'rxdb' && data.cmd) {
+    //     event.ports[0].postMessage({ type: 'db', payload: await rxdb[data.cmd](data.payload) })
+    // }
 
     if (data.type == 'auth' && data.cmd) {
         event.ports[0].postMessage({ type: 'auth', payload: await auth[data.cmd](data.payload) })
