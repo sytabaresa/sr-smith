@@ -9,7 +9,7 @@
         "gen:icons": "node scripts/icons.js",
         "prebuild2": "node scripts/tsconfig.js",
         "prestart2": "node scripts/tsconfig.js",
-        "analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer",
+        "analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer && xdg-open parcel-bundle-reports/default.html",
         "analyze:buddy": "parcel build --reporter @parcel/reporter-bundle-buddy"
     },
     "dependencies": {
@@ -38,6 +38,7 @@
     "devDependencies": {
         "@parcel/packager-raw-url": "2.8.2",
         "@parcel/reporter-bundle-analyzer": "^2.8.2",
+        "@parcel/reporter-bundle-buddy": "^2.8.2",
         "@parcel/transformer-typescript-tsc": "^2.8.2",
         "@parcel/transformer-webmanifest": "2.8.2",
         "@parcel/validator-typescript": "^2.8.2",
