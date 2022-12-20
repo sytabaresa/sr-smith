@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { SmithProject } from "../../types/smith";
 import { SmithContext } from "../../../common/providers/smithContext";
-import { useTranslation } from "next-export-i18n"
+import { useTranslation } from "@utils/i18n"
 import { useDataProvider } from "../../hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
 

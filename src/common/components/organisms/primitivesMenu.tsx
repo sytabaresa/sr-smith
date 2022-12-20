@@ -11,7 +11,7 @@ import SemicircleTooltip from "../../../modules/core/tooltips/semicircle";
 import ArcTooltip from "../../../modules/core/tooltips/arc";
 import ReCircleTooltip from "../../../modules/core/tooltips/reCircle";
 import ImCircleTooltip from "../../../modules/core/tooltips/imCircle";
-import { useTranslation } from "next-export-i18n"
+import { useTranslation } from "@utils/i18n"
 import ImCircleAdTooltip from "../../../modules/core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "../../../modules/core/tooltips/reCircleAd";
 

@@ -7,7 +7,7 @@ import DrawerSmithMenu from "../common/components/organisms/drawerSmithOptions";
 import { UserMenu } from "../common/components/organisms/userMenu";
 import { JXGDrawer } from "../modules/core/fsm/tooltipActionsFSM";
 import { configure, HotKeys } from "react-hotkeys";
-import { useRouter } from "next/router";
+import { useLocation, useRouter } from "wouter";
 import { SmithProject } from "../common/types/smith";
 import { useUser } from "../common/components/organisms/userContext";
 import { useMachine } from "react-robot";
@@ -27,6 +27,7 @@ import ModalContainer from "../common/components/molecules/modalContainer";
 import NewProjectForm from "../common/components/organisms/newProjectForm";
 import PublishProjectForm from "../common/components/organisms/publishProjectForm";
 import ConfigsForm from "../common/components/organisms/configForm";
+import { qParams } from "@utils/common";
 
 configure({
   /**
@@ -41,6 +42,8 @@ configure({
 
 const SmithProject: React.FC = () => {
   const router = useRouter();
+  const [location, navigate] = useLocation();
+
   const { isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
   const [theme] = useTheme()
@@ -71,7 +74,7 @@ const SmithProject: React.FC = () => {
   };
 
   const saveService = useMachine(saveMachine, {
-    id: router.query?.id as string,
+    id: qParams(location).id,
     projectData,
     editorService,
   })
@@ -85,7 +88,7 @@ const SmithProject: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const [current, send] = saveService
-      send({ type: 'LOAD', value: router.query?.id as string })
+      send({ type: 'LOAD', value: qParams(location).id as string })
     }
   }, [isAuthenticated]);
 

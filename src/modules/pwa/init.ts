@@ -1,9 +1,9 @@
-import { getSW } from "../../common/utils/sw";
+import { Workbox } from "workbox-window";
 
-export async function initFirebase() {
-    const ws = getSW()
+export async function initFirebase(wb: Workbox) {
+    // console.log(ws)
     try {
-        await ws.messageSW({ cmd: 'initializeApp' })
+        await wb.messageSW({ cmd: 'initializeApp' })
     } catch (err) {
         console.log(err)
     }

@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Layout from "../common/components/templates/default";
 import { useUser } from "../common/components/organisms/userContext";
-import { useRouter } from "next/router";
+import { useLocation } from "wouter"
 import { UrlObject } from "url";
 import SingUpForm from "../common/components/organisms/login/signupForm";
 import LoginForm from "../common/components/organisms/login/loginForm";
-import { useLanguageQuery, useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "@utils/i18n";
 import { SmithImage } from "../common/components/atoms/smithImage";
+import { qParams, qStr } from "@utils/common";
 
 interface LoginProps {
-  homePage: UrlObject | string;
+  homePage?: UrlObject | string;
 }
 
 const Login = ({ homePage = "/saved" }: LoginProps) => {
@@ -18,17 +19,17 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   const [query] = useLanguageQuery()
   const [isLogin, setIsLogin] = useState(true);
 
-  const router = useRouter();
+  const [location, navigate] = useLocation();
 
   const { isAuthenticated } = useUser();
   // console.log(isAuthenticated)
 
   useEffect(() => {
     if (isAuthenticated) {
-      if (router.query?.redirect) {
-        router.push({ pathname: router.query?.redirect as string, query });
+      if (qParams(location).redirect) {
+        navigate(qParams(location).redirect + qStr(query));
       } else {
-        router.push({ pathname: homePage as string, query });
+        navigate(homePage + qStr(query));
       }
     }
   }, [isAuthenticated])

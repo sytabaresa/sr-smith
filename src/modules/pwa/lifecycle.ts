@@ -1,6 +1,8 @@
-export const initializeServiceWorker = () => {
+import { Workbox } from "workbox-window"
+
+export const lifecycleListenterRegister = () => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-        const wb = window.workbox
+        const wb = window.workbox as Workbox
         // add event listeners to handle any of PWA lifecycle event
         // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-window.Workbox#events
         wb.addEventListener('installed', event => {
@@ -39,14 +41,7 @@ export const initializeServiceWorker = () => {
             }
         }
 
-        wb.addEventListener('waiting', promptNewVersionAvailable)
-
-        // ISSUE - this is not working as expected, why?
-        // I could only make message event listenser work when I manually add this listenser into sw.js file
-        // wb.addEventListener('message', event => {
-        //     console.log(`Event ${event.type} is triggered.`)
-        //     console.log(event)
-        // })
+        // wb.addEventListener('waiting', promptNewVersionAvailable)
 
         /*
         wb.addEventListener('redundant', event => {
@@ -63,7 +58,5 @@ export const initializeServiceWorker = () => {
         })
         */
 
-        // never forget to call register as auto register is turned off in next.config.js
-        wb.register()
     }
 }

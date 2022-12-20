@@ -1,7 +1,5 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
-import Head from 'next/head'
-import { useTranslation } from "next-export-i18n";
-import { useRouter } from 'next/router'
+import { useTranslation } from "@utils/i18n";
 import Footer from '../organisms/footer'
 import { LangMenu } from '../atoms/langMenu';
 import { ThemeSwitcher } from '../molecules/themeSwitcher';
@@ -56,11 +54,11 @@ const Layout = (props: Props) => {
 
   return (
     <div className={`flex flex-col relative overflow-hidden full-screen-div ${className}`} {...rest}>
-      <Head>
+      {/* <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+      </Head> */}
       {header}
       <div className="drawer drawer-end h-full relative">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -78,7 +76,8 @@ const Layout = (props: Props) => {
         {drawer &&
           <div className="drawer-side overflow-x-hidden">
             <label htmlFor="my-drawer" className="drawer-overlay"></label>
-            <div className="p-4 overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content w-60 bg-base-100 text-base-content flex flex-col items-start">
+            <div className="p-4 overflow-y-auto scrollbar-thin !scrollbar-w-[4px] 
+            scrollbar-track-base-100 scrollbar-thumb-base-content w-60 bg-base-100 text-base-content flex flex-col items-start">
               {user && <div className="flex flex-col items-center mb-4 w-full">
                 <UserImage className="mb-2" imageClasses="w-24 h-24" />
                 <div className="w-44 text-center">

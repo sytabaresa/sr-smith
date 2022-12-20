@@ -1,7 +1,7 @@
 import JXG, { JXGOptions, PointOptions } from "jsxgraph"
 import { lightTheme, darkTheme } from "./utils/themes"
 import ReactDOMServer from 'react-dom/server'
-import { Infobox } from "../../common/components/atoms/infobox"
+import { Infobox } from "@components/atoms/infobox"
 import React from "react"
 
 // default style for intercept objects

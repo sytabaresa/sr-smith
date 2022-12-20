@@ -17,7 +17,149 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@components": [
+        "common/components/index"
+      ],
+      "@components/*": [
+        "common/components/*",
+        "common/components/index"
+      ],
+      "@hoc": [
+        "common/hoc/index"
+      ],
+      "@hoc/*": [
+        "common/hoc/*",
+        "common/hoc/index"
+      ],
+      "@hooks": [
+        "common/hooks/index"
+      ],
+      "@hooks/*": [
+        "common/hooks/*",
+        "common/hooks/index"
+      ],
+      "@providers": [
+        "common/providers/index"
+      ],
+      "@providers/*": [
+        "common/providers/*",
+        "common/providers/index"
+      ],
+      "@styles": [
+        "common/styles/index"
+      ],
+      "@styles/*": [
+        "common/styles/*",
+        "common/styles/index"
+      ],
+      "@localtypes": [
+        "common/types/index"
+      ],
+      "@localtypes/*": [
+        "common/types/*",
+        "common/types/index"
+      ],
+      "@utils": [
+        "common/utils/index"
+      ],
+      "@utils/*": [
+        "common/utils/*",
+        "common/utils/index"
+      ],
+      "@common": [
+        "components/common/index"
+      ],
+      "@common/*": [
+        "components/common/*",
+        "components/common/index"
+      ],
+      "@app": [
+        "modules/app/index"
+      ],
+      "@app/*": [
+        "modules/app/*",
+        "modules/app/index"
+      ],
+      "@auth": [
+        "modules/auth/index"
+      ],
+      "@auth/*": [
+        "modules/auth/*",
+        "modules/auth/index"
+      ],
+      "@elements": [
+        "modules/core/elements/index"
+      ],
+      "@elements/*": [
+        "modules/core/elements/*",
+        "modules/core/elements/index"
+      ],
+      "@fsm": [
+        "modules/core/fsm/index"
+      ],
+      "@fsm/*": [
+        "modules/core/fsm/*",
+        "modules/core/fsm/index"
+      ],
+      "@tooltips": [
+        "modules/core/tooltips/index"
+      ],
+      "@tooltips/*": [
+        "modules/core/tooltips/*",
+        "modules/core/tooltips/index"
+      ],
+      "@core": [
+        "modules/core/index"
+      ],
+      "@core/*": [
+        "modules/core/*",
+        "modules/core/index"
+      ],
+      "@db": [
+        "modules/db/index"
+      ],
+      "@db/*": [
+        "modules/db/*",
+        "modules/db/index"
+      ],
+      "@workers": [
+        "modules/pwa/workers/index"
+      ],
+      "@workers/*": [
+        "modules/pwa/workers/*",
+        "modules/pwa/workers/index"
+      ],
+      "@pwa": [
+        "modules/pwa/index"
+      ],
+      "@pwa/*": [
+        "modules/pwa/*",
+        "modules/pwa/index"
+      ],
+      "@modules": [
+        "modules/index"
+      ],
+      "@modules/*": [
+        "modules/*",
+        "modules/index"
+      ],
+      "@pages": [
+        "pages/index"
+      ],
+      "@pages/*": [
+        "pages/*",
+        "pages/index"
+      ],
+      "@/*": [
+        "./*"
+      ],
+      "~/*": [
+        "../*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",

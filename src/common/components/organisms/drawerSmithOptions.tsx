@@ -8,11 +8,12 @@ import {
     LogoutIcon,
     LoginIcon
 } from "@heroicons/react/outline";
-import { useRouter } from "next/router";
+import { useLocation } from "wouter";
 import { useUser } from "./userContext";
-import { useLanguageQuery, useTranslation } from "next-export-i18n";
+import { useLanguageQuery, useTranslation } from "@utils/i18n";
 import { SmithContext } from "../../../common/providers/smithContext";
 import { useLogout } from "../../hooks/useLogout";
+import { qStr } from "../../utils/common";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
@@ -21,7 +22,7 @@ export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
 const DrawerSmithMenu = (props) => {
     const { labels } = props
     const { saveService } = useContext(SmithContext)
-    const router = useRouter()
+    const [location, navigate] = useLocation();
     const [query] = useLanguageQuery()
     const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
@@ -33,11 +34,11 @@ const DrawerSmithMenu = (props) => {
     }
 
     const login = () => {
-        router.push({ pathname: '/login', query: { lang: query.lang } })
+        navigate('/login' + qStr({ lang: query.lang }))
     }
 
     const open = () => {
-        router.push({ pathname: '/saved', query: { lang: query.lang } })
+        navigate('/saved' + qStr({ lang: query.lang }))
     }
 
     return <div className="flex flex-col items-start flex-grow w-full">
@@ -67,7 +68,7 @@ const DrawerSmithMenu = (props) => {
             </>
         }
         <a className="btn btn-warning btn-outline mt-10 text-right " href="/event">
-            <div className="w-4 h-4 bg-red-500 rounded-full mr-1"></div> Sustentación <br/> tesis
+            <div className="w-4 h-4 bg-red-500 rounded-full mr-1"></div> Sustentación <br /> tesis
         </a>
 
     </div>

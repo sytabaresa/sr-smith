@@ -1,13 +1,16 @@
 {
     "name": "sr-smith",
     "version": "0.0.5",
+    "source": "src/index.html",
     "scripts": {
-        "dev": "next",
-        "build": "next build",
-        "export": "next export",
-        "start": "next start",
+        "dev": "parcel",
+        "build": "parcel build",
         "type-check": "tsc",
-        "gen:icons": "node scripts/icons.js"
+        "gen:icons": "node scripts/icons.js",
+        "prebuild2": "node scripts/tsconfig.js",
+        "prestart2": "node scripts/tsconfig.js",
+        "analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer",
+        "analyze:buddy": "parcel build --reporter @parcel/reporter-bundle-buddy"
     },
     "dependencies": {
         "@heroicons/react": "^1.0.2",
@@ -17,13 +20,10 @@
         "gravatar": "^1.8.2",
         "jsxgraph": "https://github.com/sytabaresa/jsxgraph",
         "lodash": "^4.17.21",
-        "next": "^13.0.6",
-        "next-export-i18n": "^2.1.0",
-        "next-pwa": "^5.6.0",
         "node-loader": "^2.0.0",
+        "preact": "^10.11.3",
+        "preact-render-to-string": "^5.2.6",
         "prismjs": "^1.24.1",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
         "react-hook-form": "^7.24.0",
         "react-hotkeys": "^2.0.0",
         "react-responsive": "^8.2.0",
@@ -31,21 +31,40 @@
         "react-simple-code-editor": "^0.11.0",
         "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
         "rxdb": "^13.15.2",
-        "rxjs": "^7.6.0"
+        "rxjs": "^7.6.0",
+        "workbox-window": "^6.5.4",
+        "wouter": "^2.9.0"
     },
     "devDependencies": {
-        "@next/bundle-analyzer": "^13.0.2",
+        "@parcel/packager-raw-url": "2.8.2",
+        "@parcel/reporter-bundle-analyzer": "^2.8.2",
+        "@parcel/transformer-typescript-tsc": "^2.8.2",
+        "@parcel/transformer-webmanifest": "2.8.2",
+        "@parcel/validator-typescript": "^2.8.2",
         "@types/node": "^17.0.8",
         "@types/react": "^17.0.2",
         "@types/react-dom": "^17.0.1",
         "@types/react-syntax-highlighter": "^13.5.2",
-        "autoprefixer": "^10.2.6",
+        "autoprefixer": "^10.4.13",
         "daisyui": "^2.42.1",
-        "postcss": "^8.3.5",
+        "onmyjs": "^2.0.2",
+        "parcel": "^2.8.2",
+        "parcel-resolver-tspaths": "^0.0.9",
+        "postcss": "^8.4.20",
+        "process": "^0.11.10",
         "pwa-asset-generator": "^6.2.0",
+        "querystring-es3": "^0.2.1",
         "tailwind-scrollbar": "2.1.0-preview.0",
-        "tailwindcss": "^3.0.15",
+        "tailwindcss": "^3.2.4",
+        "tsconfig-paths-autogen": "^2.0.2",
         "typescript": "^4.5.4"
+    },
+    "alias": {
+        "react": "preact/compat",
+        "react-dom/test-utils": "preact/test-utils",
+        "react-dom": "preact/compat",
+        "react-dom/client": "preact/compat",
+        "react/jsx-runtime": "preact/jsx-runtime"
     },
     "license": "MIT"
 }

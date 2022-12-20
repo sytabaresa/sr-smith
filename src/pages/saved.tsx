@@ -1,22 +1,24 @@
-import { useRouter } from "next/router";
+import { useLocation } from "wouter"
+  ;
 import { useEffect, useState } from "react";
 import WithAuth from "../common/hoc/withAuth";
 import SavedProjectCard from "../common/components/molecules/savedProjectCard";
 import { SmithProject } from "../common/types/smith";
 import { useUser } from "../common/components/organisms/userContext";
-import { useLanguageQuery, useTranslation } from "next-export-i18n"
+import { useLanguageQuery, useTranslation } from "@utils/i18n"
 import Layout from "../common/components/templates/default";
 import { SmithImage } from "../common/components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
 import ModalContainer from "../common/components/molecules/modalContainer";
 import NewProjectForm from "../common/components/organisms/newProjectForm";
 import { useDataProvider } from "../common/hooks/useDataProvider";
+import { qStr } from "../common/utils/common";
 
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
   const [query2] = useLanguageQuery()
-  const router = useRouter();
+  const [location, navigate] = useLocation();
   const [userProjects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
   const { getList } = useDataProvider()
@@ -33,7 +35,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    router.push({ pathname: '/', query: { ...query2, id: projectId } });
+    navigate('/' + qStr({ ...query2, id: projectId }));
   }
 
   const newProject = async (e) => {

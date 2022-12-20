@@ -11,6 +11,8 @@
 # next.js
 /.next/
 /out/
+/dist/
+/.parcel-cache/
 
 # production
 /build

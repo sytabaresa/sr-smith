@@ -1,6 +1,7 @@
 import { User } from 'firebase/auth'
 import { useState, useEffect, createContext, useContext, Dispatch } from 'react'
-import { getSW } from '../../utils/sw'
+import { Workbox } from 'workbox-window'
+import { useWb } from '../../utils/sw'
 
 export interface UserContextType {
     user: User
@@ -17,10 +18,10 @@ export default function UserContextComp({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [loadingUser, setLoadingUser] = useState(true) // Helpful, to update the UI accordingly.
     const [sw, setSW] = useState(null as any)
-    const wb = getSW()
-
+    const wb = useWb()
 
     const userHandler = (event) => {
+        console.log(event)
         if (event.type == 'auth') {
             const user = event.payload
             try {
@@ -45,18 +46,19 @@ export default function UserContextComp({ children }) {
     }
 
     useEffect(() => {
+        const handler = (event) => userHandler(event.data)
         // recurrent auth messages
-        const unregister = wb.addEventListener('message', (event) => userHandler(event.data))
+        wb?.addEventListener('message', handler)
 
         // first auth message
         const f = async () => {
-            const w = await wb.getSW() as Worker
-            setSW((sw) => w)
+            const _wb = await wb?.getSW()
+            setSW((sw) => _wb)
         }
 
         f()
         return () => {
-            wb.removeEventListener(unregister)
+            wb?.removeEventListener('message', handler)
             clearTimeout(timeout)
         }
     }, [])

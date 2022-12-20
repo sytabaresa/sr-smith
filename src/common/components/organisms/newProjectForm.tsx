@@ -1,11 +1,12 @@
-import { useRouter } from "next/router";
+import { useLocation } from "wouter";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { SmithProject } from "../../types/smith";
-import { useLanguageQuery, useTranslation } from "next-export-i18n"
+import { useTranslation, useLanguageQuery } from "@utils/i18n"
 import { useDataProvider } from "../../hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
 import { useAuthProvider } from "../../hooks/useAuthProvider";
+import { qStr } from "../../utils/common";
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -15,7 +16,7 @@ type NewProjectFormProps = {
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const [query] = useLanguageQuery()
-  const router = useRouter()
+  const [location, navigate] = useLocation();
   const { getUserIdentity } = useAuthProvider()
   const { create } = useDataProvider()
 
@@ -48,8 +49,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
           userId: user.uid,
         } as SmithProject
       })
-      await router.push({ pathname: '/', query: { id: docRef.id, ...query } });
-      router.reload()
+      navigate('/' + qStr({ lang: query.lang }))
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import { useLocation } from "wouter"
+  ;
 import ModalContainer from "../common/components/molecules/modalContainer";
 import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
 import NewProjectForm from "../common/components/organisms/newProjectForm";
 import Layout from "../common/components/templates/default";
-import { useLanguageQuery } from "next-export-i18n";
+import { useLanguageQuery } from "@utils/i18n";
+import { qStr } from "../common/utils/common";
 
 const Projects = () => {
-  const router = useRouter();
-  const[query] = useLanguageQuery()
+  const [location, navigate] = useLocation();
+  const [query] = useLanguageQuery()
 
   const goToSavedProjects = () => {
-    router.push({pathname:"/saved", query});
+    navigate("/saved" + qStr(query));
   };
 
   const Child = ({ image, title }: { image: JSX.Element, title: string }) => {

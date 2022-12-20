@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
-import 'tailwindcss/tailwind.css'
-import '../common/styles/main.css';
-import '../common/styles/animations.css';
-import '../common/styles/jsxgraph.css';
+import '@styles/index.css'
+import '@styles/main.css';
+import '@styles/animations.css';
+import '@styles/jsxgraph.css';
 
-import { useRouter } from 'next/router';
-import UserProvider from '../common/components/organisms/userContext'
-import { useTheme, setTheme, getTheme } from '../common/hooks/useTheme';
-import { initializeServiceWorker } from '../modules/pwa/lifecycle';
-import { initFirebase } from '../modules/pwa/init';
+import { Route, RouterProps, useLocation, useRouter } from "wouter"
 
-function App({ Component, pageProps }) {
+import UserProvider from '@components/organisms/userContext'
+import { useTheme, setTheme, getTheme } from '@hooks/useTheme';
+import { initFirebase } from './modules/pwa/init';
+import SmithProject from './pages/smith';
+import LoginPage from './pages/login'
+import SavedPage from './pages/saved'
+
+function App() {
   const [isOnline, setIsOnline] = useState(true)
 
   useEffect(() => {
@@ -52,12 +55,10 @@ function App({ Component, pageProps }) {
     //register SW
     // service worker lifecycle handlers
     const _async = async () => {
-      await initializeServiceWorker()
-      await initFirebase() //await
-      
+      // await initFirebase() //await
+
     }
     _async()
-
 
     // const res = () =>
     //   document.querySelector("meta[name=viewport]").setAttribute("content", "height=" + screen.height * 0.9 + "px, width=device-width, initial-scale=1.0")
@@ -69,24 +70,34 @@ function App({ Component, pageProps }) {
     return () => { }
   }, []);
 
-  const router = useRouter()
+  const [location, setLocation] = useLocation();
+
   useEffect(() => {
+    const router: RouterProps & { lastPath?: string } = useRouter();
+    router.lastPath = location
+
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
       // skip index route, because it's already cached under `start-url` caching object
-      if (router.route !== '/') {
+      if (location !== '/') {
         const wb = window.workbox
         wb.active.then(worker => {
           wb.messageSW({ action: 'CACHE_NEW_ROUTE' })
         })
       }
     }
-  }, [isOnline, router.route])
-
-
+  }, [isOnline, location])
 
   return (
     <UserProvider>
-      <Component {...pageProps} />
+      <Route path='/'>
+        <SmithProject />
+      </Route>
+      <Route path='/login'>
+        <LoginPage />
+      </Route>
+      <Route path='/saved'>
+        <SavedPage />
+      </Route>
     </UserProvider>
   )
 }

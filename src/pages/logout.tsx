@@ -1,22 +1,24 @@
 import { useEffect } from "react"
-import { useRouter } from "next/router";
+import { useLocation } from "wouter"
+    ;
 import { UrlObject } from "url";
-import { useLanguageQuery } from "next-export-i18n";
+import { useLanguageQuery } from "@utils/i18n";
 import { useAuthProvider } from "../common/hooks/useAuthProvider";
+import { qStr } from "../common/utils/common";
 
 interface LogoutProps {
     redirect?: UrlObject | string
 }
 
 const Logout = ({ redirect = '/' }: LogoutProps) => {
-    const router = useRouter()
+    const [location, navigate] = useLocation();
     const [query] = useLanguageQuery()
     const { logout } = useAuthProvider()
 
     useEffect(() => {
         const f = async () => {
             await logout(null)
-            router.push({ pathname: redirect as string, query })
+            navigate(redirect + qStr({ query }))
         }
         f()
     }, [])

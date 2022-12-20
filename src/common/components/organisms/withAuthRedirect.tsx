@@ -1,10 +1,11 @@
-import { useLanguageQuery } from 'next-export-i18n'
-import Router, { useRouter } from 'next/router'
+import { useLanguageQuery } from '@utils/i18n'
+import { useLocation } from "wouter"
 import { ReactNode, useEffect } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'
 import { useUser } from './userContext'
 import AuthLoading from '../atoms/authLoading'
+import { qStr } from '../../utils/common'
 
 /**
  * Support client-side conditional redirecting based on the user's
@@ -33,16 +34,13 @@ const WithAuthRedirect = ({
 }: WithAuthRedirectProps) => {
 
   const WithAuthRedirectWrapper = (props) => {
-    const router = useRouter()
+    const [_location, navigate] = useLocation();
     const [query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
 
     useEffect(() => {
       if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
-        Router.push(typeof location === 'string' ?
-          location :
-          { query: { redirect: router.pathname }, ...location, ...query }
-        )
+        navigate(location + qStr({ redirect: _location, ...query }))
       }
     }, [isAuthenticated, loadingUser])
 

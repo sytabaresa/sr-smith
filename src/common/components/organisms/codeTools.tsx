@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "next-export-i18n";
+import { useTranslation } from "@utils/i18n";
 import EditorPopup from "./editorPopup";
 import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";

@@ -1,6 +1,6 @@
 import { ArrowLeftIcon, MenuAlt2Icon } from "@heroicons/react/outline";
-import { useTranslation } from "next-export-i18n";
-import { useRouter } from "next/router";
+import { useTranslation } from "@utils/i18n";
+import { useRouter, useLocation, RouterProps } from "wouter";
 import { HTMLAttributes } from "react";
 import { LangMenu } from "../atoms/langMenu";
 import { ThemeSwitcher } from "../molecules/themeSwitcher";
@@ -14,13 +14,15 @@ export interface NavbarProps extends HTMLAttributes<HTMLElement> {
 export default function Navbar(props: NavbarProps) {
     const { className = '', showComplement, ...rest } = props
 
-    const router = useRouter()
     const { t } = useTranslation()
     const { user } = useUser()
+    const [location, navigate] = useLocation();
+    const router: RouterProps & { lastPath?: string } = useRouter()
+
 
     return <nav className={`navbar ${className}`} {...rest}>
         <div className="flex-1">
-            <button className="btn btn-ghost flex" onClick={() => router.back()}>
+            <button className="btn btn-ghost flex" onClick={() => navigate(router.lastPath)}>
                 <ArrowLeftIcon className='h-4 w-4 mr-2' />{t('back')}
             </button>
             {showComplement && <>
