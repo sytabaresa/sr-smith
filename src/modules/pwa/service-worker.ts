@@ -1,4 +1,4 @@
-const SW_VERSION = '1.0.6';
+const SW_VERSION = '1.1.0';
 
 import { FirebaseApp } from "firebase/app";
 import { initApp } from "@app";
