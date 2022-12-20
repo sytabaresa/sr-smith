@@ -4,7 +4,7 @@ import { FirebaseApp } from "firebase/app";
 import { initApp } from "@app";
 import { FireAuthWrapper, getProvider, initAuth } from "@auth";
 import { FirebaseWrapper, initDB } from "@db";
-import { RxDBWrapper, initDB as initRxDB } from "@db/rxdb";
+// import { RxDBWrapper, initDB as initRxDB } from "@db/rxdb";
 
 let app: FirebaseApp
 let store: FirebaseWrapper
