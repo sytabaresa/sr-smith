@@ -1,12 +1,12 @@
-import { useLocation } from "wouter";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { SmithProject } from "../../types/smith";
+import { SmithProject } from "@localtypessmith";
 import { useTranslation, useLanguageQuery } from "@utils/i18n"
-import { useDataProvider } from "../../hooks/useDataProvider";
+import { useDataProvider } from "@hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
-import { useAuthProvider } from "../../hooks/useAuthProvider";
-import { qStr } from "../../utils/common";
+import { useAuthProvider } from "@hooks/useAuthProvider";
+import { qStr } from "@utils/common";
+import { useRouter } from "@modules/router";
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -16,7 +16,8 @@ type NewProjectFormProps = {
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const [query] = useLanguageQuery()
-  const [location, navigate] = useLocation();
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
   const { getUserIdentity } = useAuthProvider()
   const { create } = useDataProvider()
 
@@ -49,7 +50,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
           userId: user.uid,
         } as SmithProject
       })
-      navigate('/' + qStr({ lang: query.lang }))
+      push('/', { lang: query.lang })
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })

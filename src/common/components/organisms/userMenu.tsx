@@ -1,7 +1,7 @@
 import MenuAlt3Icon from "@heroicons/react/outline/MenuAlt3Icon"
 import ViewGridIcon from "@heroicons/react/outline/ViewGridIcon"
 import { useUser } from "./userContext"
-import { UserImage } from "../molecules/userImage"
+import { UserImage } from "@components/molecules/userImage"
 
 export const UserMenu = () => {
     const { user } = useUser()

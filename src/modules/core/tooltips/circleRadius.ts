@@ -1,8 +1,8 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, state, state as final, transition, reduce } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
-import { CircleCenterRadiusIcon } from "../../../common/components/atoms/icons";
-import { normalizeName } from "../utils/board";
+import { CircleCenterRadiusIcon } from "@components/atoms/icons";
+import { normalizeName } from "@core/utils/board";
 
 class CircleRadiusTooltip implements TooltipType {
     name = 'circleRadius'

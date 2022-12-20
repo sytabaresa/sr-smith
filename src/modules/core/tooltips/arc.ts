@@ -1,4 +1,4 @@
-import { ArcIcon } from "../../../common/components/atoms/icons";
+import { ArcIcon } from "@components/atoms/icons";
 import { TooltipType } from "./interfaces";
 import ThreePointsTooltip from "./threePoints";
 

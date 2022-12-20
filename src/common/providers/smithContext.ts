@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { JXGDrawer } from "../../modules/core/fsm/tooltipActionsFSM";
-import { SmithProject } from "../types/smith";
+import { JXGDrawer } from "@core/fsm/tooltipActionsFSM";
+import { SmithProject } from "@localtypes/smith";
 
 export interface SmithContextType {
     code: string

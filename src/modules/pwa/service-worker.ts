@@ -31,15 +31,21 @@ export async function initFirst(event) {
   }
 }
 
-self.addEventListener('install', async event => {
+addEventListener('install', async event => {
   await initFirst(event)
 })
 
-self.addEventListener('activated', async event => {
+addEventListener('activated', async event => {
   await initFirst(event)
 })
 
-self.addEventListener('message', async event => {
+addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    (self as any).skipWaiting();
+  }
+});
+
+addEventListener('message', async event => {
   const data = event.data
   const url: string = (event.source as any).url
   // console.log(event)
@@ -76,7 +82,7 @@ self.addEventListener('message', async event => {
   }
 
   const clients = await (self as any).clients.matchAll({ type: 'window' });
-  console.log(clients)
+  // console.log(clients)
   for (const client of clients) {
     client.postMessage({ type: 'auth', payload: await auth.getUserIdentity() });
   }

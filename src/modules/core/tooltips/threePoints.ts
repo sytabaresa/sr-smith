@@ -1,6 +1,6 @@
 import { createMachine, guard, immediate, state, state as final, transition, reduce } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
-import { normalizeName } from "../utils/board";
+import { normalizeName } from "@core/utils/board";
 
 class TwoPointsTooltip {
     jsxName = ''

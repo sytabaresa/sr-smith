@@ -1,8 +1,8 @@
 import { useTranslation } from "@utils/i18n";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useAuthProvider } from "../../../hooks/useAuthProvider";
-import { GoogleIcon } from "../../atoms/icons";
+import { useAuthProvider } from "@hooks/useAuthProvider";
+import { GoogleIcon } from "@components/atoms/icons";
 
 type LoginFormProps = {
   // onSubmit: (data: any) => void;

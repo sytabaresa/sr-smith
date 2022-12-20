@@ -1,6 +1,6 @@
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import { LabelHTMLAttributes, useEffect, useState } from "react";
-import { useTheme } from "../../hooks/useTheme";
+import { useTheme } from "@hooks/useTheme";
 
 
 export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {

@@ -1,25 +1,25 @@
 import { UrlObject } from 'url'
-import WithAuthRedirect from '../components/organisms/withAuthRedirect'
+import WithAuthRedirect from '@components/organisms/withAuthRedirect'
 
 /**
  * Require the user to be authenticated in order to render the component.
  * If the user isn't authenticated, forward to the given URL.
  */
 
-const WithAuth = (WrappedComponent, location?: UrlObject | string) => {
+const WithAuth = (WrappedComponent, location?: string) => {
 
   // return (props: any) => {
   //   const router = useRouter()
 
-    if (!location) {
-      location = { pathname: '/login',  } 
-    }
+  if (!location) {
+    location = '/login'
+  }
 
-    return WithAuthRedirect({
-      WrappedComponent,
-      location,
-      expectedAuth: true,
-    })
+  return WithAuthRedirect({
+    WrappedComponent,
+    location,
+    expectedAuth: true,
+  })
   // }
 }
 

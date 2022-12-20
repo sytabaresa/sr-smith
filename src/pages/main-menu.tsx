@@ -1,19 +1,19 @@
 import React, { useState } from "react";
-import { useLocation } from "wouter"
-  ;
-import ModalContainer from "../common/components/molecules/modalContainer";
+import ModalContainer from "@components/molecules/modalContainer";
 import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
-import NewProjectForm from "../common/components/organisms/newProjectForm";
-import Layout from "../common/components/templates/default";
+import NewProjectForm from "@components/organisms/newProjectForm";
+import Layout from "@components/templates/default";
 import { useLanguageQuery } from "@utils/i18n";
-import { qStr } from "../common/utils/common";
+import { qStr } from "@utils/common";
+import { useRouter } from "@modules/router";
 
 const Projects = () => {
-  const [location, navigate] = useLocation();
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
   const [query] = useLanguageQuery()
 
   const goToSavedProjects = () => {
-    navigate("/saved" + qStr(query));
+    push("/saved" + qStr(query));
   };
 
   const Child = ({ image, title }: { image: JSX.Element, title: string }) => {
@@ -31,7 +31,7 @@ const Projects = () => {
     <Layout title="Open | Sr Smith App" className="h-screen">
       <div className="-z-10 absolute right-0 left-0 w-full h-full bg-black">
         <img
-          src="../images/smith-app.png"
+          src={new URL("~/public/images/smith-app.png",import.meta.url) as unknown as string}
           alt="smith-bg"
           className=" w-full h-full object-cover blur-sm opacity-40"
         />

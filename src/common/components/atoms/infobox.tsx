@@ -1,4 +1,4 @@
-import { abs, angle, zImPart, zRePart } from "../../../modules/core/utils/transforms";
+import { abs, angle, zImPart, zRePart } from "@core/utils/transforms";
 
 export interface InfoboxProps {
     x: number | string;

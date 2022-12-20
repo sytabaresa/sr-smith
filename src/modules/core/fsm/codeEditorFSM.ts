@@ -1,6 +1,6 @@
 import { createMachine, state, transition, reduce, invoke, action } from 'robot3';
 import { JXGDrawer } from './tooltipActionsFSM';
-import { wait } from '../../../common/utils/time';
+import { wait } from '@utils/time';
 
 export interface EditorContextType {
     errorMsg?: string;

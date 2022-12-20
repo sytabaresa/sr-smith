@@ -1,5 +1,5 @@
 import JXG, { ImCircle, Point } from "jsxgraph"
-import { zImPart } from "../utils/transforms";
+import { zImPart } from "@core/utils/transforms";
 
 JXG.OBJECT_TYPE_REAL_CIRCLE = 98
 

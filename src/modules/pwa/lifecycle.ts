@@ -3,6 +3,11 @@ import { Workbox } from "workbox-window"
 export const lifecycleListenterRegister = () => {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
         const wb = window.workbox as Workbox
+
+        wb.addEventListener('waiting', event => {
+            wb.messageSkipWaiting();
+        })      
+            
         // add event listeners to handle any of PWA lifecycle event
         // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-window.Workbox#events
         wb.addEventListener('installed', event => {

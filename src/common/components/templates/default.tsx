@@ -1,15 +1,14 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
 import { useTranslation } from "@utils/i18n";
-import Footer from '../organisms/footer'
-import { LangMenu } from '../atoms/langMenu';
-import { ThemeSwitcher } from '../molecules/themeSwitcher';
-import { reloadOnOnline } from '../../hooks/useOnline';
-import Navbar from '../organisms/navbar';
-import { useUser } from '../organisms/userContext';
-import { UserImage } from '../molecules/userImage';
+import Footer from '@components/organisms/footer'
+import { LangMenu } from '@components/atoms/langMenu';
+import { ThemeSwitcher } from '@components/molecules/themeSwitcher';
+import Navbar from '@components/organisms/navbar';
+import { useUser } from '@components/organisms/userContext';
+import { UserImage } from '@components/molecules/userImage';
 import { LogoutIcon } from '@heroicons/react/outline';
-import DrawerMenuItem from '../molecules/drawerMenuItem';
-import { useLogout } from '../../hooks/useLogout';
+import DrawerMenuItem from '@components/molecules/drawerMenuItem';
+import { useLogout } from '@hooks/useLogout';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode

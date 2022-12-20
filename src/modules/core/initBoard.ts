@@ -1,8 +1,11 @@
 import JXG, { JXGOptions, PointOptions } from "jsxgraph"
-import { lightTheme, darkTheme } from "./utils/themes"
+import { lightTheme, darkTheme } from "@core/utils/themes"
 import ReactDOMServer from 'react-dom/server'
 import { Infobox } from "@components/atoms/infobox"
+import render from 'preact-render-to-string';
+
 import React from "react"
+import { h } from "preact";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -90,14 +93,14 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
     brd.highlightInfobox = function (x, y, el) {
 
-        const body = ReactDOMServer.renderToStaticMarkup(
-            React.createElement(Infobox, { x, y })
+        const body = render(
+            h(Infobox, { x, y })
         )
         this.infobox.setText(body);
 
         return this
     };
-    
+
     (brd.infobox as any).distanceX = 0;
     (brd.infobox as any).distanceY = 10;
 
@@ -114,8 +117,8 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
 
     const imgTheme = {
-        'dark': '/images/smith-chart-dark.svg',
-        'light': '/images/smith-chart.svg'
+        'dark': new URL('~/public/images/smith-chart-dark.svg', import.meta.url),
+        'light': new URL('~/public/images/smith-chart.svg', import.meta.url)
     }
     const tt = 1.1555
     // const x = 0.0025

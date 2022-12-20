@@ -1,6 +1,6 @@
 import { ImCircle } from "jsxgraph";
-import { ImCircleIcon } from "../../../common/components/atoms/icons";
-import { normalizeName } from "../utils/board";
+import { ImCircleIcon } from "@components/atoms/icons";
+import { normalizeName } from "@core/utils/board";
 import { TooltipType } from "./interfaces";
 import PointTooltip from "./point";
 

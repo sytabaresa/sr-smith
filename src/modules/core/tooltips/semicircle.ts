@@ -1,4 +1,4 @@
-import { SemicircleIcon } from "../../../common/components/atoms/icons";
+import { SemicircleIcon } from "@components/atoms/icons";
 import { TooltipType } from "./interfaces";
 import TwoPointsTooltip from "./twoPoints";
 

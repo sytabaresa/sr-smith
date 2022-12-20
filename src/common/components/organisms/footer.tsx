@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { About } from "../atoms/about";
+import { About } from "@components/atoms/about";
 
 export interface IFooterProps extends HTMLAttributes<HTMLElement> { }
 

@@ -1,11 +1,11 @@
 import { useLanguageQuery } from '@utils/i18n'
-import { useLocation } from "wouter"
 import { ReactNode, useEffect } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'
 import { useUser } from './userContext'
-import AuthLoading from '../atoms/authLoading'
-import { qStr } from '../../utils/common'
+import AuthLoading from '@components/atoms/authLoading'
+import { qStr } from '@utils/common'
+import { useRouter } from '@modules/router'
 
 /**
  * Support client-side conditional redirecting based on the user's
@@ -23,7 +23,7 @@ interface WithAuthRedirectProps {
   WrappedComponent: ReactComponent
   LoadingComponent?: ReactComponent
   expectedAuth: boolean
-  location: UrlObject | string
+  location: string
 }
 
 const WithAuthRedirect = ({
@@ -34,13 +34,17 @@ const WithAuthRedirect = ({
 }: WithAuthRedirectProps) => {
 
   const WithAuthRedirectWrapper = (props) => {
-    const [_location, navigate] = useLocation();
+    const { useHistory, useLocation } = useRouter()
+    const { push } = useHistory();
+    const { pathname } = useLocation()
     const [query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
+    // console.log(loadingUser, user, isAuthenticated)
 
     useEffect(() => {
       if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
-        navigate(location + qStr({ redirect: _location, ...query }))
+        console.log(location, pathname, query)
+        push(location, { redirect: pathname, ...query })
       }
     }, [isAuthenticated, loadingUser])
 

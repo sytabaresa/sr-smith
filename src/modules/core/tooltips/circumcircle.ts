@@ -1,4 +1,4 @@
-import { CircumcircleIcon } from "../../../common/components/atoms/icons";
+import { CircumcircleIcon } from "@components/atoms/icons";
 import { TooltipType } from "./interfaces";
 import ThreePointsTooltip from "./threePoints";
 

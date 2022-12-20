@@ -1,6 +1,6 @@
 import JXG from "jsxgraph"
-import { getIndexFinger, getMouseCoords, normalizeName, stringifyJC } from "../utils/board";
-import { zImPart, zRePart } from "../utils/transforms";
+import { getIndexFinger, getMouseCoords, normalizeName, stringifyJC } from "@core/utils/board";
+import { zImPart, zRePart } from "@core/utils/transforms";
 
 export function selectOrDrawPoint(ctx: any, event) {
     const { board } = event

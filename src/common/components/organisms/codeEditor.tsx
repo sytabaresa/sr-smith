@@ -6,7 +6,7 @@ import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
-import { SmithContext } from "../../../common/providers/smithContext";
+import { SmithContext } from "@providers/smithContext";
 import { useUser } from "./userContext";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {

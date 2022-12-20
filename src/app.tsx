@@ -4,16 +4,16 @@ import '@styles/main.css';
 import '@styles/animations.css';
 import '@styles/jsxgraph.css';
 
-import { Route, RouterProps, useLocation, useRouter } from "wouter"
-
 import UserProvider from '@components/organisms/userContext'
-import { useTheme, setTheme, getTheme } from '@hooks/useTheme';
-import { initFirebase } from './modules/pwa/init';
-import SmithProject from './pages/smith';
-import LoginPage from './pages/login'
-import SavedPage from './pages/saved'
+import { setTheme, getTheme } from '@hooks/useTheme';
+// import { initFirebase } from '@pwa/init';
+import SmithProject from '@pages/smith';
+import LoginPage from '@pages/login'
+import SavedPage from '@pages/saved'
+import Fallback from '@pages/_offline';
+import { useRouter } from '@modules/router';
 
-function App() {
+export function App() {
   const [isOnline, setIsOnline] = useState(true)
 
   useEffect(() => {
@@ -70,36 +70,41 @@ function App() {
     return () => { }
   }, []);
 
-  const [location, setLocation] = useLocation();
+  const { RouterWrapper, RouterComponent, useLocation } = useRouter()
+  const { pathname } = useLocation()
 
   useEffect(() => {
-    const router: RouterProps & { lastPath?: string } = useRouter();
-    router.lastPath = location
+    // const router: RouterProps & { lastPath?: string } = useRouter();
+    // lastPath = location
 
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
       // skip index route, because it's already cached under `start-url` caching object
-      if (location !== '/') {
+      if (pathname !== '/') {
         const wb = window.workbox
         wb.active.then(worker => {
           wb.messageSW({ action: 'CACHE_NEW_ROUTE' })
         })
       }
     }
-  }, [isOnline, location])
+  }, [isOnline, pathname])
+
 
   return (
     <UserProvider>
-      <Route path='/'>
-        <SmithProject />
-      </Route>
-      <Route path='/login'>
-        <LoginPage />
-      </Route>
-      <Route path='/saved'>
-        <SavedPage />
-      </Route>
+      <RouterWrapper>
+        <RouterComponent path='/'>
+          <SmithProject />
+        </RouterComponent>
+        <RouterComponent path='/login'>
+          <LoginPage />
+        </RouterComponent>
+        <RouterComponent path='/saved'>
+          <SavedPage />
+        </RouterComponent>
+        <RouterComponent>
+          <Fallback />
+        </RouterComponent>
+      </RouterWrapper>
     </UserProvider>
   )
 }
-
-export default App

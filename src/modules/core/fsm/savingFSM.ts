@@ -1,7 +1,7 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
-import { SmithProject } from '../../../common/types/smith';
+import { SmithProject } from '@localtypes/smith';
 import { EditorContextType } from './codeEditorFSM';
-import { DataProvider } from '../../../common/hooks/useDataProvider';
+import { DataProvider } from '@hooks/useDataProvider';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {

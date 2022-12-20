@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { SmithContext } from "../../../common/providers/smithContext";
-import { useTheme } from "../../hooks/useTheme";
-import { useScreen } from "../../utils/screen";
+import { SmithContext } from "@providers/smithContext";
+import { useTheme } from "@hooks/useTheme";
+import { useScreen } from "@utils/screen";
 
 export interface ISmithBoardProps { };
 

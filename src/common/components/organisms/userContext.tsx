@@ -1,7 +1,7 @@
 import { User } from 'firebase/auth'
 import { useState, useEffect, createContext, useContext, Dispatch } from 'react'
 import { Workbox } from 'workbox-window'
-import { useWb } from '../../utils/sw'
+import { useWb } from '@utils/sw'
 
 export interface UserContextType {
     user: User
@@ -21,7 +21,7 @@ export default function UserContextComp({ children }) {
     const wb = useWb()
 
     const userHandler = (event) => {
-        console.log(event)
+        // console.log(event)
         if (event.type == 'auth') {
             const user = event.payload
             try {
@@ -61,7 +61,7 @@ export default function UserContextComp({ children }) {
             wb?.removeEventListener('message', handler)
             clearTimeout(timeout)
         }
-    }, [])
+    }, [wb])
 
     useEffect(() => {
         clearTimeout(timeout)

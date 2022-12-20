@@ -1,6 +1,6 @@
 import { Circle } from "jsxgraph";
-import { CircleCenterPointIcon } from "../../../common/components/atoms/icons";
-import { normalizeName } from "../utils/board";
+import { CircleCenterPointIcon } from "@components/atoms/icons";
+import { normalizeName } from "@core/utils/board";
 import { TooltipType } from "./interfaces";
 import TwoPointsTooltip from "./twoPoints";
 

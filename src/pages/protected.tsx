@@ -1,5 +1,5 @@
-import WithAuth from "../common/hoc/withAuth"
-import Layout from "../common/components/templates/default"
+import WithAuth from "@hoc/withAuth"
+import Layout from "@components/templates/default"
 
 const ProtectedPage = () => {
 

@@ -1,5 +1,5 @@
 import { Workbox } from "workbox-window"
-import { useWb } from "../utils/sw"
+import { useWb } from "@utils/sw"
 
 export class AuthProvider {
     wb: any

@@ -1,5 +1,5 @@
 import { TooltipType } from "./interfaces";
-import { PointIcon } from "../../../common/components/atoms/icons";
+import { PointIcon } from "@components/atoms/icons";
 import PointTooltip from "./point";
 
 class SmithPointTooltip extends PointTooltip implements TooltipType {

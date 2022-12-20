@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../common/components/templates/default";
-import SmithBoard from "../common/components/molecules/smithBoard";
-import { SmithContext } from "../common/providers/smithContext";
-import CodeTools from "../common/components/organisms/codeTools";
-import DrawerSmithMenu from "../common/components/organisms/drawerSmithOptions";
-import { UserMenu } from "../common/components/organisms/userMenu";
-import { JXGDrawer } from "../modules/core/fsm/tooltipActionsFSM";
+import Layout from "@components/templates/default";
+import SmithBoard from "@components/molecules/smithBoard";
+import { SmithContext } from "@providers/smithContext";
+import CodeTools from "@components/organisms/codeTools";
+import DrawerSmithMenu from "@components/organisms/drawerSmithOptions";
+import { UserMenu } from "@components/organisms/userMenu";
+import { JXGDrawer } from "@core/fsm/tooltipActionsFSM";
 import { configure, HotKeys } from "react-hotkeys";
-import { useLocation, useRouter } from "wouter";
-import { SmithProject } from "../common/types/smith";
-import { useUser } from "../common/components/organisms/userContext";
+import { SmithProject } from "@localtypes/smith";
+import { useUser } from "@components/organisms/userContext";
 import { useMachine } from "react-robot";
-import editorMachine from '../modules/core/fsm/codeEditorFSM'
-import saveMachine from "../modules/core/fsm/savingFSM";
-import { useConfig } from "../common/hooks/useConfig";
-import { useTheme } from "../common/hooks/useTheme";
-import Footer from "../common/components/organisms/footer";
+import editorMachine from '@core/fsm/codeEditorFSM'
+import saveMachine from "@core/fsm/savingFSM";
+import { useConfig } from "@hooks/useConfig";
+import { useTheme } from "@hooks/useTheme";
+import Footer from "@components/organisms/footer";
 
-import "../modules/core/elements/smithPoint"
-import "../modules/core/elements/reCircle"
-import "../modules/core/elements/imCircle"
-import "../modules/core/elements/imCircleAd"
-import "../modules/core/elements/reCircleAd"
+import "@core/elements/smithPoint"
+import "@core/elements/reCircle"
+import "@core/elements/imCircle"
+import "@core/elements/imCircleAd"
+import "@core/elements/reCircleAd"
 
-import ModalContainer from "../common/components/molecules/modalContainer";
-import NewProjectForm from "../common/components/organisms/newProjectForm";
-import PublishProjectForm from "../common/components/organisms/publishProjectForm";
-import ConfigsForm from "../common/components/organisms/configForm";
+import ModalContainer from "@components/molecules/modalContainer";
+import NewProjectForm from "@components/organisms/newProjectForm";
+import PublishProjectForm from "@components/organisms/publishProjectForm";
+import ConfigsForm from "@components/organisms/configForm";
 import { qParams } from "@utils/common";
+import { useRouter } from "@modules/router";
 
 configure({
   /**
@@ -41,8 +41,8 @@ configure({
 });
 
 const SmithProject: React.FC = () => {
-  const router = useRouter();
-  const [location, navigate] = useLocation();
+  const { useParams } = useRouter()
+  const params = useParams();
 
   const { isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
@@ -74,7 +74,7 @@ const SmithProject: React.FC = () => {
   };
 
   const saveService = useMachine(saveMachine, {
-    id: qParams(location).id,
+    id: params.id,
     projectData,
     editorService,
   })
@@ -88,7 +88,7 @@ const SmithProject: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const [current, send] = saveService
-      send({ type: 'LOAD', value: qParams(location).id as string })
+      send({ type: 'LOAD', value: params.id as string })
     }
   }, [isAuthenticated]);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useLanguageQuery, useTranslation } from "@utils/i18n"
-import { useConfig } from "../../hooks/useConfig";
+import { useConfig } from "@hooks/useConfig";
 
 type ConfigsFormProps = {
     modalLabel?: string;

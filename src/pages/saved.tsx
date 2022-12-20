@@ -1,24 +1,23 @@
-import { useLocation } from "wouter"
-  ;
 import { useEffect, useState } from "react";
-import WithAuth from "../common/hoc/withAuth";
-import SavedProjectCard from "../common/components/molecules/savedProjectCard";
-import { SmithProject } from "../common/types/smith";
-import { useUser } from "../common/components/organisms/userContext";
+import WithAuth from "@hoc/withAuth";
+import SavedProjectCard from "@components/molecules/savedProjectCard";
+import { SmithProject } from "@localtypes/smith";
+import { useUser } from "@components/organisms/userContext";
 import { useLanguageQuery, useTranslation } from "@utils/i18n"
-import Layout from "../common/components/templates/default";
-import { SmithImage } from "../common/components/atoms/smithImage";
+import Layout from "@components/templates/default";
+import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
-import ModalContainer from "../common/components/molecules/modalContainer";
-import NewProjectForm from "../common/components/organisms/newProjectForm";
-import { useDataProvider } from "../common/hooks/useDataProvider";
-import { qStr } from "../common/utils/common";
+import ModalContainer from "@components/molecules/modalContainer";
+import NewProjectForm from "@components/organisms/newProjectForm";
+import { useDataProvider } from "@hooks/useDataProvider";
+import { useRouter } from "@modules/router";
 
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
   const [query2] = useLanguageQuery()
-  const [location, navigate] = useLocation();
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
   const [userProjects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
   const { getList } = useDataProvider()
@@ -35,7 +34,7 @@ const SavedProjects = () => {
   };
 
   const goToSavedProject = (projectId: string) => {
-    navigate('/' + qStr({ ...query2, id: projectId }));
+    push('/', { ...query2, id: projectId })
   }
 
   const newProject = async (e) => {
@@ -62,7 +61,7 @@ const SavedProjects = () => {
                 <SavedProjectCard
                   title={item.name}
                   description={item.description}
-                  image="/images/smith-app.png"
+                  image={new URL('~/public/images/smith-app.png', import.meta.url) as unknown as string}
                   id={""}
                 />
               </div>

@@ -1,6 +1,6 @@
 import { ReCircle } from "jsxgraph";
-import { ReCircleIcon, ReCircleIconAd } from "../../../common/components/atoms/icons";
-import { normalizeName } from "../utils/board";
+import { ReCircleIcon, ReCircleIconAd } from "@components/atoms/icons";
+import { normalizeName } from "@core/utils/board";
 import { TooltipType } from "./interfaces";
 import PointTooltip from "./point";
 

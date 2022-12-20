@@ -1,10 +1,10 @@
+import { useRouter } from "@modules/router";
 import { useLanguageQuery, useTranslation } from "@utils/i18n";
-import { useLocation } from "wouter"
   ;
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuthProvider } from "../../../hooks/useAuthProvider";
-import { qStr } from "../../../utils/common";
+import { useAuthProvider } from "@hooks/useAuthProvider";
+import { qStr } from "@utils/common";
 
 type SignUpFormProps = {
   // onSubmit?: (data: any) => void;
@@ -22,7 +22,8 @@ const SingUpForm = ({ }: SignUpFormProps) => {
   } = useForm();
   const { register: signUp } = useAuthProvider()
   const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
-  const [location, navigate] = useLocation();
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
 
   const onSubmitSignUp = async (data) => {
     const { email, password, repeatPassword } = data;
@@ -33,7 +34,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     try {
       const user = await signUp(data)
       console.log('succefull created', user);
-      navigate('/smith' + qStr(query));
+      push('/smith' + qStr(query));
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -99,3 +100,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
 };
 
 export default SingUpForm;
+function useHistory(): { push: any; } {
+  throw new Error("Function not implemented.");
+}
+

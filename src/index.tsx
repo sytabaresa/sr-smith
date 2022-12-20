@@ -1,6 +1,6 @@
 import { lifecycleListenterRegister } from "@pwa/lifecycle";
 import { render } from "react-dom";
-import App from "./app";
+import { App } from "./app";
 import { createSW } from "@pwa"
 
 const container = document.getElementById("app");
@@ -15,12 +15,13 @@ export async function initializeSW() {
     }
 
     await wb.register();
-    // wb.messageSkipWaiting()
-
+    if (process.env.NODE_ENV === 'development') {
+        wb.messageSkipWaiting()
+    }
     await lifecycleListenterRegister()
 
     const swVersion = await wb.messageSW({ type: 'GET_VERSION' });
     console.log('Service Worker version:', swVersion);
 }
 
-// initializeSW()
+initializeSW()

@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import Layout from "../common/components/templates/default";
-import { useUser } from "../common/components/organisms/userContext";
-import { useLocation } from "wouter"
-import { UrlObject } from "url";
-import SingUpForm from "../common/components/organisms/login/signupForm";
-import LoginForm from "../common/components/organisms/login/loginForm";
+import Layout from "@components/templates/default";
+import { useUser } from "@components/organisms/userContext";
+import SingUpForm from "@components/organisms/login/signupForm";
+import LoginForm from "@components/organisms/login/loginForm";
 import { useLanguageQuery, useTranslation } from "@utils/i18n";
-import { SmithImage } from "../common/components/atoms/smithImage";
-import { qParams, qStr } from "@utils/common";
+import { SmithImage } from "@components/atoms/smithImage";
+import { useRouter } from "@modules/router";
 
 interface LoginProps {
-  homePage?: UrlObject | string;
+  homePage?: string;
 }
 
 const Login = ({ homePage = "/saved" }: LoginProps) => {
@@ -19,17 +16,20 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   const [query] = useLanguageQuery()
   const [isLogin, setIsLogin] = useState(true);
 
-  const [location, navigate] = useLocation();
+  const { useHistory, useParams } = useRouter()
+  const { push } = useHistory();
+  const params = useParams()
 
   const { isAuthenticated } = useUser();
-  // console.log(isAuthenticated)
+  console.log(isAuthenticated)
 
   useEffect(() => {
+    console.log(params.redirect)
     if (isAuthenticated) {
-      if (qParams(location).redirect) {
-        navigate(qParams(location).redirect + qStr(query));
+      if (params.redirect) {
+        push(params.redirect, query)
       } else {
-        navigate(homePage + qStr(query));
+        push(homePage, query)
       }
     }
   }, [isAuthenticated])

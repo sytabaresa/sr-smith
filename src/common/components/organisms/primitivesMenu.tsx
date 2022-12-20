@@ -1,19 +1,19 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { HandIcon, ReplyIcon, TemplateIcon, TrashIcon } from "@heroicons/react/outline";
-import { SmithContext } from "../../../common/providers/smithContext";
-import PointTooltip from "../../../modules/core/tooltips/point";
-import SegmentTooltip from "../../../modules/core/tooltips/segment";
-import LineTooltip from "../../../modules/core/tooltips/line";
-import CircleTooltip from "../../../modules/core/tooltips/circle";
-import CircleRadiusTooltip from "../../../modules/core/tooltips/circleRadius";
-import CircumcircleTooltip from "../../../modules/core/tooltips/circumcircle";
-import SemicircleTooltip from "../../../modules/core/tooltips/semicircle";
-import ArcTooltip from "../../../modules/core/tooltips/arc";
-import ReCircleTooltip from "../../../modules/core/tooltips/reCircle";
-import ImCircleTooltip from "../../../modules/core/tooltips/imCircle";
+import { SmithContext } from "@providers/smithContext";
+import PointTooltip from "@core/tooltips/point";
+import SegmentTooltip from "@core/tooltips/segment";
+import LineTooltip from "@core/tooltips/line";
+import CircleTooltip from "@core/tooltips/circle";
+import CircleRadiusTooltip from "@core/tooltips/circleRadius";
+import CircumcircleTooltip from "@core/tooltips/circumcircle";
+import SemicircleTooltip from "@core/tooltips/semicircle";
+import ArcTooltip from "@core/tooltips/arc";
+import ReCircleTooltip from "@core/tooltips/reCircle";
+import ImCircleTooltip from "@core/tooltips/imCircle";
 import { useTranslation } from "@utils/i18n"
-import ImCircleAdTooltip from "../../../modules/core/tooltips/imCircleAd";
-import ReCircleAdTooltip from "../../../modules/core/tooltips/reCircleAd";
+import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
+import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };

@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, useContext } from "react";
-import DrawerMenuItem from "../molecules/drawerMenuItem";
+import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import {
     PlusIcon,
     FolderOpenIcon,
@@ -8,12 +8,12 @@ import {
     LogoutIcon,
     LoginIcon
 } from "@heroicons/react/outline";
-import { useLocation } from "wouter";
+import { useRouter } from '@modules/router';
 import { useUser } from "./userContext";
 import { useLanguageQuery, useTranslation } from "@utils/i18n";
-import { SmithContext } from "../../../common/providers/smithContext";
-import { useLogout } from "../../hooks/useLogout";
-import { qStr } from "../../utils/common";
+import { SmithContext } from "@providers/smithContext";
+import { useLogout } from "@hooks/useLogout";
+import { qStr } from "@utils/common";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
@@ -22,7 +22,8 @@ export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
 const DrawerSmithMenu = (props) => {
     const { labels } = props
     const { saveService } = useContext(SmithContext)
-    const [location, navigate] = useLocation();
+    const { useHistory } = useRouter()
+    const { push } = useHistory();
     const [query] = useLanguageQuery()
     const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
@@ -34,11 +35,11 @@ const DrawerSmithMenu = (props) => {
     }
 
     const login = () => {
-        navigate('/login' + qStr({ lang: query.lang }))
+        push('/login', { lang: query.lang })
     }
 
     const open = () => {
-        navigate('/saved' + qStr({ lang: query.lang }))
+        push('/saved', { lang: query.lang })
     }
 
     return <div className="flex flex-col items-start flex-grow w-full">
