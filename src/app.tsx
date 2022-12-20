@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import '@styles/index.css'
 import '@styles/main.css';
 import '@styles/animations.css';
-import '@styles/jsxgraph.css';
 
 import UserProvider from '@components/organisms/userContext'
 import { setTheme, getTheme } from '@hooks/useTheme';

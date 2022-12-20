@@ -1,5 +1,5 @@
 import { RouterProvider } from "./router"
-import { useLocation, Route } from "wouter"
+import { useLocation, Route, Switch } from "wouter"
 import { qParams, qStr } from "@utils/common";
 
 export class RouterWrapper implements RouterProvider {
@@ -29,7 +29,7 @@ export class RouterWrapper implements RouterProvider {
     }
 
     // Link: React.FC<any>,
-    RouterWrapper = (props) => props.children
+    RouterWrapper = Switch
     RouterComponent = Route
 }
 

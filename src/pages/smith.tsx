@@ -29,6 +29,8 @@ import ConfigsForm from "@components/organisms/configForm";
 import { qParams } from "@utils/common";
 import { useRouter } from "@modules/router";
 
+import '@styles/jsxgraph.css';
+
 configure({
   /**
    * The level of logging of its own behaviour React HotKeys should perform.
