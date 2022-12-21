@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import '@styles/main.css';
 import '@styles/animations.css';
 
 import UserProvider from '@components/organisms/userContext'
 import { setTheme, getTheme } from '@hooks/useTheme';
-// import { initFirebase } from '@pwa/init';
-import SmithProject from '@pages/smith';
-import LoginPage from '@pages/login'
-import SavedPage from '@pages/saved'
-import Fallback from '@pages/_offline';
 import { useRouter } from '@modules/router';
+// import { initFirebase } from '@pwa/init';
+
+const SmithProject = lazy(() => import('@pages/smith'))
+const LoginPage = lazy(() => import('@pages/login'))
+const SavedPage = lazy(() => import('@pages/saved'))
+const Fallback = lazy(() => import('@pages/_offline'))
 
 export function App() {
   const [isOnline, setIsOnline] = useState(true)
