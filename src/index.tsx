@@ -15,9 +15,9 @@ export async function initializeSW() {
     }
 
     await wb.register();
-    if (process.env.NODE_ENV === 'development') {
+    // if (process.env.NODE_ENV === 'development') {
         wb.messageSkipWaiting()
-    }
+    // }
     await lifecycleListenterRegister()
 
     const swVersion = await wb.messageSW({ type: 'GET_VERSION' });
