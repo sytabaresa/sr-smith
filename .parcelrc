@@ -5,6 +5,10 @@
         "parcel-resolver-tspaths"
     ],
     "transformers": {
+        "*.preval.js": [
+            "parcel-transformer-preval",
+            "..."
+        ],
         "*.{ts,tsx}": [
             "@parcel/transformer-typescript-tsc"
         ]

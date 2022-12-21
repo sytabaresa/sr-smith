@@ -121,6 +121,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
               // figure out how to show clipped tooltip
               <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t(plugin.tooltip)}>
                 <button
+                  aria-label={plugin.tooltip}
                   className={`p-0 py-2 md:px-2 btn btn-ghost ${ui.context().tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />

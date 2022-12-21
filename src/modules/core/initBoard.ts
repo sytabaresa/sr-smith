@@ -1,10 +1,7 @@
 import JXG, { JXGOptions, PointOptions } from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
-import ReactDOMServer from 'react-dom/server'
 import { Infobox } from "@components/atoms/infobox"
 import render from 'preact-render-to-string';
-
-import React from "react"
 import { h } from "preact";
 
 // default style for intercept objects
@@ -96,6 +93,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         const body = render(
             h(Infobox, { x, y })
         )
+        console.log(body)
         this.infobox.setText(body);
 
         return this

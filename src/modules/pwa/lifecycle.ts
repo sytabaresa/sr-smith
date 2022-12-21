@@ -1,6 +1,6 @@
 import { Workbox } from "workbox-window"
 
-export const lifecycleListenterRegister = () => {
+export function lifecycleListenterRegister() {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
         const wb = window.workbox as Workbox
 

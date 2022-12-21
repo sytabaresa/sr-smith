@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, MenuAlt2Icon } from "@heroicons/react/outline";
+import { ArrowLeftIcon, MenuAlt3Icon } from "@heroicons/react/outline";
 import { useTranslation } from "@utils/i18n";
 import { useRouter } from "@modules/router";
 import { HTMLAttributes } from "react";
@@ -35,7 +35,7 @@ export default function Navbar(props: NavbarProps) {
             // className="btn"
             >
                 <UserImage className="hidden md:block mr-4" />
-                <MenuAlt2Icon className="block md:hidden h-8 w-8 mr-2" />
+                <MenuAlt3Icon className="block md:hidden h-8 w-8 mr-2" />
             </label>}
         </div>
     </nav>

@@ -1311,7 +1311,7 @@
     "@parcel/utils" "2.8.2"
     posthtml "^0.16.4"
 
-"@parcel/plugin@2.8.2":
+"@parcel/plugin@2.8.2", "@parcel/plugin@^2.0.0":
   version "2.8.2"
   resolved "https://registry.yarnpkg.com/@parcel/plugin/-/plugin-2.8.2.tgz#f8d147cf32e52f7feff245d64d640890a18a6fd9"
   integrity sha512-YG7TWfKsoNm72jbz3b3TLec0qJHVkuAWSzGzowdIhX37cP1kRfp6BU2VcH+qYPP/KYJLzhcZa9n3by147mGcxw==
@@ -5080,6 +5080,14 @@ parcel-resolver-tspaths@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/parcel-resolver-tspaths/-/parcel-resolver-tspaths-0.0.9.tgz#905578f0c3d8fe795f798452fcfbf211f021dbde"
   integrity sha512-U+iYUT5BewncKijBFJqLMsU78SfGBEzfVZ0T9O4hw5dCedTsOJdXOmlsqBw9ipdCA55GpQFuSnIe1Xv3sF53Vg==
+
+parcel-transformer-preval@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/parcel-transformer-preval/-/parcel-transformer-preval-0.1.3.tgz#c983eb0763f9477a7e461c1c3c954c62b21ec998"
+  integrity sha512-PbJcOqF8Uy9ruefHNmNE5fgMWMKloLoDMfetE3R3Sk5yQzyn+q5oq4siy5P20pPdER6go6HGwylqWFSEKVXJgw==
+  dependencies:
+    "@parcel/plugin" "^2.0.0"
+    require-from-string "^2.0.2"
 
 parcel@^2.8.2:
   version "2.8.2"
