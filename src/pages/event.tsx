@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 interface EventProps {
-    style: Object;
+    style?: Object;
 }
 
 

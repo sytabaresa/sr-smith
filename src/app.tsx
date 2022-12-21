@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import '@styles/main.css';
 import '@styles/animations.css';
 
@@ -10,6 +10,7 @@ import { useRouter } from '@modules/router';
 const SmithProject = lazy(() => import('@pages/smith'))
 const LoginPage = lazy(() => import('@pages/login'))
 const SavedPage = lazy(() => import('@pages/saved'))
+const Event = lazy(() => import('@pages/event'))
 const Fallback = lazy(() => import('@pages/_offline'))
 
 export function App() {
@@ -90,20 +91,25 @@ export function App() {
 
   return (
     <UserProvider>
-      <RouterWrapper>
-        <RouterComponent path='/'>
-          <SmithProject />
-        </RouterComponent>
-        <RouterComponent path='/login'>
-          <LoginPage />
-        </RouterComponent>
-        <RouterComponent path='/saved'>
-          <SavedPage />
-        </RouterComponent>
-        <RouterComponent>
-          <Fallback />
-        </RouterComponent>
-      </RouterWrapper>
+      <Suspense fallback={<progress className="progress h-1 fixed w-full progress-warning"></progress>}>
+        <RouterWrapper>
+          <RouterComponent path='/'>
+            <SmithProject />
+          </RouterComponent>
+          <RouterComponent path='/login'>
+            <LoginPage />
+          </RouterComponent>
+          <RouterComponent path='/saved'>
+            <SavedPage />
+          </RouterComponent>
+          <RouterComponent path='/event'>
+            <Event />
+          </RouterComponent>
+          <RouterComponent>
+            <Fallback />
+          </RouterComponent>
+        </RouterWrapper>
+      </Suspense>
     </UserProvider>
   )
 }
