@@ -13,6 +13,7 @@
 /out/
 /dist/
 /.parcel-cache/
+/parcel-bundle-reports/
 
 # production
 /build
