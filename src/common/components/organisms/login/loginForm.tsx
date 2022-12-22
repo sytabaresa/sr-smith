@@ -1,4 +1,4 @@
-import { useTranslation } from "@utils/i18n";
+import { useTranslation } from "@hooks/i18n";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";

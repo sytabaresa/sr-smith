@@ -3,7 +3,7 @@ import WithAuth from "@hoc/withAuth";
 import SavedProjectCard from "@components/molecules/savedProjectCard";
 import { SmithProject } from "@localtypes/smith";
 import { useUser } from "@components/organisms/userContext";
-import { useLanguageQuery, useTranslation } from "@utils/i18n"
+import { useLanguageQuery, useTranslation } from "@hooks/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";

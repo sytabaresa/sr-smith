@@ -3,7 +3,7 @@ import Layout from "@components/templates/default";
 import { useUser } from "@components/organisms/userContext";
 import SingUpForm from "@components/organisms/login/signupForm";
 import LoginForm from "@components/organisms/login/loginForm";
-import { useLanguageQuery, useTranslation } from "@utils/i18n";
+import { useLanguageQuery, useTranslation } from "@hooks/i18n";
 import { SmithImage } from "@components/atoms/smithImage";
 import { useRouter } from "@modules/router";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { SmithProject } from "@localtypes/smith";
-import { useTranslation, useLanguageQuery } from "@utils/i18n"
+import { useTranslation, useLanguageQuery } from "@hooks/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
 import { useAuthProvider } from "@hooks/useAuthProvider";

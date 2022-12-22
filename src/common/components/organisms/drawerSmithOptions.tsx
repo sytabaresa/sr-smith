@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/outline";
 import { useRouter } from '@modules/router';
 import { useUser } from "./userContext";
-import { useLanguageQuery, useTranslation } from "@utils/i18n";
+import { useLanguageQuery, useTranslation } from "@hooks/i18n";
 import { SmithContext } from "@providers/smithContext";
 import { useLogout } from "@hooks/useLogout";
 import { qStr } from "@utils/common";

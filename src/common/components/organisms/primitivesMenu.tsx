@@ -11,7 +11,7 @@ import SemicircleTooltip from "@core/tooltips/semicircle";
 import ArcTooltip from "@core/tooltips/arc";
 import ReCircleTooltip from "@core/tooltips/reCircle";
 import ImCircleTooltip from "@core/tooltips/imCircle";
-import { useTranslation } from "@utils/i18n"
+import { useTranslation } from "@hooks/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 

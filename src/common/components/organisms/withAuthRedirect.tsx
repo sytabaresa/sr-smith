@@ -1,4 +1,4 @@
-import { useLanguageQuery } from '@utils/i18n'
+import { useLanguageQuery } from '@hooks/i18n'
 import { ReactNode, useEffect } from 'react'
 import { ReactComponent } from 'react-hotkeys'
 import { UrlObject } from 'url'

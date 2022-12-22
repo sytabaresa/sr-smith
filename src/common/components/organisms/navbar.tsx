@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, MenuAlt3Icon } from "@heroicons/react/outline";
-import { useTranslation } from "@utils/i18n";
+import { useTranslation } from "@hooks/i18n";
 import { useRouter } from "@modules/router";
 import { HTMLAttributes } from "react";
 import { LangMenu } from "@components/atoms/langMenu";

@@ -1,5 +1,5 @@
 import { useRouter } from "@modules/router";
-import { useLanguageQuery } from "@utils/i18n"
+import { useLanguageQuery } from "@hooks/i18n"
 
 import { useAuthProvider } from "./useAuthProvider"
 

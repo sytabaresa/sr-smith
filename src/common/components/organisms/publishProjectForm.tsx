@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { SmithProject } from "@localtypes/smith";
 import { SmithContext } from "@providers/smithContext";
-import { useTranslation } from "@utils/i18n"
+import { useTranslation } from "@hooks/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
 

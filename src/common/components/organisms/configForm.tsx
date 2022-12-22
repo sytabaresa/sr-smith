@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLanguageQuery, useTranslation } from "@utils/i18n"
+import { useLanguageQuery, useTranslation } from "@hooks/i18n"
 import { useConfig } from "@hooks/useConfig";
 
 type ConfigsFormProps = {
@@ -12,7 +12,7 @@ type ConfigsFormProps = {
 const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     const { t } = useTranslation()
     const [query] = useLanguageQuery()
-    const [config, setConfig] = useConfig()
+    const [config, setConfig] = useConfig<Record<string, any>>('config')
 
     const {
         register,
@@ -21,11 +21,15 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
         clearErrors,
         setError,
         formState: { errors, isSubmitted, isSubmitting },
-    } = useForm({ defaultValues: config.smithOptions });
+    } = useForm<any>({ defaultValues: config });
+
+    useEffect(() => {
+        reset(config)
+    }, [config])
 
     const onSubmit = async (smithOptions) => {
         // console.log(smithOptions)
-        setConfig(op => ({ ...op, smithOptions }))
+        setConfig(op => ({ ...op, ...smithOptions }))
     }
 
     return (

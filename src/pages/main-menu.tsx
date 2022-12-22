@@ -3,7 +3,7 @@ import ModalContainer from "@components/molecules/modalContainer";
 import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
 import NewProjectForm from "@components/organisms/newProjectForm";
 import Layout from "@components/templates/default";
-import { useLanguageQuery } from "@utils/i18n";
+import { useLanguageQuery } from "@hooks/i18n";
 import { qStr } from "@utils/common";
 import { useRouter } from "@modules/router";
 

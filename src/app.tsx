@@ -3,8 +3,8 @@ import '@styles/main.css';
 import '@styles/animations.css';
 
 import UserProvider from '@components/organisms/userContext'
-import { setTheme, getTheme, useTheme } from '@hooks/useTheme';
 import { useRouter } from '@modules/router';
+import { useConfig } from '@hooks/useConfig';
 // import { initFirebase } from '@pwa/init';
 
 const SmithProject = lazy(() => import('@pages/smith'))
@@ -18,8 +18,7 @@ export function App() {
 
   useEffect(() => {
     // set theme as soon as posible
-    useTheme()
-    
+
     // vh variable for many screen properties
     let update = () => {
       // We execute the same script as before
@@ -68,9 +67,15 @@ export function App() {
     return () => { }
   }, []);
 
+
+  useConfig('lang', 'es')
+  const [theme, _setTheme] = useConfig('theme', 'light')
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme])
+
   const { RouterWrapper, RouterComponent, useLocation } = useRouter()
   const { pathname } = useLocation()
-
   useEffect(() => {
     // const router: RouterProps & { lastPath?: string } = useRouter();
     // lastPath = location

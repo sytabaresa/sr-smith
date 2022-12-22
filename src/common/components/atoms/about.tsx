@@ -1,5 +1,5 @@
 
-import { useTranslation } from "@utils/i18n"
+import { useTranslation } from "@hooks/i18n"
 
 export const About = () => {
     const { t } = useTranslation()

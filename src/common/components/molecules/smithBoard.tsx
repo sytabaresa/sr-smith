@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { SmithContext } from "@providers/smithContext";
-import { useTheme } from "@hooks/useTheme";
 import { useScreen } from "@utils/screen";
+import { useConfig } from "@hooks/useConfig";
 
 export interface ISmithBoardProps { };
 
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     const { ui, editorService } = useContext(SmithContext)
-    const [theme] = useTheme()
+    const [theme] = useConfig<string>('theme')
     const screenSize = useScreen()
     const BOX_NAME = 'smith-box'
     const [current, send] = editorService

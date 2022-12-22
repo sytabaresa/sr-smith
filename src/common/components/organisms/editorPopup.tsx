@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useState } from "react";
 import CodeEditor from "./codeEditor";
-import { useTranslation } from "@utils/i18n";
+import { useTranslation } from "@hooks/i18n";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 

@@ -1,5 +1,5 @@
 import { HTMLAttributes, TextareaHTMLAttributes, useContext, useEffect } from "react";
-import { useTranslation } from "@utils/i18n";
+import { useTranslation } from "@hooks/i18n";
 import Editor from "react-simple-code-editor";
 import { highlight, languages } from "prismjs/components/prism-core";
 

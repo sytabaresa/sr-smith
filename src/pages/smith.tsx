@@ -13,7 +13,6 @@ import { useMachine } from "react-robot";
 import editorMachine from '@core/fsm/codeEditorFSM'
 import saveMachine from "@core/fsm/savingFSM";
 import { useConfig } from "@hooks/useConfig";
-import { useTheme } from "@hooks/useTheme";
 import Footer from "@components/organisms/footer";
 
 import "@core/elements/smithPoint"
@@ -48,7 +47,7 @@ const SmithProject: React.FC = () => {
 
   const { isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
-  const [theme] = useTheme()
+  const [theme] = useConfig<string>('theme')
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState((null as SmithProject) || null);
@@ -98,7 +97,7 @@ const SmithProject: React.FC = () => {
   const smithOptions = {
     coordPrecision: 3,
   }
-  useConfig(smithOptions)
+  useConfig('config', smithOptions)
 
   // all context
   const context = {
