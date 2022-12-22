@@ -28,10 +28,10 @@ export function App() {
     window.addEventListener('resize', update);
     update()
 
-    //robot3 debuging mode
+    // robot3 debuging mode
     if (process.env.NODE_ENV == 'development') {
       // require('robot3/debug')
-      require('robot3/logging')
+      import('robot3/logging')
     }
 
     // offline/online mode

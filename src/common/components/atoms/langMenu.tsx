@@ -1,4 +1,4 @@
-import i18n from "~/i18n"
+import i18n from "@i18n"
 import { useTranslation } from "@hooks/i18n";
 import { HTMLAttributes } from "react";
 import { useConfig } from "@hooks/useConfig";

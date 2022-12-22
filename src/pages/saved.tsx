@@ -61,7 +61,7 @@ const SavedProjects = () => {
                 <SavedProjectCard
                   title={item.name}
                   description={item.description}
-                  image={new URL('~/public/images/smith-app.png', import.meta.url) as unknown as string}
+                  image={new URL('/images/smith-app.png', import.meta.url) as unknown as string}
                   id={""}
                 />
               </div>

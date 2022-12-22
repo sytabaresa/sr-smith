@@ -10,10 +10,10 @@ export interface RouterProvider {
         pathname: string,
         search: string,
     },
-    
+
     useParams: <Params extends { [K in keyof Params]?: string } = {}>() => Params,
 
     // Link: React.FC<any>,
-    RouterWrapper?: React.FC<any>,
-    RouterComponent?: React.FC<any>,
+    RouterWrapper?: React.FC<any & { children: React.ReactNode }>,
+    RouterComponent?: React.FC<any & { children: React.ReactNode }>,
 }

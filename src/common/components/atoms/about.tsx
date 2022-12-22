@@ -11,7 +11,7 @@ export const About = () => {
                     alt="Licencia GPLv3"
                     className="w-32"
                     style={{ borderWidth: 0, paddingRight: 5 }}
-                    src={new URL('~/public/images/gplv3.png', import.meta.url) as unknown as string}
+                    src={new URL('/images/gplv3.png', import.meta.url) as unknown as string}
                 />
             </a>
             <span className="pr-1">{t("this work is under")}</span>

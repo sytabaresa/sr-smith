@@ -8,12 +8,11 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-/dist/
-/.parcel-cache/
-/parcel-bundle-reports/
+# vite
+node_modules
+dist
+dist-ssr
+*.local
 
 # production
 /build
@@ -43,3 +42,13 @@ yarn-error.log*
 **/public/worker-*.js
 **/public/fallback-*.js
 **/public/*.LICENSE.txt
+
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

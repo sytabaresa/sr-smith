@@ -1,5 +1,5 @@
-var en = require("./translations.en.json");
-var es = require("./translations.es.json");
+import en from "./translations.en.json"
+import es from "./translations.es.json"
 
 const i18n = {
     translations: {
@@ -10,4 +10,4 @@ const i18n = {
     useBrowserDefault: true,
 };
 
-module.exports = i18n;
+export default i18n

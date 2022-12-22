@@ -25,7 +25,6 @@ import ModalContainer from "@components/molecules/modalContainer";
 import NewProjectForm from "@components/organisms/newProjectForm";
 import PublishProjectForm from "@components/organisms/publishProjectForm";
 import ConfigsForm from "@components/organisms/configForm";
-import { qParams } from "@utils/common";
 import { useRouter } from "@modules/router";
 
 import '@styles/jsxgraph.css';
@@ -41,7 +40,7 @@ configure({
   stopEventPropagationAfterHandling: false,
 });
 
-const SmithProject: React.FC = () => {
+const SmithProjectPage: React.FC = () => {
   const { useParams } = useRouter()
   const params = useParams();
 
@@ -161,4 +160,4 @@ const SmithProject: React.FC = () => {
   );
 };
 
-export default SmithProject;
+export default SmithProjectPage;

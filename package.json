@@ -3,8 +3,9 @@
     "version": "0.0.5",
     "source": "src/index.html",
     "scripts": {
-        "dev": "parcel",
-        "build": "parcel build",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
         "type-check": "tsc",
         "gen:icons": "node scripts/icons.js",
         "prebuild2": "node scripts/tsconfig.js",
@@ -36,37 +37,20 @@
         "wouter": "^2.9.0"
     },
     "devDependencies": {
-        "@parcel/packager-raw-url": "2.8.2",
-        "@parcel/reporter-bundle-analyzer": "^2.8.2",
-        "@parcel/reporter-bundle-buddy": "^2.8.2",
-        "@parcel/transformer-typescript-tsc": "^2.8.2",
-        "@parcel/transformer-webmanifest": "2.8.2",
-        "@parcel/validator-typescript": "^2.8.2",
-        "@types/node": "^17.0.8",
-        "@types/react": "^17.0.2",
-        "@types/react-dom": "^17.0.1",
+        "@preact/preset-vite": "^2.4.0",
         "@types/react-syntax-highlighter": "^13.5.2",
         "autoprefixer": "^10.4.13",
         "daisyui": "^2.42.1",
         "onmyjs": "^2.0.2",
-        "parcel": "^2.8.2",
-        "parcel-resolver-tspaths": "^0.0.9",
-        "parcel-transformer-preval": "^0.1.3",
         "postcss": "^8.4.20",
         "process": "^0.11.10",
         "pwa-asset-generator": "^6.2.0",
-        "querystring-es3": "^0.2.1",
         "tailwind-scrollbar": "2.1.0-preview.0",
         "tailwindcss": "^3.2.4",
         "tsconfig-paths-autogen": "^2.0.2",
-        "typescript": "^4.5.4"
-    },
-    "alias": {
-        "react": "preact/compat",
-        "react-dom/test-utils": "preact/test-utils",
-        "react-dom": "preact/compat",
-        "react-dom/client": "preact/compat",
-        "react/jsx-runtime": "preact/jsx-runtime"
+        "typescript": "^4.9.3",
+        "vite": "^4.0.0",
+        "vite-tsconfig-paths": "^4.0.3"
     },
     "license": "MIT"
 }
