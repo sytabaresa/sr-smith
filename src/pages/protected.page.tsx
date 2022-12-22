@@ -1,6 +1,9 @@
 import WithAuth from "@hoc/withAuth"
 import Layout from "@components/templates/default"
 
+export { Protected as Page }
+
+
 const ProtectedPage = () => {
 
 
@@ -10,5 +13,4 @@ const ProtectedPage = () => {
         </div>
     </Layout>
 }
-
-export default WithAuth(ProtectedPage)
+const Protected = WithAuth(ProtectedPage)

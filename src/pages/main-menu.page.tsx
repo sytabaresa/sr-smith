@@ -1,11 +1,12 @@
-import React, { useState } from "react";
 import ModalContainer from "@components/molecules/modalContainer";
-import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline";
+import { FolderAddIcon, FolderIcon } from "@heroicons/react/outline"
 import NewProjectForm from "@components/organisms/newProjectForm";
 import Layout from "@components/templates/default";
 import { useLanguageQuery } from "@hooks/i18n";
 import { qStr } from "@utils/common";
 import { useRouter } from "@modules/router";
+
+export { Projects as Page }
 
 const Projects = () => {
   const { useHistory } = useRouter()
@@ -31,7 +32,7 @@ const Projects = () => {
     <Layout title="Open | Sr Smith App" className="h-screen">
       <div className="-z-10 absolute right-0 left-0 w-full h-full bg-black">
         <img
-          src={new URL("/images/smith-app.png",import.meta.url) as unknown as string}
+          src={new URL("/images/smith-app.png", import.meta.url) as unknown as string}
           alt="smith-bg"
           className=" w-full h-full object-cover blur-sm opacity-40"
         />
@@ -60,5 +61,3 @@ const Projects = () => {
     </Layout>
   );
 };
-
-export default Projects;

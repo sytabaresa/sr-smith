@@ -1,19 +1,18 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import '@styles/index.css'
 import '@styles/main.css';
 import '@styles/animations.css';
+import '@styles/fonts.css'
 
 import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
 import { useConfig } from '@hooks/useConfig';
+import { PageContextProvider } from './usePageContext';
+import { PageContext } from './types';
+import { initializeSW } from './sw';
 // import { initFirebase } from '@pwa/init';
 
-const SmithProject = lazy(() => import('@pages/smith'))
-const LoginPage = lazy(() => import('@pages/login'))
-const SavedPage = lazy(() => import('@pages/saved'))
-const Event = lazy(() => import('@pages/event'))
-const Fallback = lazy(() => import('@pages/_offline'))
-
-export function App() {
+export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
 
   useEffect(() => {
@@ -56,6 +55,9 @@ export function App() {
 
     }
     _async()
+    // if(typeof window !== 'undefined') {
+      initializeSW()
+    // }
 
     // const res = () =>
     //   document.querySelector("meta[name=viewport]").setAttribute("content", "height=" + screen.height * 0.9 + "px, width=device-width, initial-scale=1.0")
@@ -93,26 +95,10 @@ export function App() {
 
 
   return (
-    <UserProvider>
-      <Suspense fallback={<progress className="progress h-1 fixed w-full progress-warning"></progress>}>
-        <RouterWrapper>
-          <RouterComponent path='/'>
-            <SmithProject />
-          </RouterComponent>
-          <RouterComponent path='/login'>
-            <LoginPage />
-          </RouterComponent>
-          <RouterComponent path='/saved'>
-            <SavedPage />
-          </RouterComponent>
-          <RouterComponent path='/event'>
-            <Event />
-          </RouterComponent>
-          <RouterComponent>
-            <Fallback />
-          </RouterComponent>
-        </RouterWrapper>
-      </Suspense>
-    </UserProvider>
+    <PageContextProvider pageContext={pageContext}>
+      <UserProvider>
+        {children}
+      </UserProvider>
+    </PageContextProvider>
   )
 }

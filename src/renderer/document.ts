@@ -1,15 +1,22 @@
-<!DOCTYPE html>
+import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr";
+import logoUrl from '~/public/pwa/favicon-196.png'
+
+export default document
+
+function document(title: string, desc: string, pageHtml: string) {
+
+    return escapeInject`<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <meta name="application-name" content="Sr Smith">
+    <meta name="application-name" content="${title}">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Sr Smith">
-    <meta name="description" content="Smith Chart Application">
+    <meta name="description" content="${title}">
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <!--     
@@ -26,27 +33,27 @@
     <link rel="manifest" href="./public/manifest.json">
     <!-- {/*
     <link rel='mask-icon' href='/static/icons/safari-pinned-tab.svg' color='#5bbad5' /> */} -->
-    <link rel="shortcut icon" href="./public/pwa/favicon-196.png">
+    <link rel="shortcut icon" href="${logoUrl}">
 
-    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"> -->
-    <link rel="stylesheet" href="./src/common/styles/fonts.css">
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"> 
+    <link rel="stylesheet" href="./src/common/styles/fonts.css"> -->
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:url" content="https://sr-smith.syta.co">
-    <meta name="twitter:title" content="Sr Smith App">
-    <meta name="twitter:description" content="Smith Chart Application">
+    <meta name="twitter:title" content="${title}">
+    <meta name="twitter:description" content="${desc}">
     <meta name="twitter:image" content="https://sr-smith.syta.co/pwa/apple-icon-180.png">
     <meta name="twitter:creator" content="@sytabares">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Sr Smith App">
-    <meta property="og:description" content="Smith Chart Application">
-    <meta property="og:site_name" content="Sr Smith App">
+    <meta property="og:title" content="${title}">
+    <meta property="og:description" content="${desc}">
+    <meta property="og:site_name" content="${title}">
     <meta property="og:url" content="https://sr-smith.syta.co">
     <meta property="og:image" content="https://sr-smith.syta.co/pwa/apple-touch-icon.png">
 
     <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover">
 
-    <link rel="icon" type="image/png" sizes="196x196" href="./public/pwa/favicon-196.png">
+    <link rel="icon" type="image/png" sizes="196x196" href="${logoUrl}">
 
     <link rel="apple-touch-icon" href="./public/pwa/apple-icon-180.png">
 
@@ -82,14 +89,12 @@
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-    <title>Sr Smith | Smith Chart app</title>
-
-    <link rel="stylesheet" href="./src/common/styles/index.css">
+    <title>${title}</title>
 </head>
 
 <body classname="antialiased overflow-hidden overflow-y-auto">
-    <div id="app"></div>
-    <script src="./src/index.tsx" type="module"></script>
+    <div id="app">${dangerouslySkipEscape(pageHtml)}</div>
 </body>
 
-</html>
+</html>`
+}

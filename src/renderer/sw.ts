@@ -1,10 +1,5 @@
+import { createSW } from "@pwa";
 import { lifecycleListenterRegister } from "@pwa/lifecycle";
-import { render } from "react-dom";
-import { App } from "./renderer/app";
-import { createSW } from "@pwa"
-
-const container = document.getElementById("app");
-render(<App /> as any, container, container.lastChild as any);
 
 export async function initializeSW() {
     const wb = await createSW()
@@ -24,4 +19,3 @@ export async function initializeSW() {
     console.log('Service Worker version:', swVersion);
 }
 
-initializeSW()

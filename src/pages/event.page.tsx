@@ -6,8 +6,9 @@ interface EventProps {
     style?: Object;
 }
 
+export { Event as Page }
 
-export default function Event(props: EventProps) {
+const Event = (props: EventProps) => {
     const nextDate = new Date(2022, 10, 21, 11, 0, 0, 0)
     // const nextDate = new Date(2022, 10, 18, 17, 0, 0, 0)
 
@@ -22,7 +23,7 @@ export default function Event(props: EventProps) {
     return (
         <div
             className="relative w-full min-h-screen overflow-hidden overflox-x-hidden flex flex-col items-center"
-            style={props.style}
+        // style={props.style}
         >
             <div className="absolute -z-10 left-0 h-full w-full bg-[rgba(18,18,18,1)]">
                 <img className="relative opacity-30 w-[200vw] left-1/2 -translate-x-1/2 max-w-none lg:w-full top-[130px]" src="/images/smith-chart-dark.svg" alt="smith-chart-background" />
@@ -176,3 +177,4 @@ function getDiff(day: Date) {
         done: false,
     }
 }
+

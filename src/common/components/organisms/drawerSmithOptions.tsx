@@ -1,19 +1,11 @@
-import React, { HTMLAttributes, useContext } from "react";
+import { HTMLAttributes, useContext } from "react";
 import DrawerMenuItem from "@components/molecules/drawerMenuItem";
-import {
-    PlusIcon,
-    FolderOpenIcon,
-    ShareIcon,
-    CogIcon,
-    LogoutIcon,
-    LoginIcon
-} from "@heroicons/react/outline";
+import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
 import { useUser } from "./userContext";
 import { useLanguageQuery, useTranslation } from "@hooks/i18n";
 import { SmithContext } from "@providers/smithContext";
 import { useLogout } from "@hooks/useLogout";
-import { qStr } from "@utils/common";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>

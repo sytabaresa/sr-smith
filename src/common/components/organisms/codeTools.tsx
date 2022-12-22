@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "@hooks/i18n";
 import EditorPopup from "./editorPopup";
-import { DotsHorizontalIcon } from "@heroicons/react/outline";
+// import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
 import { SmithContext } from "@providers/smithContext";
 import CodeEditor from "./codeEditor";

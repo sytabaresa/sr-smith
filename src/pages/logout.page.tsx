@@ -4,6 +4,8 @@ import { useLanguageQuery } from "@hooks/i18n";
 import { useAuthProvider } from "@hooks/useAuthProvider";
 import { useRouter } from "@modules/router";
 
+export { Logout as Page }
+
 interface LogoutProps {
     redirect?: string
 }
@@ -25,5 +27,3 @@ const Logout = ({ redirect = '/' }: LogoutProps) => {
         <></>
     )
 }
-
-export default Logout

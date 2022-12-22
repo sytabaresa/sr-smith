@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { HandIcon, ReplyIcon, TemplateIcon, TrashIcon } from "@heroicons/react/outline";
+import {HandIcon, ReplyIcon, TemplateIcon} from "@heroicons/react/outline"
+import TrashIcon from "@heroicons/react/outline/TrashIcon"
 import { SmithContext } from "@providers/smithContext";
 import PointTooltip from "@core/tooltips/point";
 import SegmentTooltip from "@core/tooltips/segment";

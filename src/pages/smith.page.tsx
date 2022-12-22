@@ -9,7 +9,7 @@ import { JXGDrawer } from "@core/fsm/tooltipActionsFSM";
 import { configure, HotKeys } from "react-hotkeys";
 import { SmithProject } from "@localtypes/smith";
 import { useUser } from "@components/organisms/userContext";
-import { useMachine } from "react-robot";
+import { useMachine } from "@modules/robot";
 import editorMachine from '@core/fsm/codeEditorFSM'
 import saveMachine from "@core/fsm/savingFSM";
 import { useConfig } from "@hooks/useConfig";
@@ -28,6 +28,8 @@ import ConfigsForm from "@components/organisms/configForm";
 import { useRouter } from "@modules/router";
 
 import '@styles/jsxgraph.css';
+
+export { SmithProjectPage as Page }
 
 configure({
   /**
@@ -159,5 +161,3 @@ const SmithProjectPage: React.FC = () => {
     </SmithContext.Provider>
   );
 };
-
-export default SmithProjectPage;

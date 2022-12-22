@@ -7,6 +7,8 @@ import { useLanguageQuery, useTranslation } from "@hooks/i18n";
 import { SmithImage } from "@components/atoms/smithImage";
 import { useRouter } from "@modules/router";
 
+export { Login as Page }
+
 interface LoginProps {
   homePage?: string;
 }
@@ -73,5 +75,3 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
     </div>
   </Layout>
 };
-
-export default Login;

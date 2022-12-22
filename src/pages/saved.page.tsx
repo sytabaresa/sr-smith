@@ -6,11 +6,13 @@ import { useUser } from "@components/organisms/userContext";
 import { useLanguageQuery, useTranslation } from "@hooks/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
-import { PlusIcon, RefreshIcon } from "@heroicons/react/outline";
+import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
 import ModalContainer from "@components/molecules/modalContainer";
 import NewProjectForm from "@components/organisms/newProjectForm";
 import { useDataProvider } from "@hooks/useDataProvider";
 import { useRouter } from "@modules/router";
+
+export { Saved as Page }
 
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
@@ -101,4 +103,4 @@ const SavedProjects = () => {
   </Layout>
 };
 
-export default WithAuth(SavedProjects);
+const Saved = WithAuth(SavedProjects);

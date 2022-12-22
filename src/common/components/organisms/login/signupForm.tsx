@@ -1,6 +1,5 @@
 import { useRouter } from "@modules/router";
 import { useLanguageQuery, useTranslation } from "@hooks/i18n";
-  ;
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";

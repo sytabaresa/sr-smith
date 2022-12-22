@@ -25,6 +25,8 @@
         "preact": "^10.11.3",
         "preact-render-to-string": "^5.2.6",
         "prismjs": "^1.24.1",
+        "react": "npm:@preact/compat",
+        "react-dom": "npm:@preact/compat",
         "react-hook-form": "^7.24.0",
         "react-hotkeys": "^2.0.0",
         "react-responsive": "^8.2.0",
@@ -38,9 +40,14 @@
     },
     "devDependencies": {
         "@preact/preset-vite": "^2.4.0",
+        "@types/node": "^17.0.8",
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^17.0.1",
+        "@types/react-responsive": "^8.0.5",
         "@types/react-syntax-highlighter": "^13.5.2",
         "autoprefixer": "^10.4.13",
         "daisyui": "^2.42.1",
+        "handlebars": "^4.7.7",
         "onmyjs": "^2.0.2",
         "postcss": "^8.4.20",
         "process": "^0.11.10",
@@ -50,6 +57,7 @@
         "tsconfig-paths-autogen": "^2.0.2",
         "typescript": "^4.9.3",
         "vite": "^4.0.0",
+        "vite-plugin-ssr": "^0.4.65",
         "vite-tsconfig-paths": "^4.0.3"
     },
     "license": "MIT"

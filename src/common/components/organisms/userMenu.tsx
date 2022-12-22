@@ -1,5 +1,5 @@
-import MenuAlt3Icon from "@heroicons/react/outline/MenuAlt3Icon"
-// import ViewGridIcon from "@heroicons/react/outline/ViewGridIcon"
+import { MenuAlt3Icon } from "@heroicons/react/outline"
+// import {ViewGridIcon} from "@heroicons/react/outline"
 import { useUser } from "./userContext"
 import { UserImage } from "@components/molecules/userImage"
 
