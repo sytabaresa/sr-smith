@@ -1,5 +1,5 @@
 import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr";
-import logoUrl from '~/public/pwa/favicon-196.png'
+import logoUrl from '/pwa/favicon-196.png'
 
 export default document
 
@@ -30,7 +30,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <meta name="msapplication-square310x310logo" content="./public/pwa/mstile-icon-558.png">
     <meta name="msapplication-wide310x150logo" content="./public/pwa/mstile-icon-558-270.png">
 
-    <link rel="manifest" href="./public/manifest.json">
+    <link rel="manifest" href="/manifest.json">
     <!-- {/*
     <link rel='mask-icon' href='/static/icons/safari-pinned-tab.svg' color='#5bbad5' /> */} -->
     <link rel="shortcut icon" href="${logoUrl}">

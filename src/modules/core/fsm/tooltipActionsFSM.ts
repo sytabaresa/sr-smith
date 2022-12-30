@@ -1,7 +1,7 @@
 import JXG, { Board } from "jsxgraph"
 import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
-import { useMachine } from "@modules/robot";
+import { useMachine } from "react-robot";
 import { useContext, useEffect, useState } from "react";
 import { wait } from "@utils/time";
 import { SmithContext, SmithContextType } from "@providers/smithContext";

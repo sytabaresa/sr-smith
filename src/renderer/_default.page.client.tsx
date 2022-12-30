@@ -23,6 +23,7 @@ async function render(pageContext) {
         render_(page, container)
     }
     document.title = getPageTitle(pageContext)
+
     initializeSW()
 }
 

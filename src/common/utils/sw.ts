@@ -1,26 +1,5 @@
-import { useState } from "react"
-import { Workbox } from "workbox-window"
-
-
-export function useWb() {
-    const [wb, setWb] = useState<Workbox>(() => {
-        if (typeof window !== 'undefined') {
-            return window.workbox
-        }
-    })
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-        window.addEventListener('workbox', (e) => {
-            // console.log('w', window.workbox)
-            if (window.workbox)
-                setWb(window.workbox)
-        })
-    }
-    return wb
-}
-
-
 export function getSW() {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-        return window.workbox
+    if (typeof navigator != 'undefined' && 'serviceWorker' in navigator) {
+        return navigator.serviceWorker.controller
     }
 }

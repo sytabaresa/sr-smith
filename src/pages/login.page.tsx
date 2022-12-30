@@ -23,10 +23,10 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   const params = useParams()
 
   const { isAuthenticated } = useUser();
-  console.log(isAuthenticated)
+  // console.log(isAuthenticated)
 
   useEffect(() => {
-    console.log(params.redirect)
+    // console.log(params.redirect)
     if (isAuthenticated) {
       if (params.redirect) {
         push(params.redirect, query)

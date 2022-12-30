@@ -56,7 +56,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     }
     _async()
     // if(typeof window !== 'undefined') {
-      initializeSW()
+      // initializeSW()
     // }
 
     // const res = () =>

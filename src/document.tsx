@@ -10,7 +10,7 @@ export async function initializeSW() {
     const wb = await createSW()
 
     if (typeof window != 'undefined') {
-        window.workbox = wb
+        window.workbox = await wb.getSw()
         window.dispatchEvent(new Event('workbox'))
     }
 

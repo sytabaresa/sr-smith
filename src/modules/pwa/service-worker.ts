@@ -1,9 +1,20 @@
 const SW_VERSION = '1.1.0';
 
+import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+import { clientsClaim } from 'workbox-core'
+
+declare let self: ServiceWorkerGlobalScope
+
+cleanupOutdatedCaches()
+precacheAndRoute(self.__WB_MANIFEST || [])
+
+// self.skipWaiting()
+// clientsClaim()
+
 import { FirebaseApp } from "firebase/app";
-import { initApp } from "@app";
-import { FireAuthWrapper, getProvider, initAuth } from "@auth";
-import { FirebaseWrapper, initDB } from "@db";
+import { initApp } from "../app";
+import { FireAuthWrapper, getProvider, initAuth } from "../auth";
+import { FirebaseWrapper, initDB } from "../db";
 // import { RxDBWrapper, initDB as initRxDB } from "@db/rxdb";
 
 let app: FirebaseApp
@@ -15,7 +26,15 @@ function getPathFromUrl(url) {
   return url.split(/[?#]/)[0];
 }
 
-export async function initFirst(event) {
+async function sendAuth() {
+  const clients = await (self as any).clients.matchAll({ type: 'window' });
+  // console.log(clients)
+  for (const client of clients) {
+    client.postMessage({ type: 'auth', payload: await auth.getUserIdentity() });
+  }
+}
+
+async function initFirst(event) {
   console.log('initializing app...')
 
   if (!app) {
@@ -37,13 +56,8 @@ addEventListener('install', async event => {
 
 addEventListener('activated', async event => {
   await initFirst(event)
+  await sendAuth()
 })
-
-addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    (self as any).skipWaiting();
-  }
-});
 
 addEventListener('message', async event => {
   const data = event.data
@@ -52,6 +66,12 @@ addEventListener('message', async event => {
 
   if (data.type === 'GET_VERSION') {
     event.ports[0].postMessage(SW_VERSION);
+  }
+
+
+  // skip waiting
+  if (data && data.type === 'SKIP_WAITING') {
+    (self as any).skipWaiting();
   }
 
   if (data && data.action === 'CACHE_NEW_ROUTE') {
@@ -81,11 +101,8 @@ addEventListener('message', async event => {
     event.ports[0].postMessage({ type: 'auth', payload: await auth[data.cmd](data.payload) })
   }
 
-  const clients = await (self as any).clients.matchAll({ type: 'window' });
-  // console.log(clients)
-  for (const client of clients) {
-    client.postMessage({ type: 'auth', payload: await auth.getUserIdentity() });
-  }
+  // send always auth 
+  await sendAuth()
 }, false)
 
 export { }
