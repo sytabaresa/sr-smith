@@ -54,7 +54,7 @@ addEventListener('install', async event => {
   await initFirst(event)
 })
 
-addEventListener('activate', event => {
+addEventListener('activate', async event => {
   clients.claim();
 });
 
@@ -73,7 +73,6 @@ addEventListener('message', async event => {
     event.ports[0].postMessage(SW_VERSION);
   }
 
-
   // skip waiting
   if (data && data.type === 'SKIP_WAITING') {
     (self as any).skipWaiting();
@@ -89,10 +88,6 @@ addEventListener('message', async event => {
         }
       })
     )
-  }
-
-  if (data.cmd == 'initializeApp') {
-    await initFirst(event)
   }
 
   if (data.type == 'db' && data.cmd) {

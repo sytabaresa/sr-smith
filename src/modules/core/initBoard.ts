@@ -115,8 +115,8 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
 
     const imgTheme = {
-        'dark': new URL('/images/smith-chart-dark.svg', import.meta.url),
-        'light': new URL('/images/smith-chart.svg', import.meta.url)
+        'dark': '/images/smith-chart-dark.svg',
+        'light': '/images/smith-chart.svg'
     }
     const tt = 1.1555
     // const x = 0.0025

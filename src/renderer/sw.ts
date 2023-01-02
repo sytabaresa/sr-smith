@@ -5,9 +5,7 @@ import { getSW } from "@utils/sw";
 
 export async function initializeSW() {
     const { Workbox } = await import('workbox-window');
-    // const swUrl = await import('') as unknown as string
-    // const swUrl = new URL('modules/pwa/service-worker.ts', import.meta.url) as unknown as string
-    // console.log(swUrl)
+
     const wb = new Workbox(swUrl, { type: 'module', scope: '/' });
     await wb.register();
     wb.messageSkipWaiting()

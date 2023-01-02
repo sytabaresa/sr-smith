@@ -32,7 +32,7 @@ const Projects = () => {
     <Layout title="Open | Sr Smith App" className="h-screen">
       <div className="-z-10 absolute right-0 left-0 w-full h-full bg-black">
         <img
-          src={new URL("/images/smith-app.png", import.meta.url) as unknown as string}
+          src="/images/smith-app.png"
           alt="smith-bg"
           className=" w-full h-full object-cover blur-sm opacity-40"
         />
