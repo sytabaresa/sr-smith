@@ -35,7 +35,6 @@ function UpdateSw({ autoUpdate }: UpdateSwProps) {
 
                 if (r.waiting && navigator) {
                     await messageSW(r.waiting, { type: 'SKIP_WAITING' })
-                    console.log('new SW Registered', await messageSW(r.active, { type: 'GET_VERSION' }))
                 }
             }
 
@@ -44,10 +43,6 @@ function UpdateSw({ autoUpdate }: UpdateSwProps) {
                 r && setTimeout(_update, 10000)
                 r && setInterval(_update, UPDATE_SW_INTERVAL)
             }
-            const out = async () => {
-                console.log('SW Registered', await messageSW(r.active, { type: 'GET_VERSION' }))
-            }
-            out()
         },
         onRegisterError(error) {
             console.log('SW registration error', error)

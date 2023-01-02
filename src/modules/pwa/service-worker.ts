@@ -59,6 +59,7 @@ addEventListener('activate', event => {
 });
 
 addEventListener('activated', async event => {
+  console.log('SW version: ', SW_VERSION)
   await initFirst(event)
   await sendAuth()
 })
