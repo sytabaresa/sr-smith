@@ -93,7 +93,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         const body = render(
             h(Infobox, { x, y })
         )
-        console.log(body)
+        // console.log(body)
         this.infobox.setText(body);
 
         return this

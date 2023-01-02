@@ -3,6 +3,7 @@ import preact from '@preact/preset-vite'
 import tsconfigPaths from "vite-tsconfig-paths"
 import { ssr } from 'vite-plugin-ssr/plugin'
 import { VitePWA } from 'vite-plugin-pwa'
+import { visualizer } from "rollup-plugin-visualizer";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => ({
@@ -63,7 +64,12 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
         "display": "standalone",
         "orientation": "portrait"
       }
-    })
+    }),
+    visualizer({
+      // emitFile: true,
+      // filename: "stats.html",
+      // template: 'sunburst'
+    }),
   ],
   // We manually add a list of dependencies to be pre-bundled, in order to avoid a page reload at dev start which breaks vite-plugin-ssr's CI
   optimizeDeps: {

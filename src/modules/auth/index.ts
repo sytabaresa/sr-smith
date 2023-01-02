@@ -43,7 +43,7 @@ export class FireAuthWrapper {
     }
 
     async login(data) {
-        console.log(data)
+        // console.log(data)
         if (data.provider == 'google') {
             try {
                 if (typeof window != 'undefined') {

@@ -43,7 +43,7 @@ const WithAuthRedirect = ({
 
     useEffect(() => {
       if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
-        console.log(location, pathname, query)
+        // console.log(location, pathname, query)
         push(location, { redirect: pathname, ...query })
       }
     }, [isAuthenticated, loadingUser])

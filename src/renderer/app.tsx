@@ -10,7 +10,9 @@ import { useConfig } from '@hooks/useConfig';
 import { PageContextProvider } from './usePageContext';
 import { PageContext } from './types';
 import { initializeSW } from './sw';
-// import { initFirebase } from '@pwa/init';
+import { messageSW } from 'workbox-window';
+import { getSW } from '@utils/sw';
+// import ReloadPrompt from '@components/atoms/updateSW';
 
 export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
@@ -52,12 +54,10 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     // service worker lifecycle handlers
     const _async = async () => {
       // await initFirebase() //await
-
+      await initializeSW()
     }
     _async()
-    // if(typeof window !== 'undefined') {
-      // initializeSW()
-    // }
+
 
     // const res = () =>
     //   document.querySelector("meta[name=viewport]").setAttribute("content", "height=" + screen.height * 0.9 + "px, width=device-width, initial-scale=1.0")
@@ -85,19 +85,21 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
       // skip index route, because it's already cached under `start-url` caching object
       if (pathname !== '/') {
-        const wb = window.workbox
-        wb.active.then(worker => {
-          wb.messageSW({ action: 'CACHE_NEW_ROUTE' })
-        })
+        messageSW(getSW(), { action: 'CACHE_NEW_ROUTE' })
       }
     }
   }, [isOnline, pathname])
+
+
+  const intervalMS = 60 * 60 * 1000
+
 
 
   return (
     <PageContextProvider pageContext={pageContext}>
       <UserProvider>
         {children}
+        {/* <ReloadPrompt /> */}
       </UserProvider>
     </PageContextProvider>
   )

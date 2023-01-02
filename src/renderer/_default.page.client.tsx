@@ -16,15 +16,12 @@ async function render(pageContext) {
         </App>
     )
     const container = document.getElementById("app");
-
     if (pageContext.isHydration) {
         hydrate(page, container)
     } else {
         render_(page, container)
     }
     document.title = getPageTitle(pageContext)
-
-    initializeSW()
 }
 
 function getPageTitle(pageContext) {

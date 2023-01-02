@@ -1,4 +1,4 @@
-const SW_VERSION = '1.1.0';
+const SW_VERSION = '1.1.6';
 
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
