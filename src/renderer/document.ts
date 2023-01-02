@@ -30,7 +30,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <meta name="msapplication-square310x310logo" content="./public/pwa/mstile-icon-558.png">
     <meta name="msapplication-wide310x150logo" content="./public/pwa/mstile-icon-558-270.png">
 
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.webmanifest">
     <!-- {/*
     <link rel='mask-icon' href='/static/icons/safari-pinned-tab.svg' color='#5bbad5' /> */} -->
     <link rel="shortcut icon" href="${logoUrl}">
@@ -91,7 +91,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
     <title>${title}</title>
 
-    <link rel="preload" as="image" href="/images/smith-chart-dark.svg">
+    <!--<link rel="preload" as="image" href="/images/smith-chart-dark.svg">-->
     <link rel="preload" as="image" href="/images/smith-chart.svg">
 </head>
 
