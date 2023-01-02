@@ -90,6 +90,9 @@ function document(title: string, desc: string, pageHtml: string) {
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
     <link rel="apple-touch-startup-image" href="./public/pwa/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
     <title>${title}</title>
+
+    <link rel="preload" as="image" href="/images/smith-chart-dark.svg">
+    <link rel="preload" as="image" href="/images/smith-chart.svg">
 </head>
 
 <body classname="antialiased overflow-hidden overflow-y-auto">

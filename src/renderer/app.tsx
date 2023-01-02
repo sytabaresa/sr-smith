@@ -9,7 +9,7 @@ import { useRouter } from '@modules/router';
 import { useConfig } from '@hooks/useConfig';
 import { PageContextProvider } from './usePageContext';
 import { PageContext } from './types';
-import { initializeSW } from './sw';
+import { initializeSW } from '@modules/pwa/dev';
 import { messageSW } from 'workbox-window';
 import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
