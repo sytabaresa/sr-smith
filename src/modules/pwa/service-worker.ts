@@ -1,4 +1,4 @@
-const SW_VERSION = '1.1.6';
+const SW_VERSION = '1.1.15';
 
 import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
@@ -53,6 +53,10 @@ async function initFirst(event) {
 addEventListener('install', async event => {
   await initFirst(event)
 })
+
+addEventListener('activate', event => {
+  clients.claim();
+});
 
 addEventListener('activated', async event => {
   await initFirst(event)

@@ -12,7 +12,7 @@ import { PageContext } from './types';
 import { initializeSW } from './sw';
 import { messageSW } from 'workbox-window';
 import { getSW } from '@utils/sw';
-// import ReloadPrompt from '@components/atoms/updateSW';
+import UpdateSw from '@components/atoms/updateSW';
 
 export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
@@ -54,7 +54,9 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     // service worker lifecycle handlers
     const _async = async () => {
       // await initFirebase() //await
-      await initializeSW()
+      if (import.meta.env.MODE === 'development') {
+        await initializeSW()
+      }
     }
     _async()
 
@@ -69,7 +71,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     return () => { }
   }, []);
 
-
+  // state config hooks
   useConfig('lang', 'es')
   const [theme, _setTheme] = useConfig('theme', 'light')
   useEffect(() => {
@@ -84,22 +86,23 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
 
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
       // skip index route, because it's already cached under `start-url` caching object
-      if (pathname !== '/') {
+      if (getSW() && pathname !== '/') {
         messageSW(getSW(), { action: 'CACHE_NEW_ROUTE' })
       }
     }
   }, [isOnline, pathname])
 
-
-  const intervalMS = 60 * 60 * 1000
-
-
+  if (typeof window != 'undefined') {
+    window.workbox = { messageSW }
+  }
 
   return (
     <PageContextProvider pageContext={pageContext}>
       <UserProvider>
         {children}
-        {/* <ReloadPrompt /> */}
+        {import.meta.env.MODE === 'production' &&
+          typeof window != 'undefined' &&
+          <UpdateSw autoUpdate />}
       </UserProvider>
     </PageContextProvider>
   )

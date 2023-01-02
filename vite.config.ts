@@ -26,7 +26,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
       registerType: 'autoUpdate',
       strategies: 'injectManifest',
       filename: 'service-worker.ts',
-      injectRegister: 'auto',
+      injectRegister: null,
       // devOptions: {
       //   enabled: true,
       // },

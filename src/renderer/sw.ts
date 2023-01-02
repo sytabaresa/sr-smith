@@ -4,38 +4,18 @@ import swUrl from '@modules/pwa/service-worker?url'
 import { getSW } from "@utils/sw";
 
 export async function initializeSW() {
-    if (typeof window != 'undefined') {
-        window.workbox = { messageSW }
-    }
+    const { Workbox } = await import('workbox-window');
+    // const swUrl = await import('') as unknown as string
+    // const swUrl = new URL('modules/pwa/service-worker.ts', import.meta.url) as unknown as string
+    // console.log(swUrl)
+    const wb = new Workbox(swUrl, { type: 'module', scope: '/' });
+    await wb.register();
+    wb.messageSkipWaiting()
+    // swVersion = await wb.messageSW({ type: 'GET_VERSION' });
 
-    if ('serviceWorker' in navigator) {
-        if (import.meta.env.MODE === 'production') {
-            const swr = await navigator.serviceWorker.register(
-                '/service-worker.js',
-                { type: 'classic', scope: '/' }
-            )
-            await swr.update()
-            // if (swr.waiting) {
-            //     await messageSW(swr.waiting, { type: 'SKIP_WAITING' })
-            // }
-        }
 
-        if (import.meta.env.MODE === 'development') {
-            const { Workbox } = await import('workbox-window');
-            // const swUrl = await import('') as unknown as string
-            // const swUrl = new URL('modules/pwa/service-worker.ts', import.meta.url) as unknown as string
-            // console.log(swUrl)
-            const wb = new Workbox(swUrl, { type: 'module', scope: '/' });
-            await wb.register();
-            wb.messageSkipWaiting()
-            // swVersion = await wb.messageSW({ type: 'GET_VERSION' });
-        }
-
-        // SW version:
-        const swVersion = await messageSW(getSW(), { type: 'GET_VERSION' })
-        console.log('Service Worker version:', swVersion);
-
-        await lifecycleListenterRegister()
-    }
+    // SW version:
+    const swVersion = await messageSW(getSW(), { type: 'GET_VERSION' })
+    console.log('Service Worker version:', swVersion);
 }
 
