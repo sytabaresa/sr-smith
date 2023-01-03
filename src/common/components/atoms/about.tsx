@@ -12,6 +12,7 @@ export const About = () => {
                     className="w-32"
                     style={{ borderWidth: 0, paddingRight: 5 }}
                     src='/images/gplv3.png'
+                    loading={"lazy"}
                 />
             </a>
             <span className="pr-1">{t("this work is under")}</span>

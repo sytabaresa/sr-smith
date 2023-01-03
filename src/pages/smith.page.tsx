@@ -6,7 +6,6 @@ import CodeTools from "@components/organisms/codeTools";
 import DrawerSmithMenu from "@components/organisms/drawerSmithOptions";
 import { UserMenu } from "@components/organisms/userMenu";
 import { JXGDrawer } from "@core/fsm/tooltipActionsFSM";
-import { configure, HotKeys } from "react-hotkeys";
 import { SmithProject } from "@localtypes/smith";
 import { useUser } from "@components/organisms/userContext";
 import { useMachine } from "react-robot";
@@ -14,6 +13,7 @@ import editorMachine from '@core/fsm/codeEditorFSM'
 import saveMachine from "@core/fsm/savingFSM";
 import { useConfig } from "@hooks/useConfig";
 import Footer from "@components/organisms/footer";
+import { HotkeysProvider, useHotkeys } from "react-hotkeys-hook";
 
 import "@core/elements/smithPoint"
 import "@core/elements/reCircle"
@@ -30,17 +30,6 @@ import { useRouter } from "@modules/router";
 import '@styles/jsxgraph.css';
 
 export { SmithProjectPage as Page }
-
-configure({
-  /**
-   * The level of logging of its own behaviour React HotKeys should perform.
-   */
-  logLevel: process.env.NODE_ENV == 'development' ? 'debug' : 'warn',
-  ignoreTags: [],
-  // ignoreEventsCondition: (event) => { return false; }
-  stopEventPropagationAfterIgnoring: false,
-  stopEventPropagationAfterHandling: false,
-});
 
 const SmithProjectPage: React.FC = () => {
   const { useParams } = useRouter()
@@ -62,18 +51,10 @@ const SmithProjectPage: React.FC = () => {
     theme,
   });
 
-
-  const keyMap = {
-    EXIT: "esc",
-    DELETE: "del",
-    EXEC: "ctrl+enter",
-  };
-
-  const handlers = {
-    EXIT: () => ui.sendEvent("EXIT"),
-    DELETE: () => ui.sendEvent("DELETE"),
-    EXEC: () => editorService[1]('PARSING')
-  };
+  // hotkeys and keystrokes
+  useHotkeys('esc', () => ui.sendEvent("EXIT"))
+  useHotkeys('delete', () => ui.sendEvent("DELETE"))
+  useHotkeys('ctrl+enter', () => editorService[1]('PARSING'))
 
   const saveService = useMachine(saveMachine, {
     id: params.id,
@@ -119,45 +100,45 @@ const SmithProjectPage: React.FC = () => {
 
   return (
     <SmithContext.Provider value={context}>
-      <HotKeys keyMap={keyMap} handlers={handlers}>
-        <Layout
-          title="Smith Chart"
-          footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
-          navbar={false}
-          className=""
-          drawerMenu={<DrawerSmithMenu labels={labels} />}
-        >
-          {/* <div className="h-full relative"> */}
-          <SmithBoard />
-          <CodeTools />
-          <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
-            <UserMenu />
-          </div>
-          {/* </div> */}
+      {/* <HotkeysProvider initiallyActiveScopes={['smith-canvas']}> */}
+      <Layout
+        title="Smith Chart"
+        footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
+        navbar={false}
+        className=""
+        drawerMenu={<DrawerSmithMenu labels={labels} />}
+      >
+        {/* <div className="h-full relative"> */}
+        <SmithBoard />
+        <CodeTools />
+        <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
+          <UserMenu />
+        </div>
+        {/* </div> */}
 
-        </Layout>
-        <ModalContainer
-          className="w-10/12 md:w-3/12"
-          modalChild={<NewProjectForm />}
-          modalName={labels.NEW_PROJECT_LABEL}
-          isModal
-        >
-        </ModalContainer>
-        <ModalContainer
-          className="w-10/12 md:w-3/12"
-          modalChild={<PublishProjectForm />}
-          modalName={labels.PUBLISH_PROJECT_LABEL}
-          isModal
-        >
-        </ModalContainer>
-        <ModalContainer
-          className="w-10/12 md:w-3/12"
-          modalChild={<ConfigsForm />}
-          modalName={labels.CONFIGS_LABEL}
-          isModal
-        >
-        </ModalContainer>
-      </HotKeys>
+      </Layout>
+      <ModalContainer
+        className="w-10/12 md:w-3/12"
+        modalChild={<NewProjectForm />}
+        modalName={labels.NEW_PROJECT_LABEL}
+        isModal
+      >
+      </ModalContainer>
+      <ModalContainer
+        className="w-10/12 md:w-3/12"
+        modalChild={<PublishProjectForm />}
+        modalName={labels.PUBLISH_PROJECT_LABEL}
+        isModal
+      >
+      </ModalContainer>
+      <ModalContainer
+        className="w-10/12 md:w-3/12"
+        modalChild={<ConfigsForm />}
+        modalName={labels.CONFIGS_LABEL}
+        isModal
+      >
+      </ModalContainer>
+      {/* </HotkeysProvider> */}
     </SmithContext.Provider>
   );
 };

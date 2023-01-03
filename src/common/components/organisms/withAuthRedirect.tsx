@@ -1,10 +1,7 @@
 import { useLanguageQuery } from '@hooks/i18n'
-import { ReactNode, useEffect } from 'react'
-import { ReactComponent } from 'react-hotkeys'
-import { UrlObject } from 'url'
+import { FC, useEffect } from 'react'
 import { useUser } from './userContext'
 import AuthLoading from '@components/atoms/authLoading'
-import { qStr } from '@utils/common'
 import { useRouter } from '@modules/router'
 
 /**
@@ -20,15 +17,15 @@ import { useRouter } from '@modules/router'
  * @param location The location to redirect to.
  */
 interface WithAuthRedirectProps {
-  WrappedComponent: ReactComponent
-  LoadingComponent?: ReactComponent
+  WrappedComponent: FC
+  LoadingComponent?: FC
   expectedAuth: boolean
   location: string
 }
 
 const WithAuthRedirect = ({
   WrappedComponent,
-  LoadingComponent = AuthLoading as unknown as ReactComponent,
+  LoadingComponent = AuthLoading as FC,
   expectedAuth,
   location,
 }: WithAuthRedirectProps) => {

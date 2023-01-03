@@ -22,15 +22,15 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
         send('PARSING')
     }, [theme])
 
-    return (
+    return <>
         <div
             id={BOX_NAME}
             className="jxgbox full-screen-div w-full"
         // style={{ width: '500px', height: '500px' }}
         >
-
+            <img src="/images/smith-chart.svg" alt="smith-board" srcset=""className="hidden" loading={'lazy'}/>
         </div>
-    );
+    </>
 }
 
 export default SmithBoard;

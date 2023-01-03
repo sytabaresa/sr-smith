@@ -20,7 +20,7 @@ class TwoPointsTooltip {
     }
 
     differentPoints = (ctx, ev) => {
-        return ctx.objectSelected.at(-1) != ctx.objectSelected.at(-2)
+        return ctx.objectSelected.slice(-1) != ctx.objectSelected.slice(-2)
     }
 
     removeLastObject = (ctx, ev) => {
