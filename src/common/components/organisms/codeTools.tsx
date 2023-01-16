@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useTranslation } from "@hooks/i18n";
+import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "@modules/i18n";
 import EditorPopup from "./editorPopup";
 // import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
@@ -24,8 +24,13 @@ const CodeTools = () => {
         <EditorPopup className="lg:hidden btn-group flex-0" />
         <div className="form-control absolute right-[-5rem] lg:right-[-7rem]">
           <label className="label cursor-pointer">
-            <span className="label-text w-10 mr-2">{t("Smith Mode")}</span>
-            <input type="checkbox" className="toggle toggle-primary" checked={ui.context().smithMode} onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)} />
+            <span className="label-text w-10 mr-2">{t.canvas.smith_mode()}</span>
+            <input
+              type="checkbox"
+              className="toggle toggle-primary"
+              checked={ui.context().smithMode}
+              onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)}
+            />
           </label>
         </div>
         <PrimitivesMenu />

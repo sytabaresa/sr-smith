@@ -12,7 +12,7 @@ import SemicircleTooltip from "@core/tooltips/semicircle";
 import ArcTooltip from "@core/tooltips/arc";
 import ReCircleTooltip from "@core/tooltips/reCircle";
 import ImCircleTooltip from "@core/tooltips/imCircle";
-import { useTranslation } from "@hooks/i18n"
+import { useTranslation } from "@modules/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 
@@ -70,7 +70,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
 
         <div className="btn-group">
           <button
-            aria-label={t("undo")}
+            aria-label={t.canvas.undo()}
             tabIndex={0}
             className={`btn btn-square btn-disabled`}
             onClick={() => ui.sendEvent('UNDO')}>
@@ -79,7 +79,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
         <div className="btn-group">
           <button
-            aria-label={t("delete")}
+            aria-label={t.canvas.delete()}
             tabIndex={0}
             className={`btn btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
             onClick={_delete}>
@@ -90,7 +90,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       <div className="flex gap-2 flex-0">
         <div className={`btn-group `}>
           <button
-            aria-label={t("show menu")}
+            aria-label={t.canvas.show_menu()}
             tabIndex={0}
             className={`btn btn-square ${showMenu ? 'btn-active' : ''}`}
             onClick={() => setShowMenu(!showMenu)}>
@@ -99,7 +99,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
         <div className="btn-group">
           <button
-            aria-label={t("move")}
+            aria-label={t.canvas.move()}
             tabIndex={0}
             className={`btn btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
             onClick={() => ui.sendEvent('EXIT')}>
@@ -120,7 +120,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
             new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
               // figure out how to show clipped tooltip
-              <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t(plugin.tooltip)}>
+              <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
                 <button
                   aria-label={plugin.tooltip}
                   className={`p-0 py-2 md:px-2 btn btn-ghost ${ui.context().tooltipSelected == plugin.name ? 'btn-active' : ''}`}
@@ -132,6 +132,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </ul>
         </div>
       </div>
+
+      {/* Popup for data TODO: generalize this logic */}
       <div className={`modal ${ui.current(true) == "draw.drawCircle" ? 'modal-open' : ''}`}>
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">
@@ -141,23 +143,25 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             type="text"
             placeholder="Elija el Radio"
             className="input input-bordered w-full max-w-xs"
-            onChange={ev => setRadius(ev.target.value)}
+            onChange={(ev:any) => setRadius(ev.target.value)}
           />
           <div className="modal-action flex items-center">
             <a href="#" className="text-gray-500" onClick={onClickCircleCenterRadiusCancel}>Cancelar</a>
             <a href="#" className="btn" onClick={() => onClickCircleCenterRadiusValue(radius)} >
-              Crear
+              {t.canvas.create()}
             </a>
           </div>
         </div>
       </div>
+
+      {/* toas in the corner, info of tooltip selected */}
       {ui.tooltipSelected &&
         <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>
           <div className="alert max-w-[70vw] shadow-lg">
             <div className="!block">
-              <h2 className="font-bold">{t(ui.tooltipSelected.tooltip)}</h2>
+              <h2 className="font-bold">{t.tools[ui.tooltipSelected.name].title}</h2>
               <p>
-                {t(ui.tooltipSelected.description)}
+                {t.tools[ui.tooltipSelected.name]?.desc}
               </p>
             </div>
           </div>

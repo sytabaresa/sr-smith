@@ -1,5 +1,5 @@
 import { HTMLAttributes, lazy, Suspense, useContext } from "react";
-import { useTranslation } from "@hooks/i18n";
+import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
 import "prismjs/components/prism-clike";
@@ -60,7 +60,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                 {errorMsg.toString()}
             </div>
             <button onClick={parseExecute} className="btn btn-outline">
-                {t('run')}
+                {t.canvas.run()}
             </button>
         </div >
     );

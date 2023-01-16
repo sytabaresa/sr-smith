@@ -1,5 +1,5 @@
 
-import { useTranslation } from "@hooks/i18n"
+import { useTranslation } from "@modules/i18n"
 
 export const About = () => {
     const { t } = useTranslation()
@@ -15,12 +15,12 @@ export const About = () => {
                     loading={"lazy"}
                 />
             </a>
-            <span className="pr-1">{t("this work is under")}</span>
+            <span className="pr-1">{t.license.work()}</span>
             <a rel="license" className="link" href="https://www.gnu.org/licenses/gpl-3.0.en.html">
                 {" "}
-                {t("License GPLv3")}.
+                {t.license.license()}.
             </a>
-            <h2 className="font-bold">{t("Authors")}:</h2>
+            <h2 className="font-bold">{t.license.authors()}:</h2>
             <span>
                 <a
                     className="link"

@@ -3,7 +3,8 @@
     "version": "0.0.5",
     "source": "src/index.html",
     "scripts": {
-        "dev": "vite",
+        "dev": "npm-run-all --parallel start typesafe-i18n",
+        "start": "vite",
         "build": "vite build",
         "preview": "vite preview",
         "type-check": "tsc",
@@ -11,7 +12,8 @@
         "prebuild2": "node scripts/tsconfig.js",
         "prestart2": "node scripts/tsconfig.js",
         "analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer && xdg-open parcel-bundle-reports/default.html",
-        "analyze:buddy": "parcel build --reporter @parcel/reporter-bundle-buddy"
+        "analyze:buddy": "parcel build --reporter @parcel/reporter-bundle-buddy",
+        "typesafe-i18n": "typesafe-i18n"
     },
     "dependencies": {
         "@heroicons/react": "^1.0.2",
@@ -35,8 +37,8 @@
         "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
         "rxdb": "^13.15.2",
         "rxjs": "^7.6.0",
-        "workbox-window": "^6.5.4",
-        "wouter": "^2.9.0"
+        "typesafe-i18n": "^5.18.1",
+        "workbox-window": "^6.5.4"
     },
     "devDependencies": {
         "@preact/preset-vite": "^2.4.0",
@@ -49,6 +51,7 @@
         "autoprefixer": "^10.4.13",
         "daisyui": "^2.46.1",
         "handlebars": "^4.7.7",
+        "npm-run-all": "^4.1.5",
         "onmyjs": "^2.0.2",
         "postcss": "^8.4.20",
         "process": "^0.11.10",

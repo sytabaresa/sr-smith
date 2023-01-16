@@ -1,5 +1,5 @@
 import {ArrowLeftIcon, MenuAlt3Icon} from "@heroicons/react/outline"
-import { useTranslation } from "@hooks/i18n";
+import { useTranslation } from "@modules/i18n";
 import { useRouter } from "@modules/router";
 import { HTMLAttributes } from "react";
 import { LangMenu } from "@components/atoms/langMenu";
@@ -22,7 +22,7 @@ export default function Navbar(props: NavbarProps) {
     return <nav className={`navbar ${className}`} {...rest}>
         <div className="flex-1">
             <button className="btn btn-ghost flex" onClick={() => goBack()}>
-                <ArrowLeftIcon className='h-4 w-4 mr-2' />{t('back')}
+                <ArrowLeftIcon className='h-4 w-4 mr-2' />{t.common.back()}
             </button>
             {showComplement && <>
                 <LangMenu className='mx-2' />

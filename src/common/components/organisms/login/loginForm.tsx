@@ -1,4 +1,4 @@
-import { useTranslation } from "@hooks/i18n";
+import { useTranslation } from "@modules/i18n";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
@@ -34,7 +34,7 @@ const LoginForm = ({ }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text">{t("username")}</span>
+        <span className="label-text">{t.login.username()}</span>
       </label>
       <input
         id="user"
@@ -48,7 +48,7 @@ const LoginForm = ({ }: LoginFormProps) => {
       {errors.email && (
         <label className="label">
           <span className="label-text-alt" role="alert">
-            {t("email-required")}
+            {t.login.email_required()}
           </span>
         </label>
       )}
@@ -67,7 +67,7 @@ const LoginForm = ({ }: LoginFormProps) => {
       {errors.password && (
         <label className="label">
           <span className="label-text-alt" role="alert">
-            {t("password-required")}
+            {t.login.password_required()}
           </span>
         </label>
       )}
@@ -75,14 +75,14 @@ const LoginForm = ({ }: LoginFormProps) => {
         className="btn btn-primary mt-10 w-full lg:btn-wide self-center"
         type="submit"
       >
-        {isSubmitting ? t('Logging in') + "..." : isSubmitSuccessful ? t('Done') : t('Login')}
+        {isSubmitting ? t.login.logging_in() + "..." : isSubmitSuccessful ? t.login.done() : t.login.login()}
       </button>
       <button className="group btn btn-outline bg-base-100 text-red-400
        hover:bg-red-400 hover:border-red-400 w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>
         <div className="w-6 h-6 fill-red-400 group-hover:fill-base-100 mr-4">
           <GoogleIcon />
         </div>
-        {t("google-login")}
+        {t.login.google_login()}
       </button>
     </form >
   )

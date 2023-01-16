@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, ReactNode } from 'react'
-import { useTranslation } from "@hooks/i18n";
+import { useTranslation } from "@modules/i18n";
 import Footer from '@components/organisms/footer'
 import { LangMenu } from '@components/atoms/langMenu';
 import { ThemeSwitcher } from '@components/molecules/themeSwitcher';
@@ -41,7 +41,7 @@ const Layout = (props: Props) => {
     navbar = true,
     drawer = true,
     drawerMenu = <>
-      <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t("Logout")} onClick={logout} />
+      <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.common.logout()} onClick={logout} />
     </>,
     header,
     ...rest

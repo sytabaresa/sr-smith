@@ -1,4 +1,4 @@
-import { useTranslation } from '@hooks/i18n'
+import { useTranslation } from '@modules/i18n'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { messageSW } from 'workbox-window';
 
@@ -62,14 +62,14 @@ function UpdateSw({ autoUpdate }: UpdateSwProps) {
                 <div className="alert">
                     <div>
                         {offlineReady
-                            ? <span>{t('App ready to work offline')}</span>
-                            : <span>{t('New content available, click on reload button to update')}.</span>
+                            ? <span>{t.offline.app_ready()}</span>
+                            : <span>{t.offline.new_content()}.</span>
                         }
                     </div>
                     <div class="flex-none">
 
-                        {needRefresh && <button className="btn btn-info" onClick={() => updateServiceWorker(true)}>{t('Reload')}</button>}
-                        <button className="btn btn-info btn-ghost" onClick={() => close()}>{t('Close')}</button>
+                        {needRefresh && <button className="btn btn-info" onClick={() => updateServiceWorker(true)}>{t.offline.reload()}</button>}
+                        <button className="btn btn-info btn-ghost" onClick={() => close()}>{t.offline.close()}</button>
                     </div>
                 </div>
             </div>

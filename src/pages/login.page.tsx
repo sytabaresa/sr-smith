@@ -3,7 +3,7 @@ import Layout from "@components/templates/default";
 import { useUser } from "@components/organisms/userContext";
 import SingUpForm from "@components/organisms/login/signupForm";
 import LoginForm from "@components/organisms/login/loginForm";
-import { useLanguageQuery, useTranslation } from "@hooks/i18n";
+import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { SmithImage } from "@components/atoms/smithImage";
 import { useRouter } from "@modules/router";
 
@@ -55,14 +55,14 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
           className={`tab tab-lg tab-bordered ${isLogin ? "tab-active" : ""}`}
           onClick={() => setIsLogin(true)}
         >
-          {t("Login")}
+          {t.login.login()}
         </a>
         <a
           className={`tab tab-lg tab-bordered ${!isLogin ? "tab-active" : ""
             }`}
           onClick={() => setIsLogin(false)}
         >
-          {t("Sign Up")}
+          {t.login.sign_up()}
         </a>
       </div>
       <div className="w-full px-4 sm:w-2/3 md:w-1/2 lg:w-1/3 z-10">

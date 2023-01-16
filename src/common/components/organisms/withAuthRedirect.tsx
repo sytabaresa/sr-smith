@@ -1,4 +1,4 @@
-import { useLanguageQuery } from '@hooks/i18n'
+import { useLanguageQuery } from '@modules/i18n'
 import { FC, useEffect } from 'react'
 import { useUser } from './userContext'
 import AuthLoading from '@components/atoms/authLoading'

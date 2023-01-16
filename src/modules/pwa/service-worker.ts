@@ -55,7 +55,7 @@ addEventListener('install', async event => {
 })
 
 addEventListener('activate', async event => {
-  clients.claim();
+  self.clients.claim();
 });
 
 addEventListener('activated', async event => {

@@ -22,6 +22,7 @@ export default function UserContextComp({ children }) {
 
     const userHandler = (user) => {
         try {
+            console.log(user)
             if (user) {
                 // User is signed in.
                 // const { uid, displayName, email, photoURL } = user

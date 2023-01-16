@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { UrlObject } from "url";
-import { useLanguageQuery } from "@hooks/i18n";
+import { useLanguageQuery } from "@modules/i18n";
 import { useAuthProvider } from "@hooks/useAuthProvider";
 import { useRouter } from "@modules/router";
 

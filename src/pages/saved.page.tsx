@@ -3,7 +3,7 @@ import WithAuth from "@hoc/withAuth";
 import SavedProjectCard from "@components/molecules/savedProjectCard";
 import { SmithProject } from "@localtypes/smith";
 import { useUser } from "@components/organisms/userContext";
-import { useLanguageQuery, useTranslation } from "@hooks/i18n"
+import { useLanguageQuery, useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
@@ -47,11 +47,11 @@ const SavedProjects = () => {
     return <>
       {!projects ? <div className="flex items-center justify-center">
         <RefreshIcon className="animate-spin w-8 h-8 mr-2 my-4" />
-        <h3 className="text-xl">{t("loading")}...</h3>
+        <h3 className="text-xl">{t.common.loading()}...</h3>
       </div> :
         (projects.length == 0 ?
           <div className="my-4">
-            <h3 className="text-center text-xl">{t("no projects")}</h3>
+            <h3 className="text-center text-xl">{t.saved.no_projects()}</h3>
           </div>
           : <div className="flex flex-wrap justify-center lg:justify-start lg:mx-8">
             {projects.map((item, i) =>
@@ -84,13 +84,17 @@ const SavedProjects = () => {
   >
     <div className="overflow-y-auto h-full scrollbar-thin scrollbar-track-base-100 scrollbar-thumb-base-content flex-grow">
       <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8">
-        {t('Previous Projects')}
+        {t.saved.prev_projects()}
       </h1>
       {renderSavedProjects(userProjects)}
     </div>
-    <label htmlFor={NEW_PROJECT_LABEL} className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center tooltip" data-tip={t('create project')} onClick={newProject}>
+    <label htmlFor={NEW_PROJECT_LABEL}
+      className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center tooltip"
+      data-tip={t.saved.create_project()}
+      onClick={newProject}
+    >
       <div role="button" className="btn lg:grap-2 btn-lg shadow-lg">
-        <span className="mr-4 hidden lg:block">{t('create project')}</span>
+        <span className="mr-4 hidden lg:block">{t.saved.create_project()}</span>
         <PlusIcon className="h-8 w-8" />
       </div>
     </label>

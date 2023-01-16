@@ -1,5 +1,3 @@
-import { ReactComponent } from 'react-hotkeys'
-import { Url } from 'url'
 import WithAuthRedirect from '@components/organisms/withAuthRedirect'
 
 /**

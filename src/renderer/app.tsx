@@ -13,9 +13,11 @@ import { initializeSW } from '@modules/pwa/dev';
 import { messageSW } from 'workbox-window';
 import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
+import { useTranslation } from '@modules/i18n';
 
 export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
+  const { TranslationWrapper, t } = useTranslation()
 
   useEffect(() => {
     // set theme as soon as posible
@@ -72,7 +74,6 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
   }, []);
 
   // state config hooks
-  useConfig('lang', 'es')
   const [theme, _setTheme] = useConfig('theme', 'light')
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -98,12 +99,14 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
 
   return (
     <PageContextProvider pageContext={pageContext}>
-      <UserProvider>
-        {children}
-        {import.meta.env.MODE === 'production' &&
-          typeof window != 'undefined' &&
-          <UpdateSw autoUpdate />}
-      </UserProvider>
+      <TranslationWrapper locale="en">
+        <UserProvider>
+          {children}
+          {import.meta.env.MODE === 'production' &&
+            typeof window != 'undefined' &&
+            <UpdateSw autoUpdate />}
+        </UserProvider>
+      </TranslationWrapper>
     </PageContextProvider>
   )
 }

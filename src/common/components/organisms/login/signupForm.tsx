@@ -1,5 +1,5 @@
 import { useRouter } from "@modules/router";
-import { useLanguageQuery, useTranslation } from "@hooks/i18n";
+import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
@@ -44,7 +44,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text">{t("username")}</span>
+        <span className="label-text">{t.login.username()}</span>
       </label>
       <input
         id="user"
@@ -57,12 +57,12 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t("email-required")}</span>
+          <span className="label-text-alt" role="alert">{t.login.email_required()}</span>
         </label>
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text">{t("password")}</span>
+        <span className="label-text">{t.login.password()}</span>
       </label>
       <input
         id="password"
@@ -74,11 +74,11 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t("password-required")}</span>
+          <span className="label-text-alt" role="alert">{t.login.password_required()}</span>
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text" role="alert">{t("repeat-password")}</span>
+        <span className="label-text" role="alert">{t.login.repeat_password()}</span>
       </label>
       <input
         id="repeatPassword"
@@ -92,7 +92,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         <span className="label-text-alt">{errorsRepeatPassword}</span>
       </label>
       <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
-        {t("Sign up")}
+        {t.login.sign_up()}
       </button>
     </form>
   );
