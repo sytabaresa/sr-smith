@@ -41,23 +41,27 @@ export class AuthProvider {
 export function useAuthProvider() {
     const c = new AuthProvider()
     const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
 
     const changeHandler = (event) => {
         const e = event.data
         // console.log(e)
         if (e.type == 'auth') {
-            setUser(e.payload)
             // console.log(event)
+            // console.log(e.payload)
+            setUser(e.payload)
+            setLoading(false)
         }
     }
 
     useEffect(() => {
         navigator.serviceWorker.addEventListener('message', changeHandler)
+        c.getUserIdentity({})
 
         return () => {
             navigator.serviceWorker.removeEventListener('message', changeHandler)
         }
     }, [])
 
-    return { ...c, user }
+    return { ...c, loading, user }
 }

@@ -15,39 +15,10 @@ export const UserContext = createContext<UserContextType>(null)
 var timeout
 
 export default function UserContextComp({ children }) {
-    const [user, setUser] = useState<User>(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [loadingUser, setLoadingUser] = useState(true) // Helpful, to update the UI accordingly.
-    const { user: _user } = useAuthProvider()
-
-    const userHandler = (user) => {
-        try {
-            console.log(user)
-            if (user) {
-                // User is signed in.
-                // const { uid, displayName, email, photoURL } = user
-                // You could also look for the user doc in your Firestore (if you have one):
-                // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
-                // setUser({ uid, displayName, email, photoURL })
-                setUser(user)
-                setIsAuthenticated(true)
-            } else {
-                setUser(null)
-                setIsAuthenticated(false)
-            }
-        } catch (error) {
-            // Most probably a connection error. Handle appropriately.
-        } finally {
-            setLoadingUser(false)
-        }
-    }
-
-    useEffect(() => {
-        userHandler(_user)
-    }, [_user])
+    const { user, loading } = useAuthProvider()
 
     return (
-        <UserContext.Provider value={{ user, loadingUser, isAuthenticated }}>
+        <UserContext.Provider value={{ user, loadingUser: loading, isAuthenticated: !!user }}>
             {children}
         </UserContext.Provider>
     )
