@@ -4,7 +4,7 @@ import PointTooltip from "./point";
 
 class SmithPointTooltip extends PointTooltip implements TooltipType {
     name = 'spoint'
-    tooltip = 'sPoint'
+    tooltip = 'spoint'
     icon = PointIcon
 }
 

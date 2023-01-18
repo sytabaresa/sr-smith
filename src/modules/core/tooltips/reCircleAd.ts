@@ -7,7 +7,7 @@ import PointTooltip from "./point";
 class ReCircleAdTooltip extends PointTooltip implements TooltipType {
     name = 'recirclead'
     jsxName = 'recirclead'
-    tooltip = 'Real Circle Admitance (Point)'
+    tooltip = 'recirclead'
     icon = ReCircleIconAd
     isDrawObject = true
     paramsStr = (ob: ReCircle) => `${normalizeName(ob.originPoint?.name)}`

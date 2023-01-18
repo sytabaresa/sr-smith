@@ -5,7 +5,7 @@ import ThreePointsTooltip from "./threePoints";
 class CircumcircleTooltip extends ThreePointsTooltip implements TooltipType {
     name = 'circumcircle'
     jsxName = 'circumcircle'
-    tooltip = 'Circunferencia por 3 puntos'
+    tooltip = 'circumcircle'
     icon = CircumcircleIcon
 }
 

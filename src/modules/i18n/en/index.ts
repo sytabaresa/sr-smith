@@ -88,9 +88,11 @@ const en: Translation = {
 		description: "Project description"
 	},
 	tools: {
-		common: {
-			two_points: "Select two points",
-			three_points: "Select three points"
+		two_points: {
+			desc: "Select two points"
+		},
+		three_points: {
+			desc: "Select three points"
 		},
 		point: {
 			title: "Point",
@@ -98,7 +100,7 @@ const en: Translation = {
 		},
 		arc: {
 			title: "Arc",
-			desc: "Select origin,fist point and point for angle"
+			desc: "Select origin, fist point and point for angle"
 		},
 		segment: {
 			title: "Segment"
@@ -109,19 +111,29 @@ const en: Translation = {
 		imcircle: {
 			title: "Imaginary Circle (Point)"
 		},
-		recicle: {
+		imcirclead: {
+			title: "Imaginary Circle Admitance (Point)",
+			tooltip: "Imaginary Circle Admitance (Point)"
+		},
+		recircle: {
 			title: "Real Circle (Point)"
+		},
+		recirclead: {
+			title: "Real Circle Admitance (Point)",
+			tooltip: "Real Circle Admitance (Point)"
 		},
 		semicircle: {
 			title: "Semicircle"
 		},
-		circle_point: {
+		circle: {
 			title: "Circle (center, point)",
-			desc: ""
 		},
 		circle_radius: {
 			title: "Circle (center, radius)",
 			desc: "Select center point, then enter radius"
+		},
+		circumcircle: {
+			title: "Circumcircle",
 		}
 	}
 }

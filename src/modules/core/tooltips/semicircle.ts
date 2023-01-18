@@ -5,7 +5,7 @@ import TwoPointsTooltip from "./twoPoints";
 class SemicircleTooltip extends TwoPointsTooltip implements TooltipType {
     name = 'semicircle'
     jsxName = 'semicircle'
-    tooltip = 'Semicircle'
+    tooltip = 'semicircle'
     icon = SemicircleIcon
 }
 

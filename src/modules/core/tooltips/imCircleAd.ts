@@ -7,7 +7,7 @@ import PointTooltip from "./point";
 class ImCircleAdTooltip extends PointTooltip implements TooltipType {
     name = 'imcirclead'
     jsxName = 'imcirclead'
-    tooltip = 'Imaginary Circle Admitance (Point)'
+    tooltip = 'imcirclead'
     icon = ImCircleIconAd
     isDrawObject = true
     paramsStr = (ob: ImCircle) => `${normalizeName(ob.originPoint?.name)}`

@@ -5,10 +5,10 @@ import { CircleCenterRadiusIcon } from "@components/atoms/icons";
 import { normalizeName } from "@core/utils/board";
 
 class CircleRadiusTooltip implements TooltipType {
-    name = 'circleRadius'
+    name = 'circle_radius'
+    tooltip = 'circle_radius'
+    description = 'circle_radius'
     jsxName = 'circle'
-    tooltip = 'Circle (center, radio)'
-    description = 'Select center point, then enter radius'
     icon = CircleCenterRadiusIcon
     paramsStr = (ob: any) => `${normalizeName(ob.center.name)},${ob.radius}`
 

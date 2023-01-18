@@ -7,8 +7,8 @@ class PointTooltip implements TooltipType {
     jsxName = ''
     objectSelected: any[]
     name = 'point'
-    description = 'Select position, line, curve, or other point'
-    tooltip = 'Point'
+    description = 'point'
+    tooltip = 'point'
     icon = PointIcon
     isDrawObject = false
     paramsStr = (ob) => `${ob.X().toFixed(3)}, ${ob.X().toFixed(3)}`

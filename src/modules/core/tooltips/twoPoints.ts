@@ -5,7 +5,7 @@ import { normalizeName } from "@core/utils/board";
 
 class TwoPointsTooltip {
     jsxName = ''
-    description = 'Select two points'
+    description = 'two_points'
     paramsStr = (ob) => `${normalizeName(ob.board.select(ob.parents[0]).name)}, ${normalizeName(ob.board.select(ob.parents[1]).name)}`
 
     drawObject = (ctx, event) => {

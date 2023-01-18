@@ -159,9 +159,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>
           <div className="alert max-w-[70vw] shadow-lg">
             <div className="!block">
-              <h2 className="font-bold">{t.tools[ui.tooltipSelected.name].title}</h2>
+              <h2 className="font-bold">{t.tools[ui.tooltipSelected.name]?.title()}</h2>
               <p>
-                {t.tools[ui.tooltipSelected.name]?.desc}
+                {t.tools[ui.tooltipSelected.description]?.desc()}
               </p>
             </div>
           </div>
