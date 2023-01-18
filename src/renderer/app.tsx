@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import '@styles/index.css'
 import '@styles/main.css';
 import '@styles/animations.css';
@@ -14,6 +14,12 @@ import { messageSW } from 'workbox-window';
 import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
+import { useTheme } from '@hooks/useTheme';
+
+if (process.env.NODE_ENV == 'development') {
+  // require('robot3/debug')
+  import('robot3/logging')
+}
 
 export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
@@ -32,10 +38,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     update()
 
     // robot3 debuging mode
-    if (process.env.NODE_ENV == 'development') {
-      // require('robot3/debug')
-      import('robot3/logging')
-    }
+
 
     // offline/online mode
     if (typeof window !== 'undefined' && 'ononline' in window && 'onoffline' in window) {
@@ -73,12 +76,6 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     return () => { }
   }, []);
 
-  // state config hooks
-  const [theme, _setTheme] = useConfig('theme', 'light')
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme])
-
   const { RouterWrapper, RouterComponent, useLocation } = useRouter()
   const { pathname } = useLocation()
   useEffect(() => {
@@ -102,6 +99,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
       <TranslationWrapper locale="en">
         <UserProvider>
           {children}
+          <ThemeUpdater />
           {import.meta.env.MODE === 'production' &&
             typeof window != 'undefined' &&
             <UpdateSw autoUpdate />}
@@ -109,4 +107,10 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
       </TranslationWrapper>
     </PageContextProvider>
   )
+}
+
+// This aux component is used to avoid rerender of all tree (only are CSS variable changes)
+const ThemeUpdater = () => {
+  useTheme()
+  return <></>
 }

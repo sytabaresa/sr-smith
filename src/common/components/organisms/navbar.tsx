@@ -3,7 +3,7 @@ import { useTranslation } from "@modules/i18n";
 import { useRouter } from "@modules/router";
 import { HTMLAttributes } from "react";
 import { LangMenu } from "@components/atoms/langMenu";
-import { ThemeSwitcher } from "@components/molecules/themeSwitcher";
+import { ThemeSwitcher } from "@components/atoms/themeSwitcher";
 import { UserImage } from "@components/molecules/userImage";
 import { useUser } from "./userContext";
 

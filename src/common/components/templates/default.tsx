@@ -2,7 +2,7 @@ import React, { HTMLAttributes, ReactNode } from 'react'
 import { useTranslation } from "@modules/i18n";
 import Footer from '@components/organisms/footer'
 import { LangMenu } from '@components/atoms/langMenu';
-import { ThemeSwitcher } from '@components/molecules/themeSwitcher';
+import { ThemeSwitcher } from '@components/atoms/themeSwitcher';
 import Navbar from '@components/organisms/navbar';
 import { useUser } from '@components/organisms/userContext';
 import { UserImage } from '@components/molecules/userImage';

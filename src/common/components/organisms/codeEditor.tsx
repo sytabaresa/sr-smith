@@ -7,13 +7,14 @@ import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { highlight, languages } = prism;
+// import Editor from "react-simple-code-editor"
+const Editor = lazy(() => import("react-simple-code-editor"))
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
 };
 
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
-    const Editor = lazy(() => import("react-simple-code-editor"))
     const { t } = useTranslation()
     // const { user, isAuthenticated, loadingUser } = useUser()
 

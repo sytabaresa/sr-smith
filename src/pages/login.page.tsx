@@ -39,6 +39,7 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   return <Layout
     showComplement
     title="Saved | Sr Smith App"
+    drawer={false}
     className="relative h-screen overflow-hidden"
     header={<div className="absolute w-full h-full blur-[6px] lg:blur-[6px]">
       <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] bottom-[-4rem] opacity-40 hover:opacity-100 stroke-success transform -scale-x-100 scale-y-100 animate-i motion-reduce:animation-none hover:animate-none transition delay-[3000ms]" />
