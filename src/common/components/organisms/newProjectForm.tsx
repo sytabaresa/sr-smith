@@ -34,23 +34,23 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     if (isSubmitting) return
     // clearErrors()
     const { projectName, projectDescription } = data;
-    const user = await getUserIdentity(null)
-
     try {
-      const docRef = await create({
+      // const user = await getUserIdentity(null)
+
+      const doc = await create({
         resource: "projects",
         variables: {
-          createAt: new Date(),
+          // createdAt: new Date(),
           data: "",
           description: projectDescription,
           hashReference: "",
           isPublic: false,
           name: projectName,
-          updateAt: new Date(),
-          userId: user.uid,
+          // updatedAt: new Date(),
+          // userId: user.uid,
         } as SmithProject
-      })
-      push('/', { lang: query.lang })
+      }) as SmithProject
+      push('/', { id: doc.id, lang: query.lang })
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })

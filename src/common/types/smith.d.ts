@@ -13,8 +13,8 @@ export type User = {
 
 export type SmithProject = {
   id: string
-  createAt?: Time
-  updateAt?: Time
+  createdAt?: Time
+  updatedAt?: Time
   data?: string
   description?: string
   hashReference?: string

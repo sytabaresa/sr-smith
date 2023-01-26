@@ -56,8 +56,9 @@ const SmithProjectPage: React.FC = () => {
   useHotkeys('delete', () => ui.sendEvent("DELETE"))
   useHotkeys('ctrl+enter', () => editorService[1]('PARSING'))
 
+  // console.log(params.id[0])
   const saveService = useMachine(saveMachine, {
-    id: params.id,
+    id: params?.id?.[0],
     projectData,
     editorService,
   })
@@ -71,7 +72,7 @@ const SmithProjectPage: React.FC = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const [current, send] = saveService
-      send({ type: 'LOAD', value: params.id as string })
+      send({ type: 'LOAD', value: params?.id?.[0] as string })
     }
   }, [isAuthenticated]);
 

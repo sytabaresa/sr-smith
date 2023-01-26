@@ -7,7 +7,7 @@ import { DataProvider, list, oneData, selectMany, selectOne } from "./db";
 
 export async function initDB(app: FirebaseApp) {
     const db = getFirestore(app)
-    await enableOffline(db)
+    // await enableOffline(db)
     return db
 }
 

@@ -10,10 +10,5 @@ export async function initializeSW() {
     await wb.register();
     wb.messageSkipWaiting()
     // swVersion = await wb.messageSW({ type: 'GET_VERSION' });
-
-
-    // SW version:
-    const swVersion = await messageSW(getSW(), { type: 'GET_VERSION' })
-    console.log('Service Worker version:', swVersion);
 }
 

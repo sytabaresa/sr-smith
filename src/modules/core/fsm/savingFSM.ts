@@ -114,7 +114,7 @@ async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
         id: ctx.id,
         variables: {
             data: ctx.code,
-            updateAt: new Date()
+            // updatedAt: new Date()
         } as SmithProject
     })
     console.log('saving done.')

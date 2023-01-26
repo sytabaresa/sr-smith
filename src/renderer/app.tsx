@@ -15,6 +15,7 @@ import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
 import { useTheme } from '@hooks/useTheme';
+import { useServiceWoker } from '@hooks/useServiceWorker';
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -24,6 +25,7 @@ if (process.env.NODE_ENV == 'development') {
 export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()
+  const sw = useServiceWoker()
 
   useEffect(() => {
     // set theme as soon as posible
@@ -82,17 +84,34 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     // const router: RouterProps & { lastPath?: string } = useRouter();
     // lastPath = location
 
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined && isOnline) {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator &&
+      window.workbox !== undefined &&
+      sw &&
+      isOnline) {
       // skip index route, because it's already cached under `start-url` caching object
       if (getSW() && pathname !== '/') {
         messageSW(getSW(), { action: 'CACHE_NEW_ROUTE' })
       }
     }
-  }, [isOnline, pathname])
+  }, [isOnline, pathname, sw])
 
   if (typeof window != 'undefined') {
     window.workbox = { messageSW }
   }
+
+  useEffect(() => {
+    if (sw) {
+      const work = async () => {
+        // SW version:
+        const swVersion = await messageSW(getSW(), { type: 'GET_VERSION' })
+        console.log('Service Worker version:', swVersion);
+
+        // set sync/replaction
+        await messageSW(sw, { type: 'SET_REPLICATION' })
+      }
+      work()
+    }
+  }, [sw])
 
   return (
     <PageContextProvider pageContext={pageContext}>

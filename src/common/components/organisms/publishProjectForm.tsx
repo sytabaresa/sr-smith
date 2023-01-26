@@ -26,10 +26,10 @@ const PublishProjectForm = ({ }: PublishProjectFormProps) => {
     try {
       const res = await update({
         resource: 'projects',
-        id: projectData.updateAt.toString(),
+        id: projectData.id,
         variables: {
           isPublic: publicState,
-          updateAt: new Date()
+          // updatedAt: new Date()
         } as SmithProject
       })
       console.log('changed sucessfully')

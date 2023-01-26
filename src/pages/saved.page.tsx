@@ -31,7 +31,8 @@ const SavedProjects = () => {
   }, [user?.uid])
 
   const getSavedProjects = async (userUid: string) => {
-    const projectsList: SmithProject[] = await getList({ resource: 'projects', filters: [{ v1: 'userId', op: '==', v2: userUid }] })
+    const projectsList: SmithProject[] = await getList({ resource: 'projects'})
+    // console.log(projectsList)
     setUserProjects(projectsList);
   };
 

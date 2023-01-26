@@ -285,15 +285,17 @@ type RootTranslation = {
 		description: string
 	}
 	tools: {
-		common: {
+		two_points: {
 			/**
 			 * S​e​l​e​c​t​ ​t​w​o​ ​p​o​i​n​t​s
 			 */
-			two_points: string
+			desc: string
+		}
+		three_points: {
 			/**
 			 * S​e​l​e​c​t​ ​t​h​r​e​e​ ​p​o​i​n​t​s
 			 */
-			three_points: string
+			desc: string
 		}
 		point: {
 			/**
@@ -311,7 +313,7 @@ type RootTranslation = {
 			 */
 			title: string
 			/**
-			 * S​e​l​e​c​t​ ​o​r​i​g​i​n​,​f​i​s​t​ ​p​o​i​n​t​ ​a​n​d​ ​p​o​i​n​t​ ​f​o​r​ ​a​n​g​l​e
+			 * S​e​l​e​c​t​ ​o​r​i​g​i​n​,​ ​f​i​s​t​ ​p​o​i​n​t​ ​a​n​d​ ​p​o​i​n​t​ ​f​o​r​ ​a​n​g​l​e
 			 */
 			desc: string
 		}
@@ -333,11 +335,31 @@ type RootTranslation = {
 			 */
 			title: string
 		}
-		recicle: {
+		imcirclead: {
+			/**
+			 * I​m​a​g​i​n​a​r​y​ ​C​i​r​c​l​e​ ​A​d​m​i​t​a​n​c​e​ ​(​P​o​i​n​t​)
+			 */
+			title: string
+			/**
+			 * I​m​a​g​i​n​a​r​y​ ​C​i​r​c​l​e​ ​A​d​m​i​t​a​n​c​e​ ​(​P​o​i​n​t​)
+			 */
+			tooltip: string
+		}
+		recircle: {
 			/**
 			 * R​e​a​l​ ​C​i​r​c​l​e​ ​(​P​o​i​n​t​)
 			 */
 			title: string
+		}
+		recirclead: {
+			/**
+			 * R​e​a​l​ ​C​i​r​c​l​e​ ​A​d​m​i​t​a​n​c​e​ ​(​P​o​i​n​t​)
+			 */
+			title: string
+			/**
+			 * R​e​a​l​ ​C​i​r​c​l​e​ ​A​d​m​i​t​a​n​c​e​ ​(​P​o​i​n​t​)
+			 */
+			tooltip: string
 		}
 		semicircle: {
 			/**
@@ -345,12 +367,11 @@ type RootTranslation = {
 			 */
 			title: string
 		}
-		circle_point: {
+		circle: {
 			/**
 			 * C​i​r​c​l​e​ ​(​c​e​n​t​e​r​,​ ​p​o​i​n​t​)
 			 */
 			title: string
-			desc: string
 		}
 		circle_radius: {
 			/**
@@ -361,6 +382,12 @@ type RootTranslation = {
 			 * S​e​l​e​c​t​ ​c​e​n​t​e​r​ ​p​o​i​n​t​,​ ​t​h​e​n​ ​e​n​t​e​r​ ​r​a​d​i​u​s
 			 */
 			desc: string
+		}
+		circumcircle: {
+			/**
+			 * C​i​r​c​u​m​c​i​r​c​l​e
+			 */
+			title: string
 		}
 	}
 }
@@ -637,15 +664,17 @@ export type TranslationFunctions = {
 		description: () => LocalizedString
 	}
 	tools: {
-		common: {
+		two_points: {
 			/**
 			 * Select two points
 			 */
-			two_points: () => LocalizedString
+			desc: () => LocalizedString
+		}
+		three_points: {
 			/**
 			 * Select three points
 			 */
-			three_points: () => LocalizedString
+			desc: () => LocalizedString
 		}
 		point: {
 			/**
@@ -663,7 +692,7 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 			/**
-			 * Select origin,fist point and point for angle
+			 * Select origin, fist point and point for angle
 			 */
 			desc: () => LocalizedString
 		}
@@ -685,11 +714,31 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 		}
-		recicle: {
+		imcirclead: {
+			/**
+			 * Imaginary Circle Admitance (Point)
+			 */
+			title: () => LocalizedString
+			/**
+			 * Imaginary Circle Admitance (Point)
+			 */
+			tooltip: () => LocalizedString
+		}
+		recircle: {
 			/**
 			 * Real Circle (Point)
 			 */
 			title: () => LocalizedString
+		}
+		recirclead: {
+			/**
+			 * Real Circle Admitance (Point)
+			 */
+			title: () => LocalizedString
+			/**
+			 * Real Circle Admitance (Point)
+			 */
+			tooltip: () => LocalizedString
 		}
 		semicircle: {
 			/**
@@ -697,12 +746,11 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 		}
-		circle_point: {
+		circle: {
 			/**
 			 * Circle (center, point)
 			 */
 			title: () => LocalizedString
-			desc: () => LocalizedString
 		}
 		circle_radius: {
 			/**
@@ -713,6 +761,12 @@ export type TranslationFunctions = {
 			 * Select center point, then enter radius
 			 */
 			desc: () => LocalizedString
+		}
+		circumcircle: {
+			/**
+			 * Circumcircle
+			 */
+			title: () => LocalizedString
 		}
 	}
 }

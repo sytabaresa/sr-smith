@@ -1,6 +1,7 @@
 import { messageSW, } from "workbox-window"
 import { getSW } from "@utils/sw"
 import { useEffect, useState } from "react"
+import { useMessage, useServiceWoker } from "@hooks/useServiceWorker"
 
 export class AuthProvider {
 
@@ -39,29 +40,26 @@ export class AuthProvider {
 }
 
 export function useAuthProvider() {
-    const c = new AuthProvider()
+    const auth = new AuthProvider()
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
-
-    const changeHandler = (event) => {
-        const e = event.data
-        // console.log(e)
-        if (e.type == 'auth') {
-            // console.log(event)
-            // console.log(e.payload)
-            setUser(e.payload)
-            setLoading(false)
-        }
-    }
+    const sw = useServiceWoker()
+    const message = useMessage()
 
     useEffect(() => {
-        navigator.serviceWorker.addEventListener('message', changeHandler)
-        c.getUserIdentity({})
-
-        return () => {
-            navigator.serviceWorker.removeEventListener('message', changeHandler)
+        if (sw) {
+            auth.getUserIdentity({})
         }
-    }, [])
+    }, [sw])
 
-    return { ...c, loading, user }
+    useEffect(() => {
+        if (message?.type == 'auth') {
+            // console.log(event)
+            // console.log(e.payload)
+            setUser(message.payload)
+            setLoading(false)
+        }
+    }, [message])
+
+    return { ...auth, loading, user }
 }

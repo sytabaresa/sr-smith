@@ -1,9 +1,11 @@
 // import * as admin from 'VITE_firebase-admin'
 
+import { FirebaseOptions } from "firebase/app"
+
 // const env = process.env
 const env = import.meta.env
 
-export const clientCredentials = {
+export const clientCredentials: FirebaseOptions = {
     apiKey: env.VITE_FIREBASE_API_KEY,
     authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
     // databaseURL: env.VITE_FIREBASE_DATABASE_URL,
