@@ -49,6 +49,7 @@ const es: BaseTranslation = {
 		create_project: "crear proyecto",
 		prev_projects: "Proyectos Anteriores",
 		no_projects: "No tienes proyectos guardados",
+		delete: "Delete",
 	},
 	menu: {
 		publish: "Publicar",

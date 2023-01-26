@@ -181,6 +181,10 @@ type RootTranslation = {
 		 * N​o​ ​P​r​o​j​e​c​t​s​ ​S​a​v​e​d
 		 */
 		no_projects: string
+		/**
+		 * D​e​l​e​t​e
+		 */
+		'delete': string
 	}
 	menu: {
 		/**
@@ -560,6 +564,10 @@ export type TranslationFunctions = {
 		 * No Projects Saved
 		 */
 		no_projects: () => LocalizedString
+		/**
+		 * Delete
+		 */
+		'delete': () => LocalizedString
 	}
 	menu: {
 		/**

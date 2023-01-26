@@ -17,9 +17,6 @@ export { Saved as Page }
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
-  const [query2] = useLanguageQuery()
-  const { useHistory } = useRouter()
-  const { push } = useHistory();
   const [userProjects, setUserProjects] = useState(null as SmithProject[]);
   const { user } = useUser()
   const { getList } = useDataProvider()
@@ -31,14 +28,10 @@ const SavedProjects = () => {
   }, [user?.uid])
 
   const getSavedProjects = async (userUid: string) => {
-    const projectsList: SmithProject[] = await getList({ resource: 'projects'})
+    const projectsList: SmithProject[] = await getList({ resource: 'projects' })
     // console.log(projectsList)
     setUserProjects(projectsList);
   };
-
-  const goToSavedProject = (projectId: string) => {
-    push('/', { ...query2, id: projectId })
-  }
 
   const newProject = async (e) => {
 
@@ -56,18 +49,11 @@ const SavedProjects = () => {
           </div>
           : <div className="flex flex-wrap justify-center lg:justify-start lg:mx-8">
             {projects.map((item, i) =>
-              <div
+              <SavedProjectCard
                 key={i}
                 className="m-4"
-                onClick={() => { goToSavedProject(item.id) }}
-              >
-                <SavedProjectCard
-                  title={item.name}
-                  description={item.description}
-                  image='/images/smith-app.png'
-                  id={""}
-                />
-              </div>
+                project={item}
+              />
             )}
           </div>
         )

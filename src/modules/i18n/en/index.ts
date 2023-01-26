@@ -53,6 +53,7 @@ const en: Translation = {
 		create_project: "Create Project",
 		prev_projects: "Previous Projects",
 		no_projects: "No Projects Saved",
+		delete: "Delete",
 	},
 	menu: {
 		publish: "Publish",
