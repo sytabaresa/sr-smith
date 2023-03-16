@@ -60,7 +60,7 @@ const SavedProjects = () => {
       <SmithImage className="absolute w-60 lg:w-[30rem] right-0 lg:right-[1rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
     </div>}
   >
-    <div className="overflow-y-auto h-full scrollbar-thin scrollbar-track-base-100 scrollbar-thumb-base-content flex-grow">
+    <div className="w-full">
       <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8 uppercase">
         {t.saved.prev_projects()}
       </h1>

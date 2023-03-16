@@ -2,8 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .toolbox-btn {
-    @apply btn btn-outline bg-base-100 btn-square;
+    @apply btn btn-outline bg-base-100;
 }
 
+.btn-outline:not(.btn-active) {
+    @apply hover:bg-base-100 hover:text-primary;
+}

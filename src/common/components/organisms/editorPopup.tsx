@@ -20,7 +20,7 @@ const EditorPopup = (props: EditorPopupProps) => {
         <div {...props}>
             <button
                 // preset="filled"
-                className={`btn ${isOpen ? 'btn-active' : ''}`}
+                className={`toolbox-btn ${isOpen ? 'btn-active' : ''}`}
                 onClick={() => setOpen(!isOpen)}
             >
                 {t.canvas.code()}

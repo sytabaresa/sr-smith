@@ -22,6 +22,9 @@ module.exports = {
     // darkMode: 'class', // or  false, 'media' or 'class'
     theme: {
         extend: {
+            dropShadow: {
+                'white': '0 0 4px rgba(255, 255, 255, 1)',
+            },
             theme: {
                 maxWidth: {
                     'screen': '100vw'

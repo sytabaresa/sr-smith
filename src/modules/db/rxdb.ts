@@ -1,21 +1,48 @@
 import { addRxPlugin, createRxDatabase, RxDatabase } from 'rxdb';
-import { getRxStorageDexie } from 'rxdb/plugins/dexie';
+import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { DataProvider, list, oneData, selectMany, selectOne } from './db';
 import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
-import { RxDBReplicationGraphQLPlugin, RxGraphQLReplicationState } from 'rxdb/plugins/replication-graphql';
+import {
+    // pullQueryBuilderFromRxSchema,
+    // pushQueryBuilderFromRxSchema,
+    // pullStreamBuilderFromRxSchema,
+    RxGraphQLReplicationState,
+    replicateGraphQL
+} from 'rxdb/plugins/replication-graphql';
+
 import uuid from 'uuid-random';
 import { useObservableState } from 'observable-hooks';
 import { useState } from 'react';
 import { Auth } from 'firebase/auth';
+
+const env = import.meta.env
 
 // import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 // addRxPlugin(RxDBDevModePlugin);
 // also create your RxDatabase and RxCollection.
 
 addRxPlugin(RxDBUpdatePlugin);
-addRxPlugin(RxDBReplicationGraphQLPlugin);
 
-const env = import.meta.env
+// TODO import these only in non-production build
+async function loadDebugRxdb() {
+    const { RxDBDevModePlugin } = await import('rxdb/plugins/dev-mode')
+    addRxPlugin(RxDBDevModePlugin);
+    // const { wrappedValidateAjvStorage } = await import('rxdb/plugins/validate-ajv')
+
+    // const { RxDBUpdatePlugin } = await import('rxdb/plugins/update')
+    // addRxPlugin(RxDBUpdatePlugin);
+
+    const { RxDBQueryBuilderPlugin } = await import('rxdb/plugins/query-builder')
+    addRxPlugin(RxDBQueryBuilderPlugin);
+
+    const { RxDBLeaderElectionPlugin } = await import('rxdb/plugins/leader-election')
+    addRxPlugin(RxDBLeaderElectionPlugin);
+}
+
+if (process.env.NODE_ENV == 'development' && typeof window != 'undefined') {
+    loadDebugRxdb()
+}
+
 
 
 const srSmithSchema = {
@@ -41,7 +68,8 @@ const srSmithSchema = {
             type: 'boolean'
         },
         userId: {
-            type: 'string'
+            type: 'string',
+            maxLength: 100
         }
     },
     required: ['name', 'userId', 'isPublic'],
@@ -165,7 +193,8 @@ export class RxDBWrapper implements DataProvider {
     }
 
     async replicate() {
-        const replicationState = this.db.projects.syncGraphQL({
+        const replicationState = replicateGraphQL({
+            collection: this.db.projects,
             // urls to the GraphQL endpoints
             url: {
                 http: env.VITE_API_URL

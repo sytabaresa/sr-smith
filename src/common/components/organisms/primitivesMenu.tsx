@@ -72,7 +72,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.undo()}
             tabIndex={0}
-            className={`toolbox-btn btn-disabled`}
+            className={`toolbox-btn !btn-square btn-disabled`}
             onClick={() => ui.sendEvent('UNDO')}>
             <ReplyIcon className="w-6" />
           </button>
@@ -81,7 +81,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.delete()}
             tabIndex={0}
-            className={`toolbox-btn ${ui.current() == "delete" ? 'btn-active' : ''}`}
+            className={`toolbox-btn !btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
             onClick={_delete}>
             <TrashIcon className="w-6" />
           </button>
@@ -92,7 +92,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.show_menu()}
             tabIndex={0}
-            className={`toolbox-btn ${showMenu ? 'btn-active' : ''}`}
+            className={`toolbox-btn !btn-square ${showMenu ? 'btn-active' : ''}`}
             onClick={() => setShowMenu(!showMenu)}>
             <TemplateIcon className="w-6" />
           </button>
@@ -101,14 +101,14 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.move()}
             tabIndex={0}
-            className={`toolbox-btn ${ui.current() == "idle" ? 'btn-active' : ''}`}
+            className={`toolbox-btn !btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
             onClick={() => ui.sendEvent('EXIT')}>
             <HandIcon className="w-6" />
           </button>
         </div>
       </div>
       <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] ${showMenu ? 'dropdown-open' : ''}`}>
-        <div className="card dropdown-content mt-2 border-primary border bg-base-100">
+        <div className="dropdown-content mt-2 border-primary border bg-base-100">
           <ul
             tabIndex={0}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}

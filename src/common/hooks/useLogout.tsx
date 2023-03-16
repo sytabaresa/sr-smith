@@ -11,7 +11,7 @@ export const useLogout = () => {
 
     return async () => {
         try {
-            await logout()
+            if (logout) await logout()
             push('/', { lang: query.lang })
         } catch (err) {
             console.log('logout error', err)

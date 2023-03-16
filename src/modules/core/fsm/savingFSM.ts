@@ -88,7 +88,7 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
     try {
-        const { getOne } = DataProvider
+        const { getOne } = await DataProvider
 
         const projectData: SmithProject = await getOne({
             resource: 'projects',
@@ -108,7 +108,7 @@ async function getProjectData(ctx: SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update } = DataProvider
+    const { update } = await DataProvider
     await update({
         resource: 'projects',
         id: ctx.id,

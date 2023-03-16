@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react"
-import { auth } from "@modules/prepareServices"
+import { getAuth } from "@modules/prepareServices"
+import { FireAuthWrapper } from "@auth/firebase"
 
 export function useAuthProvider() {
-    return auth
+    const [imported, setImported] = useState<FireAuthWrapper | any>({})
+    useEffect(() => {
+        getAuth().then(auth => setImported(auth))
+    })
+    return imported
 }
 
 export function useUserAuth() {
-    const [user, setUser] = useState(auth.auth.currentUser)
+    const auth = useAuthProvider()
+    const [user, setUser] = useState(auth?.auth?.currentUser)
     const [loading, setLoading] = useState(!user)
 
     useEffect(() => {
         // Listen authenticated user
-        const unsubscriber = auth.auth.onAuthStateChanged(async (user) => {
+        const unsubscriber = auth?.auth?.onAuthStateChanged(async (user) => {
             try {
                 // console.log(user)
                 if (user) {
@@ -33,8 +39,8 @@ export function useUserAuth() {
         })
 
         // Unsubscribe auth listener on unmount
-        return () => unsubscriber()
-    }, [])
+        return () => unsubscriber?.()
+    }, [auth])
 
     return { user, loading }
 }

@@ -34,7 +34,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const setActualCode = (code) => send({ type: "CODE", value: code })
 
     return (
-        <div className={`border border-primary bg-base-100 card p-2 flex flex-col ${className}`} {...rest}>
+        <div className={`border border-primary bg-base-100 p-2 flex flex-col ${className}`} {...rest}>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 flex mb-1">
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 {typeof window != 'undefined' &&

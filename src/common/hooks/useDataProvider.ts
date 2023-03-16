@@ -1,10 +1,16 @@
 
 import { list, selectOne } from "@db/db"
-import { db } from "@modules/prepareServices"
+import { RxDBWrapper } from "@db/rxdb"
+import { getDB } from "@modules/prepareServices"
 import { useObservableState } from "observable-hooks"
+import { useEffect, useState } from "react"
 
 export function useDataProvider() {
-    return db
+    const [imported, setImported] = useState<RxDBWrapper | any>({})
+    useEffect(() => {
+        getDB().then(db => setImported(db))
+    })
+    return imported
 }
 
 export function useList(data: list) {
@@ -23,4 +29,4 @@ export function useOne(data: selectOne) {
     }
 }
 
-export const DataProvider = db
+export const DataProvider = getDB()

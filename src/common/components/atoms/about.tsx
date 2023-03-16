@@ -20,7 +20,7 @@ export const About = () => {
                 {" "}
                 {t.license.license()}.
             </a>
-            <h2 className="font-bold">{t.license.authors()}:</h2>
+            <h2 className="uppercase font-bold">{t.license.authors()}:</h2>
             <span>
                 <a
                     className="link"

@@ -66,11 +66,13 @@ const Layout = (props: Props) => {
             {navbar && (navbarComponent || <Navbar showComplement={showComplement} />)}
           </header>
           <div className="flex flex-col flex-grow overflow-hidden">
-            <div className='flex-grow overflow-hidden'>
-              {children}
+            <div className='flex flex-col overflow-y-auto h-full scrollbar-thin scrollbar-track-base-100 scrollbar-thumb-base-content flex-grow'>
+              <div className="flex flex-grow">
+                {children}
+              </div>
+              {footer && (footerComponent || <Footer className='my-2 ml-2 z-10' />)}
             </div>
           </div>
-          {footer && (footerComponent || <Footer className='mb-2 z-10' />)}
         </div>
         {drawer &&
           <div className="drawer-side overflow-x-hidden">

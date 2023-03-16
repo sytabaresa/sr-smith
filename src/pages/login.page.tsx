@@ -50,8 +50,11 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
     </div>}
   >
 
-    <div className="flex-grow flex flex-col items-center justify-start mt-20 lg:mt-40">
-      <h1 className="uppercase font-bold text-4xl my-8">SR Smith</h1>
+    <div className="flex-grow flex flex-col items-center justify-start mt-2 lg:mt-20">
+      <div className="flex flex-col items-center mb-6 hover:scale-110 transition ease-in-out delay-150">
+        <img className="w-40 drop-shadow-white" src="/images/logo.png" alt="sr smith logo" />
+        {/* <h1 className="uppercase font-bold text-6xl my-8">SR Smith</h1> */}
+      </div>
       <div className="tabs">
         <a
           className={`tab tab-lg tab-bordered uppercase ${isLogin ? "tab-active" : ""}`}
@@ -67,7 +70,7 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
           {t.login.sign_up()}
         </a>
       </div>
-      <div className="w-full px-4 sm:w-2/3 md:w-1/2 lg:w-1/3 z-10">
+      <div className="w-full px-4 sm:w-2/3 md:w-1/2 lg:w-1/3 z-10 mb-10">
         {isLogin ? (
           <LoginForm />
         ) : (

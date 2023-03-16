@@ -13,6 +13,11 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
       'service-worker-allowed': '/'
     }
   },
+  ...((command == 'serve') && {
+    define: {
+      global: {},
+    }
+  }),
   preview: {
     headers: {
       'service-worker-allowed': '/'
