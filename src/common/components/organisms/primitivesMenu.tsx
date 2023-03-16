@@ -72,7 +72,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.undo()}
             tabIndex={0}
-            className={`btn btn-square btn-disabled`}
+            className={`toolbox-btn btn-disabled`}
             onClick={() => ui.sendEvent('UNDO')}>
             <ReplyIcon className="w-6" />
           </button>
@@ -81,18 +81,18 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.delete()}
             tabIndex={0}
-            className={`btn btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
+            className={`toolbox-btn ${ui.current() == "delete" ? 'btn-active' : ''}`}
             onClick={_delete}>
             <TrashIcon className="w-6" />
           </button>
         </div>
       </div>
       <div className="flex gap-2 flex-0">
-        <div className={`btn-group `}>
+        <div className={`btn-group`}>
           <button
             aria-label={t.canvas.show_menu()}
             tabIndex={0}
-            className={`btn btn-square ${showMenu ? 'btn-active' : ''}`}
+            className={`toolbox-btn ${showMenu ? 'btn-active' : ''}`}
             onClick={() => setShowMenu(!showMenu)}>
             <TemplateIcon className="w-6" />
           </button>
@@ -101,7 +101,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.move()}
             tabIndex={0}
-            className={`btn btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
+            className={`toolbox-btn ${ui.current() == "idle" ? 'btn-active' : ''}`}
             onClick={() => ui.sendEvent('EXIT')}>
             <HandIcon className="w-6" />
           </button>

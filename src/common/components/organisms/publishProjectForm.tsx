@@ -44,7 +44,7 @@ const PublishProjectForm = ({ }: PublishProjectFormProps) => {
   return (
     <form className="flex flex-col justify-start md:px-20 min-h-16">
       <label htmlFor="projectName" className="label cursor-pointer">
-        <span className="label-text">{t.settings.make_public()}?</span>
+        <span className="label-text uppercase font-bold">{t.settings.make_public()}?</span>
         <input type="checkbox" className="toggle" onChange={updatePublicState} checked={publicState} />
       </label>
       {error != "" && <span className="text-red-500">{error.toString()}</span>}

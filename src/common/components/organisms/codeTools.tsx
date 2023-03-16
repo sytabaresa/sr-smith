@@ -24,10 +24,10 @@ const CodeTools = () => {
         <EditorPopup className="lg:hidden btn-group flex-0" />
         <div className="form-control absolute right-[-5rem] lg:right-[-7rem]">
           <label className="label cursor-pointer">
-            <span className="label-text w-10 mr-2">{t.canvas.smith_mode()}</span>
+            <span className="label-text uppercase w-10 mr-4 font-bold">{t.canvas.smith_mode()}</span>
             <input
               type="checkbox"
-              className="toggle toggle-primary"
+              className="toggle"
               checked={ui.context().smithMode}
               onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)}
             />

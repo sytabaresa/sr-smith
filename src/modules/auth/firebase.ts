@@ -28,6 +28,11 @@ export class FireAuthWrapper {
     constructor(auth: Auth, provider: AuthProvider) {
         this.auth = auth
         this.provider = provider
+
+        this.login = this.login.bind(this)
+        this.logout = this.logout.bind(this)
+        this.register = this.register.bind(this)
+        this.getUserIdentity = this.getUserIdentity.bind(this)
     }
 
     onAuthChange(callback) {
@@ -105,7 +110,7 @@ export class FireAuthWrapper {
 
     }
 
-    async getUserIdentity(data = {}) {
+    async getUserIdentity(data = {}): Promise<Record<string, any>> {
         return this.auth.currentUser?.toJSON()
     }
 

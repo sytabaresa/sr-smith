@@ -16,6 +16,11 @@ import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
 import { useTheme } from '@hooks/useTheme';
 import { useServiceWoker } from '@hooks/useServiceWorker';
+import { initServices } from "@modules/prepareServices"
+
+if (typeof window != 'undefined') {
+  initServices()
+}
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -64,6 +69,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
       if (import.meta.env.MODE === 'development') {
         await initializeSW()
       }
+
     }
     _async()
 
@@ -107,7 +113,7 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
         console.log('Service Worker version:', swVersion);
 
         // set sync/replaction
-        await messageSW(sw, { type: 'SET_REPLICATION' })
+        // await messageSW(sw, { type: 'SET_REPLICATION' })
       }
       work()
     }

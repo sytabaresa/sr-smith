@@ -16,14 +16,14 @@ precacheAndRoute(self.__WB_MANIFEST || [])
 // import { FireAuthWrapper, getProvider, initAuth } from "../auth";
 // import { FirebaseWrapper, initDB } from "../db";
 // import { RxDBWrapper } from '@db/rxdb';
-import { RxDBWrapper, initDB as initRxDB } from "../db/rxdb";
+// import { RxDBWrapper, initDB as initRxDB } from "../db/rxdb";
 // import { addDeleteFieldFirestore, syncFirestore } from '@db/migrate';
 // import { collection } from 'firebase/firestore';
 
 // let app: FirebaseApp
 // let store: FirebaseWrapper
 // let auth: FireAuthWrapper
-let rxdb: RxDBWrapper
+// let rxdb: RxDBWrapper
 
 function getPathFromUrl(url) {
   return url.split(/[?#]/)[0];
@@ -69,13 +69,13 @@ async function initFirst(event) {
   // })()
 
   // rxdb
-  !rxdb && await (async () => {
-    console.log('initializing rxdb...')
-    // const { db: _rxdb, coll } = await initRxDB()
-    rxdb = new RxDBWrapper()
-    await rxdb.init()
-    console.log('rxdb initialized')
-  })()
+  // !rxdb && await (async () => {
+  //   console.log('initializing rxdb...')
+  //   // const { db: _rxdb, coll } = await initRxDB()
+  //   rxdb = new RxDBWrapper()
+  //   await rxdb.init()
+  //   console.log('rxdb initialized')
+  // })()
 
 }
 
@@ -101,10 +101,10 @@ addEventListener('message', async event => {
     event.ports[0].postMessage(SW_VERSION);
   }
 
-  if (data.type === "SET_REPLICATION") {
-    console.log("set sync")
-    rxdb.replicate()
-  }
+  // if (data.type === "SET_REPLICATION") {
+  //   console.log("set sync")
+  //   rxdb.replicate()
+  // }
 
   // skip waiting
   if (data && data.type === 'SKIP_WAITING') {
@@ -133,9 +133,9 @@ addEventListener('message', async event => {
   //   event.ports[0].postMessage({ type: 'db', payload: await store[data.cmd](data.payload) })
   // }
 
-  if (data.type == 'db' && data.cmd) {
-    event.ports[0].postMessage({ type: 'db', payload: await rxdb[data.cmd](data.payload) })
-  }
+  // if (data.type == 'db' && data.cmd) {
+  //   event.ports[0].postMessage({ type: 'db', payload: await rxdb[data.cmd](data.payload) })
+  // }
 
   // if (data.type == 'auth' && data.cmd) {
   //   event.ports[0].postMessage({ type: 'auth', payload: await auth[data.cmd](data.payload) })

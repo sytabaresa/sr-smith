@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.toolbox-btn {
+    @apply btn btn-outline bg-base-100 btn-square;
+}
+

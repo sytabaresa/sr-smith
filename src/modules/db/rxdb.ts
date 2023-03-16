@@ -2,8 +2,11 @@ import { addRxPlugin, createRxDatabase, RxDatabase } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/dexie';
 import { DataProvider, list, oneData, selectMany, selectOne } from './db';
 import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
-import { RxDBReplicationGraphQLPlugin } from 'rxdb/plugins/replication-graphql';
+import { RxDBReplicationGraphQLPlugin, RxGraphQLReplicationState } from 'rxdb/plugins/replication-graphql';
 import uuid from 'uuid-random';
+import { useObservableState } from 'observable-hooks';
+import { useState } from 'react';
+import { Auth } from 'firebase/auth';
 
 // import { RxDBDevModePlugin } from 'rxdb/plugins/dev-mode';
 // addRxPlugin(RxDBDevModePlugin);
@@ -57,7 +60,7 @@ export async function initDB() {
         },
     });
 
-    coll.projects.preInsert(function(plainData){
+    coll.projects.preInsert(function (plainData) {
         // set age to 50 before saving
         plainData.id = uuid();
     }, false);
@@ -100,22 +103,16 @@ const pullQueryBuilder = (checkpoint, limit) => {
 const pushQueryBuilder = rows => {
     // console.log(rows)
     const outRows = rows.map(r => {
-        const { id, ...rest } = r.newDocumentState
-        return {
-            where: { id: { _eq: id } },
-            _set: rest,
-        }
+        const row = r.newDocumentState
+        return row
     })
 
     const query = `
-    mutation PushProjects($updates: [project_updates!]!, ) {
-        update_project_many(updates: $updates  ) {
+    mutation PushProjects($updates: [project_insert_input!]!) {
+        insert_project(objects: $updates, on_conflict: {constraint: projects_pkey, update_columns: [data, deleted, description, hashReference, isPublic, name]}) {
           affected_rows
-          returning {
-           id 
-          }
         }
-      }      
+      }           
     `;
     const variables = {
         updates: outRows
@@ -128,13 +125,43 @@ const pushQueryBuilder = rows => {
 
 export class RxDBWrapper implements DataProvider {
     db: RxDatabase
+    replication: RxGraphQLReplicationState<any, any>
 
     constructor() {
+        this.getList = this.getList.bind(this)
+        this.getOne = this.getOne.bind(this)
+        this.getMany = this.getMany.bind(this)
+        this.create = this.create.bind(this)
+        this.createMany = this.createMany.bind(this)
+        this.update = this.update.bind(this)
+        this.updateMany = this.updateMany.bind(this)
+        this.deleteMany = this.deleteMany.bind(this)
+        this.deleteOne = this.deleteOne.bind(this)
     }
 
     async init() {
         const { db, coll } = await initDB()
         this.db = db
+    }
+
+    async waitForDB() {
+        while (true) {
+            if (this.db) { return };
+            await new Promise(resolve => setTimeout(resolve, 100))
+        }
+    }
+
+    authDB(auth: Auth) {
+        auth.onIdTokenChanged(async (user) => {
+            if (user) {
+                const token = await user.getIdToken()
+                this.replication.setHeaders({
+                    'Authorization': `Bearer ${token}`
+                })
+            } else {
+                this.replication.setHeaders({})
+            }
+        })
     }
 
     async replicate() {
@@ -145,10 +172,16 @@ export class RxDBWrapper implements DataProvider {
             },
             pull: {
                 queryBuilder: pullQueryBuilder, // the queryBuilder from above
-                modifier: doc => {
-                    // console.log(doc)
-                    return doc
-                }, // (optional) modifies all pulled documents before they are handled by RxDB
+                modifier: (doc => {
+                    //Wwe have to remove optional non-existend field values
+                    // they are set as null by GraphQL but should be undefined
+                    Object.entries(doc).forEach(([k, v]) => {
+                        if (v === null) {
+                            delete doc[k];
+                        }
+                    });
+                    return doc;
+                }), // (optional) modifies all pulled documents before they are handled by RxDB
                 dataPath: 'data', // (optional) specifies the object path to access the document(s). Otherwise, the first result of the response data is used.
                 /**
                  * Amount of documents that the remote will send in one request.
@@ -158,7 +191,7 @@ export class RxDBWrapper implements DataProvider {
                  * This value is the same as the limit in the pullHuman() schema.
                  * [default=100]
                  */
-                // batchSize: 50
+                batchSize: 100
             },
             push: {
                 queryBuilder: pushQueryBuilder, // the queryBuilder from above
@@ -166,18 +199,19 @@ export class RxDBWrapper implements DataProvider {
                  * batchSize (optional)
                  * Amount of document that will be pushed to the server in a single request.
                  */
-                batchSize: 5,
+                batchSize: 100,
                 /**
                  * modifier (optional)
                  * Modifies all pushed documents before they are send to the GraphQL endpoint.
                  * Returning null will skip the document.
                  */
-                modifier: doc => doc
+                modifier: doc => doc,
+
             },
             // headers which will be used in http requests against the server.
             headers: {
                 // Authorization: 'Bearer abcde...'
-                'x-hasura-admin-secret': env.VITE_API_SECRET
+                // 'x-hasura-admin-secret': env.VITE_API_SECRET
             },
 
             /**
@@ -189,41 +223,75 @@ export class RxDBWrapper implements DataProvider {
             waitForLeadership: true,
             autoStart: true,
         });
+
+        this.replication = replicationState
     }
 
-    async create({ resource, variables, metaData }: oneData) {
-        const doc = await this.db[resource].insert(variables)
-        return doc.toJSON()
+    _create({ resource, variables, metaData }: oneData) {
+        const doc = this.db?.[resource].insert(variables)
+        return doc
     }
-    async createMany({ resource, variables, metaData }: oneData) {
-        const docs = await this.db[resource].bulkInsert(variables.data)
-        return docs.success.map(d => d.toJSON())
+    _createMany({ resource, variables, metaData }: oneData) {
+        const docs = this.db?.[resource].bulkInsert(variables.data)
+        return docs
     }
-    async deleteOne({ resource, id, variables, metaData }: selectOne) {
-        const doc = await this.db[resource].findOne({ selector: { id } }).exec()
-        return await doc.remove()
+    _getList({ resource, pagination, hasPagination, sort, filters, metaData }: list) {
+        const docs = this.db?.[resource]?.find({ selector: filters })
+        return docs
     }
-    async deleteMany({ resource, ids, variables, metaData }: selectMany) {
-        throw new Error("not implemented");
-        return
+    _getMany({ resource, ids, metaData }: selectMany) {
+        if (!this.db) return []
+        const docs = this.db?.[resource]?.findByIds(ids)
+        return docs
     }
-    async getList({ resource, pagination, hasPagination, sort, filters, metaData }: list) {
-        const docs = await this.db[resource].find({ selector: filters }).exec()
-        return docs.map(d => d.toJSON())
+    _getOne({ resource, id, metaData }: selectOne) {
+        if (!this.db) return undefined
+        const doc = this.db?.[resource]?.findOne({ selector: { id } })
+        return doc
     }
-    async getMany({ resource, ids, metaData }: selectMany) {
-        const docs = await this.db[resource].findByIds(ids)
-        return docs.values() as unknown as Record<string, any>[]
-    }
-    async getOne({ resource, id, metaData }: selectOne) {
-        const doc = await this.db[resource].findOne({ selector: { id } }).exec()
+
+    // final
+    async create(data: oneData) {
+        await this.waitForDB()
+        const doc = await this._create(data)
         return doc?.toJSON()
     }
-    async update({ resource, id, variables, metaData }) {
-        const doc = await this.db[resource].findOne({ selector: { id } }).exec()
-        return doc.update({ $set: variables })
+    async createMany(data: oneData) {
+        await this.waitForDB()
+        const docs = await this._createMany(data)
+        return docs?.success?.map(d => d.toJSON())
+    }
+    async getList(data: list) {
+        await this.waitForDB()
+        const docs = await this._getList(data)?.exec()
+        return docs?.map(d => d.toJSON())
+    }
+    async getMany(data: selectMany) {
+        await this.waitForDB()
+        const docs = await this._getMany(data)
+        return docs?.values() as unknown as Record<string, any>[]
+    }
+    async getOne(data: selectOne) {
+        await this.waitForDB()
+        const doc = await this._getOne(data)?.exec()
+        return doc?.toJSON()
+    }
+    async update({ resource, id, variables, metaData }: selectMany & { id: string }) {
+        await this.waitForDB()
+        const doc = await this.db?.[resource]?.findOne({ selector: { id } })?.exec()
+        return doc?.update({ $set: variables })
     }
     async updateMany({ resource, ids, variables, metaData }: selectMany) {
+        await this.waitForDB()
+        throw new Error("not implemented");
+    }
+    async deleteOne({ resource, id, variables, metaData }: selectOne) {
+        await this.waitForDB()
+        const doc = await this.db?.[resource]?.findOne({ selector: { id } })?.exec()
+        return await doc?.remove()
+    }
+    async deleteMany({ resource, ids, variables, metaData }: selectMany) {
+        await this.waitForDB()
         throw new Error("not implemented");
     }
 }

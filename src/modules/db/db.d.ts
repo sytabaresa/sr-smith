@@ -18,7 +18,7 @@ export interface list {
     pagination?: { current: number, pageSize: number }
     hasPagination?: boolean
     sort?: { field: string, order: "desc" | "asc" | "null" }
-    filters?: { op: string, v1: any, v2: any }[]
+    filters?: Record<string, any> | Record<string, any>[]
     metaData?: Record<string, any>
 }
 

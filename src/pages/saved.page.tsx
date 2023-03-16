@@ -1,37 +1,28 @@
-import { useEffect, useState } from "react";
 import WithAuth from "@hoc/withAuth";
 import SavedProjectCard from "@components/molecules/savedProjectCard";
 import { SmithProject } from "@localtypes/smith";
-import { useUser } from "@components/organisms/userContext";
 import { useLanguageQuery, useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
 import ModalContainer from "@components/molecules/modalContainer";
 import NewProjectForm from "@components/organisms/newProjectForm";
-import { useDataProvider } from "@hooks/useDataProvider";
-import { useRouter } from "@modules/router";
+import { useDataProvider, useList } from "@hooks/useDataProvider";
 
 export { Saved as Page }
 
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
-  const [userProjects, setUserProjects] = useState(null as SmithProject[]);
-  const { user } = useUser()
-  const { getList } = useDataProvider()
+  // const { user } = useUser()
 
-  useEffect(() => {
-    if (user) {
-      getSavedProjects(user.uid)
-    }
-  }, [user?.uid])
+  const userProjects = useList({ resource: 'projects'})
+  // useEffect(() => {
+  //   if (user) {
+  //     getSavedProjects(user.uid)
+  //   }
+  // }, [user?.uid])
 
-  const getSavedProjects = async (userUid: string) => {
-    const projectsList: SmithProject[] = await getList({ resource: 'projects' })
-    // console.log(projectsList)
-    setUserProjects(projectsList);
-  };
 
   const newProject = async (e) => {
 
@@ -41,11 +32,11 @@ const SavedProjects = () => {
     return <>
       {!projects ? <div className="flex items-center justify-center">
         <RefreshIcon className="animate-spin w-8 h-8 mr-2 my-4" />
-        <h3 className="text-xl">{t.common.loading()}...</h3>
+        <h3 className="text-xl uppercase">{t.common.loading()}...</h3>
       </div> :
         (projects.length == 0 ?
           <div className="my-4">
-            <h3 className="text-center text-xl">{t.saved.no_projects()}</h3>
+            <h3 className="text-center text-xl uppercase">{t.saved.no_projects()}</h3>
           </div>
           : <div className="flex flex-wrap justify-center lg:justify-start lg:mx-8">
             {projects.map((item, i) =>
@@ -70,7 +61,7 @@ const SavedProjects = () => {
     </div>}
   >
     <div className="overflow-y-auto h-full scrollbar-thin scrollbar-track-base-100 scrollbar-thumb-base-content flex-grow">
-      <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8">
+      <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8 uppercase">
         {t.saved.prev_projects()}
       </h1>
       {renderSavedProjects(userProjects)}

@@ -44,25 +44,25 @@ const SingUpForm = ({ }: SignUpFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text">{t.login.username()}</span>
+        <span className="label-text uppercase">{t.login.username()}</span>
       </label>
       <input
         id="user"
         name="user"
         type="email"
-        placeholder="test@example.com"
+        placeholder={"test@example.com".toUpperCase()}
         className="input input-bordered"
         aria-invalid={errors.email ? "true" : "false"}
         {...register("email", { required: true })}
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t.login.email_required()}</span>
+          <span className="label-text-alt uppercase" role="alert">{t.login.email_required()}</span>
         </label>
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text">{t.login.password()}</span>
+        <span className="label-text uppercase">{t.login.password()}</span>
       </label>
       <input
         id="password"
@@ -74,11 +74,11 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t.login.password_required()}</span>
+          <span className="label-text-alt uppercase" role="alert">{t.login.password_required()}</span>
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text" role="alert">{t.login.repeat_password()}</span>
+        <span className="label-text uppercase" role="alert">{t.login.repeat_password()}</span>
       </label>
       <input
         id="repeatPassword"
@@ -89,7 +89,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         {...register("repeatPassword", { required: true })}
       />
       <label className="label">
-        <span className="label-text-alt">{errorsRepeatPassword}</span>
+        <span className="label-text-alt uppercase">{errorsRepeatPassword}</span>
       </label>
       <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
         {t.login.sign_up()}

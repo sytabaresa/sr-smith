@@ -32,7 +32,7 @@ export default createMachine('anon', {
     ),
     checkDoc: invoke(getProjectData,
         transition('done', 'doc', reduce(saveData), action(sendCode)),
-        transition('error', 'noDoc'),
+        transition('error', 'noDoc', action((ctx, ev: any) => console.log(ev.error))),
     ),
     noDoc: state(
         transition('LOGOUT', 'anon', action(logout)),
@@ -88,7 +88,7 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
     try {
-        const { getOne } = new DataProvider()
+        const { getOne } = DataProvider
 
         const projectData: SmithProject = await getOne({
             resource: 'projects',
@@ -101,14 +101,14 @@ async function getProjectData(ctx: SavingContextType) {
         } else
             return Promise.reject('document not exists')
     } catch (err) {
-        console.log(err)
+        console.log("document loading error", err)
         return Promise.reject(err)
     }
 };
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update } = new DataProvider()
+    const { update } = DataProvider
     await update({
         resource: 'projects',
         id: ctx.id,

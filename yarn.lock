@@ -5557,6 +5557,11 @@ observable-fns@^0.6.1:
   resolved "https://registry.yarnpkg.com/observable-fns/-/observable-fns-0.6.1.tgz#636eae4fdd1132e88c0faf38d33658cc79d87e37"
   integrity sha512-9gRK4+sRWzeN6AOewNBTLXir7Zl/i3GB6Yl26gK4flxz8BXVpD3kt8amREmWNb0mxYOGDotvE5a4N+PtGGKdkg==
 
+observable-hooks@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-4.2.1.tgz#67b676c81e8317fd92d93390dcb291f312fe9ecc"
+  integrity sha512-urZ0D28+oH+SRLQoCDd68rvvJIqK3zgH/Is0nubXDc+CF6d8rbDBN7A2n9mPAax7BtCRlwtnCBnkj8UwXRDf1Q==
+
 on-finished@~2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/on-finished/-/on-finished-2.3.0.tgz#20f1336481b083cd75337992a16971aa2d906947"

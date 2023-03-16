@@ -17,7 +17,7 @@ export const UserMenu = () => {
                 </Link> */}
                 <label
                     htmlFor="my-drawer"
-                    className="btn md:btn-lg drawer-button"
+                    className="btn md:btn-lg btn-outline bg-base-100 btn-circle drawer-button"
                 >
                     <MenuAlt3Icon className="h-5 w-5" />
                 </label>

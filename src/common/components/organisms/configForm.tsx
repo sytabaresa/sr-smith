@@ -35,7 +35,7 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     return (
         <form className="flex flex-col justify-center form-control md:px-20" onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="coordPrecision" className="label">
-                <span className="label-text">{t.settings.precision()}</span>
+                <span className="label-text uppercase font-bold">{t.settings.precision()}</span>
             </label>
             <input
                 id="coordPrecision"
@@ -46,7 +46,7 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
             />
             {errors.coordPrecision && (
                 <label className="label">
-                    <span className="label-text-alt">{errors.coordPrecision.message as unknown as string}</span>
+                    <span className="label-text-alt uppercase">{errors.coordPrecision.message as unknown as string}</span>
                 </label>
             )}
             <button className="btn btn-primary mt-10 w-1/2 self-center" type="submit">

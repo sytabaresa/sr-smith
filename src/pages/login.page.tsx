@@ -51,15 +51,16 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
   >
 
     <div className="flex-grow flex flex-col items-center justify-start mt-20 lg:mt-40">
+      <h1 className="uppercase font-bold text-4xl my-8">SR Smith</h1>
       <div className="tabs">
         <a
-          className={`tab tab-lg tab-bordered ${isLogin ? "tab-active" : ""}`}
+          className={`tab tab-lg tab-bordered uppercase ${isLogin ? "tab-active" : ""}`}
           onClick={() => setIsLogin(true)}
         >
           {t.login.login()}
         </a>
         <a
-          className={`tab tab-lg tab-bordered ${!isLogin ? "tab-active" : ""
+          className={`tab tab-lg tab-bordered uppercase ${!isLogin ? "tab-active" : ""
             }`}
           onClick={() => setIsLogin(false)}
         >

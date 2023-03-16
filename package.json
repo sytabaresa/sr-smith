@@ -24,6 +24,7 @@
         "jsxgraph": "https://github.com/sytabaresa/jsxgraph",
         "lodash": "^4.17.21",
         "node-loader": "^2.0.0",
+        "observable-hooks": "^4.2.1",
         "preact": "^10.11.3",
         "preact-render-to-string": "^5.2.6",
         "prismjs": "^1.24.1",

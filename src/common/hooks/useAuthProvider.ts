@@ -1,65 +1,40 @@
-import { messageSW, } from "workbox-window"
-import { getSW } from "@utils/sw"
 import { useEffect, useState } from "react"
-import { useMessage, useServiceWoker } from "@hooks/useServiceWorker"
-
-export class AuthProvider {
-
-    processMsg(msg) {
-        if (msg.type == 'auth')
-            return msg.payload
-    }
-
-    login = async (data) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'login', payload: { ...data } })) as Record<string, any>
-    }
-    register = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'register', payload: { ...data } })) as Record<string, any>
-    }
-    forgotPassword = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'forgotPassword', payload: { ...data } })) as Record<string, any>
-    }
-    updatePassword = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'updatePassword', payload: { ...data } })) as Record<string, any>
-    }
-    logout = async (data: Record<string, any> = {}) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'logout', payload: { ...data } })) as Record<string, any>
-    }
-    checkAuth = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'checkAuth', payload: { ...data } })) as Record<string, any>
-    }
-    checkError = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'checkError', payload: { ...data } })) as Record<string, any>
-    }
-    getPermissions = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'getPermissions', payload: { ...data } })) as Record<string, any>
-    }
-    getUserIdentity = async (data: Record<string, any>) => {
-        return this.processMsg(await messageSW(getSW(), { type: 'auth', cmd: 'getUserIdentity', payload: { ...data } })) as Record<string, any>
-    }
-}
+import { auth } from "@modules/prepareServices"
 
 export function useAuthProvider() {
-    const auth = new AuthProvider()
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
-    const sw = useServiceWoker()
-    const message = useMessage()
+    return auth
+}
+
+export function useUserAuth() {
+    const [user, setUser] = useState(auth.auth.currentUser)
+    const [loading, setLoading] = useState(!user)
 
     useEffect(() => {
-        if (sw) {
-            auth.getUserIdentity({})
-        }
-    }, [sw])
+        // Listen authenticated user
+        const unsubscriber = auth.auth.onAuthStateChanged(async (user) => {
+            try {
+                // console.log(user)
+                if (user) {
+                    // User is signed in.
+                    // const { uid, displayName, email, photoURL } = user
+                    // You could also look for the user doc in your Firestore (if you have one):
+                    // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
+                    // setUser({ uid, displayName, email, photoURL })
+                    setUser(user)
+                    setLoading(false)
+                } else {
+                    setUser(null)
+                    setLoading(false)
+                }
+            } catch (error) {
+                // Most probably a connection error. Handle appropriately.
+            } finally {
+            }
+        })
 
-    useEffect(() => {
-        if (message?.type == 'auth') {
-            // console.log(event)
-            // console.log(e.payload)
-            setUser(message.payload)
-            setLoading(false)
-        }
-    }, [message])
+        // Unsubscribe auth listener on unmount
+        return () => unsubscriber()
+    }, [])
 
-    return { ...auth, loading, user }
+    return { user, loading }
 }

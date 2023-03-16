@@ -80,7 +80,7 @@ const Layout = (props: Props) => {
               {user && <div className="flex flex-col items-center mb-4 w-full">
                 <UserImage className="mb-2" imageClasses="w-24 h-24" />
                 <div className="w-44 text-center">
-                  <h1 className="font-bold break-words text-sm">{user?.email}</h1>
+                  <h1 className="font-bold break-words text-sm uppercase">{user?.email}</h1>
                   {/* <h2 className="break-normal">{user?.displayName}</h2> */}
                 </div>
               </div>}

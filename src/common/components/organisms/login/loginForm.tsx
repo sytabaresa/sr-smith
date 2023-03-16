@@ -34,27 +34,29 @@ const LoginForm = ({ }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text">{t.login.username()}</span>
+        <span className="label-text uppercase">
+          {t.login.username()}
+        </span>
       </label>
       <input
         id="user"
         name="user"
         type="email"
-        placeholder="test@example.com"
+        placeholder={"test@example.com".toUpperCase()}
         className="input input-bordered"
         aria-invalid={errors.email ? "true" : "false"}
         {...register("email", { required: true })}
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt" role="alert">
+          <span className="label-text-alt uppercase" role="alert">
             {t.login.email_required()}
           </span>
         </label>
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text">{t("password")}</span>
+        <span className="label-text uppercase">{t.login.password()}</span>
       </label>
       <input
         id="password"
@@ -66,7 +68,7 @@ const LoginForm = ({ }: LoginFormProps) => {
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt" role="alert">
+          <span className="label-text-alt uppercase" role="alert">
             {t.login.password_required()}
           </span>
         </label>
