@@ -193,6 +193,8 @@ export class RxDBWrapper implements DataProvider {
     }
 
     async replicate() {
+        console.log("activating replication...")
+        
         const replicationState = replicateGraphQL({
             collection: this.db.projects,
             // urls to the GraphQL endpoints

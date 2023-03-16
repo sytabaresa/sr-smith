@@ -112,7 +112,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <ul
             tabIndex={0}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
-            className={`p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full overflow-x-hidden scrollbar-thin !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
+            className={`p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full overflow-x-hidden scrollbar !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
           flex-nowrap   ${showMenu ? '' : 'hidden'}`}
           >
             {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
