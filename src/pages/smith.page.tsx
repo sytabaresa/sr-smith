@@ -119,21 +119,18 @@ const SmithProjectPage: React.FC = () => {
 
       </Layout>
       <ModalContainer
-        className="w-10/12 md:w-3/12"
         modalChild={<NewProjectForm />}
         modalName={labels.NEW_PROJECT_LABEL}
         isModal
       >
       </ModalContainer>
       <ModalContainer
-        className="w-10/12 md:w-3/12"
         modalChild={<PublishProjectForm />}
         modalName={labels.PUBLISH_PROJECT_LABEL}
         isModal
       >
       </ModalContainer>
       <ModalContainer
-        className="w-10/12 md:w-3/12"
         modalChild={<ConfigsForm />}
         modalName={labels.CONFIGS_LABEL}
         isModal

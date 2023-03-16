@@ -18,9 +18,7 @@ import { useTheme } from '@hooks/useTheme';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { initServices } from "@modules/prepareServices"
 
-if (typeof window != 'undefined') {
-  initServices()
-}
+initServices()
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -127,7 +125,8 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
           <ThemeUpdater />
           {import.meta.env.MODE === 'production' &&
             typeof window != 'undefined' &&
-            <UpdateSw autoUpdate />}
+            <UpdateSw autoUpdate />
+          }
         </UserProvider>
       </TranslationWrapper>
     </PageContextProvider>

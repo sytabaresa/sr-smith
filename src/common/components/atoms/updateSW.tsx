@@ -7,6 +7,7 @@ const UPDATE_SW_INTERVAL = 5 * 60 * 1000
 export interface UpdateSwProps {
     autoUpdate: boolean;
 }
+
 function UpdateSw({ autoUpdate }: UpdateSwProps) {
     const {
         offlineReady: [offlineReady, setOfflineReady],

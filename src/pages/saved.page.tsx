@@ -16,7 +16,7 @@ const SavedProjects = () => {
   const { t } = useTranslation()
   // const { user } = useUser()
 
-  const userProjects = useList({ resource: 'projects'})
+  const userProjects = useList({ resource: 'projects'}) as SmithProject[]
   // useEffect(() => {
   //   if (user) {
   //     getSavedProjects(user.uid)
@@ -77,7 +77,6 @@ const SavedProjects = () => {
       </div>
     </label>
     <ModalContainer
-      className="w-10/12 md:w-3/12"
       modalChild={<NewProjectForm />}
       modalName={NEW_PROJECT_LABEL}
       isModal
