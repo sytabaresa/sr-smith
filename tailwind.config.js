@@ -40,6 +40,7 @@ module.exports = {
                     ...require("daisyui/src/colors/themes")["[data-theme=lofi]"],
                     primary: "#5C5756",
                     "primary-focus": "#1D293B",
+                    "--rounded-box": '0'
                 },
             },
             {
