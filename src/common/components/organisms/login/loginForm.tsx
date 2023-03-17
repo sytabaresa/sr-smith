@@ -34,7 +34,7 @@ const LoginForm = ({ }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text uppercase">
+        <span className="label-text uppercase font-bold">
           {t.login.username()}
         </span>
       </label>
@@ -56,7 +56,7 @@ const LoginForm = ({ }: LoginFormProps) => {
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text uppercase">{t.login.password()}</span>
+        <span className="label-text uppercase font-bold">{t.login.password()}</span>
       </label>
       <input
         id="password"

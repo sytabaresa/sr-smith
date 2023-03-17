@@ -4,7 +4,7 @@ const es: BaseTranslation = {
 	// this is an example Translation, just rename or delete this folder if you want
 	app: {
 		title: "Sr Smith",
-		main_title: "Hello Sr Smith App 👋",
+		main_title: "Hola Sr Smith App 👋",
 		smith_app: "Smith App",
 	},
 	common: {
@@ -29,9 +29,9 @@ const es: BaseTranslation = {
 		close: 'Cerrar',
 	},
 	license: {
-		work: "This work is under",
-		license: "Licence GPL (GNU General Public License) version 3",
-		authors: "Authors",
+		work: "Este trabajo está bajo",
+		license: "Licencia GPL (GNU General Public License) versión 3",
+		authors: "Autores",
 	},
 	login: {
 		username: "Usuario",
@@ -42,6 +42,9 @@ const es: BaseTranslation = {
 		google_login: "Iniciar por Google",
 		repeat_password: "Repita Contraseña",
 		sign_up: "Registrarse",
+		login: "Login",
+		logging_in: "Loguéandose",
+		done: "Hecho",
 	},
 	saved: {
 		project_Description: "Descripcion del Projecto",
@@ -49,13 +52,22 @@ const es: BaseTranslation = {
 		create_project: "crear proyecto",
 		prev_projects: "Proyectos Anteriores",
 		no_projects: "No tienes proyectos guardados",
-		delete: "Delete",
+		delete: "Borrar",
+	},
+	project: {
+		name: "Nombre del Projecto",
+		done: "Hecho",
+		creating: "Creando",
+		create: "Crear",
+		description: "Descripción del projecto"
 	},
 	menu: {
+		new: "Nuevo",
 		publish: "Publicar",
 		settings: "Configs",
 		open: "Abrir",
 		login: "Login",
+		logout: "Logout"
 	},
 	apps: {
 		circuit_automata: "Circuit Autómata",
@@ -64,6 +76,12 @@ const es: BaseTranslation = {
 	canvas: {
 		run: "Run",
 		smith_mode: "Modo Smith",
+		move: "Mover",
+		delete: "Borrar",
+		undo: "Atrás",
+		show_menu: "Ver menú",
+		create: "Crear",
+		code: "Code"
 	},
 	settings: {
 		make_public: "Hacer público",

@@ -61,7 +61,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   return (
     <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="projectName" className="label">
-        <span className="label-text uppercase">{t.project.name()}*</span>
+        <span className="label-text uppercase font-bold">{t.project.name()}*</span>
       </label>
       <input
         id="projectName"
@@ -76,7 +76,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         </label>
       )}
       <label htmlFor="projectDescription" className="label">
-        <span className="label-text uppercase">{t.project.description()}</span>
+        <span className="label-text uppercase font-bold">{t.project.description()}</span>
       </label>
       <textarea
         id="projectDescription"

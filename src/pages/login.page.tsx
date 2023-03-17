@@ -57,13 +57,13 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
       </div>
       <div className="tabs">
         <a
-          className={`tab tab-lg tab-bordered uppercase ${isLogin ? "tab-active" : ""}`}
+          className={`tab tab-lg tab-bordered uppercase font-bold ${isLogin ? "tab-active" : ""}`}
           onClick={() => setIsLogin(true)}
         >
           {t.login.login()}
         </a>
         <a
-          className={`tab tab-lg tab-bordered uppercase ${!isLogin ? "tab-active" : ""
+          className={`tab tab-lg tab-bordered uppercase font-bold ${!isLogin ? "tab-active" : ""
             }`}
           onClick={() => setIsLogin(false)}
         >

@@ -1,11 +1,11 @@
 import { useTranslation } from "@modules/i18n"
 import { HTMLAttributes } from "react";
-import { useConfig } from "@hooks/useConfig";
 import { locales } from "@modules/i18n/i18n-util";
+import { useLang } from "@hooks/useLang";
 
 export const LangMenu = (props: HTMLAttributes<HTMLDivElement>) => {
     const { className, ...rest } = props
-    const [lang, setLang] = useConfig<string>('lang')
+    const [lang, setLang] = useLang()
     const { t } = useTranslation()
 
     return <div className={`dropdown dropdown-end uppercase ${className}`} {...rest}>

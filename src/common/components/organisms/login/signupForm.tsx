@@ -44,7 +44,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text uppercase">{t.login.username()}</span>
+        <span className="label-text uppercase font-bold">{t.login.username()}</span>
       </label>
       <input
         id="user"
@@ -62,7 +62,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text uppercase">{t.login.password()}</span>
+        <span className="label-text uppercase font-bold">{t.login.password()}</span>
       </label>
       <input
         id="password"
@@ -78,7 +78,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text uppercase" role="alert">{t.login.repeat_password()}</span>
+        <span className="label-text uppercase font-bold" role="alert">{t.login.repeat_password()}</span>
       </label>
       <input
         id="repeatPassword"
