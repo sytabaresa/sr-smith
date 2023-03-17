@@ -88,7 +88,10 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
-    await wait(50) //minimal time for the other machines (code editor fsm)
+
+    //minimal time for the other machines (code editor fsm)
+    // rxdb local cache in mobile is so fast ;)
+    await wait(50) 
 
     try {
         const { getOne } = await DataProvider

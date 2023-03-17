@@ -7,5 +7,5 @@
 }
 
 .btn-outline:not(.btn-active) {
-    @apply hover:bg-base-100 hover:text-primary;
+    @apply hover:bg-base-100 hover:text-base-content;
 }

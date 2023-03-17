@@ -72,7 +72,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.undo()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square btn-disabled`}
+            className={`toolbox-btn !btn-square !btn-disabled`}
             onClick={() => ui.sendEvent('UNDO')}>
             <ReplyIcon className="w-6" />
           </button>
