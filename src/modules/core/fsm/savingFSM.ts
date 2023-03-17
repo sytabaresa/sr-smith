@@ -2,6 +2,7 @@ import { createMachine, state, transition, reduce, invoke, guard, action, immedi
 import { SmithProject } from '@localtypes/smith';
 import { EditorContextType } from './codeEditorFSM';
 import { DataProvider } from '@hooks/useDataProvider';
+import { wait } from '@utils/time';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {
@@ -87,6 +88,8 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
+    await wait(50) //minimal time for the other machines (code editor fsm)
+
     try {
         const { getOne } = await DataProvider
 
