@@ -45,7 +45,6 @@ const en: Translation = {
 		sign_up: "Sign Up",
 		logging_in: "Logging In",
 		done: "Done",
-
 	},
 	saved: {
 		project_Description: "Project Description",

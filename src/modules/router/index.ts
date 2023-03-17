@@ -13,11 +13,13 @@ export class RouterWrapper implements RouterProvider {
             push: (path: string, query: Record<string, string> = {}) => navigate(path + qStr(query)),
             // replace: (path: string, query: Record<string, string> = {}) => navigate(path + qStr(query), { replace: true }),
             replace: (path: string, query: Record<string, string> = {}) => navigate(path + qStr(query), { overwriteLastHistoryEntry: true }),
-            goBack: (...args) => null, //TODO: implement
+            goBack: (...args) => {
+                if (typeof window != 'undefined') {
+                    window.history.back() //TODO: implement
+                }
+            },
         }
     }
-
-
 
     useLocation() {
         const pageContext = usePageContext()
