@@ -10,7 +10,7 @@ export function useDataProvider() {
     useEffect(() => {
         getDB().then(db => setImported(db))
     })
-    return imported
+    return imported as RxDBWrapper
 }
 
 export function useList(data: list) {

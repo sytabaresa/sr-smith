@@ -1,8 +1,6 @@
-import { useAuthProvider, useUserAuth } from '@hooks/useAuthProvider'
-import { getSW } from '@utils/sw'
+import { useUserAuth } from '@hooks/useAuthProvider'
 import { User } from 'firebase/auth'
-import { useState, useEffect, createContext, useContext, Dispatch } from 'react'
-import { messageSW } from 'workbox-window'
+import { createContext, useContext, Dispatch } from 'react'
 
 export interface UserContextType {
     user: User
@@ -11,8 +9,6 @@ export interface UserContextType {
     // setUser: Dispatch<User>
 }
 export const UserContext = createContext<UserContextType>(null)
-
-var timeout
 
 export default function UserContextComp({ children }) {
     const { user, loading } = useUserAuth()

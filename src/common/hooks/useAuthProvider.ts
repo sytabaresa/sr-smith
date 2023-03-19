@@ -7,7 +7,7 @@ export function useAuthProvider() {
     useEffect(() => {
         getAuth().then(auth => setImported(auth))
     })
-    return imported
+    return imported as FireAuthWrapper
 }
 
 export function useUserAuth() {

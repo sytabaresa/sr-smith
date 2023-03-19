@@ -11,8 +11,7 @@ import {
 } from 'rxdb/plugins/replication-graphql';
 
 import uuid from 'uuid-random';
-import { useObservableState } from 'observable-hooks';
-import { useState } from 'react';
+
 import { Auth } from 'firebase/auth';
 
 const env = import.meta.env
@@ -101,13 +100,14 @@ const pullQueryBuilder = (checkpoint, limit) => {
      * The first pull does not have a checkpoint
      * so we fill it up with defaults
      */
-    if (!checkpoint) {
+    if (!checkpoint || Object.keys(checkpoint).length == 0) {
         checkpoint = {
+            updatedAt: (new Date(0)).toISOString()
         };
     }
     // console.log(checkpoint)
     const query = `query PullProject($updatedAt: timestamptz, $id: uuid, $limit: Int!) {
-        documents: project(where: {updatedAt: {_gte: $updatedAt}, id: {_eq: $id}}, limit: $limit) {
+        documents: project(where: {updatedAt: {_gt: $updatedAt}, id: {_eq: $id}, deleted: {_eq: false}}, limit: $limit, order_by: {updatedAt: asc}) {
           data
           description
           id
@@ -121,8 +121,39 @@ const pullQueryBuilder = (checkpoint, limit) => {
     return {
         query,
         variables: {
-            ...((checkpoint.updatedAt) && { updatedAt: checkpoint.updated_at }),
-            ...((checkpoint.id) && { id: checkpoint.id }),
+            updatedAt: checkpoint.updatedAt,
+            limit,
+        }
+    };
+};
+
+const pullStreamQueryBuilder = (checkpoint, limit) => {
+    /**
+     * The first pull does not have a checkpoint
+     * so we fill it up with defaults
+     */
+    if (!checkpoint) {
+        checkpoint = {
+            updatedAt: 0,
+        };
+    }
+    // console.log(checkpoint)
+    const query = `subscription PullStreamProject($updatedAt: timestamptz, $id: uuid, $limit: Int!) {
+        documents: project(where: {updatedAt: {_gt: $updatedAt}, id: {_eq: $id}}, limit: $limit) {
+          data
+          description
+          id
+          deleted
+          updatedAt
+          createdAt
+          name
+          isPublic
+        }
+      }`;
+    return {
+        query,
+        variables: {
+            ...((checkpoint.updatedAt) && { updatedAt: checkpoint.updatedAt }),
             limit,
         }
     };
@@ -137,7 +168,7 @@ const pushQueryBuilder = rows => {
 
     const query = `
     mutation PushProjects($updates: [project_insert_input!]!) {
-        insert_project(objects: $updates, on_conflict: {constraint: projects_pkey, update_columns: [data, deleted, description, hashReference, isPublic, name]}) {
+        documents: insert_project(objects: $updates, on_conflict: {constraint: projects_pkey, update_columns: [data, deleted, description, hashReference, isPublic, name]}) {
           affected_rows
         }
       }           
@@ -186,15 +217,26 @@ export class RxDBWrapper implements DataProvider {
                 this.replication.setHeaders({
                     'Authorization': `Bearer ${token}`
                 })
+                this.replication.reSync()
             } else {
                 this.replication.setHeaders({})
             }
         })
     }
 
+    refresh() {
+        this.replication.reSync()
+    }
+
     async replicate() {
         console.log("activating replication...")
-        
+        // log all collection events for debugging
+        // this.db.projects.$.pipe(filter(ev => !ev.isLocal)).subscribe(ev => {
+        //     console.log('collection.$ emitted:');
+        //     console.dir(ev);
+        // });
+
+
         const replicationState = replicateGraphQL({
             collection: this.db.projects,
             // urls to the GraphQL endpoints
@@ -214,6 +256,21 @@ export class RxDBWrapper implements DataProvider {
                     return doc;
                 }), // (optional) modifies all pulled documents before they are handled by RxDB
                 dataPath: 'data', // (optional) specifies the object path to access the document(s). Otherwise, the first result of the response data is used.
+                responseModifier: async function (
+                    plainResponse, // the exact response that was returned from the server
+                    origin, // either 'handler' if plainResponse came from the pull.handler, or 'stream' if it came from the pull.stream
+                    requestCheckpoint // if origin==='handler', the requestCheckpoint contains the checkpoint that was send to the backend
+                ) {
+                    /**
+                     * In this example we aggregate the checkpoint from the documents array
+                     * that was returned from the graphql endpoint.
+                     */
+                    const lastDoc = plainResponse.documents.slice(-1)[0]
+                    return {
+                        documents: plainResponse.documents,
+                        checkpoint: { updatedAt: lastDoc?.updatedAt ? lastDoc.updatedAt : requestCheckpoint }
+                    };
+                },
                 /**
                  * Amount of documents that the remote will send in one request.
                  * If the response contains less then [batchSize] documents,
@@ -222,7 +279,8 @@ export class RxDBWrapper implements DataProvider {
                  * This value is the same as the limit in the pullHuman() schema.
                  * [default=100]
                  */
-                batchSize: 100
+                batchSize: 100,
+
             },
             push: {
                 queryBuilder: pushQueryBuilder, // the queryBuilder from above
@@ -237,6 +295,12 @@ export class RxDBWrapper implements DataProvider {
                  * Returning null will skip the document.
                  */
                 modifier: doc => doc,
+                responseModifier: async function (plainResponse) {
+                    /**
+                     * In this example we aggregate the conflicting documents from a response object
+                     */
+                    return plainResponse.affected_rows >= 1 ? [] : null;
+                },
 
             },
             // headers which will be used in http requests against the server.
@@ -254,6 +318,13 @@ export class RxDBWrapper implements DataProvider {
             waitForLeadership: true,
             autoStart: true,
         });
+
+        replicationState.error$.subscribe(err => {
+            console.error('replication error:');
+            console.dir(err);
+        });
+ 
+        // setInterval(() => replicationState.reSync(), 10 * 1000);
 
         this.replication = replicationState
     }

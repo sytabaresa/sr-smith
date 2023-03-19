@@ -14,9 +14,10 @@ export { Saved as Page }
 const SavedProjects = () => {
   const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
+  const db = useDataProvider()
   // const { user } = useUser()
 
-  const userProjects = useList({ resource: 'projects'}) as SmithProject[]
+  const userProjects = useList({ resource: 'projects' }) as SmithProject[]
   // useEffect(() => {
   //   if (user) {
   //     getSavedProjects(user.uid)
@@ -26,6 +27,10 @@ const SavedProjects = () => {
 
   const newProject = async (e) => {
 
+  }
+
+  const refresh = async (e) => {
+    db.refresh()
   }
 
   const renderSavedProjects = (projects: SmithProject[]) => {
@@ -61,9 +66,12 @@ const SavedProjects = () => {
     </div>}
   >
     <div className="w-full">
-      <h1 className="text-2xl lg:text-3xl font-bold text-center mb-4 lg:mt-4 lg:mb-8 uppercase">
-        {t.saved.prev_projects()}
-      </h1>
+      <div className="flex items-center justify-center mb-4 lg:mt-4 lg:mb-8">
+        <h1 className="text-2xl lg:text-3xl font-bold text-center uppercase">
+          {t.saved.prev_projects()}
+        </h1>
+        <RefreshIcon className="mx-4 w-10 active:animate-spin" onClick={refresh} />
+      </div>
       {renderSavedProjects(userProjects)}
     </div>
     <label htmlFor={NEW_PROJECT_LABEL}
