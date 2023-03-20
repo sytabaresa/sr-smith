@@ -42,8 +42,6 @@ if (process.env.NODE_ENV == 'development' && typeof window != 'undefined') {
     loadDebugRxdb()
 }
 
-
-
 const srSmithSchema = {
     title: 'sr-smith schema',
     version: 0,
