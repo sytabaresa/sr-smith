@@ -1,9 +1,8 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useLanguageQuery, useTranslation } from "next-export-i18n";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useRouter } from "@modules/router";
+import { useLanguageQuery, useTranslation } from "@modules/i18n";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { auth } from "../../../../modules/auth/clientApp";
+import { useAuthProvider } from "@hooks/useAuthProvider";
 
 type SignUpFormProps = {
   // onSubmit?: (data: any) => void;
@@ -19,8 +18,10 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     watch,
     formState: { errors },
   } = useForm();
+  const { register: signUp } = useAuthProvider()
   const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
-  const router = useRouter();
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
 
   const onSubmitSignUp = async (data) => {
     const { email, password, repeatPassword } = data;
@@ -29,19 +30,13 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       return;
     }
     try {
-      setErrorsRepeatPassword("");
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      // Signed in
-      const user = userCredential;
+      const user = await signUp(data)
       console.log('succefull created', user);
-      router.push({ pathname: '/smith', query });
+      push('/saved', query);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+      
       console.log(error);
     }
   };
@@ -49,25 +44,25 @@ const SingUpForm = ({ }: SignUpFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <label htmlFor="user" className="label">
-        <span className="label-text">{t("username")}</span>
+        <span className="label-text uppercase font-bold">{t.login.username()}</span>
       </label>
       <input
         id="user"
         name="user"
         type="email"
-        placeholder="test@example.com"
+        placeholder={"test@example.com".toUpperCase()}
         className="input input-bordered"
         aria-invalid={errors.email ? "true" : "false"}
         {...register("email", { required: true })}
       />
       {errors.email && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t("email-required")}</span>
+          <span className="label-text-alt uppercase" role="alert">{t.login.email_required()}</span>
         </label>
       )}
 
       <label htmlFor="password" className="label">
-        <span className="label-text">{t("password")}</span>
+        <span className="label-text uppercase font-bold">{t.login.password()}</span>
       </label>
       <input
         id="password"
@@ -79,11 +74,11 @@ const SingUpForm = ({ }: SignUpFormProps) => {
       />
       {errors.password && (
         <label className="label">
-          <span className="label-text-alt" role="alert">{t("password-required")}</span>
+          <span className="label-text-alt uppercase" role="alert">{t.login.password_required()}</span>
         </label>
       )}
       <label htmlFor="repeatPassword" className="label">
-        <span className="label-text" role="alert">{t("repeat-password")}</span>
+        <span className="label-text uppercase font-bold" role="alert">{t.login.repeat_password()}</span>
       </label>
       <input
         id="repeatPassword"
@@ -94,13 +89,17 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         {...register("repeatPassword", { required: true })}
       />
       <label className="label">
-        <span className="label-text-alt">{errorsRepeatPassword}</span>
+        <span className="label-text-alt uppercase">{errorsRepeatPassword}</span>
       </label>
       <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
-        {t("Sign up")}
+        {t.login.sign_up()}
       </button>
     </form>
   );
 };
 
 export default SingUpForm;
+function useHistory(): { push: any; } {
+  throw new Error("Function not implemented.");
+}
+

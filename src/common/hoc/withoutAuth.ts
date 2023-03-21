@@ -1,6 +1,4 @@
-import { ReactComponent } from 'react-hotkeys'
-import { Url } from 'url'
-import WithAuthRedirect from '../components/organisms/withAuthRedirect'
+import WithAuthRedirect from '@components/organisms/withAuthRedirect'
 
 /**
  * Require the user to be unauthenticated in order to render the component.

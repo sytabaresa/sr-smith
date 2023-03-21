@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useState } from "react";
 import CodeEditor from "./codeEditor";
-import { useTranslation } from "next-export-i18n";
+import { useTranslation } from "@modules/i18n";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -20,10 +20,10 @@ const EditorPopup = (props: EditorPopupProps) => {
         <div {...props}>
             <button
                 // preset="filled"
-                className={`btn ${isOpen ? 'btn-active' : ''}`}
+                className={`toolbox-btn ${isOpen ? 'btn-active' : ''}`}
                 onClick={() => setOpen(!isOpen)}
             >
-                {t('code')}
+                {t.canvas.code()}
             </button>
             <div className={`p-2 bg-transparent lg:hidden z-[999] w-full h-[50vh] ${isOpen ? 'fixed bottom-0 left-0' : 'hidden'}`}>
                 <CodeEditor className="h-full" />

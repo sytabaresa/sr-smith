@@ -1,19 +1,22 @@
-export const initializeServiceWorker = () => {
+import { getSW } from "@utils/sw"
+import { Workbox } from "workbox-window"
+
+export function lifecycleListenterRegister() {
     if (typeof window !== 'undefined' && 'serviceWorker' in navigator && window.workbox !== undefined) {
-        const wb = window.workbox
+            
         // add event listeners to handle any of PWA lifecycle event
         // https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-window.Workbox#events
-        wb.addEventListener('installed', event => {
+        getSW().addEventListener('installed', event => {
             console.log(`Event ${event.type} is triggered.`)
             console.log(event)
         })
 
-        wb.addEventListener('controlling', event => {
+        getSW().addEventListener('controlling', event => {
             console.log(`Event ${event.type} is triggered.`)
             console.log(event)
         })
 
-        wb.addEventListener('activated', event => {
+        getSW().addEventListener('activated', event => {
             console.log(`Event ${event.type} is triggered.`)
             console.log(event)
         })
@@ -26,12 +29,12 @@ export const initializeServiceWorker = () => {
             // When `event.wasWaitingBeforeRegister` is true, a previously updated service worker is still waiting.
             // You may want to customize the UI prompt accordingly.
             if (confirm('A newer version of this web app is available, reload to update?')) {
-                wb.addEventListener('controlling', event => {
+                getSW().addEventListener('controlling', event => {
                     window.location.reload()
                 })
 
                 // Send a message to the waiting service worker, instructing it to activate.
-                wb.messageSkipWaiting()
+                // getSW().messageSkipWaiting()
             } else {
                 console.log(
                     'User rejected to reload the web app, keep using old version. New version will be automatically load when user open the app next time.'
@@ -39,14 +42,7 @@ export const initializeServiceWorker = () => {
             }
         }
 
-        wb.addEventListener('waiting', promptNewVersionAvailable)
-
-        // ISSUE - this is not working as expected, why?
-        // I could only make message event listenser work when I manually add this listenser into sw.js file
-        wb.addEventListener('message', event => {
-            console.log(`Event ${event.type} is triggered.`)
-            console.log(event)
-        })
+        // wb.addEventListener('waiting', promptNewVersionAvailable)
 
         /*
         wb.addEventListener('redundant', event => {
@@ -63,7 +59,5 @@ export const initializeServiceWorker = () => {
         })
         */
 
-        // never forget to call register as auto register is turned off in next.config.js
-        wb.register()
     }
 }

@@ -1,29 +1,27 @@
-// import { Board } from 'jsxgraph'
 import JXG, { Board } from "jsxgraph"
 import { createMachine, state, state as final, transition, guard, interpret, action, immediate, reduce, invoke, } from 'robot3';
 import { Service } from "robot3"
 import { useMachine } from "react-robot";
-import { useContext, useEffect } from "react";
-import { wait } from "../../../common/utils/time";
-import { SmithContext, SmithContextType } from "../../../common/providers/smithContext";
+import { useContext, useEffect, useState } from "react";
+import { wait } from "@utils/time";
+import { SmithContext, SmithContextType } from "@providers/smithContext";
 
-import { initBoard } from "../initBoard";
-import { TooltipType } from "../tooltips/interfaces";
+import { initBoard } from "@core/initBoard";
+import { TooltipType } from "@tooltips/interfaces";
 
 // plugins
-import PointTooltip from "../tooltips/point";
-import SegmentTooltip from "../tooltips/segment";
-import LineTooltip from "../tooltips/line";
-import CircleTooltip from "../tooltips/circle";
-import CircleRadiusTooltip from "../tooltips/circleRadius";
-import CircumcircleTooltip from "../tooltips/circumcircle";
-import SemicircleTooltip from "../tooltips/semicircle";
-import ArcTooltip from "../tooltips/arc";
-import ReCircleTooltip from "../tooltips/reCircle";
-import ImCircleTooltip from "../tooltips/imCircle";
-import ImCircleAdTooltip from "../tooltips/imCircleAd";
-import ReCircleAdTooltip from "../tooltips/reCircleAd";
-import { removeElement } from "../utils/board";
+import PointTooltip from "@tooltips/point";
+import SegmentTooltip from "@tooltips/segment";
+import LineTooltip from "@tooltips/line";
+import CircleTooltip from "@tooltips/circle";
+import CircleRadiusTooltip from "@tooltips/circleRadius";
+import CircumcircleTooltip from "@tooltips/circumcircle";
+import SemicircleTooltip from "@tooltips/semicircle";
+import ArcTooltip from "@tooltips/arc";
+import ReCircleTooltip from "@tooltips/reCircle";
+import ImCircleTooltip from "@tooltips/imCircle";
+import ImCircleAdTooltip from "@tooltips/imCircleAd";
+import ReCircleAdTooltip from "@tooltips/reCircleAd";
 
 
 export function useDrawner() {

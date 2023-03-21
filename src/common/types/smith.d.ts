@@ -4,7 +4,7 @@
 //
 // import { User } from 'path/to/interfaces';
 
-import { Timestamp } from "firebase/firestore"
+// import { Timestamp } from "firebase/firestore"
 
 export type User = {
   id: number
@@ -13,8 +13,8 @@ export type User = {
 
 export type SmithProject = {
   id: string
-  createAt?: Timestamp
-  updateAt?: Timestamp
+  createdAt?: Time
+  updatedAt?: Time
   data?: string
   description?: string
   hashReference?: string

@@ -1,4 +1,4 @@
-import { abs, angle, zImPart, zRePart } from "../../../modules/core/utils/transforms";
+import { abs, angle, zImPart, zRePart } from "@core/utils/transforms";
 
 export interface InfoboxProps {
     x: number | string;
@@ -23,8 +23,8 @@ export function Infobox(props: InfoboxProps) {
             <div>∠</div>
         </div>
         <div className="flex flex-col items-end">
-            <div>{`(${formatN(x as number)},${formatN(y as number)})`}</div>
             <div>{`(${formatN(sx)},${formatN(sy)})`}</div>
+            <div>{`(${formatN(x as number)},${formatN(y as number)})`}</div>
             <div>{`${formatN(abss)}`}</div>
             <div>{`${formatN(ang)}˚`}</div>
         </div>

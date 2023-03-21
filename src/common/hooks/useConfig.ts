@@ -1,25 +1,38 @@
 import { Dispatch, useEffect, useState } from "react";
-import isEqual from "lodash/isEqual"
 
-export function useConfig(defaultConfig: Record<string, any> = {}): [Record<string, any>, (config: Record<string, any>) => void] {
-    const [config, _setConfig] = useState<Record<string, any>>(() => {
-        let item
-        if (typeof window !== "undefined") {
-            item = window.localStorage.getItem('config')
-            item = JSON.parse(item)
-            if (!item) {
-                window.localStorage.setItem('config', JSON.stringify(defaultConfig))
-            }
+export function setConfig<T>(key: string, value: T) {
+    if (typeof window != "undefined") {
+        window.localStorage.setItem(key, JSON.stringify(value))
+        window.dispatchEvent(new CustomEvent("storage", { detail: { key } })); //This is the important part
+    }
+}
+
+export function getConfig<T>(key: string, defaultValue: T): T {
+    if (typeof window != "undefined") {
+        return JSON.parse(window.localStorage.getItem(key)) as T ?? defaultValue
+    } else
+        return defaultValue
+}
+
+export function checkInitial<T>(key: string, defaultValue: T) {
+    if (typeof window != "undefined") {
+        if (!window.localStorage.getItem(key) && defaultValue != undefined) {
+            window.localStorage.setItem(key, JSON.stringify(defaultValue))
+            window.dispatchEvent(new CustomEvent("storage", { detail: { key } })); //This is the important part
         }
-        return item || defaultConfig
-    })
+    }
+}
+
+export function useConfig<T>(key: string, defaultValue: T = null): [T, Dispatch<React.SetStateAction<T>>] {
+    const [_config, _setConfig] = useState<T>(() => getConfig(key, defaultValue))
 
     useEffect(() => {
-        function checkConfig() {
-            const item = JSON.parse(window.localStorage.getItem('config'))
+        checkInitial(key, defaultValue)
 
-            if (item) {
-                _setConfig(item)
+        function checkConfig(e) {
+            if (e.detail.key == key) {
+                const dat = getConfig(key, defaultValue)
+                _setConfig(dat)
             }
         }
 
@@ -31,12 +44,11 @@ export function useConfig(defaultConfig: Record<string, any> = {}): [Record<stri
     }, [])
 
     useEffect(() => {
-        const old = JSON.parse(window.localStorage.getItem('config'))
-        if (!isEqual(config, old)) {
-            window.localStorage.setItem("config", JSON.stringify(config))
-            window.dispatchEvent(new Event("storage"));
+        const old = getConfig(key, defaultValue)
+        if (JSON.stringify(old) != JSON.stringify(_config)) {
+            setConfig(key, _config)
         }
-    }, [config])
+    }, [_config])
 
-    return [config, _setConfig]
+    return [_config, _setConfig]
 }

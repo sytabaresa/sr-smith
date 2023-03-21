@@ -1,10 +1,12 @@
-import { addDoc, collection, Timestamp } from "firebase/firestore";
-import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { auth, db } from "../../../modules/auth/clientApp";
-import { SmithProject } from "../../types/smith";
-import { useLanguageQuery, useTranslation } from "next-export-i18n"
+import { SmithProject } from "@localtypes/smith";
+import { useTranslation } from "@modules/i18n"
+import { useDataProvider } from "@hooks/useDataProvider";
+// import { Timestamp } from "firebase/firestore";
+import { useAuthProvider } from "@hooks/useAuthProvider";
+import { qStr } from "@utils/common";
+import { useRouter } from "@modules/router";
 
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
@@ -13,9 +15,10 @@ type NewProjectFormProps = {
 
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
-  const [query] = useLanguageQuery()
-  const router = useRouter()
-  const user = auth?.currentUser;
+  const { useHistory } = useRouter()
+  const { push } = useHistory();
+  const { getUserIdentity } = useAuthProvider()
+  const { create } = useDataProvider()
 
   const {
     register,
@@ -31,18 +34,22 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     // clearErrors()
     const { projectName, projectDescription } = data;
     try {
-      const docRef = await addDoc(collection(db, "projects"), {
-        createAt: Timestamp.now(),
-        data: "",
-        description: projectDescription,
-        hashReference: "",
-        isPublic: false,
-        name: projectName,
-        updateAt: Timestamp.now(),
-        userId: user.uid,
-      } as SmithProject);
-      await router.push({ pathname: '/', query: { id: docRef.id, ...query } });
-      router.reload()
+      // const user = await getUserIdentity(null)
+
+      const doc = await create({
+        resource: "projects",
+        variables: {
+          // createdAt: new Date(),
+          data: "",
+          description: projectDescription,
+          hashReference: "",
+          isPublic: false,
+          name: projectName,
+          // updatedAt: new Date(),
+          // userId: user.uid,
+        } as SmithProject
+      }) as SmithProject
+      push('/', { id: doc.id })
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })
@@ -53,7 +60,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   return (
     <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit)}>
       <label htmlFor="projectName" className="label">
-        <span className="label-text">{t('Project Name')}*</span>
+        <span className="label-text uppercase font-bold">{t.project.name()}*</span>
       </label>
       <input
         id="projectName"
@@ -64,11 +71,11 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
       />
       {errors.projectName && (
         <label className="label">
-          <span className="label-text-alt">{t('Required Field')}</span>
+          <span className="label-text-alt uppercase">{t.common.required_field()}</span>
         </label>
       )}
       <label htmlFor="projectDescription" className="label">
-        <span className="label-text">{t('Project Description')}</span>
+        <span className="label-text uppercase font-bold">{t.project.description()}</span>
       </label>
       <textarea
         id="projectDescription"
@@ -77,7 +84,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
         {...register("projectDescription", { required: false })}
       />
       <button className="btn btn-primary mt-10 w-1/2 self-center" type="submit">
-        {isSubmitting ? t('Creating') + "..." : isSubmitted ? t('Done') : t('Create')}
+        {isSubmitting ? t.project.creating() + "..." : isSubmitted ? t.project.done() : t.project.create()}
       </button>
     </form>
   );

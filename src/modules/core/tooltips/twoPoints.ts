@@ -1,11 +1,11 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, guard, immediate, state, state as final, transition, reduce } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
-import { normalizeName } from "../utils/board";
+import { normalizeName } from "@core/utils/board";
 
 class TwoPointsTooltip {
     jsxName = ''
-    description = 'Select two points'
+    description = 'two_points'
     paramsStr = (ob) => `${normalizeName(ob.board.select(ob.parents[0]).name)}, ${normalizeName(ob.board.select(ob.parents[1]).name)}`
 
     drawObject = (ctx, event) => {
@@ -20,7 +20,7 @@ class TwoPointsTooltip {
     }
 
     differentPoints = (ctx, ev) => {
-        return ctx.objectSelected.at(-1) != ctx.objectSelected.at(-2)
+        return ctx.objectSelected.slice(-1) != ctx.objectSelected.slice(-2)
     }
 
     removeLastObject = (ctx, ev) => {

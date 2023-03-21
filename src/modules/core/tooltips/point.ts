@@ -1,14 +1,14 @@
 import { TooltipType } from "./interfaces";
 import { createMachine, state, state as final, transition, reduce, immediate, guard } from "robot3";
 import { getCodefromObject, selectOrDrawPoint } from "./common";
-import { PointIcon } from "../../../common/components/atoms/icons";
+import { PointIcon } from "@components/atoms/icons";
 
 class PointTooltip implements TooltipType {
     jsxName = ''
     objectSelected: any[]
     name = 'point'
-    description = 'Select position, line, curve, or other point'
-    tooltip = 'Point'
+    description = 'point'
+    tooltip = 'point'
     icon = PointIcon
     isDrawObject = false
     paramsStr = (ob) => `${ob.X().toFixed(3)}, ${ob.X().toFixed(3)}`

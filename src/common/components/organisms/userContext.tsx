@@ -1,49 +1,20 @@
+import { useUserAuth } from '@hooks/useAuthProvider'
 import { User } from 'firebase/auth'
-import { useState, useEffect, createContext, useContext, Dispatch } from 'react'
-import { auth } from '../../../modules/auth/clientApp'
+import { createContext, useContext, Dispatch, ReactNode } from 'react'
 
 export interface UserContextType {
     user: User
     loadingUser: boolean
     isAuthenticated: boolean
-    setUser: Dispatch<User>
+    // setUser: Dispatch<User>
 }
 export const UserContext = createContext<UserContextType>(null)
 
-export default function UserContextComp({ children }) {
-    const [user, setUser] = useState<User>(null)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
-    const [loadingUser, setLoadingUser] = useState(true) // Helpful, to update the UI accordingly.
-
-    useEffect(() => {
-        // Listen authenticated user
-        const unsubscriber = auth.onAuthStateChanged(async (user) => {
-            try {
-                if (user) {
-                    // User is signed in.
-                    // const { uid, displayName, email, photoURL } = user
-                    // You could also look for the user doc in your Firestore (if you have one):
-                    // const userDoc = await firebase.firestore().doc(`users/${uid}`).get()
-                    // setUser({ uid, displayName, email, photoURL })
-                    setUser(user)
-                    setIsAuthenticated(true)
-                } else {
-                    setUser(null)
-                    setIsAuthenticated(false)
-                }
-            } catch (error) {
-                // Most probably a connection error. Handle appropriately.
-            } finally {
-                setLoadingUser(false)
-            }
-        })
-
-        // Unsubscribe auth listener on unmount
-        return () => unsubscriber()
-    }, [])
+export default function UserContextComp({ children }: {children: ReactNode}) {
+    const { user, loading } = useUserAuth()
 
     return (
-        <UserContext.Provider value={{ user, setUser, loadingUser, isAuthenticated }}>
+        <UserContext.Provider value={{ user, loadingUser: loading, isAuthenticated: !!user }}>
             {children}
         </UserContext.Provider>
     )

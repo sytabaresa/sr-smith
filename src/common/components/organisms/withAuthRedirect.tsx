@@ -1,10 +1,8 @@
-import { useLanguageQuery } from 'next-export-i18n'
-import Router, { useRouter } from 'next/router'
-import { ReactNode } from 'react'
-import { ReactComponent } from 'react-hotkeys'
-import { UrlObject } from 'url'
+import { useLanguageQuery } from '@modules/i18n'
+import { FC, useEffect } from 'react'
 import { useUser } from './userContext'
-import AuthLoading from '../atoms/authLoading'
+import AuthLoading from '@components/atoms/authLoading'
+import { useRouter } from '@modules/router'
 
 /**
  * Support client-side conditional redirecting based on the user's
@@ -19,37 +17,38 @@ import AuthLoading from '../atoms/authLoading'
  * @param location The location to redirect to.
  */
 interface WithAuthRedirectProps {
-  WrappedComponent: ReactComponent
-  LoadingComponent?: ReactComponent
+  WrappedComponent: FC
+  LoadingComponent?: FC
   expectedAuth: boolean
-  location: UrlObject | string
+  location: string
 }
 
 const WithAuthRedirect = ({
   WrappedComponent,
-  LoadingComponent = AuthLoading as unknown as ReactComponent,
+  LoadingComponent = AuthLoading as FC,
   expectedAuth,
   location,
 }: WithAuthRedirectProps) => {
-  
+
   const WithAuthRedirectWrapper = (props) => {
-    const router = useRouter()
-    const[query] = useLanguageQuery()
+    const { useHistory, useLocation } = useRouter()
+    const { push } = useHistory();
+    const { pathname } = useLocation()
+    const [query] = useLanguageQuery()
     const { loadingUser, user, isAuthenticated } = useUser()
+    // console.log(loadingUser, user, isAuthenticated)
 
-    if (loadingUser) {
-      return <LoadingComponent {...props} />
-    }
+    useEffect(() => {
+      if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
+        // console.log(location, pathname, query)
+        push(location, { redirect: pathname, ...query })
+      }
+    }, [isAuthenticated, loadingUser])
 
-    if (typeof window !== 'undefined' && expectedAuth !== isAuthenticated) {
-      Router.push(typeof location === 'string' ?
-        location :
-        { query: { redirect: router.pathname }, ...location, ...query }
-      )
-      return <></>
-    }
-
-    return <WrappedComponent {...props} />
+    return <div>
+      {loadingUser && <progress className="progress h-1 fixed w-full progress-warning"></progress>}
+      <WrappedComponent {...props} />
+    </div>
   }
 
   return WithAuthRedirectWrapper

@@ -1,8 +1,8 @@
 import JXG, { JXGOptions, PointOptions } from "jsxgraph"
-import { lightTheme, darkTheme } from "./utils/themes"
-import ReactDOMServer from 'react-dom/server'
-import { Infobox } from "../../common/components/atoms/infobox"
-import React from "react"
+import { lightTheme, darkTheme } from "@core/utils/themes"
+import { Infobox } from "@components/atoms/infobox"
+import render from 'preact-render-to-string';
+import { h } from "preact";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -90,14 +90,15 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
 
     brd.highlightInfobox = function (x, y, el) {
 
-        const body = ReactDOMServer.renderToStaticMarkup(
-            React.createElement(Infobox, { x, y })
+        const body = render(
+            h(Infobox, { x, y })
         )
+        // console.log(body)
         this.infobox.setText(body);
 
         return this
     };
-    
+
     (brd.infobox as any).distanceX = 0;
     (brd.infobox as any).distanceY = 10;
 
@@ -134,13 +135,13 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         });
 
     // debugger
-    brd.create('point', [0, 0], { name: 'O', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('point', [1, 0], { name: 'X1', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('point', [0, 1], { name: 'X2', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('point', [-1, 0], { name: 'X3', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('point', [0, -1], { name: 'X4', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true, name: 'x' })
-    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true, name: 'y' })
+    brd.create('point', [0, 0], { name: 'po', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [1, 0], { name: 'px1', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, 1], { name: 'px2', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [-1, 0], { name: 'px3', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('point', [0, -1], { name: 'px4', color: 'blue', size: 1, fixed: true, inmutable: true })
+    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true, name: 'ax_x' })
+    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true, name: 'ax_y' })
 
     brd.unsuspendUpdate()
 

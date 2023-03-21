@@ -1,8 +1,9 @@
-import { doc, getDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
-import { db } from "../../auth/clientApp"
-import { SmithProject } from '../../../common/types/smith';
+import { SmithProject } from '@localtypes/smith';
 import { EditorContextType } from './codeEditorFSM';
+import { DataProvider } from '@hooks/useDataProvider';
+import { wait } from '@utils/time';
+// import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType {
     id: string;
@@ -32,7 +33,7 @@ export default createMachine('anon', {
     ),
     checkDoc: invoke(getProjectData,
         transition('done', 'doc', reduce(saveData), action(sendCode)),
-        transition('error', 'noDoc'),
+        transition('error', 'noDoc', action((ctx, ev: any) => console.log(ev.error))),
     ),
     noDoc: state(
         transition('LOGOUT', 'anon', action(logout)),
@@ -87,27 +88,40 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
+
+    //minimal time for the other machines (code editor fsm)
+    // rxdb local cache in mobile is so fast ;)
+    await wait(50) 
+
     try {
-        const docRef = doc(db, `projects/${ctx.id}`);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            const projectData = docSnap.data() as SmithProject;
-            // console.log(docData)
+        const { getOne } = await DataProvider
+
+        const projectData: SmithProject = await getOne({
+            resource: 'projects',
+            id: ctx.id,
+        })
+
+        // console.log(projectData)
+        if (projectData) {
             return projectData
         } else
             return Promise.reject('document not exists')
     } catch (err) {
-        console.log(err)
+        console.log("document loading error", err)
         return Promise.reject(err)
     }
 };
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const docRef = doc(db, `projects/${ctx.id}`);
-    await updateDoc(docRef, {
-        data: ctx.code,
-        updateAt: Timestamp.now()
-    } as SmithProject);
+    const { update } = await DataProvider
+    await update({
+        resource: 'projects',
+        id: ctx.id,
+        variables: {
+            data: ctx.code,
+            // updatedAt: new Date()
+        } as SmithProject
+    })
     console.log('saving done.')
 };

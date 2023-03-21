@@ -1,6 +1,6 @@
-import { useUser } from "../organisms/userContext"
+import { useUser } from "@components/organisms/userContext"
 import gravatar from "gravatar"
-import { Avatar } from "../atoms/avatar"
+import { Avatar } from "@components/atoms/avatar"
 import { HTMLAttributes } from "react"
 
 

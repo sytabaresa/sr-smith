@@ -1,16 +1,23 @@
-import { signOut } from "firebase/auth"
-import { useLanguageQuery } from "next-export-i18n"
-import { useRouter } from "next/router"
-import { auth } from "../../modules/auth/clientApp"
+import { getDB } from "@modules/prepareServices";
+import { useRouter } from "@modules/router";
+import { useAuthProvider } from "./useAuthProvider"
+import { useDataProvider } from "./useDataProvider";
 
 export const useLogout = () => {
-    const router = useRouter()
-    const [query] = useLanguageQuery()
+    const { useHistory } = useRouter()
+    const { push } = useHistory();
+    const { logout } = useAuthProvider()
+    const db = useDataProvider()
 
     return async () => {
         try {
-            await signOut(auth)
-            router.push({ pathname: '/', query: { lang: query.lang } })
+            if (logout) await logout()
+
+            //reset db
+            await db.db.remove()
+            await db.db.destroy()
+            await getDB(true) 
+            push('/')
         } catch (err) {
             console.log('logout error', err)
         }
