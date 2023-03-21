@@ -23,46 +23,48 @@ const WB_MANIFEST = self.__WB_MANIFEST || []
 // )
 precacheAndRoute(WB_MANIFEST)
 cleanupOutdatedCaches()
+if (!import.meta.env.VITE_SW_DEV) {
 
-registerCustomRouters()
-// following lines gives you control of the offline fallback strategies
-// https://developers.google.com/web/tools/workbox/guides/advanced-recipes#comprehensive_fallbacks
+  registerCustomRouters()
+  // following lines gives you control of the offline fallback strategies
+  // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#comprehensive_fallbacks
 
-// Use a stale-while-revalidate strategy for all other requests.
-setDefaultHandler(new StaleWhileRevalidate())
+  // Use a stale-while-revalidate strategy for all other requests.
+  setDefaultHandler(new StaleWhileRevalidate())
 
-// This "catch" handler is triggered when any of the other routes fail to
-// generate a response.
-setCatchHandler(({ event }) => {
-  // The FALLBACK_URL entries must be added to the cache ahead of time, either
-  // via runtime or precaching. If they are precached, then call
-  // `matchPrecache(FALLBACK_URL)` (from the `workbox-precaching` package)
-  // to get the response from the correct cache.
-  //
-  // Use event, request, and url to figure out how to respond.
-  // One approach would be to use request.destination, see
-  // https://medium.com/dev-channel/service-worker-caching-strategies-based-on-request-types-57411dd7652c
-  switch (event.request.destination) {
-    case 'document':
+  // This "catch" handler is triggered when any of the other routes fail to
+  // generate a response.
+  setCatchHandler(({ event }) => {
+    // The FALLBACK_URL entries must be added to the cache ahead of time, either
+    // via runtime or precaching. If they are precached, then call
+    // `matchPrecache(FALLBACK_URL)` (from the `workbox-precaching` package)
+    // to get the response from the correct cache.
+    //
+    // Use event, request, and url to figure out how to respond.
+    // One approach would be to use request.destination, see
+    // https://medium.com/dev-channel/service-worker-caching-strategies-based-on-request-types-57411dd7652c
+    switch (event.request.destination) {
+      case 'document':
+        // If using precached URLs:
+        return matchPrecache('/');
+        // return caches.match('/fallback')
+        break
+      case 'image':
+        // If using precached URLs:
+        return matchPrecache('/images/logo.png');
+        // return caches.match('/static/images/fallback.png')
+        break
+      case 'font':
       // If using precached URLs:
-      return matchPrecache('/');
-      // return caches.match('/fallback')
-      break
-    case 'image':
-      // If using precached URLs:
-      return matchPrecache('/images/logo.png');
-      // return caches.match('/static/images/fallback.png')
-      break
-    case 'font':
-    // If using precached URLs:
-    // return matchPrecache(FALLBACK_FONT_URL);
-    //return caches.match('/static/fonts/fallback.otf')
-    //break
-    default:
-      // If we don't have a fallback, just return an error response.
-      return Response.error()
-  }
-})
+      // return matchPrecache(FALLBACK_FONT_URL);
+      //return caches.match('/static/fonts/fallback.otf')
+      //break
+      default:
+        // If we don't have a fallback, just return an error response.
+        return Response.error()
+    }
+  })
+}
 
 // import { FirebaseApp, initializeApp } from "firebase/app";
 // import { initApp } from "../app";

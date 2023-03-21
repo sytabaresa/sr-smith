@@ -18,8 +18,8 @@ export async function initServices() {
     }
 }
 
-export async function getApp() {
-    if (app || typeof window == 'undefined')
+export async function getApp(force = false) {
+    if (typeof window == 'undefined' || (!force && app))
         return app
     console.log('initializing app...')
     app = initApp()
@@ -28,8 +28,8 @@ export async function getApp() {
 }
 
 //   firebase auth
-export async function getAuth() {
-    if (auth || typeof window == 'undefined')
+export async function getAuth(force = false) {
+    if (typeof window == 'undefined' || (!force && auth))
         return auth
     console.log('initializing auth...')
     const _auth = initAuth(app)
@@ -40,8 +40,8 @@ export async function getAuth() {
 }
 
 // rxdb
-export async function getDB() {
-    if (db || typeof window == 'undefined')
+export async function getDB(force = false) {
+    if (typeof window == 'undefined' || (!force && db))
         return db
     console.log('initializing rxdb...')
     // const { db: _rxdb, coll } = await initRxDB()

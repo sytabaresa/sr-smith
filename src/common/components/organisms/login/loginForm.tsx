@@ -1,5 +1,4 @@
 import { useTranslation } from "@modules/i18n";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
 import { GoogleIcon } from "@components/atoms/icons";

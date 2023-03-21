@@ -6,6 +6,7 @@ import { useRouter } from "@modules/router";
 import { useLang } from "@hooks/useLang";
 import { useConfig } from "@hooks/useConfig";
 import { loadLocale } from "./i18n-util.sync";
+import { locales } from "./i18n-util";
 
 export function useTranslation() {
     const { LL } = useI18nContext()
@@ -35,7 +36,7 @@ export function useTranslation() {
 
             useEffect(() => {
                 const parLang = params?.lang?.[0]
-                const finalLang = parLang ? parLang : _lang
+                const finalLang = parLang && locales.includes(parLang) ? parLang : _lang
                 loadLocaleAsync(finalLang).then(() => setLocalesLoaded(true))
                 setLang(finalLang)
             }, [])

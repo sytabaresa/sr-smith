@@ -1,9 +1,8 @@
 import { useRouter } from "@modules/router";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
-import { qStr } from "@utils/common";
 
 type SignUpFormProps = {
   // onSubmit?: (data: any) => void;
@@ -33,10 +32,11 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     try {
       const user = await signUp(data)
       console.log('succefull created', user);
-      push('/smith' + qStr(query));
+      push('/saved', query);
     } catch (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
+      
       console.log(error);
     }
   };
