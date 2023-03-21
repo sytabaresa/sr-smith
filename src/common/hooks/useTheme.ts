@@ -5,7 +5,7 @@ export const useTheme = (def: string = '') => {
     //       state config hooks
     const [theme, _setTheme] = useConfig('theme', def)
     useEffect(() => {
-        console.log('use', theme)
+        // console.log('use', theme)
         document.documentElement.setAttribute("data-theme", theme);
     }, [theme])
 

@@ -18,7 +18,7 @@ const DrawerSmithMenu = (props) => {
     const { useHistory } = useRouter()
     const { push } = useHistory();
     const { t } = useTranslation();
-    const { isAuthenticated, user } = useUser()
+    const { isAuthenticated } = useUser()
     const _logout = useLogout()
 
     const logout = async () => {

@@ -1,4 +1,4 @@
-const SW_VERSION = '1.1.15';
+const SW_VERSION = '1.1.20';
 
 import { registerCustomRouters } from './routes';
 // import { skipWaiting, clientsClaim } from 'workbox-core'

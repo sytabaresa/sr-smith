@@ -25,7 +25,7 @@ const CodeTools = () => {
           <EditorPopup className="lg:hidden flex-0" />
           <div className="form-control mx-2">
             <label className="label py-1 cursor-pointer">
-              <span className="label-text uppercase text-right w-12 mr-2 font-bold">{t.canvas.smith_mode()}</span>
+              <span className={`label-text uppercase text-right w-12 mr-2 font-bold ${ui.context().smithMode ? '' : 'opacity-50'}`}>{t.canvas.smith_mode()}</span>
               <input
                 type="checkbox"
                 className="toggle"
