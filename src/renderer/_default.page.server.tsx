@@ -10,19 +10,24 @@ export const passToClient = ['pageProps', 'documentProps']
 async function render(pageContext) {
   const { Page, pageProps } = pageContext
   const pageHtml = renderToString(
+    // <App pageContext={pageContext}>
     <App pageContext={pageContext}>
-      {/* // <PageShell pageContext={pageContext}> */}
       <Page {...pageProps} />
-      {/* // </PageShell> */}
-    </App>
+    </App>,
+    {},
+    { pretty: true }
   )
 
+  // console.log('a', pageHtml)
+  
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext
   const title = (documentProps && documentProps.title) || config.title
   const desc = (documentProps && documentProps.description) || config.desc
 
   const documentHtml = document(title, desc, pageHtml)
+
+  // console.log('b', documentHtml)
 
   return {
     documentHtml,

@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { SmithProject } from "@localtypes/smith";
-import { useTranslation, useLanguageQuery } from "@modules/i18n"
+import { useTranslation } from "@modules/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
 // import { Timestamp } from "firebase/firestore";
 import { useAuthProvider } from "@hooks/useAuthProvider";
@@ -15,7 +15,6 @@ type NewProjectFormProps = {
 
 const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
-  const [query] = useLanguageQuery()
   const { useHistory } = useRouter()
   const { push } = useHistory();
   const { getUserIdentity } = useAuthProvider()
@@ -50,7 +49,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
           // userId: user.uid,
         } as SmithProject
       }) as SmithProject
-      push('/', { id: doc.id, lang: query.lang })
+      push('/', { id: doc.id })
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })

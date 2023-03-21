@@ -6,7 +6,7 @@ export default document
 function document(title: string, desc: string, pageHtml: string) {
 
     return escapeInject`<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">

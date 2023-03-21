@@ -3,7 +3,6 @@ import { Dispatch, useEffect, useState } from "react";
 export function setConfig<T>(key: string, value: T) {
     if (typeof window != "undefined") {
         window.localStorage.setItem(key, JSON.stringify(value))
-        // document.documentElement.setAttribute("data-theme", theme);
         window.dispatchEvent(new CustomEvent("storage", { detail: { key } })); //This is the important part
     }
 }

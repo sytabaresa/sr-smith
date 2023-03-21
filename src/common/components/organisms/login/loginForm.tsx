@@ -32,7 +32,7 @@ const LoginForm = ({ }: LoginFormProps) => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control">
+    <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control" method="post">
       <label htmlFor="user" className="label">
         <span className="label-text uppercase font-bold">
           {t.login.username()}

@@ -15,7 +15,7 @@ const en: Translation = {
 		users: "Users",
 		required_field: "Required Field",
 		change_locale: "Change Locale",
-		loading: "Locale",
+		loading: "Loading",
 		logout: "Logout",
 		save: "Save",
 		sign_up: "Sign Up",

@@ -1,6 +1,6 @@
 import { useUserAuth } from '@hooks/useAuthProvider'
 import { User } from 'firebase/auth'
-import { createContext, useContext, Dispatch } from 'react'
+import { createContext, useContext, Dispatch, ReactNode } from 'react'
 
 export interface UserContextType {
     user: User
@@ -10,7 +10,7 @@ export interface UserContextType {
 }
 export const UserContext = createContext<UserContextType>(null)
 
-export default function UserContextComp({ children }) {
+export default function UserContextComp({ children }: {children: ReactNode}) {
     const { user, loading } = useUserAuth()
 
     return (

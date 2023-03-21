@@ -58,7 +58,7 @@ type RootTranslation = {
 		 */
 		change_locale: string
 		/**
-		 * L​o​c​a​l​e
+		 * L​o​a​d​i​n​g
 		 */
 		loading: string
 		/**
@@ -441,7 +441,7 @@ export type TranslationFunctions = {
 		 */
 		change_locale: () => LocalizedString
 		/**
-		 * Locale
+		 * Loading
 		 */
 		loading: () => LocalizedString
 		/**

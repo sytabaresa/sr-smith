@@ -8,6 +8,7 @@ import { useConfig } from "./useConfig";
 export const useLang = (_lang: Locales = null) => {
     const { setLocale } = useI18nContext()
     const [lang, setLang] = useConfig<Locales>('lang', _lang)
+    
     useEffect(() => {
         loadLocaleAsync(lang).then(() => {
             // if (typeof window != 'undefined' && 'URLSearchParams' in window && lang) {
@@ -20,5 +21,5 @@ export const useLang = (_lang: Locales = null) => {
         // loadLocale(lang)
     }, [lang])
 
-    return [lang, setLang]
+    return [lang, setLang] as [Locales, React.Dispatch<React.SetStateAction<Locales>>]
 }

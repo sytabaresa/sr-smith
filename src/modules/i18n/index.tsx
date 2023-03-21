@@ -5,6 +5,7 @@ import { loadLocaleAsync } from "./i18n-util.async";
 import { useRouter } from "@modules/router";
 import { useLang } from "@hooks/useLang";
 import { useConfig } from "@hooks/useConfig";
+import { loadLocale } from "./i18n-util.sync";
 
 export function useTranslation() {
     const { LL } = useI18nContext()
@@ -13,7 +14,7 @@ export function useTranslation() {
     // const { T } = useT();
     return {
         t: LL,
-        TranslationWrapper: ({ locale, children }: { children: ReactNode, locale: Locales }) => {//<>{props.children}</>
+        TranslationWrapper: ({ locale, children }: { children: preact.ComponentChildren, locale: Locales }) => {//<>{props.children}</>
             const { useParams } = useRouter()
             const params = useParams();
             const [lang, setLang] = useConfig('lang', locale)
@@ -35,13 +36,12 @@ export function useTranslation() {
             useEffect(() => {
                 const parLang = params?.lang?.[0]
                 const finalLang = parLang ? parLang : _lang
-                loadLocaleAsync(_lang).then(() => setLocalesLoaded(true))
+                loadLocaleAsync(finalLang).then(() => setLocalesLoaded(true))
                 setLang(finalLang)
             }, [])
 
-            if (!localesLoaded) {
-                return null
-            }
+            loadLocale(_lang)
+
             return <TypesafeI18n locale={_lang}>
                 {children}
             </TypesafeI18n>

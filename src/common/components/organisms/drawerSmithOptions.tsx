@@ -3,9 +3,10 @@ import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
 import { useUser } from "./userContext";
-import { useLanguageQuery, useTranslation } from "@modules/i18n";
+import { useTranslation } from "@modules/i18n";
 import { SmithContext } from "@providers/smithContext";
 import { useLogout } from "@hooks/useLogout";
+import { Link } from "@modules/router/link";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
@@ -16,7 +17,6 @@ const DrawerSmithMenu = (props) => {
     const { saveService } = useContext(SmithContext)
     const { useHistory } = useRouter()
     const { push } = useHistory();
-    const [query] = useLanguageQuery()
     const { t } = useTranslation();
     const { isAuthenticated, user } = useUser()
     const _logout = useLogout()
@@ -24,14 +24,6 @@ const DrawerSmithMenu = (props) => {
     const logout = async () => {
         await _logout()
         saveService[1]('LOGOUT')
-    }
-
-    const login = () => {
-        push('/login', { lang: query.lang })
-    }
-
-    const open = () => {
-        push('/saved', { lang: query.lang })
     }
 
     return <div className="flex flex-col items-start flex-grow w-full">
@@ -43,7 +35,9 @@ const DrawerSmithMenu = (props) => {
                 </label>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
 
-                <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} onClick={open} />
+                <Link href="/saved" >
+                    <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} />
+                </Link>
                 <label htmlFor={labels.PUBLISH_PROJECT_LABEL}>
                     <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} />
                 </label>
@@ -54,7 +48,9 @@ const DrawerSmithMenu = (props) => {
                 <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
             </> :
             <>
-                <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} onClick={login} />
+                <Link href="/login">
+                    <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} />
+                </Link>
                 <label htmlFor={labels.CONFIGS_LABEL}>
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
                 </label>

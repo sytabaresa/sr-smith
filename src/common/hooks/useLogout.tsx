@@ -1,18 +1,15 @@
 import { useRouter } from "@modules/router";
-import { useLanguageQuery } from "@modules/i18n"
-
 import { useAuthProvider } from "./useAuthProvider"
 
 export const useLogout = () => {
     const { useHistory } = useRouter()
     const { push } = useHistory();
-    const [query] = useLanguageQuery()
     const { logout } = useAuthProvider()
 
     return async () => {
         try {
             if (logout) await logout()
-            push('/', { lang: query.lang })
+            push('/')
         } catch (err) {
             console.log('logout error', err)
         }

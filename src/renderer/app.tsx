@@ -25,7 +25,7 @@ if (process.env.NODE_ENV == 'development') {
   import('robot3/logging')
 }
 
-export function App({ children, pageContext }: { children: React.ReactNode; pageContext: PageContext }) {
+export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
@@ -44,6 +44,9 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
 
     // robot3 debuging mode
 
+    if (typeof window != 'undefined') {
+      window.workbox = { messageSW }
+    }
 
     // offline/online mode
     if (typeof window !== 'undefined' && 'ononline' in window && 'onoffline' in window) {
@@ -99,9 +102,6 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
     }
   }, [isOnline, pathname, sw])
 
-  if (typeof window != 'undefined') {
-    window.workbox = { messageSW }
-  }
 
   useEffect(() => {
     if (sw) {
@@ -135,6 +135,6 @@ export function App({ children, pageContext }: { children: React.ReactNode; page
 
 // This aux component is used to avoid rerender of all tree (only are CSS variable changes)
 const ThemeUpdater = () => {
-  useTheme()
+  useTheme("light")
   return <></>
 }
