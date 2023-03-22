@@ -9,7 +9,12 @@ export function setConfig<T>(key: string, value: T) {
 
 export function getConfig<T>(key: string, defaultValue: T): T {
     if (typeof window != "undefined") {
-        return JSON.parse(window.localStorage.getItem(key)) as T ?? defaultValue
+        let v = window.localStorage.getItem(key)
+
+        //identify raw strings
+        const item = !v.match(/^"|^true$|^false$|^{|^\[/g) ? `"${v}"` : v
+
+        return JSON.parse(item) as T ?? defaultValue
     } else
         return defaultValue
 }

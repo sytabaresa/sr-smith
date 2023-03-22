@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { SmithContext } from "@providers/smithContext";
 import { useScreen } from "@utils/screen";
-import { useConfig } from "@hooks/useConfig";
 import { useTheme } from "@hooks/useTheme";
 
 export interface ISmithBoardProps { };
@@ -15,7 +14,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
 
     useEffect(() => {
         send({ type: 'INIT', value: { name: BOX_NAME, theme, screenSize } })
-    }, []);
+    }, [])
 
     useEffect(() => {
         // console.log(theme)
