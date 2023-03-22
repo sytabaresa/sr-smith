@@ -6,7 +6,7 @@ import '@styles/fonts.css'
 
 import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
-import { useConfig } from '@hooks/useConfig';
+import { setConfig, setInitial, useConfig } from '@hooks/useConfig';
 import { PageContextProvider } from './usePageContext';
 import { PageContext } from './types';
 import { initializeSW } from '@modules/pwa/dev';
@@ -14,9 +14,10 @@ import { messageSW } from 'workbox-window';
 import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
-import { useTheme } from '@hooks/useTheme';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { initServices } from "@modules/prepareServices"
+import { useTheme } from '@hooks/useTheme';
+import { useLang } from '@hooks/useLang';
 
 initServices()
 
@@ -25,14 +26,16 @@ if (process.env.NODE_ENV == 'development') {
   import('robot3/logging')
 }
 
+//configs
+setInitial('theme', 'light')
+setInitial('lang', 'es')
+
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
   const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
 
   useEffect(() => {
-    // set theme as soon as posible
-
     // vh variable for many screen properties
     let update = () => {
       // We execute the same script as before
@@ -122,7 +125,6 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
       <TranslationWrapper locale="en">
         <UserProvider>
           {children}
-          <ThemeUpdater />
           {import.meta.env.MODE === 'production' &&
             typeof window != 'undefined' &&
             <UpdateSw autoUpdate />
@@ -131,10 +133,4 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
       </TranslationWrapper>
     </PageContextProvider>
   )
-}
-
-// This aux component is used to avoid rerender of all tree (only are CSS variable changes)
-const ThemeUpdater = () => {
-  useTheme("light")
-  return <></>
 }

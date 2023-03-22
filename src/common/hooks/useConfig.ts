@@ -14,7 +14,7 @@ export function getConfig<T>(key: string, defaultValue: T): T {
         return defaultValue
 }
 
-export function checkInitial<T>(key: string, defaultValue: T) {
+export function setInitial<T>(key: string, defaultValue: T) {
     if (typeof window != "undefined") {
         if (!window.localStorage.getItem(key) && defaultValue != undefined) {
             window.localStorage.setItem(key, JSON.stringify(defaultValue))
@@ -24,10 +24,12 @@ export function checkInitial<T>(key: string, defaultValue: T) {
 }
 
 export function useConfig<T>(key: string, defaultValue: T = null): [T, Dispatch<React.SetStateAction<T>>] {
-    const [_config, _setConfig] = useState<T>(() => getConfig(key, defaultValue))
+    const [_config, _setConfig] = useState<T>(() => {
+        setInitial(key, defaultValue)
+        return getConfig(key, defaultValue)
+    })
 
     useEffect(() => {
-        checkInitial(key, defaultValue)
 
         function checkConfig(e) {
             if (e.detail.key == key) {

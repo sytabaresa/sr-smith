@@ -9,7 +9,7 @@ export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
     const [theme, setTheme] = useTheme()
 
     const set = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log('set', e.target.checked)
+        // console.log('set', e.target.checked)
         setTheme(e.target.checked ? "dark" : "light")
     }
     return <label className={`swap swap-rotate`}  {...rest}>

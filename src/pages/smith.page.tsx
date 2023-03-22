@@ -11,9 +11,9 @@ import { useUser } from "@components/organisms/userContext";
 import { useMachine } from "react-robot";
 import editorMachine from '@core/fsm/codeEditorFSM'
 import saveMachine from "@core/fsm/savingFSM";
-import { useConfig } from "@hooks/useConfig";
+import { setInitial, useConfig } from "@hooks/useConfig";
 import Footer from "@components/organisms/footer";
-import { HotkeysProvider, useHotkeys } from "react-hotkeys-hook";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import "@core/elements/smithPoint"
 import "@core/elements/reCircle"
@@ -29,6 +29,12 @@ import { useRouter } from "@modules/router";
 
 import '@styles/jsxgraph.css';
 
+// configs
+const smithOptions = {
+  coordPrecision: 3,
+}
+setInitial('config', smithOptions)
+
 export { SmithProjectPage as Page }
 
 const SmithProjectPage: React.FC = () => {
@@ -37,7 +43,6 @@ const SmithProjectPage: React.FC = () => {
 
   const { isAuthenticated } = useUser()
   const [ui, setUi] = useState(new JXGDrawer());
-  const [theme] = useConfig<string>('theme')
   // const [ui, setUi] = useState(useDrawner())
   const [boardOptions, setBoardOptions] = useState<any>(null);
   const [projectData, setProjectData] = useState((null as SmithProject) || null);
@@ -48,7 +53,6 @@ const SmithProjectPage: React.FC = () => {
   const editorService = useMachine(editorMachine, {
     code: '',
     ui,
-    theme,
   });
 
   // hotkeys and keystrokes
@@ -75,12 +79,6 @@ const SmithProjectPage: React.FC = () => {
       send({ type: 'LOAD', value: params?.id?.[0] as string })
     }
   }, [isAuthenticated]);
-
-  // configs
-  const smithOptions = {
-    coordPrecision: 3,
-  }
-  useConfig('config', smithOptions)
 
   // all context
   const context = {
