@@ -159,6 +159,10 @@ type RootTranslation = {
 		 * D​o​n​e
 		 */
 		done: string
+		/**
+		 * P​a​s​s​w​o​r​d​s​ ​n​o​t​ ​m​a​t​c​h
+		 */
+		password_match: string
 	}
 	saved: {
 		/**
@@ -542,6 +546,10 @@ export type TranslationFunctions = {
 		 * Done
 		 */
 		done: () => LocalizedString
+		/**
+		 * Passwords not match
+		 */
+		password_match: () => LocalizedString
 	}
 	saved: {
 		/**

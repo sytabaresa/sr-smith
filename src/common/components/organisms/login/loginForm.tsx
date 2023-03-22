@@ -13,6 +13,7 @@ const LoginForm = ({ }: LoginFormProps) => {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm();
   const { login } = useAuthProvider()
@@ -20,18 +21,30 @@ const LoginForm = ({ }: LoginFormProps) => {
   const onSubmitLogin = async (data) => {
     const { email, password } = data;
 
-    const user = await login(data)
-    // Signed in
-    // console.log(user);
-
+    try {
+      const user = await login(data)
+      // Signed in
+      // console.log(user);
+    } catch (err) {
+      setError("root.login", { message: err })
+    }
   };
 
   const onGoogleLogin = async (data) => {
-    const user = await login({ provider: 'google' })
+    try {
+      const user = await login({ provider: 'google' })
+    } catch (err) {
+      setError("root.login", { message: err })
+    }
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control" method="post">
+      <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
+        <span className="">
+          {errors?.root?.login?.message?.code}
+        </span>
+      </div>
       <label htmlFor="user" className="label">
         <span className="label-text uppercase font-bold">
           {t.login.username()}

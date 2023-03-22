@@ -45,6 +45,7 @@ const en: Translation = {
 		sign_up: "Sign Up",
 		logging_in: "Logging In",
 		done: "Done",
+		password_match: "Passwords not match"
 	},
 	saved: {
 		project_Description: "Project Description",

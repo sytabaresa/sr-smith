@@ -45,6 +45,7 @@ const es: BaseTranslation = {
 		login: "Login",
 		logging_in: "Loguéandose",
 		done: "Hecho",
+		password_match: "Contraseñas no concuerdan"
 	},
 	saved: {
 		project_Description: "Descripcion del Projecto",

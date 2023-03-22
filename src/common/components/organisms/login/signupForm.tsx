@@ -16,33 +16,32 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm();
   const { register: signUp } = useAuthProvider()
-  const [errorsRepeatPassword, setErrorsRepeatPassword] = useState("");
   const { useHistory } = useRouter()
   const { push } = useHistory();
 
   const onSubmitSignUp = async (data) => {
-    const { email, password, repeatPassword } = data;
-    if (password != repeatPassword) {
-      setErrorsRepeatPassword("Passwords do not match");
-      return;
-    }
+    const { email, password } = data;
+
     try {
       const user = await signUp(data)
       console.log('succefull created', user);
       push('/saved', query);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      
-      console.log(error);
+    } catch (err) {
+      setError("root.login", { message: err })
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
+      <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
+        <span className="">
+          {errors?.root?.login?.message?.code}
+        </span>
+      </div>
       <label htmlFor="user" className="label">
         <span className="label-text uppercase font-bold">{t.login.username()}</span>
       </label>
@@ -70,7 +69,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         type="password"
         className="input input-bordered"
         aria-invalid={errors.password ? "true" : "false"}
-        {...register("password", { required: true })}
+        {...register("password", { required: true, deps: ['repeatPassword'] })}
       />
       {errors.password && (
         <label className="label">
@@ -86,11 +85,13 @@ const SingUpForm = ({ }: SignUpFormProps) => {
         type="password"
         className="input input-bordered"
         aria-invalid={errors.repeatPassword ? "true" : "false"}
-        {...register("repeatPassword", { required: true })}
+        {...register("repeatPassword", { required: true, validate: (v, values) => v == values.password })}
       />
-      <label className="label">
-        <span className="label-text-alt uppercase">{errorsRepeatPassword}</span>
-      </label>
+      {errors.repeatPassword && (
+        <label className="label">
+          <span className="label-text-alt uppercase" role="alert">{t.login.password_match()}</span>
+        </label>
+      )}
       <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
         {t.login.sign_up()}
       </button>
@@ -99,7 +100,3 @@ const SingUpForm = ({ }: SignUpFormProps) => {
 };
 
 export default SingUpForm;
-function useHistory(): { push: any; } {
-  throw new Error("Function not implemented.");
-}
-
