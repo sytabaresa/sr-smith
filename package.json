@@ -2,6 +2,7 @@
     "name": "sr-smith",
     "version": "0.0.5",
     "source": "src/index.html",
+    "type": "module",
     "scripts": {
         "dev": "npm-run-all --parallel start typesafe-i18n",
         "start": "vite",
@@ -21,7 +22,7 @@
         "eslint-config-next": "^13.2.4",
         "firebase": "^9",
         "gravatar": "^1.8.2",
-        "jsxgraph": "https://github.com/sytabaresa/jsxgraph",
+        "jsxgraph": "^1.5.0",
         "lodash": "^4.17.21",
         "node-loader": "^2.0.0",
         "observable-hooks": "^4.2.1",

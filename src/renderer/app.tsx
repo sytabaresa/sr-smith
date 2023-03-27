@@ -16,10 +16,6 @@ import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { initServices } from "@modules/prepareServices"
-import { useTheme } from '@hooks/useTheme';
-import { useLang } from '@hooks/useLang';
-
-initServices()
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -31,6 +27,8 @@ setInitial('theme', 'light')
 setInitial('lang', 'es')
 
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
+  initServices()
+
   const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
