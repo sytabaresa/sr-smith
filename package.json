@@ -18,7 +18,6 @@
     },
     "dependencies": {
         "@heroicons/react": "^1.0.0",
-        "canvas": "^2.11.0",
         "eslint-config-next": "^13.2.4",
         "firebase": "^9",
         "gravatar": "^1.8.2",
@@ -39,6 +38,9 @@
         "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
         "rxdb": "^14.3.6",
         "rxjs": "^7.8.0",
+        "slate": "^0.91.4",
+        "slate-history": "^0.86.0",
+        "slate-react": "^0.92.0",
         "typesafe-i18n": "^5.24.2",
         "uuid-random": "^1.3.2",
         "workbox-window": "^6.5.4"

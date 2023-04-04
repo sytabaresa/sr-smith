@@ -1,4 +1,4 @@
-import { HTMLAttributes, lazy, Suspense, useContext } from "react";
+import { HTMLAttributes, lazy, Suspense, useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -7,16 +7,86 @@ import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { highlight, languages } = prism;
+
+// Import the Slate editor factory.
+import { createEditor } from 'slate'
+
+// Import the Slate components and React plugin.
+import { Slate, Editable, withReact } from 'slate-react'
+import { withHistory } from 'slate-history'
+import { JSXElement, useJSXElement } from "./editor/withElements";
+
 // import Editor from "react-simple-code-editor"
-const Editor = lazy(() => import("react-simple-code-editor"))
+// const Editor = lazy(() => import("react-simple-code-editor"))
+
+
+// Borrow Leaf renderer from the Rich Text example.
+// In a real project you would get this via `withRichText(editor)` or similar.
+export const Leaf = ({ attributes, children, leaf }) => {
+    // if (leaf.bold) {
+    //     children = <strong>{children} </strong>
+    // }
+
+    // if (leaf.code) {
+    //     children = <code>{children} </code>
+    // }
+
+    // if (leaf.italic) {
+    //     children = <em>{children} </em>
+    // }
+
+    // if (leaf.underline) {
+    //     children = <u>{children} </u>
+    // }
+
+    return <span {...attributes} > {children} </span>
+}
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
 };
 
+
+const Element = props => {
+    const { attributes, children, element } = props
+    switch (element.type) {
+        case 'jsxelement':
+            return <JSXElement {...props} />
+        default:
+            return <p {...attributes}> {children} </p>
+    }
+}
+
+
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
-    // const { user, isAuthenticated, loadingUser } = useUser()
+
+    const renderLeaf = useCallback(props => <Leaf {...props} />, [])
+    const renderElement = useCallback(props => <Element {...props} />, [])
+
+    // const {user, isAuthenticated, loadingUser} = useUser()
+
+
+    // Add the initial value.
+    const initialValue = [
+        {
+            type: 'paragraph',
+            children: [
+                {
+                    text: 'A line of text in a paragraph.'
+                },
+                {
+                    type: 'jsxelement',
+                    character: 'test',
+                    children: [
+                        {
+                            text: 'hola'
+                        }
+                    ]
+                }
+            ],
+        },
+    ]
 
     const {
         editorService,
@@ -24,6 +94,11 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     // console.log('inner', contextCode)
 
 
+    const { withElement, getToken, selectorData, Popup, onKeyDown } = useJSXElement()
+    const editor = useMemo(
+        () => withElement(withReact(withHistory(createEditor()))),
+        []
+    )
     const [current, send] = editorService
     const { code, errorMsg } = current.context
 
@@ -39,7 +114,25 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 {typeof window != 'undefined' &&
                     <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
-                        <Editor
+                        <Slate
+                            editor={editor}
+                            value={initialValue}
+                            onChange={() => {
+                                getToken(editor)
+                                //TODO: use token
+                            }}
+                        >
+                            <Editable
+                                renderElement={renderElement}
+                                // renderLeaf={renderLeaf}
+                                onKeyDown={(event) => {
+                                    onKeyDown(event, editor)
+                                }}
+                                placeholder="Enter some text..."
+                            />
+                            <Popup editor={editor} data={selectorData} />
+                        </Slate>
+                        {/* <Editor
                             value={code}
                             onValueChange={setActualCode}
                             highlight={(code) => highlight(code, languages.js)}
@@ -52,7 +145,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                             id="smith-code"
                             textareaClassName="outline-none"
                             className="flex-1"
-                        />
+                        /> */}
                     </Suspense>}
             </div>
 
