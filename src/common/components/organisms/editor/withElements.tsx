@@ -1,25 +1,20 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
-import { Editor, Transforms, Range } from "slate"
-import { ReactEditor, useFocused, useSelected } from "slate-react"
+import { Editor, Transforms, Range, Element, Node } from "slate"
+import { ReactEditor, useFocused, useSelected, } from "slate-react"
 import { CustomText } from "./types"
 
 export type MentionElement = {
     type: 'jsxelement'
-    character: string
+    value: string
     children: CustomText[]
 }
 
 
 const CHARACTERS = [
-    'Aayla Secura',
-    'Adi Gallia',
-    'Admiral Dodd Rancit',
-    'Admiral Firmus Piett',
-    'Admiral Gial Ackbar',
-    'Admiral Ozzel',
-    'Admiral Raddus',
-    'Admiral Terrinald Screed',
-    'Admiral Trench',
+    'point',
+    'spoint',
+    'line',
+    'circle'
 ]
 
 export const useJSXElement = () => {
@@ -44,17 +39,36 @@ export const useJSXElement = () => {
         const { isInline, isVoid, markableVoid } = editor
 
         editor.isInline = element => {
-            return element.type === 'jsxelement' ? true : isInline(element)
+            return ['node_const', 'node_var', 'node_op_execfun', 'node_params'].includes(element.type) ? true : isInline(element)
         }
 
         editor.isVoid = element => {
-            return element.type === 'jsxelement' ? false : isVoid(element)
+            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
         }
 
         editor.markableVoid = element => {
-            return element.type === 'jsxelement' ? false : markableVoid(element)
+            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
         }
 
+
+        // const { normalizeNode } = editor
+
+        // editor.normalizeNode = entry => {
+        //     const [node, path] = entry
+
+        //     // If the element is a statement, ensure its children are valid.
+        //     if (Element.isElement(node) && node.type === 'statement') {
+        //         for (const [child, childPath] of Node.children(editor, path)) {
+        //             if (Element.isElement(child) && !editor.isInline(child)) {
+        //                 Transforms.unwrapNodes(editor, { at: childPath })
+        //                 return
+        //             }
+        //         }
+        //     }
+
+        //     // Fall back to the original `normalizeNode` to enforce other constraints.
+        //     normalizeNode(entry)
+        // }
 
         return editor
     }
@@ -131,9 +145,7 @@ export const useJSXElement = () => {
         const { editor, data } = props
         const ref = useRef<HTMLDivElement | null>()
 
-
-
-        console.log(chars, data)
+        // console.log(chars, data)
 
         useEffect(() => {
             if (data.target && chars.length > 0) {
@@ -194,7 +206,7 @@ export const useJSXElement = () => {
 export const insertMention = (editor, character) => {
     const mention: MentionElement = {
         type: 'jsxelement',
-        character,
+        value: character,
         children: [{ text: character }],
     }
     Transforms.insertNodes(editor, mention)
@@ -216,10 +228,43 @@ export const JSXElement = ({ attributes, children, element }) => {
         <span
             {...attributes}
             // contentEditable={false}
-            data-cy={`mention-${element.character.replace(' ', '-')}`}
+            data-cy={`mention-${element.value.replace(' ', '-')}`}
             className={`p-1 mx-1 align-baseline inline-block bg-gray-200 rounded text-lg`}
         >
-            @{children}
+            {children}
         </span>
     )
+}
+
+
+export const deserialize = (el, markAttributes = {}) => {
+    var out = []
+    if (el.type == 'node_op' && el.value == 'op_none') {
+        out = el.children.flatMap(c => deserialize(c, markAttributes))
+        return out
+    }
+
+    // array case
+    if (el.length && el.length > 0) {
+        const e = {
+            type: 'node_params',
+            children: el.map(c => deserialize(c, markAttributes))
+        }
+        return e
+    }
+
+    if (el.children?.length == 0) {
+        const { children, ...rest } = el
+        return {
+            // ...rest,
+            ...el,
+            // text: `${el.value}`,
+            children: [{ text: `${el.value}` }]
+        }
+    }
+    return {
+        ...el,
+        type: el.type == 'node_op' ? `node_${el.value}` : el.type,
+        children: el.children?.map(c => deserialize(c, markAttributes))
+    }
 }

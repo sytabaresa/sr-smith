@@ -1,4 +1,4 @@
-import { HTMLAttributes, lazy, Suspense, useCallback, useContext, useMemo, useState } from "react";
+import { HTMLAttributes, lazy, memo, Suspense, useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -7,14 +7,14 @@ import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { highlight, languages } = prism;
-
+import { data as initialData } from './editor/exampleAST'
 // Import the Slate editor factory.
 import { createEditor } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { JSXElement, useJSXElement } from "./editor/withElements";
+import { deserialize, JSXElement, useJSXElement } from "./editor/withElements";
 
 // import Editor from "react-simple-code-editor"
 // const Editor = lazy(() => import("react-simple-code-editor"))
@@ -50,10 +50,14 @@ export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
 const Element = props => {
     const { attributes, children, element } = props
     switch (element.type) {
-        case 'jsxelement':
+        case 'node_var':
             return <JSXElement {...props} />
+        case 'node_op_assign':
+            return <p {...attributes}> {children}</p>
+        case 'node_params':
+            return <span {...attributes}> ({children}) </span>
         default:
-            return <p {...attributes}> {children} </p>
+            return <span {...attributes}> {children} </span>
     }
 }
 
@@ -68,26 +72,6 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
 
     // Add the initial value.
-    const initialValue = [
-        {
-            type: 'paragraph',
-            children: [
-                {
-                    text: 'A line of text in a paragraph.'
-                },
-                {
-                    type: 'jsxelement',
-                    character: 'test',
-                    children: [
-                        {
-                            text: 'hola'
-                        }
-                    ]
-                }
-            ],
-        },
-    ]
-
     const {
         editorService,
     } = useContext(SmithContext)
@@ -104,6 +88,10 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     // console.log(code)
     // console.log(current.name)
+    const initialValue = useMemo(() => deserialize(initialData), [initialData])
+    console.log(initialValue)
+
+
 
     const parseExecute = () => send('PARSING')
     const setActualCode = (code) => send({ type: "CODE", value: code })
