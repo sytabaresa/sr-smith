@@ -1,5 +1,6 @@
 import { jsx } from 'slate-hyperscript'
 import { Node as SlateNode, Text } from 'slate'
+import { TokenStream } from "prismjs"
 
 export const deserialize = (el: HTMLElement, markAttributes = {}) => {
     if (el.nodeType === Node.TEXT_NODE) {
@@ -48,9 +49,31 @@ export const deserialize = (el: HTMLElement, markAttributes = {}) => {
 }
 
 
-export const serialize = nodes => {
+export const serializeCode = nodes => {
     // if(Text.isText(nodes)) {
     //     return SlateNode.string(nodes)
     // }
     return nodes.map(n => SlateNode.string(n)).join('\n')
+}
+
+export const deserializeTokens = (el) => {
+
+    if (typeof el == 'string') {
+        return { text: el }
+    } else if (el.type) {
+        if (typeof el.content == 'string') {
+            return { text: el.content, type: el.type }
+        } else {
+            return { type: el.type, children: el.content.map(c => deserializeTokens(c)) }
+        }
+    }
+
+    const children = el.map(t => deserializeTokens(t))
+
+    return children
+}
+
+export const deserializeCode = (code: string) => {
+
+    return code.split('\n').map(line => ({ type: 'paragraph', children: [{ text: line }] })) 
 }

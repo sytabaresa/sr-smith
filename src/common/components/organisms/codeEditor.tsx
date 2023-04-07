@@ -1,4 +1,4 @@
-import { HTMLAttributes, lazy, memo, Suspense, useCallback, useContext, useMemo, useState } from "react";
+import { HTMLAttributes, Suspense, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -6,51 +6,22 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
-const { highlight, languages } = prism;
-import { data as initialData } from './editor/exampleAST'
+const { highlight, languages, tokenize } = prism;
 // Import the Slate editor factory.
-import { createEditor } from 'slate'
+import { createEditor, Text } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { JSXElement, useJSXElement } from "./editor/withElements";
-import { deserialize, serialize } from './editor/deserialize'
-
-// import Editor from "react-simple-code-editor"
-// const Editor = lazy(() => import("react-simple-code-editor"))
-
-
-const onChange = (code) => {
-    console.log(code)
-    const html = highlight(code, languages.js).split('\n').map(e => `<p>${e}</p>`).join('')
-    console.log(html)
-    const document = new DOMParser().parseFromString(html, 'text/html')
-    console.log(document.body)
-    const ast = deserialize(document.body)
-    console.log(ast)
-    return ast
-}
+// import { JSXElement, useJSXElement } from "./editor/withElements";
+import { deserializeCode, serializeCode } from './editor/serializers'
 // Borrow Leaf renderer from the Rich Text example.
 // In a real project you would get this via `withRichText(editor)` or similar.
 export const Leaf = ({ attributes, children, leaf }) => {
-    // if (leaf.bold) {
-    //     children = <strong>{children} </strong>
-    // }
-
-    // if (leaf.code) {
-    //     children = <code>{children} </code>
-    // }
-
-    // if (leaf.italic) {
-    //     children = <em>{children} </em>
-    // }
-
-    // if (leaf.underline) {
-    //     children = <u>{children} </u>
-    // }
-
-    return <span {...attributes} className={leaf.class}>{children}</span>
+    return <span
+        {...attributes}
+        {...(leaf.type && { className: `token ${leaf.type}` })}
+    >{children}</span>
 }
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
@@ -61,12 +32,8 @@ export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
 const Element = props => {
     const { attributes, children, element } = props
     switch (element.type) {
-        case 'node_var':
-            return <JSXElement {...props} />
         case 'paragraph':
             return <p {...attributes}>{children}</p>
-        // case 'span':
-        //     return <span {...attributes} className={element.class}>{children}</span>
         default:
             return <span {...attributes}>{children}</span>
     }
@@ -89,27 +56,60 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     // console.log('inner', contextCode)
 
 
-    const { withElement, getToken, selectorData, Popup, onKeyDown } = useJSXElement()
-    const editor = useMemo(
-        () => withElement(withReact(withHistory(createEditor()))),
-        []
-    )
+    // const { withElement, getToken, selectorData, Popup, onKeyDown } = useJSXElement()
     const [current, send] = editorService
     const { code, errorMsg } = current.context
 
     // console.log(code)
     // console.log(current.name)
-    // const initialValue = useMemo(() => deserialize(initialData), [initialData])
-    const initialValue = useMemo(() => {
-        if (typeof window != 'undefined') {
-            const code = `a = 1;\nvar b = "a";`
-            return onChange(code)
-        } else {
-            return []
-        }
-    }, [])
+    const editor = useMemo(
+        () => (withReact(withHistory(createEditor()))),
+        []
+    )
+    const initialValue = useMemo(() => deserializeCode(code), [code])
     // console.log(initialValue)
+    useEffect(() => {
+        editor.children = deserializeCode(code)
+    }, [code])
 
+
+    const decorate = useCallback(([node, path]) => {
+        const ranges = []
+
+        if (!Text.isText(node)) {
+            return ranges
+        }
+
+        const getLength = token => {
+            if (typeof token === 'string') {
+                return token.length
+            } else if (typeof token.content === 'string') {
+                return token.content.length
+            } else {
+                return token.content.reduce((l, t) => l + getLength(t), 0)
+            }
+        }
+
+        const tokens = tokenize(node.text, languages.js)
+        let start = 0
+
+        for (const token of tokens) {
+            const length = getLength(token)
+            const end = start + length
+
+            if (typeof token !== 'string') {
+                ranges.push({
+                    type: token.type,
+                    anchor: { path, offset: start },
+                    focus: { path, offset: end },
+                })
+            }
+
+            start = end
+        }
+
+        return ranges
+    }, [])
 
 
     const parseExecute = () => send('PARSING')
@@ -124,44 +124,28 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                         <Slate
                             editor={editor}
                             value={initialValue}
-                            onChange={(value) => {
+                            onChange={value => {
                                 const isAstChange = editor.operations.some(
                                     op => 'set_selection' !== op.type
                                 )
-                                if (isAstChange && value.length > 0) {
-                                    console.log(editor.operations)
-                                    console.log(editor.children)
-                                    const code = serialize(value)
-                                    editor.children = onChange(code)
+                                if (isAstChange) {
+                                    // Serialize the value and save the string value to Local Storage.
+                                    const code = serializeCode(value)
+                                    setActualCode(code)
                                 }
-                                // getToken(editor)
-                                //TODO: use token
                             }}
                         >
                             <Editable
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
+                                decorate={decorate}
                                 onKeyDown={(event) => {
                                     // onKeyDown(event, editor)
                                 }}
-                                placeholder="Enter some text..."
+                            // placeholder="Enter some text..."
                             />
                             {/* <Popup editor={editor} data={selectorData} /> */}
                         </Slate>
-                        {/* <Editor
-                            value={code}
-                            onValueChange={setActualCode}
-                            highlight={(code) => highlight(code, languages.js)}
-                            padding={10}
-                            style={{
-                                fontFamily: '"Fira code", "Fira Mono", monospace',
-                                fontSize: 12,
-                                overflow: 'initial',
-                            }}
-                            id="smith-code"
-                            textareaClassName="outline-none"
-                            className="flex-1"
-                        /> */}
                     </Suspense>}
             </div>
 
