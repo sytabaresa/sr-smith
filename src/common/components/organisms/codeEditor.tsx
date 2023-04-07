@@ -14,12 +14,23 @@ import { createEditor } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { deserialize, JSXElement, useJSXElement } from "./editor/withElements";
+import { JSXElement, useJSXElement } from "./editor/withElements";
+import { deserialize, serialize } from './editor/deserialize'
 
 // import Editor from "react-simple-code-editor"
 // const Editor = lazy(() => import("react-simple-code-editor"))
 
 
+const onChange = (code) => {
+    console.log(code)
+    const html = highlight(code, languages.js).split('\n').map(e => `<p>${e}</p>`).join('')
+    console.log(html)
+    const document = new DOMParser().parseFromString(html, 'text/html')
+    console.log(document.body)
+    const ast = deserialize(document.body)
+    console.log(ast)
+    return ast
+}
 // Borrow Leaf renderer from the Rich Text example.
 // In a real project you would get this via `withRichText(editor)` or similar.
 export const Leaf = ({ attributes, children, leaf }) => {
@@ -39,7 +50,7 @@ export const Leaf = ({ attributes, children, leaf }) => {
     //     children = <u>{children} </u>
     // }
 
-    return <span {...attributes} > {children} </span>
+    return <span {...attributes} className={leaf.class}>{children}</span>
 }
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
@@ -52,12 +63,12 @@ const Element = props => {
     switch (element.type) {
         case 'node_var':
             return <JSXElement {...props} />
-        case 'node_op_assign':
-            return <p {...attributes}> {children}</p>
-        case 'node_params':
-            return <span {...attributes}> ({children}) </span>
+        case 'paragraph':
+            return <p {...attributes}>{children}</p>
+        // case 'span':
+        //     return <span {...attributes} className={element.class}>{children}</span>
         default:
-            return <span {...attributes}> {children} </span>
+            return <span {...attributes}>{children}</span>
     }
 }
 
@@ -88,8 +99,16 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     // console.log(code)
     // console.log(current.name)
-    const initialValue = useMemo(() => deserialize(initialData), [initialData])
-    console.log(initialValue)
+    // const initialValue = useMemo(() => deserialize(initialData), [initialData])
+    const initialValue = useMemo(() => {
+        if (typeof window != 'undefined') {
+            const code = `a = 1;\nvar b = "a";`
+            return onChange(code)
+        } else {
+            return []
+        }
+    }, [])
+    // console.log(initialValue)
 
 
 
@@ -105,20 +124,29 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                         <Slate
                             editor={editor}
                             value={initialValue}
-                            onChange={() => {
-                                getToken(editor)
+                            onChange={(value) => {
+                                const isAstChange = editor.operations.some(
+                                    op => 'set_selection' !== op.type
+                                )
+                                if (isAstChange && value.length > 0) {
+                                    console.log(editor.operations)
+                                    console.log(editor.children)
+                                    const code = serialize(value)
+                                    editor.children = onChange(code)
+                                }
+                                // getToken(editor)
                                 //TODO: use token
                             }}
                         >
                             <Editable
                                 renderElement={renderElement}
-                                // renderLeaf={renderLeaf}
+                                renderLeaf={renderLeaf}
                                 onKeyDown={(event) => {
-                                    onKeyDown(event, editor)
+                                    // onKeyDown(event, editor)
                                 }}
                                 placeholder="Enter some text..."
                             />
-                            <Popup editor={editor} data={selectorData} />
+                            {/* <Popup editor={editor} data={selectorData} /> */}
                         </Slate>
                         {/* <Editor
                             value={code}

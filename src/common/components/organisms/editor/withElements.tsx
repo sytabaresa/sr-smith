@@ -39,15 +39,15 @@ export const useJSXElement = () => {
         const { isInline, isVoid, markableVoid } = editor
 
         editor.isInline = element => {
-            return ['node_const', 'node_var', 'node_op_execfun', 'node_params'].includes(element.type) ? true : isInline(element)
+            return ['node_const', 'node_var', 'node_op_execfun', 'node_params', 'span'].includes(element.type) ? true : isInline(element)
         }
 
         editor.isVoid = element => {
-            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
+            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op', 'span'].includes(element.type) ? false : isInline(element)
         }
 
         editor.markableVoid = element => {
-            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
+            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op', 'span'].includes(element.type) ? false : isInline(element)
         }
 
 
