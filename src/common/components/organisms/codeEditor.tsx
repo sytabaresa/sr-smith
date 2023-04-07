@@ -6,7 +6,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
-const { highlight, languages, tokenize } = prism;
+const { languages, tokenize } = prism;
 // Import the Slate editor factory.
 import { createEditor, Text } from 'slate'
 
@@ -66,11 +66,13 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         () => (withReact(withHistory(createEditor()))),
         []
     )
-    const initialValue = useMemo(() => deserializeCode(code), [code])
+    const initialValue = useMemo(() => deserializeCode(code), [])
     // console.log(initialValue)
     useEffect(() => {
-        editor.children = deserializeCode(code)
-    }, [code])
+        console.log(current.name)
+        if (current.name == 'parsing')
+            editor.children = deserializeCode(code)
+    }, [current.name])
 
 
     const decorate = useCallback(([node, path]) => {
