@@ -15,8 +15,9 @@ import { createEditor, Text } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-// import { JSXElement, useJSXElement } from "./editor/withElements";
+import { JSXElement, useJSXElement } from "./editor/withElements";
 import { deserializeCode, serializeCode } from './editor/serializers'
+import { CustomElement } from "./editor/types";
 // Borrow Leaf renderer from the Rich Text example.
 // In a real project you would get this via `withRichText(editor)` or similar.
 export const Leaf = ({ attributes, children, leaf }) => {
@@ -58,22 +59,22 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     // console.log('inner', contextCode)
 
 
-    // const { withElement, getToken, selectorData, Popup, onKeyDown } = useJSXElement()
+    const { withElement, getToken, selectorData, Popup, onKeyDown, onChange } = useJSXElement()
     const [current, send] = editorService
     const { code, errorMsg } = current.context
 
     // console.log(code)
     // console.log(current.name)
     const editor = useMemo(
-        () => (withReact(withHistory(createEditor()))),
+        () => withElement(withReact(withHistory(createEditor()))),
         []
     )
     const initialValue = useMemo(() => deserializeCode(code), [])
     // console.log(initialValue)
     useEffect(() => {
-        console.log(current.name)
+        // console.log(current.name)
         if (current.name == 'parsing')
-            editor.children = deserializeCode(code)
+            editor.children = deserializeCode(code) as CustomElement[]
     }, [current.name])
 
 
@@ -134,12 +135,14 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                     op => 'set_selection' !== op.type
                                 )
                                 if (isAstChange) {
+                                    onChange(editor)
                                     // Serialize the value and save the string value to Local Storage.
                                     const code = serializeCode(value)
                                     setActualCode(code)
                                 }
                             }}
                         >
+                            <Popup editor={editor} data={selectorData} />
                             <Editable
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
@@ -147,10 +150,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                 className="font-mono"
                                 placeholder={t.canvas.placeholder()}
                                 onKeyDown={(event) => {
-                                    // onKeyDown(event, editor)
+                                    onKeyDown(event, editor)
                                 }}
                             />
-                            {/* <Popup editor={editor} data={selectorData} /> */}
                         </Slate>
                     </Suspense>}
             </div>

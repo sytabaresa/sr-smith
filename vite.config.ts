@@ -95,7 +95,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   ],
   // We manually add a list of dependencies to be pre-bundled, in order to avoid a page reload at dev start which breaks vite-plugin-ssr's CI
   optimizeDeps: {
-    include: ['preact', 'preact/devtools', 'preact/debug', 'preact/jsx-dev-runtime', 'preact/hooks']
+    include: ['preact', 'preact/devtools', 'preact/debug', 'preact/jsx-dev-runtime', 'preact/hooks', 'lodash']
   },
   resolve: {
     alias: {
@@ -105,6 +105,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   },
   ssr: {
     // Add libraries containing invalid ESM here
-    noExternal: command == 'serve' ? ['jsxgraph', 'react-hotkeys-hook', 'react-robot', 'robot3', 'typesafe-i18n'] : ['jsxgraph', 'react-hotkeys-hook', 'workbox-window', 'react-responsive', '@heroicons/react']
+    noExternal: command == 'serve' ?
+      ['jsxgraph', 'react-hotkeys-hook', 'react-robot', 'robot3', 'typesafe-i18n']
+      : ['lodash', 'jsxgraph', 'react-hotkeys-hook', 'workbox-window', 'react-responsive', '@heroicons/react']
   }
 }))

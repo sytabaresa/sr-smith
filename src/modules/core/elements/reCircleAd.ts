@@ -41,7 +41,7 @@ JXG.createReCircleAd = function (board, parents, attributes) {
 
         c1.originPoint = p
         c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE
-        c1.elType = 'recircle'
+        c1.elType = 'recirclead'
 
         return c1 as ReCircle
     } else {

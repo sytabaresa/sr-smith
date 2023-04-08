@@ -9,7 +9,7 @@ export const deserialize = (el: HTMLElement, markAttributes = {}) => {
         return null
     }
 
-    const nodeAttributes = { ...markAttributes, ...(el.className && { class: el.className }) }
+    const nodeAttributes: Record<string,any> = { ...markAttributes, ...(el.className && { class: el.className }) }
 
     // define attributes for text nodes
     switch (el.nodeName) {
@@ -18,7 +18,7 @@ export const deserialize = (el: HTMLElement, markAttributes = {}) => {
     }
 
     const children = Array.from(el.childNodes)
-        .map(node => deserialize(node, nodeAttributes))
+        .map(node => deserialize(node as HTMLElement, nodeAttributes))
         .flat()
 
     if (children.length === 0) {
