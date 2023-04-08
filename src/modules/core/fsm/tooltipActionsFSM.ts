@@ -157,6 +157,7 @@ export class JXGDrawer {
         const [current, send] = this.reactContext.editorService
         const code = current.context.code
         send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
+        send('PARSING')
         return { ...ctx, code: ctxCode }
     }
 

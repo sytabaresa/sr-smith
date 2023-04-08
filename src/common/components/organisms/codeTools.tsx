@@ -18,7 +18,7 @@ const CodeTools = () => {
   }, [ui.whiteboardMachine.current])
 
   return (
-    <div className="absolute top-0 left-0 pl-2 py-2 md:pl-4 md:pt-4 z-10 flex">
+    <div className="absolute top-0 left-0 pl-2 py-2 md:pl-4 md:pt-4 z-10 flex h-0">
       <CodeEditor className="hidden lg:flex h-[93vh] w-[30vw] max-w-[30rem]" />
       <div className="flex flex-col md:flex-row-reverse lg:mx-2 lg:mt-0 flex-1">
         <div className="flex md:flex-col items-center">
