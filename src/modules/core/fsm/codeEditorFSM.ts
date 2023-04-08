@@ -12,6 +12,7 @@ export interface EditorContextType {
 const parseExecute = async (ctx: EditorContextType, ev) => {
     // console.log(code)
     // console.log(board)
+    console.log(ctx.theme)
     try {
         ctx.ui.recreateBoard({ theme: ctx.theme })
         ctx.ui.board.jc.parse(ctx.code);
@@ -25,7 +26,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
 // fsm
 export default createMachine('init', {
     init: state(
-        transition('INIT', 'initializing', action(initBoard))
+        transition('INIT', 'initializing', reduce(initBoard))
     ),
     initializing: invoke(() => wait(50), // some delay initializing
         transition('done', 'idle'),
@@ -63,4 +64,5 @@ function setError(ctx: any, ev: any) { return { ...ctx, errorMsg: ev.error } }
 function initBoard(ctx: EditorContextType, ev: any) {
     const { name, theme, screenSize } = ev.value
     ctx.ui.newBoard(name, { theme }, screenSize)
+    return { ...ctx, theme: theme }
 }
