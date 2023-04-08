@@ -4,9 +4,11 @@ import { useTranslation } from "@modules/i18n";
 import prism from 'prismjs/components/prism-core.js';
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
+import './editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { languages, tokenize } = prism;
+
 // Import the Slate editor factory.
 import { createEditor, Text } from 'slate'
 
@@ -20,7 +22,7 @@ import { deserializeCode, serializeCode } from './editor/serializers'
 export const Leaf = ({ attributes, children, leaf }) => {
     return <span
         {...attributes}
-        {...(leaf.type && { className: `token ${leaf.type}` })}
+        {...(leaf.type && { className: `token ${leaf.type.join(' ')}` })}
     >{children}</span>
 }
 
@@ -92,7 +94,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             }
         }
 
-        const tokens = tokenize(node.text, languages.js)
+        const tokens = tokenize(node.text, languages.jc)
         let start = 0
 
         for (const token of tokens) {
@@ -100,8 +102,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             const end = start + length
 
             if (typeof token !== 'string') {
+                // console.log(token)
                 ranges.push({
-                    type: token.type,
+                    type: [token.type, token.alias],
                     anchor: { path, offset: start },
                     focus: { path, offset: end },
                 })
@@ -119,7 +122,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     return (
         <div className={`border border-primary bg-base-100 p-2 flex flex-col ${className}`} {...rest}>
-            <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 flex mb-1">
+            <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 {typeof window != 'undefined' &&
                     <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
@@ -141,10 +144,11 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                 renderElement={renderElement}
                                 renderLeaf={renderLeaf}
                                 decorate={decorate}
+                                className="font-mono"
+                                placeholder={t.canvas.placeholder()}
                                 onKeyDown={(event) => {
                                     // onKeyDown(event, editor)
                                 }}
-                            // placeholder="Enter some text..."
                             />
                             {/* <Popup editor={editor} data={selectorData} /> */}
                         </Slate>

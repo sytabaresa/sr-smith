@@ -259,6 +259,10 @@ type RootTranslation = {
 		 * C​o​d​e
 		 */
 		code: string
+		/**
+		 * W​r​i​t​e​ ​c​o​d​e
+		 */
+		placeholder: string
 	}
 	settings: {
 		/**
@@ -646,6 +650,10 @@ export type TranslationFunctions = {
 		 * Code
 		 */
 		code: () => LocalizedString
+		/**
+		 * Write code
+		 */
+		placeholder: () => LocalizedString
 	}
 	settings: {
 		/**

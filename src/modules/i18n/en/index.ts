@@ -75,7 +75,8 @@ const en: Translation = {
 		undo: "Undo",
 		show_menu: "Show Menu",
 		create: "Create",
-		code: "Code"
+		code: "Code",
+		placeholder: "Write code..."
 	},
 	settings: {
 		make_public: "Make Public",

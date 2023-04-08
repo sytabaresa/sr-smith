@@ -82,7 +82,8 @@ const es: BaseTranslation = {
 		undo: "Atrás",
 		show_menu: "Ver menú",
 		create: "Crear",
-		code: "Code"
+		code: "Code",
+		placeholder: "Escribir código..."
 	},
 	settings: {
 		make_public: "Hacer público",
