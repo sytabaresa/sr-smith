@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
 import { Editor, Transforms, Range, Element, Node } from "slate"
 import { ReactEditor, useFocused, useSelected, } from "slate-react"
-import { groupBy } from 'lodash'
+import { groupBy } from "@utils/common"
 
 export type SearchElement = {
     text: string
@@ -195,7 +195,7 @@ export const useJSXElement = () => {
             const afterText = Editor.string(editor, afterRange)
             const afterMatch = afterText.match(/^(\s|$)/)
 
-            console.log(beforeRange, beforeMatch, 0)
+            // console.log(beforeRange, beforeMatch, 0)
             if (afterMatch) {
                 updateData({
                     target: beforeMatch?.[1] ? beforeRange : afterRange,

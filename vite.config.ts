@@ -90,6 +90,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
     visualizer({
       // emitFile: true,
       // filename: "stats.html",
+      gzipSize: true,
       template: 'treemap',
     }),
   ],

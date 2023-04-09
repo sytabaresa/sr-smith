@@ -13,12 +13,13 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     const [current, send] = editorService
 
     useEffect(() => {
-        send({ type: 'INIT', value: { name: BOX_NAME, theme, screenSize } })
-    }, [])
+        // console.log(screenSize)
+        send({ type: 'CONFIG', value: { name: BOX_NAME, theme, screenSize } })
+    }, [screenSize])
 
     useEffect(() => {
         // console.log(theme)
-        send({ type: "THEME", value: theme })
+        send({ type: "CONFIG", value: { theme } })
         send('PARSING')
     }, [theme])
 
@@ -28,7 +29,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
             className="jxgbox full-screen-div w-full"
         // style={{ width: '500px', height: '500px' }}
         >
-            <img src="/images/smith-chart.svg" alt="smith-board" srcset=""className="hidden" loading={'lazy'}/>
+            <img src="/images/smith-chart.svg" alt="smith-board" srcset="" className="hidden" loading={'lazy'} />
         </div>
     </>
 }

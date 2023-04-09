@@ -37,7 +37,7 @@ export interface boardOptionsProps {
 }
 
 
-export const initBoard = (boxName: string, boardOptions: boardOptionsProps, screenSize: string = 'lg') => {
+export const initBoard = (boxName: string, boardOptions: boardOptionsProps, screenDim: string | number[]) => {
     changeBoardTheme(boardOptions.theme)
 
     const screenBoxSizes = {
@@ -47,7 +47,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         'lg': [-2.5, 1.2, 1.5, -1.2],
     }
 
-    const boundingbox = screenBoxSizes[screenSize]
+    const boundingbox = typeof screenDim == 'string' ? screenBoxSizes[screenDim] : screenDim
 
     const brd = JXG.JSXGraph.initBoard(boxName, {
         title: 'Smith Chart canvas',

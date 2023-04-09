@@ -6,15 +6,16 @@ export interface EditorContextType {
     errorMsg?: string;
     code: string;
     ui: JXGDrawer;
-    theme?: string;
+    boardConfig?: { theme: string, name: string, screenSize: string };
 }
 
 const parseExecute = async (ctx: EditorContextType, ev) => {
     // console.log(code)
     // console.log(board)
-    console.log(ctx.theme)
+    // console.log(ctx.theme)
+    const { theme, name, screenSize } = ctx.boardConfig
     try {
-        ctx.ui.recreateBoard({ theme: ctx.theme })
+        ctx.ui.recreateBoard({ theme }, name, screenSize)
         ctx.ui.board.jc.parse(ctx.code);
     } catch (err) {
         console.log(err)
@@ -23,19 +24,25 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     return Promise.resolve()
 }
 
+const configTransition = transition('CONFIG', 'initializing', reduce(setConfig))
+
 // fsm
 export default createMachine('init', {
     init: state(
-        transition('INIT', 'initializing', reduce(initBoard))
+        configTransition
     ),
-    initializing: invoke(() => wait(50), // some delay initializing
+    initializing: invoke(async (ctx: EditorContextType, ev) => {
+        await parseExecute(ctx, ev);
+        return await wait(50)
+    }, // some delay initializing
+        configTransition,
         transition('done', 'idle'),
         transition('error', 'init')
     ),
     idle: state(
         transition('PARSING', 'parsing', reduce(clearErrorMsg)),
         transition("CODE", 'idle', reduce(setCode)),
-        transition("THEME", 'idle', reduce(setTheme))
+        configTransition
     ),
     parsing: invoke(parseExecute,
         transition('done', 'idle'),
@@ -52,17 +59,15 @@ export default createMachine('init', {
 }, (ctx: EditorContextType) => ({
     errorMsg: '',
     code: '',
-    theme: '',
+    boardConfig: {
+        theme: '',
+        name: '',
+        screenSize: ''
+    },
     ...ctx,
 }) as EditorContextType)
 
 function clearErrorMsg(ctx: any, ev: any) { return { ...ctx, errorMsg: '' } }
 function setCode(ctx: any, ev: any) { return { ...ctx, code: ev.value } }
-function setTheme(ctx: any, ev: any) { return { ...ctx, theme: ev.value } }
+function setConfig(ctx: any, ev: any) { return { ...ctx, boardConfig: { ...ctx.config, ...ev.value } } }
 function setError(ctx: any, ev: any) { return { ...ctx, errorMsg: ev.error } }
-
-function initBoard(ctx: EditorContextType, ev: any) {
-    const { name, theme, screenSize } = ev.value
-    ctx.ui.newBoard(name, { theme }, screenSize)
-    return { ...ctx, theme: theme }
-}

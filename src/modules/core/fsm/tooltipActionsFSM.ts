@@ -115,28 +115,19 @@ export class JXGDrawer {
         }
     }
 
-    newBoard(boxName: string, boardOptions: any = {}, screenSize: string) {
+    recreateBoard(options: any = {}, boxName: string = '', screenSize: string = '') {
         try {
+            const boardName = boxName != '' ? boxName : this.boardName
+            const boundingBox = screenSize != '' ? screenSize : this.board.getBoundingBox()
+
+            if (this.board) {
+                JXG.JSXGraph.freeBoard(this.board);
+            }
             if (!this.recreatingBoard) {
                 this.recreatingBoard = true
-                this.boardName = boxName
-                this.board = initBoard(boxName, boardOptions, screenSize)
-                this.populateBoard()
-            }
-        } catch (err) {
-            console.log(err)
-        } finally {
-            this.recreatingBoard = false
-        }
-    }
-
-    recreateBoard(options) {
-        try {
-            if (this.board != undefined && !this.recreatingBoard) {
-                this.recreatingBoard = true
-                const boundingBox = this.board.getBoundingBox()
-                JXG.JSXGraph.freeBoard(this.board);
-                this.board = initBoard(this.boardName, { ...options, boundingBox })
+                this.boardName = boardName
+                // console.log(boardName, options, boundingBox)
+                this.board = initBoard(boardName, options, boundingBox)
                 this.populateBoard()
             }
         } catch (err) {
