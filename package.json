@@ -67,6 +67,7 @@
         "tsconfig-paths-autogen": "^2.0.2",
         "typescript": "^5.0.2",
         "vite": "^4.2.0",
+        "vite-bundle-visualizer": "^0.6.0",
         "vite-plugin-pwa": "^0.14.4",
         "vite-plugin-ssr": "^0.4.94",
         "vite-tsconfig-paths": "^4.0.7",
