@@ -108,7 +108,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   ssr: {
     // Add libraries containing invalid ESM here
     noExternal: command == 'serve' ?
-      ['react-hotkeys-hook', 'react-robot', 'robot3', 'typesafe-i18n']
+      ['jsxgraph', 'react-hotkeys-hook', 'react-robot', 'robot3', 'typesafe-i18n']
       : ['jsxgraph', 'react-hotkeys-hook', 'workbox-window', '@heroicons/react']
   }
 }))
