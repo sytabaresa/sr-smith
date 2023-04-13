@@ -5,7 +5,7 @@ import prism from 'prismjs/components/prism-core.js';
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 
-import './editor/jessieCode'
+import '@modules/editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { languages, tokenize } = prism;
@@ -16,13 +16,13 @@ import { createEditor, Text, Element, Node } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { Popup, useJSXElement } from "./editor/withElements";
-import { deserializeCode, serializeCode } from './editor/serializers'
-import { CustomElement } from "./editor/types";
-import { normalizeTokens } from "./editor/normalizeTokens";
-import { LinkLeaf, autolinker } from "./editor/autolinker";
-import { KeysContext, useKeyContext } from "./editor/keysContext";
-import { ColorInline } from "./editor/colorInline";
+import { Popup, useJSXElement } from "@modules/editor/searcher";
+import { deserializeCode, serializeCode } from '@modules/editor/serializers'
+import { CustomElement } from "@modules/editor/types";
+import { normalizeTokens } from "@modules/editor/normalizeTokens";
+import { LinkLeaf, autolinker } from "@modules/editor/autolinker";
+import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
+import { ColorInline } from "@modules/editor/colorInline";
 
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
