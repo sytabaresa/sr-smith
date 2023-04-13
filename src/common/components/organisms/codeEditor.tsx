@@ -15,15 +15,29 @@ import { createEditor, Text } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { JSXElement, useJSXElement } from "./editor/withElements";
+import { useJSXElement } from "./editor/withElements";
 import { deserializeCode, serializeCode } from './editor/serializers'
 import { CustomElement } from "./editor/types";
+import { normalizeTokens } from "./editor/normalizeTokens";
 // Borrow Leaf renderer from the Rich Text example.
 // In a real project you would get this via `withRichText(editor)` or similar.
-export const Leaf = ({ attributes, children, leaf }) => {
+export const Leaf = (props) => {
+    let { attributes, children, leaf } = props
+    const { text, type, content, ...rest } = leaf
+
+    const classes = Object.keys(type)
+
+    if (classes.includes('color')) {
+        // console.log(content)
+        children = <span className="inline-color-wrapper">
+            <span className="inline-block border border-primary p-px mr-1 w-3 h-3 bg-clip-content"
+                style={{ backgroundColor: `${content}` }}></span>{children}</span>
+    }
+
+    // console.log(classes)
     return <span
         {...attributes}
-        {...(leaf.type && { className: `token ${leaf.type.join(' ')}` })}
+        className={'token ' + classes.join(' ')}
     >{children}</span>
 }
 
@@ -34,6 +48,7 @@ export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
 
 const Element = props => {
     const { attributes, children, element } = props
+    // console.log(props)
     switch (element.type) {
         case 'paragraph':
             return <p {...attributes}>{children}</p>
@@ -79,10 +94,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
 
     const decorate = useCallback(([node, path]) => {
-        const ranges = []
 
         if (!Text.isText(node)) {
-            return ranges
+            return []
         }
 
         const getLength = token => {
@@ -95,25 +109,43 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             }
         }
 
-        const tokens = tokenize(node.text, languages.jc)
-        let start = 0
+        // console.log(node.text)
+        const _tokens = tokenize(node.text, languages.jc)
+        // console.log(_tokens)
+        const tokens = normalizeTokens(_tokens)
+        // console.log(tokens)
 
-        for (const token of tokens) {
-            const length = getLength(token)
-            const end = start + length
+        const processTokens = (tokens, extraType = []) => {
+            let start = 0
+            const ranges = []
+            for (const token of tokens) {
+                const length = getLength(token)
+                const end = start + length
 
-            if (typeof token !== 'string') {
+                if (!length) {
+                    continue
+                }
                 // console.log(token)
+                // const type = [...extraType, ...(token.alias ? [token.alias] : []), token.type]
                 ranges.push({
-                    type: [token.type, token.alias],
                     anchor: { path, offset: start },
                     focus: { path, offset: end },
+                    token: true,
+                    type: Object.fromEntries(token.types.map(type => [type, true])),
+                    content: token.content
                 })
-            }
 
-            start = end
+                start = end
+            }
+            return ranges
         }
 
+        const ranges = []
+        for (const line of tokens) {
+            ranges.push(...processTokens(line))
+        }
+
+        // console.log(ranges)
         return ranges
     }, [])
 
@@ -148,6 +180,8 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                 renderLeaf={renderLeaf}
                                 decorate={decorate}
                                 className="font-mono"
+                                spellCheck={false}
+                                autoCorrect={false}
                                 placeholder={t.canvas.placeholder()}
                                 onKeyDown={(event) => {
                                     onKeyDown(event, editor)
