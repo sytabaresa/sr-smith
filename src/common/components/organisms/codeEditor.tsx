@@ -11,7 +11,7 @@ import { SmithContext } from "@providers/smithContext";
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
-import { createEditor, Text, Element, Node } from 'slate'
+import { createEditor, Text, Element, Node, Descendant } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
@@ -62,7 +62,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     useEffect(() => {
         // console.log(current.name)
         if (current.name == 'parsing')
-            editor.children = deserializeCode(code) as CustomElement[]
+            editor.children = deserializeCode(code) as Descendant[]
     }, [current.name])
 
 
