@@ -1,16 +1,17 @@
-import { HTMLAttributes, Suspense, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { HTMLAttributes, Suspense, createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
+
 import './editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.css";
 import { SmithContext } from "@providers/smithContext";
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
-import { createEditor, Text } from 'slate'
+import { createEditor, Text, Element, Node } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
@@ -19,50 +20,21 @@ import { useJSXElement } from "./editor/withElements";
 import { deserializeCode, serializeCode } from './editor/serializers'
 import { CustomElement } from "./editor/types";
 import { normalizeTokens } from "./editor/normalizeTokens";
-// Borrow Leaf renderer from the Rich Text example.
-// In a real project you would get this via `withRichText(editor)` or similar.
-export const Leaf = (props) => {
-    let { attributes, children, leaf } = props
-    const { text, type, content, ...rest } = leaf
+import { LinkLeaf, autolinker } from "./editor/autolinker";
+import { KeysContext, useKeyContext } from "./editor/keysContext";
+import { ColorInline } from "./editor/colorInline";
 
-    const classes = Object.keys(type)
-
-    if (classes.includes('color')) {
-        // console.log(content)
-        children = <span className="inline-color-wrapper">
-            <span className="inline-block border border-primary p-px mr-1 w-3 h-3 bg-clip-content"
-                style={{ backgroundColor: `${content}` }}></span>{children}</span>
-    }
-
-    // console.log(classes)
-    return <span
-        {...attributes}
-        className={'token ' + classes.join(' ')}
-    >{children}</span>
-}
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
 };
 
 
-const Element = props => {
-    const { attributes, children, element } = props
-    // console.log(props)
-    switch (element.type) {
-        case 'paragraph':
-            return <p {...attributes}>{children}</p>
-        default:
-            return <span {...attributes}>{children}</span>
-    }
-}
-
-
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
-    const renderElement = useCallback(props => <Element {...props} />, [])
+    const renderElement = useCallback(props => <ElementRender {...props} />, [])
 
     // const {user, isAuthenticated, loadingUser} = useUser()
 
@@ -93,11 +65,19 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     }, [current.name])
 
 
-    const decorate = useCallback(([node, path]) => {
+    const decorate = useCallback(([blockNode, blockPath]) => {
 
-        if (!Text.isText(node)) {
+        // if (!Text.isText(node)) {
+        //     return []
+        // }
+
+        if (!Element.isElement(blockNode) || blockNode.type != 'paragraph') {
             return []
         }
+        // console.log(blockNode, blockPath)
+
+        const text = blockNode.children.map(line => Node.string(line)).join('\n')
+        // console.log(text)
 
         const getLength = token => {
             if (typeof token === 'string') {
@@ -109,15 +89,15 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             }
         }
 
-        // console.log(node.text)
-        const _tokens = tokenize(node.text, languages.jc)
+        const _tokens = tokenize(text, autolinker(languages.jc))
         // console.log(_tokens)
-        const tokens = normalizeTokens(_tokens)
-        // console.log(tokens)
+        const lineTokens = normalizeTokens(_tokens)
+        // console.log(lineTokens)
 
-        const processTokens = (tokens, extraType = []) => {
+        const ranges = []
+        for (const [index, tokens] of lineTokens.entries()) {
+
             let start = 0
-            const ranges = []
             for (const token of tokens) {
                 const length = getLength(token)
                 const end = start + length
@@ -127,6 +107,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                 }
                 // console.log(token)
                 // const type = [...extraType, ...(token.alias ? [token.alias] : []), token.type]
+                const path = [...blockPath, index, 0]
                 ranges.push({
                     anchor: { path, offset: start },
                     focus: { path, offset: end },
@@ -137,21 +118,52 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
                 start = end
             }
-            return ranges
-        }
-
-        const ranges = []
-        for (const line of tokens) {
-            ranges.push(...processTokens(line))
         }
 
         // console.log(ranges)
         return ranges
     }, [])
 
+    const Leaf = (props) => {
+        let { attributes, children, leaf } = props
+        const { text, type = {}, content, ...rest } = leaf
+        const classes = Object.keys(type)
 
+        if (classes.includes('color')) {
+            children = <ColorInline {...props} classes={classes}>{children}</ColorInline>
+        }
+
+        if (/-link$/.test(classes as unknown as string)) {
+            children = <LinkLeaf {...props} classes={classes}>{children}</LinkLeaf>
+        }
+
+        // console.log(classes)
+        return <span
+            {...attributes}
+            className={'token ' + classes.join(' ')}
+        >{children}</span>
+    }
+
+    const ElementRender = props => {
+        const { attributes, children, element } = props
+        // console.log(props)
+        switch (element.type) {
+            case 'paragraph':
+                return <p {...attributes}>{children}</p>
+            case 'code-line':
+                return <div {...attributes}>{children}</div>
+
+            default:
+                return <span {...attributes}>{children}</span>
+        }
+    }
+
+    // FSM actions
     const parseExecute = () => send('PARSING')
     const setActualCode = (code) => send({ type: "CODE", value: code })
+
+    const keyValues = useKeyContext()
+    const { setEvent, setEventDown, setEventUp } = keyValues
 
     return (
         <div className={`border border-primary bg-base-100 p-2 flex flex-col ${className}`} {...rest}>
@@ -159,35 +171,43 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                 {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 {typeof window != 'undefined' &&
                     <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
-                        <Slate
-                            editor={editor}
-                            value={initialValue}
-                            onChange={value => {
-                                const isAstChange = editor.operations.some(
-                                    op => 'set_selection' !== op.type
-                                )
-                                if (isAstChange) {
-                                    onChange(editor)
-                                    // Serialize the value and save the string value to Local Storage.
-                                    const code = serializeCode(value)
-                                    setActualCode(code)
-                                }
-                            }}
-                        >
-                            <Popup editor={editor} data={selectorData} />
-                            <Editable
-                                renderElement={renderElement}
-                                renderLeaf={renderLeaf}
-                                decorate={decorate}
-                                className="font-mono"
-                                spellCheck={false}
-                                autoCorrect={false}
-                                placeholder={t.canvas.placeholder()}
-                                onKeyDown={(event) => {
-                                    onKeyDown(event, editor)
+                        <KeysContext.Provider value={keyValues}>
+                            <Slate
+                                editor={editor}
+                                value={initialValue}
+                                onChange={value => {
+                                    const isAstChange = editor.operations.some(
+                                        op => 'set_selection' !== op.type
+                                    )
+                                    if (isAstChange) {
+                                        onChange(editor)
+                                        // Serialize the value and save the string value to Local Storage.
+                                        const code = serializeCode(value)
+                                        // setActualCode(code)
+                                    }
                                 }}
-                            />
-                        </Slate>
+                            >
+                                <Popup editor={editor} data={selectorData} />
+                                <Editable
+                                    renderElement={renderElement}
+                                    renderLeaf={renderLeaf}
+                                    decorate={decorate}
+                                    className="font-mono"
+                                    spellCheck={false}
+                                    autoCorrect={false}
+                                    placeholder={t.canvas.placeholder()}
+                                    onKeyDown={(event) => {
+                                        onKeyDown(event, editor)
+                                        setEventDown(event)
+                                        setEvent(event)
+                                    }}
+                                    onKeyUp={(event) => {
+                                        setEventUp(event)
+                                        setEvent(event)
+                                    }}
+                                />
+                            </Slate>
+                        </KeysContext.Provider>
                     </Suspense>}
             </div>
 
