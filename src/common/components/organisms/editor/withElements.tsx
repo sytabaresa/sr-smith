@@ -73,9 +73,80 @@ const ITEMS: Item[] = [
     { type: "func", value: "$", label: "$(id)", desc: "Look up the element to the given element id." },
 ]
 
-export const useJSXElement = () => {
+const withElement = (editor: Editor) => {
+    const { isInline, isVoid, markableVoid } = editor
 
-    const [data, updateData] = useReducer(
+    editor.isInline = element => {
+        return ['node_const', 'node_var', 'node_op_execfun', 'node_params'].includes(element.type) ? true : isInline(element)
+    }
+
+    editor.isVoid = element => {
+        return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
+    }
+
+    editor.markableVoid = element => {
+        return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
+    }
+
+
+    // const { normalizeNode } = editor
+
+    // editor.normalizeNode = entry => {
+    // const [node, path] = entry
+
+    // console.log(editor,node, path)
+
+    // If the element is a statement, ensure its children are valid.
+    // if (Element.isElement(node) && node.type === 'statement') {
+    //     for (const [child, childPath] of Node.children(editor, path)) {
+    //         if (Element.isElement(child) && !editor.isInline(child)) {
+    //             Transforms.unwrapNodes(editor, { at: childPath })
+    //             return
+    //         }
+    //     }
+    // }
+
+    // Fall back to the original `normalizeNode` to enforce other constraints.
+    // normalizeNode(entry)
+    // }
+
+    return editor
+}
+
+function getToken(editor: Editor) {
+    const { selection } = editor
+
+    if (selection && Range.isCollapsed(selection)) {
+        const [start] = Range.edges(selection)
+        const wordBefore = Editor.before(editor, start, { unit: 'word' })
+        // const before = wordBefore && Editor.before(editor, wordBefore)
+        const beforeRange = wordBefore && Editor.range(editor, wordBefore, start)
+        const beforeText = beforeRange && Editor.string(editor, beforeRange)
+        const beforeMatch: RegExpMatchArray = beforeText && beforeText.match(/^(\w+)$/)
+        const after = Editor.after(editor, start)
+        const afterRange = Editor.range(editor, start, after)
+        const afterText = Editor.string(editor, afterRange)
+        const afterMatch = afterText.match(/^(\s|$)/)
+
+        // console.log(beforeRange, beforeMatch, 0)
+        if (afterMatch) {
+            return {
+                target: beforeMatch?.[1] ? beforeRange : afterRange,
+                search: beforeMatch?.[1] ?? '',
+                index: 0,
+            }
+
+        }
+    }
+
+    console.log('not match')
+    return {
+        target: null
+    }
+}
+
+export const useJSXElement = () => {
+    const [selectorData, updateSelectorData] = useReducer(
         (state, newState) => {
 
             const nextState = {
@@ -91,51 +162,19 @@ export const useJSXElement = () => {
             search: '',
         })
 
-    const withElement = (editor: Editor) => {
-        const { isInline, isVoid, markableVoid } = editor
-
-        editor.isInline = element => {
-            return ['node_const', 'node_var', 'node_op_execfun', 'node_params'].includes(element.type) ? true : isInline(element)
-        }
-
-        editor.isVoid = element => {
-            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
-        }
-
-        editor.markableVoid = element => {
-            return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
-        }
-
-
-        // const { normalizeNode } = editor
-
-        // editor.normalizeNode = entry => {
-            // const [node, path] = entry
-
-            // console.log(editor,node, path)
-
-            // If the element is a statement, ensure its children are valid.
-            // if (Element.isElement(node) && node.type === 'statement') {
-            //     for (const [child, childPath] of Node.children(editor, path)) {
-            //         if (Element.isElement(child) && !editor.isInline(child)) {
-            //             Transforms.unwrapNodes(editor, { at: childPath })
-            //             return
-            //         }
-            //     }
-            // }
-
-            // Fall back to the original `normalizeNode` to enforce other constraints.
-            // normalizeNode(entry)
-        // }
-
-        return editor
-    }
-
     const itemsFiltered = useMemo(() => ITEMS.filter(c =>
-        c.value.toLowerCase().startsWith(data.search.toLowerCase())
-    ).slice(0, 10).map((e, i) => ({ ...e, index: i })), [data.search])
+        c.value.toLowerCase().startsWith(selectorData.search.toLowerCase())
+    ).slice(0, 10).map((e, i) => ({ ...e, index: i })), [selectorData.search])
 
     const itemsGrouped = useMemo(() => Object.entries(groupBy(itemsFiltered, 'type')), [itemsFiltered])
+
+
+    const onChange = useCallback((editor) => {
+        if (selectorData.target && itemsFiltered.length > 0) {
+            updateSelectorData(getToken(editor))
+        }
+    }, [itemsFiltered, selectorData])
+
 
     const onKeyDown = useCallback(
         (event, editor) => {
@@ -144,136 +183,100 @@ export const useJSXElement = () => {
             if (event.ctrlKey) {
                 switch (event.key) {
                     case ' ':
-                        getToken(editor)
+                        updateSelectorData(getToken(editor))
                 }
             }
-            if (data.target && itemsFiltered.length > 0) {
+            if (selectorData.target && itemsFiltered.length > 0) {
                 switch (event.key) {
                     case 'ArrowDown':
                         event.preventDefault()
-                        const prevIndex = data.index >= itemsFiltered.length - 1 ? 0 : data.index + 1
-                        updateData({ index: prevIndex })
+                        const prevIndex = selectorData.index >= itemsFiltered.length - 1 ? 0 : selectorData.index + 1
+                        updateSelectorData({ index: prevIndex })
                         break
                     case 'ArrowUp':
                         event.preventDefault()
-                        const nextIndex = data.index <= 0 ? itemsFiltered.length - 1 : data.index - 1
-                        updateData({ index: nextIndex })
+                        const nextIndex = selectorData.index <= 0 ? itemsFiltered.length - 1 : selectorData.index - 1
+                        updateSelectorData({ index: nextIndex })
                         break
                     case 'Tab':
                     case 'Enter':
                         event.preventDefault()
-                        Transforms.select(editor, data.target)
-                        insertMention(editor, itemsFiltered[data.index])
-                        updateData({ target: null })
+                        Transforms.select(editor, selectorData.target)
+                        insertMention(editor, itemsFiltered[selectorData.index])
+                        updateSelectorData({ target: null })
                         break
                     case 'Escape':
                         event.preventDefault()
-                        updateData({ target: null })
+                        updateSelectorData({ target: null })
                         break
                 }
             }
         },
-        [itemsFiltered, data]
+        [itemsFiltered, selectorData]
     )
 
-    const onChange = useCallback((editor) => {
-        if (data.target && itemsFiltered.length > 0) {
-            getToken(editor)
-        }
-    }, [itemsFiltered, data])
+    return { selectorData, onChange, onKeyDown, updateSelectorData, itemsFiltered, itemsGrouped }
 
-    function getToken(editor: Editor) {
-        const { selection } = editor
-
-        if (selection && Range.isCollapsed(selection)) {
-            const [start] = Range.edges(selection)
-            const wordBefore = Editor.before(editor, start, { unit: 'word' })
-            // const before = wordBefore && Editor.before(editor, wordBefore)
-            const beforeRange = wordBefore && Editor.range(editor, wordBefore, start)
-            const beforeText = beforeRange && Editor.string(editor, beforeRange)
-            const beforeMatch: RegExpMatchArray = beforeText && beforeText.match(/^(\w+)$/)
-            const after = Editor.after(editor, start)
-            const afterRange = Editor.range(editor, start, after)
-            const afterText = Editor.string(editor, afterRange)
-            const afterMatch = afterText.match(/^(\s|$)/)
-
-            // console.log(beforeRange, beforeMatch, 0)
-            if (afterMatch) {
-                updateData({
-                    target: beforeMatch?.[1] ? beforeRange : afterRange,
-                    search: beforeMatch?.[1] ?? '',
-                    index: 0,
-                })
-                return
-            }
-        }
-
-        console.log('not match')
-        updateData({
-            target: null
-        })
-    }
-
-    const Popup = (props) => {
-        const { editor, data } = props
-        const ref = useRef<HTMLDivElement | null>()
-
-        // console.log(chars, data)
-
-        useEffect(() => {
-            if (data.target && itemsFiltered.length > 0) {
-                const el = ref.current
-                const domRange = ReactEditor.toDOMRange(editor, data.target)
-                const rect = domRange.getBoundingClientRect()
-                el.style.top = `${rect.top + window.pageYOffset + 24}px`
-                el.style.left = `${rect.left + window.pageXOffset}px`
-            }
-        }, [itemsFiltered.length, editor, data.target])
-
-
-        return (
-            // <Portal>
-            <div
-                id="element-popup"
-                ref={ref}
-                className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${(data.target && itemsFiltered.length > 0) && 'dropdown-open'}`}
-                data-cy="mentions-portal"
-            >
-                <ul tabIndex={0}
-                    className="dropdown-content menu menu-compact w-96 shadow bg-base-100"
-                >
-                    {itemsGrouped.map(([key, items]) => {
-                        return <>
-                            <li className="menu-title">
-                                <span>{key}</span>
-                            </li>
-                            {items.map((item, i) => (
-                                <li key={item.value}>
-                                    <a
-                                        className={`${data.index == item.index ? 'active' : ''}`}
-                                        onClick={() => {
-                                            Transforms.select(editor, data.target)
-                                            insertMention(editor, item)
-                                            updateData({ target: null })
-                                        }}
-                                    >
-                                        {item.label ?? item.value}
-                                        {item.desc && <span className="opacity-50">// {item.desc}</span>}
-                                    </a>
-                                </li>
-                            ))}
-                        </>
-                    })}
-
-                </ul>
-            </div>
-            // </Portal>
-        )
-
-    }
-
-    return { withElement, getToken, Popup, selectorData: data, onKeyDown, onChange }
 }
+
+export const Popup = (props) => {
+    const { editor, selectorData, itemsFiltered, itemsGrouped, updateSelectorData } = props
+    const ref = useRef<HTMLDivElement | null>()
+
+    // console.log(selectorData, itemsFiltered)
+
+    useEffect(() => {
+        if (selectorData.target && itemsFiltered.length > 0) {
+            const el = ref.current
+            const domRange = ReactEditor.toDOMRange(editor, selectorData.target)
+            const rect = domRange.getBoundingClientRect()
+            el.style.top = `${rect.top + window.pageYOffset + 24}px`
+            el.style.left = `${rect.left + window.pageXOffset}px`
+        }
+    }, [itemsFiltered.length, editor, selectorData.target])
+
+
+    return (
+        // <Portal>
+        <div
+            id="element-popup"
+            ref={ref}
+            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${(selectorData.target && itemsFiltered.length > 0) && 'dropdown-open'}`}
+            data-cy="mentions-portal"
+        >
+            <ul tabIndex={0}
+                className="dropdown-content menu menu-compact w-96 shadow bg-base-100"
+            >
+                {itemsGrouped.map(([key, items]) => {
+                    return <>
+                        <li className="menu-title">
+                            <span>{key}</span>
+                        </li>
+                        {items.map((item, i) => (
+                            <li key={item.value}>
+                                <a
+                                    className={`${selectorData.index == item.index ? 'active' : ''}`}
+                                    onClick={() => {
+                                        Transforms.select(editor, selectorData.target)
+                                        insertMention(editor, item)
+                                        updateSelectorData({ target: null })
+                                    }}
+                                >
+                                    {item.label ?? item.value}
+                                    {item.desc && <span className="opacity-50">// {item.desc}</span>}
+                                </a>
+                            </li>
+                        ))}
+                    </>
+                })}
+
+            </ul>
+        </div>
+        // </Portal>
+    )
+
+}
+
 
 export const insertMention = (editor, item: Item) => {
     const mention: SearchElement = { text: item.value }

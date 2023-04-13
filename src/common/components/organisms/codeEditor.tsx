@@ -16,7 +16,7 @@ import { createEditor, Text, Element, Node } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { useJSXElement } from "./editor/withElements";
+import { Popup, useJSXElement } from "./editor/withElements";
 import { deserializeCode, serializeCode } from './editor/serializers'
 import { CustomElement } from "./editor/types";
 import { normalizeTokens } from "./editor/normalizeTokens";
@@ -46,14 +46,15 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     // console.log('inner', contextCode)
 
 
-    const { withElement, getToken, selectorData, Popup, onKeyDown, onChange } = useJSXElement()
+    const searchElement = useJSXElement()
+    const { onKeyDown, onChange } = searchElement
     const [current, send] = editorService
     const { code, errorMsg } = current.context
 
     // console.log(code)
     // console.log(current.name)
     const editor = useMemo(
-        () => withElement(withReact(withHistory(createEditor()))),
+        () => withReact(withHistory(createEditor())),
         []
     )
     const initialValue = useMemo(() => deserializeCode(code), [])
@@ -183,11 +184,11 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                         onChange(editor)
                                         // Serialize the value and save the string value to Local Storage.
                                         const code = serializeCode(value)
-                                        // setActualCode(code)
+                                        setActualCode(code)
                                     }
                                 }}
                             >
-                                <Popup editor={editor} data={selectorData} />
+                                <Popup editor={editor} {...searchElement} />
                                 <Editable
                                     renderElement={renderElement}
                                     renderLeaf={renderLeaf}
