@@ -75,7 +75,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         if (!Element.isElement(blockNode) || blockNode.type != 'paragraph') {
             return []
         }
-        // console.log(blockNode, blockPath)
+        console.log(blockNode, blockPath)
 
         const text = blockNode.children.map(line => Node.string(line)).join('\n')
         // console.log(text)
@@ -189,7 +189,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                 }}
                             >
                                 <Popup editor={editor} {...searchElement} />
-                                <Editable
+                                {useMemo(() => <Editable
                                     renderElement={renderElement}
                                     renderLeaf={renderLeaf}
                                     decorate={decorate}
@@ -206,7 +206,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                         setEventUp(event)
                                         setEvent(event)
                                     }}
-                                />
+                                />, [])}
                             </Slate>
                         </KeysContext.Provider>
                     </Suspense>}

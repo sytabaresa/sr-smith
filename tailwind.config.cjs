@@ -18,7 +18,12 @@ const defaultTHemeVariables = {
 }
 
 module.exports = {
-    content: ['./src/index.html', './src/pages/**/*.{js,ts,jsx,tsx}', './src/common/components/**/*.{js,ts,jsx,tsx}'],
+    content: [
+        './src/index.html',
+        './src/pages/**/*.{js,ts,jsx,tsx}',
+        './src/common/components/**/*.{js,ts,jsx,tsx}',
+        './src/modules/**/*.{js,ts,jsx,tsx}'
+    ],
     // darkMode: 'class', // or  false, 'media' or 'class'
     theme: {
         extend: {
