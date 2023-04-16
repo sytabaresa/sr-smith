@@ -1,19 +1,23 @@
-// ejemplo
-A = spoint(2, 1.653) << strokeColor: 'red', face: '[]', size: 7, fillColor: 'black' >> ;
+/* 
+  ejemplo de sintaxis
+  ver: https://syta.co/
+*/
+
+
+A = spoint(2, 1.653) << strokeColor: "red", face: "[]", size: 7, fillColor: 'black' >> ;
 k_a = circle(po, A);
 a = line(po, A) << strokeColor: 'blue', color: 'red' >> ;
 a.strokeColor = 'green';
 B = intersection(k_a, a, 1);
 k_a = imcircle(A);
-k_b = recircle(A) <<
-    strokecolor: '#FF0' >> ;
+k_b = recircle(A) << strokecolor: '#FF0' >> ;
 k_a = circle(B, 0.3);
 E = intersection(k_a, k_b, 1);
 F = spoint(0.074, -0.469);
-H = point(-0.485, 0.719);
+H = point(-0.485, 3);
 b = point(1, 2);
 point(2, 1);
-G = spoint(0.023, 0.717);
+G = spoint(0.023, PI / 3);
 k_a = imcirclead(G) << strokecolor: 'green' >> ;
 k_b = recirclead(G);
 foo = 1;
@@ -39,6 +43,13 @@ sixteen = obj.method(4);
 f = function(a, b, c) {
     return a + b + c;
 };
+K = spoint(0.077, 0.308);
+
+
+// comment
+true;
+false;
+False ? 1 : 2;
 
 
 errors: {

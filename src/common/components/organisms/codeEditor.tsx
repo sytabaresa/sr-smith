@@ -16,19 +16,54 @@ import { createEditor, Text, Element, Node, Descendant } from 'slate'
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
-import { Popup, useJSXElement } from "@modules/editor/searcher";
 import { deserializeCode, serializeCode } from '@modules/editor/serializers'
 import { CustomElement } from "@modules/editor/types";
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
-import { LinkLeaf, autolinker } from "@modules/editor/autolinker";
 import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
-import { ColorInline } from "@modules/editor/colorInline";
+
+// plugins
+import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
+import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
+import { Popup, useJSXElement } from "@modules/editor/searcher";
 
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
 };
 
+const Leaf = (props) => {
+    let { attributes, children, leaf } = props
+    const { text, type = {}, content, ...rest } = leaf
+    const classes = Object.keys(type)
+
+    if (classes.includes('color')) {
+        children = <ColorInlineLeaf {...props} classes={classes}>{children}</ColorInlineLeaf>
+    }
+
+    if (/-link$/.test(classes as unknown as string)) {
+        children = <AutolinkerLeaf {...props} classes={classes}>{children}</AutolinkerLeaf>
+    }
+
+    // console.log(classes)
+    return <span
+        {...attributes}
+        className={'token ' + classes.join(' ')}
+    >{children}</span>
+}
+
+const ElementRender = props => {
+    const { attributes, children, element } = props
+    // console.log(props)
+    switch (element.type) {
+        case 'paragraph':
+            return <p {...attributes}>{children}</p>
+        case 'code-line':
+            return <div {...attributes}>{children}</div>
+
+        default:
+            return <span {...attributes}>{children}</span>
+    }
+}
 
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
@@ -90,7 +125,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             }
         }
 
-        const _tokens = tokenize(text, autolinker(languages.jc))
+        const grammar = colorInline(autolinker(languages.jc))
+        // console.log(grammar)
+        const _tokens = tokenize(text, grammar)
         // console.log(_tokens)
         const lineTokens = normalizeTokens(_tokens)
         // console.log(lineTokens)
@@ -125,39 +162,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         return ranges
     }, [])
 
-    const Leaf = (props) => {
-        let { attributes, children, leaf } = props
-        const { text, type = {}, content, ...rest } = leaf
-        const classes = Object.keys(type)
-
-        if (classes.includes('color')) {
-            children = <ColorInline {...props} classes={classes}>{children}</ColorInline>
-        }
-
-        if (/-link$/.test(classes as unknown as string)) {
-            children = <LinkLeaf {...props} classes={classes}>{children}</LinkLeaf>
-        }
-
-        // console.log(classes)
-        return <span
-            {...attributes}
-            className={'token ' + classes.join(' ')}
-        >{children}</span>
-    }
-
-    const ElementRender = props => {
-        const { attributes, children, element } = props
-        // console.log(props)
-        switch (element.type) {
-            case 'paragraph':
-                return <p {...attributes}>{children}</p>
-            case 'code-line':
-                return <div {...attributes}>{children}</div>
-
-            default:
-                return <span {...attributes}>{children}</span>
-        }
-    }
+  
 
     // FSM actions
     const parseExecute = () => send('PARSING')

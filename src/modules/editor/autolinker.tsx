@@ -43,7 +43,7 @@ export function autolinker(grammar) {
     return grammar
 }
 
-export const LinkLeaf = (props) => {
+export const AutolinkerLeaf = (props) => {
     let { attributes, children, leaf, classes } = props
     const { text, type = {}, content, ...rest } = leaf
     const [focus, setFocus] = useState(false)
