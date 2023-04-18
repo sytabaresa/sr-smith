@@ -24,7 +24,7 @@ import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
 // plugins
 import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
-import { Popup, useJSXElement } from "@modules/editor/searcher";
+import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
 
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
@@ -80,8 +80,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     } = useContext(SmithContext)
     // console.log('inner', contextCode)
 
-
-    const searchElement = useJSXElement()
+    const searchElement = useSearcher()
     const { onKeyDown, onChange } = searchElement
     const [current, send] = editorService
     const { code, errorMsg } = current.context
@@ -94,18 +93,14 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     )
     const initialValue = useMemo(() => deserializeCode(code), [])
     // console.log(initialValue)
-    useEffect(() => {
+    // useEffect(() => {
         // console.log(current.name)
         if (current.name == 'parsing')
             editor.children = deserializeCode(code) as Descendant[]
-    }, [current.name])
+    // }, [current.name])
 
 
     const decorate = useCallback(([blockNode, blockPath]) => {
-
-        // if (!Text.isText(node)) {
-        //     return []
-        // }
 
         if (!Element.isElement(blockNode) || blockNode.type != 'paragraph') {
             return []
@@ -193,7 +188,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                     }
                                 }}
                             >
-                                <Popup editor={editor} {...searchElement} />
+                                <SearcherPopup editor={editor} {...searchElement} />
                                 {useMemo(() => <Editable
                                     renderElement={renderElement}
                                     renderLeaf={renderLeaf}
@@ -211,7 +206,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                         setEventUp(event)
                                         setEvent(event)
                                     }}
-                                />, [])}
+                                />, [current.name == 'parsing'])}
                             </Slate>
                         </KeysContext.Provider>
                     </Suspense>}

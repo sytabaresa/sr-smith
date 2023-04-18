@@ -145,7 +145,7 @@ function getToken(editor: Editor) {
     }
 }
 
-export const useJSXElement = () => {
+export const useSearcher = () => {
     const [selectorData, updateSelectorData] = useReducer(
         (state, newState) => {
 
@@ -219,7 +219,7 @@ export const useJSXElement = () => {
 
 }
 
-export const Popup = (props) => {
+export const SearcherPopup = (props) => {
     const { editor, selectorData, itemsFiltered, itemsGrouped, updateSelectorData } = props
     const ref = useRef<HTMLDivElement | null>()
 
