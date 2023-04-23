@@ -75,7 +75,7 @@ function populateBoard(send, board) {
         board.on('down', downHandler);
         board.on('up', upHandler)
         board.on('drag', (e) => send({ type: 'DRAG', value: e }));
-        board.on('hit', (event, element) => send({ type: 'HIT', value: { event, element } }))
+        board.on('hit', (event, element) => board.hitElement = element)
         // this.board.on('hit', (e) => this.sendEvent('HIT', e));
     }
 }

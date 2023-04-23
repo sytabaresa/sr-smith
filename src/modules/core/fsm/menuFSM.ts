@@ -16,14 +16,14 @@ interface Context extends JotaiContext {
     tooltipPluginsNames: string[]
 }
 
-let hitElement
 const removeElement = (ctx: any, ev: any) => {
+    const { board } = ev
     console.log('del', ctx.hitElement)
     const invalidElements = ['image', 'ticks', 'grid', 'text', 'axis']
 
     // removeElement(ev.board, ctx.hitElement)
-    if (!invalidElements.includes(hitElement?.elType))
-        ev.board.removeObject(hitElement)
+    if (!invalidElements.includes(board.hitElement?.elType))
+        ev.board.removeObject(board.hitElement)
     return ctx
 }
 
