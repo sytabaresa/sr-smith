@@ -9,7 +9,7 @@ import { JXGDrawer } from "@core/fsm/tooltipActionsFSM";
 import { SmithProject } from "@localtypes/smith";
 import { useUser } from "@components/organisms/userContext";
 import { useMachine } from "react-robot";
-import editorMachine from '@core/fsm/codeEditorFSM'
+import editorMachine from '@fsm/editorFSM'
 import saveMachine from "@core/fsm/savingFSM";
 import { setInitial, useConfig } from "@hooks/useConfig";
 import Footer from "@components/organisms/footer";

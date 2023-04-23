@@ -32,7 +32,6 @@ const machinecreate = (init: string, value: any) => createMachine(init, {
 }, (ctx) => ({ other: value, ...ctx }))
 
 
-
 const e1 = atomWithMachine(get =>
     machinecreate('marco', e2)
 )

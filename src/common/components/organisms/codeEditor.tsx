@@ -21,11 +21,15 @@ import { CustomElement } from "@modules/editor/types";
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
 
+import editorMachine from '@fsm/editorFSM'
+
 // plugins
 import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
-
+import { useAtom } from "jotai"
+import { useMachine } from "react-robot";
+import { atomWithMachine } from "@utils/atomWithachine";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
@@ -65,8 +69,12 @@ const ElementRender = props => {
     }
 }
 
+const createEditableMachine = atomWithMachine(editorMachine)
+
+
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
+    useAtom(createEditableMachine)
 
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
     const renderElement = useCallback(props => <ElementRender {...props} />, [])
@@ -94,9 +102,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const initialValue = useMemo(() => deserializeCode(code), [])
     // console.log(initialValue)
     // useEffect(() => {
-        // console.log(current.name)
-        if (current.name == 'parsing')
-            editor.children = deserializeCode(code) as Descendant[]
+    // console.log(current.name)
+    if (current.name == 'parsing')
+        editor.children = deserializeCode(code) as Descendant[]
     // }, [current.name])
 
 
@@ -157,7 +165,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         return ranges
     }, [])
 
-  
+
 
     // FSM actions
     const parseExecute = () => send('PARSING')
