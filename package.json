@@ -21,6 +21,7 @@
         "eslint-config-next": "^13.2.4",
         "firebase": "^9",
         "gravatar": "^1.8.2",
+        "jotai": "^2.0.4",
         "jsxgraph": "^1.5.0",
         "node-loader": "^2.0.0",
         "observable-hooks": "^4.2.1",
