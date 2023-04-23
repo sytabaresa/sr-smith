@@ -1,21 +1,20 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "@modules/i18n";
 import EditorPopup from "./editorPopup";
 // import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
-import { SmithContext } from "@providers/smithContext";
 import CodeEditor from "./codeEditor";
+import { useAtom } from "jotai";
+import { menuServiceAtom } from "@fsm/atoms";
 
 const CodeTools = () => {
   const { t } = useTranslation();
-  const { ui } = useContext(SmithContext)
+  const [current, send] = useAtom(menuServiceAtom)
 
-  ui.useMachine()
-
-  const [checked, setChecked] = useState(ui.whiteboardMachine.current == 'draw')
+  const [checked, setChecked] = useState(current.name == 'draw')
   useEffect(() => {
-    setChecked(ui.whiteboardMachine.current == 'draw')
-  }, [ui.whiteboardMachine.current])
+    setChecked(current.name == 'draw')
+  }, [current.name])
 
   return (
     <div className="absolute top-0 left-0 pl-2 py-2 md:pl-4 md:pt-4 z-10 flex h-0">
@@ -25,12 +24,12 @@ const CodeTools = () => {
           <EditorPopup className="lg:hidden flex-0" />
           <div className="form-control mx-2">
             <label className="label py-1 cursor-pointer">
-              <span className={`label-text uppercase text-right w-12 mr-2 font-bold ${ui.context().smithMode ? '' : 'opacity-50'}`}>{t.canvas.smith_mode()}</span>
+              <span className={`label-text uppercase text-right w-12 mr-2 font-bold ${current.context.smithMode ? '' : 'opacity-50'}`}>{t.canvas.smith_mode()}</span>
               <input
                 type="checkbox"
                 className="toggle"
-                checked={ui.context().smithMode}
-                onChange={() => ui.sendEvent('SMITH_MODE', !ui.context().smithMode)}
+                checked={current.context.smithMode}
+                onChange={() => send({ type: 'SMITH_MODE', value: !current.context.smithMode })}
               />
             </label>
           </div>

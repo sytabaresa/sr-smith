@@ -2,24 +2,24 @@
 export const useScreen = () => {
     // const tailwindData = { screens: null }
     // console.log(tailwindData)
-    if (typeof window != 'undefined') {
-        const bp = getCurrentBreakpoint()
-        return bp
-    } else {
-        return 'xs'
-    }
+    const bp = getCurrentBreakpoint()
+    return bp
 }
 
 export const getCurrentBreakpoint = (): string => {
-    const breakpointUnknown: string = 'unknown';
-    const breakpointXS: string | null = document.getElementById('breakpoint-xs')?.offsetParent === null ? null : 'xs';
-    const breakpointSM: string | null = document.getElementById('breakpoint-sm')?.offsetParent === null ? null : 'sm';
-    const breakpointMD: string | null = document.getElementById('breakpoint-md')?.offsetParent === null ? null : 'md';
-    const breakpointLG: string | null = document.getElementById('breakpoint-lg')?.offsetParent === null ? null : 'lg';
-    const breakpointXL: string | null = document.getElementById('breakpoint-xl')?.offsetParent === null ? null : 'xl';
-    const breakpoint2XL: string | null = document.getElementById('breakpoint-2xl')?.offsetParent === null ? null : '2xl';
-    const breakpoint = breakpointXS ?? breakpointSM ?? breakpointMD ?? breakpointLG ?? breakpointXL ?? breakpoint2XL ?? breakpointUnknown;
-    return breakpoint;
+    if (typeof window != 'undefined') {
+        const breakpointUnknown: string = 'unknown';
+        const breakpointXS: string | null = document.getElementById('breakpoint-xs')?.offsetParent === null ? null : 'xs';
+        const breakpointSM: string | null = document.getElementById('breakpoint-sm')?.offsetParent === null ? null : 'sm';
+        const breakpointMD: string | null = document.getElementById('breakpoint-md')?.offsetParent === null ? null : 'md';
+        const breakpointLG: string | null = document.getElementById('breakpoint-lg')?.offsetParent === null ? null : 'lg';
+        const breakpointXL: string | null = document.getElementById('breakpoint-xl')?.offsetParent === null ? null : 'xl';
+        const breakpoint2XL: string | null = document.getElementById('breakpoint-2xl')?.offsetParent === null ? null : '2xl';
+        const breakpoint = breakpointXS ?? breakpointSM ?? breakpointMD ?? breakpointLG ?? breakpointXL ?? breakpoint2XL ?? breakpointUnknown;
+        return breakpoint;
+    } else {
+        return 'xs'
+    }
 };
 
 export function CurrentBreakpoint() {

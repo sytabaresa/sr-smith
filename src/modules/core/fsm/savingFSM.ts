@@ -3,15 +3,16 @@ import { SmithProject } from '@localtypes/smith';
 import { EditorContextType } from './editorFSM';
 import { DataProvider } from '@hooks/useDataProvider';
 import { wait } from '@utils/time';
+import { editorServiceAtom } from './atoms';
+import { JotaiContext } from '@utils/atomWithachine';
 // import { Timestamp } from 'firebase/firestore';
 
-export interface SavingContextType {
+export interface SavingContextType extends JotaiContext {
     id: string;
     projectData: SmithProject;
     // loadHandler: (ctx: SavingContextType, ev: any) => void;
     code?: string;
     saveCounter?: number;
-    editorService: [{ context: EditorContextType }, SendFunction, Service<any>]
 }
 
 // cancelable timeout
@@ -71,13 +72,14 @@ function checkId(ctx: SavingContextType, ev: any) {
     return !!ctx.id
 }
 function sendCode(ctx: SavingContextType, ev) {
-    const [current, send] = ctx.editorService
+    const [current, send] = ctx.getMachine(editorServiceAtom)
+    console.log('send')
     send({ type: 'CODE', value: ctx.projectData.data });
     send('PARSING')
 }
 
 function logout(ctx: SavingContextType, ev) {
-    const [current, send] = ctx.editorService
+    const [current, send] = ctx.getMachine(editorServiceAtom)
     send({ type: 'CODE', value: '' });
     send('PARSING')
 }

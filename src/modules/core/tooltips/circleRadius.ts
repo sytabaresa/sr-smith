@@ -34,7 +34,7 @@ class CircleRadiusTooltip implements TooltipType {
         error: final(),
         end: final(),
     }, (parentContext: any) => ({
-        board: parentContext.board,
+        ...parentContext,
         objectSelected: [],
         smithMode: parentContext.smithMode,
     }))

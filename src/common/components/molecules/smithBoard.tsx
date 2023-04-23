@@ -1,31 +1,64 @@
-import { useContext, useEffect, useState } from "react";
-import { SmithContext } from "@providers/smithContext";
+import { useEffect } from "react";
 import { useScreen } from "@utils/screen";
 import { useTheme } from "@hooks/useTheme";
+import { useAtom, useSetAtom } from "jotai";
+import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@fsm/atoms";
+import { useRouter } from "@modules/router";
+import { useUser } from "@components/organisms/userContext";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export interface ISmithBoardProps { };
 
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
-    const { ui, editorService } = useContext(SmithContext)
     const [theme] = useTheme()
-    const screenSize = useScreen()
-    const BOX_NAME = 'smith-box'
-    const [current, send] = editorService
+    const screen = useScreen()
+    const { isAuthenticated } = useUser()
+    const { useParams } = useRouter()
+    const params = useParams();
+
+    const recreate = useSetAtom(boardAtom)
+    const [options, setOptions] = useAtom(boardConfigAtom)
+
+    //machines
+    const sendMenu = useSetAtom(menuServiceAtom)
+    const [currentEditor, sendEditor] = useAtom(editorServiceAtom)
+    const sendSave = useSetAtom(savingServiceAtom)
+
+    // hotkeys and keystrokes
+    useHotkeys('esc', () => sendMenu("EXIT"))
+    useHotkeys('delete', () => sendMenu("DELETE"))
+    useHotkeys('ctrl+enter', () => sendEditor('PARSING'))
+
+    // console.log(params.id[0])
+    // TODO: params.id
+
+    useEffect(() => {
+        if (currentEditor.context.code != '')
+            sendSave({ type: 'SAVE', value: currentEditor.context.code })
+    }, [currentEditor.context.code]);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
+        }
+    }, [isAuthenticated]);
 
     useEffect(() => {
         // console.log(screenSize)
-        send({ type: 'CONFIG', value: { name: BOX_NAME, theme, screenSize } })
-    }, [screenSize])
+        setOptions({ ...options, screen })
+        recreate()
+    }, [screen])
 
     useEffect(() => {
+        setOptions({ ...options, theme })
+        recreate()
         // console.log(theme)
-        send({ type: "CONFIG", value: { theme } })
-        send('PARSING')
+        // send('PARSING')
     }, [theme])
 
     return <>
         <div
-            id={BOX_NAME}
+            id={options.name}
             className="jxgbox full-screen-div w-full"
         // style={{ width: '500px', height: '500px' }}
         >

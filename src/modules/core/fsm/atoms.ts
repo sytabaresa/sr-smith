@@ -17,18 +17,19 @@ import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { atom } from "jotai";
 import { initBoard } from "@core/initBoard";
+import { getCurrentBreakpoint } from "@utils/screen";
 
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: menuServiceAtom,
     code: ''
-}))
+}), (get) => ({ board: get(boardAtom) }))
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
     // id: params?.id?.[0],
     projectData: {},
     editorService: editorServiceAtom,
 }))
-export const menuServiceAtom = atomWithMachine(menuFSM, {
+export const menuServiceAtom = atomWithMachine(menuFSM as any, {
     smithMode: true,
     tooltipPlugins: [
         new PointTooltip(),
@@ -44,17 +45,10 @@ export const menuServiceAtom = atomWithMachine(menuFSM, {
         new ReCircleAdTooltip(),
         new ImCircleAdTooltip(),
     ]
-})
+}, (get) => ({ board: get(boardAtom) }))
 
 
-
-function populateBoard(get, board) {
-    const menuService = get(menuServiceAtom)
-
-    //register canvas handlers:
-    const sendEvent = (event: string, payload: any = null) => { //TODO: types here
-        menuService.send({ type: event, value: payload, board })
-    }
+function populateBoard(send, board) {
 
     let touchTimer = null
     let inTouch = false
@@ -74,22 +68,22 @@ function populateBoard(get, board) {
             return
         }
         inTouch = false
-        sendEvent('CLICK', e)
+        send({ type: 'CLICK', value: e })
     }
 
     if (board) {
         board.on('down', downHandler);
         board.on('up', upHandler)
-        board.on('drag', (e) => sendEvent('DRAG', e));
-        board.on('hit', (event, element) => sendEvent('HIT', { event, element }))
+        board.on('drag', (e) => send({ type: 'DRAG', value: e }));
+        board.on('hit', (event, element) => send({ type: 'HIT', value: { event, element } }))
         // this.board.on('hit', (e) => this.sendEvent('HIT', e));
     }
 }
 
-export function recreateBoard(get, params: Record<string, any>, oldBoard: any) {
+export function recreateBoard(send, params: BoardOptions, oldBoard: any) {
     try {
-        const { name, options, screenSize } = params
-        const boundingBox = screenSize != '' ? screenSize : oldBoard.getBoundingBox()
+        const { screen, ...rest } = params
+        const boundingBox = screen != '' ? screen : oldBoard.getBoundingBox()
 
         if (oldBoard) {
             JXG.JSXGraph.freeBoard(oldBoard);
@@ -97,9 +91,9 @@ export function recreateBoard(get, params: Record<string, any>, oldBoard: any) {
         // if (!this.recreatingBoard) {
         // this.recreatingBoard = true
         // console.log(boardName, options, boundingBox)
-        const board = initBoard(name, options, boundingBox)
+        const board = initBoard({ ...rest, screen: boundingBox })
 
-        populateBoard(get, board)
+        populateBoard(send, board)
         return board
         // }
     } catch (err) {
@@ -118,12 +112,29 @@ export const boardAtom = atom(
         if (cached)
             return cached
 
-        const board = recreateBoard(get, {}, null)
-        return board
-
+        return {}
     },
-    (get, set, params: Record<string, any>) => {
-        const board = recreateBoard(get, params, get(cachedBoardAtom))
+    (get, set) => {
+        // console.log(params)
+        const send = (event) => set(menuServiceAtom, event)
+        const board = recreateBoard(send, get(boardConfigAtom), get(cachedBoardAtom))
         set(cachedBoardAtom, board)
     }
 )
+
+export interface BoardOptions {
+    theme: string;
+    screen: string | number[];
+    name: string;
+    digits: number;
+}
+
+export const boardConfigAtom = atom<BoardOptions>({
+    theme: 'light',
+    name: 'smith-box',
+    screen: getCurrentBreakpoint(),
+    digits: 3,
+})
+// export const projectDataAtom = atom({
+
+// })

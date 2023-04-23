@@ -1,4 +1,4 @@
-import { HTMLAttributes, Suspense, createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
+import { HTMLAttributes, Suspense, useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -7,7 +7,6 @@ import "prismjs/components/prism-javascript";
 
 import '@modules/editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.css";
-import { SmithContext } from "@providers/smithContext";
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
@@ -28,8 +27,7 @@ import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
 import { useAtom } from "jotai"
-import { useMachine } from "react-robot";
-import { atomWithMachine } from "@utils/atomWithachine";
+import { editorServiceAtom } from "@fsm/atoms";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
@@ -69,30 +67,22 @@ const ElementRender = props => {
     }
 }
 
-const createEditableMachine = atomWithMachine(editorMachine)
 
 
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
-    useAtom(createEditableMachine)
 
     const renderLeaf = useCallback(props => <Leaf {...props} />, [])
     const renderElement = useCallback(props => <ElementRender {...props} />, [])
 
     // const {user, isAuthenticated, loadingUser} = useUser()
 
-
-    // Add the initial value.
-    const {
-        editorService,
-    } = useContext(SmithContext)
     // console.log('inner', contextCode)
 
     const searchElement = useSearcher()
+    const [current, send] = useAtom(editorServiceAtom)
     const { onKeyDown, onChange } = searchElement
-    const [current, send] = editorService
     const { code, errorMsg } = current.context
-
     // console.log(code)
     // console.log(current.name)
     const editor = useMemo(
@@ -108,12 +98,16 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     // }, [current.name])
 
 
+    useEffect(() => {
+        send('INIT')
+    }, [])
+
     const decorate = useCallback(([blockNode, blockPath]) => {
 
         if (!Element.isElement(blockNode) || blockNode.type != 'paragraph') {
             return []
         }
-        console.log(blockNode, blockPath)
+        // console.log(blockNode, blockPath)
 
         const text = blockNode.children.map(line => Node.string(line)).join('\n')
         // console.log(text)

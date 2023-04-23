@@ -3,6 +3,7 @@ import { lightTheme, darkTheme } from "@core/utils/themes"
 import { Infobox } from "@components/atoms/infobox"
 import render from 'preact-render-to-string';
 import { h } from "preact";
+import { BoardOptions } from "@fsm/atoms";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -31,14 +32,9 @@ export const changeBoardTheme = (theme: string) => {
     }
 }
 
-export interface boardOptionsProps {
-    theme: string;
-    digits: number;
-}
-
-
-export const initBoard = (boxName: string, boardOptions: boardOptionsProps, screenDim: string | number[]) => {
-    changeBoardTheme(boardOptions.theme)
+export const initBoard = (options: BoardOptions) => {
+    // console.log(options)
+    changeBoardTheme(options?.theme || 'light')
 
     const screenBoxSizes = {
         'xs': [-1.2, 2, 1.2, -2],
@@ -47,9 +43,9 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
         'lg': [-2.5, 1.2, 1.5, -1.2],
     }
 
-    const boundingbox = typeof screenDim == 'string' ? screenBoxSizes[screenDim] : screenDim
+    const boundingbox = typeof options.screen == 'string' ? screenBoxSizes[options.screen] : options.screen
 
-    const brd = JXG.JSXGraph.initBoard(boxName, {
+    const brd = JXG.JSXGraph.initBoard(options.name, {
         title: 'Smith Chart canvas',
         description: 'An canvas with a smith chart, you can create points, lines, circles and other geometric contruct on top of it',
         boundingbox,
@@ -78,9 +74,9 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
             // min: 0.8,
         },
         showInfobox: true,
-        infoboxDigits: boardOptions.digits || 3,
+        infoboxDigits: options?.digits || 3,
 
-        ...boardOptions,
+        ...options,
     } as any);
 
     brd.suspendUpdate()
@@ -121,7 +117,7 @@ export const initBoard = (boxName: string, boardOptions: boardOptionsProps, scre
     const tt = 1.1555
     // const x = 0.0025
     // const y = -0.001
-    brd.create('image', [imgTheme[boardOptions.theme] || imgTheme.light,
+    brd.create('image', [imgTheme[options?.theme] || imgTheme.light,
     [-tt, -tt], [2 * tt, 2 * tt]],
         {
             id: 'smith-chart-image',

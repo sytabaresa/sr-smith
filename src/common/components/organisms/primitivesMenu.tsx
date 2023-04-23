@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {HandIcon, ReplyIcon, TemplateIcon} from "@heroicons/react/outline"
+import React, { useEffect, useRef, useState } from "react";
+import { HandIcon, ReplyIcon, TemplateIcon } from "@heroicons/react/outline"
 import TrashIcon from "@heroicons/react/outline/TrashIcon"
-import { SmithContext } from "@providers/smithContext";
 import PointTooltip from "@core/tooltips/point";
 import SegmentTooltip from "@core/tooltips/segment";
 import LineTooltip from "@core/tooltips/line";
@@ -15,6 +14,8 @@ import ImCircleTooltip from "@core/tooltips/imCircle";
 import { useTranslation } from "@modules/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
+import { useAtom } from "jotai";
+import { menuServiceAtom } from "@fsm/atoms";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -22,13 +23,13 @@ interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation()
-  const { ui } = useContext(SmithContext)
+  const [current, send] = useAtom(menuServiceAtom)
 
   const onClickCircleCenterRadiusValue = (v: string) => {
     const n = parseFloat(v)
-    n > 0 && ui.sendEvent("RADIUS", n)
+    n > 0 && send({ type: "RADIUS", value: n })
   }
-  const onClickCircleCenterRadiusCancel = () => ui.sendEvent('CANCEL')
+  const onClickCircleCenterRadiusCancel = () => send('CANCEL')
 
   const [radius, setRadius] = useState("")
   const [offset, setOffset] = useState(0)
@@ -40,12 +41,12 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   // console.log('render', ui.current(true))
 
   useEffect(() => {
-    if (ui.current() == "tooltipSelected") {
+    if (current.name == "tooltipSelected") {
       // console.log('toast')
       setShowHelp(true)
       setTimeout(() => setShowHelp(false), 3000)
     }
-  }, [ui.current()])
+  }, [current.name])
 
   const offsetCalc = (e) => {
     // console.log(e?.offsetTop)
@@ -54,8 +55,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   }
 
   const _delete = (e) => {
-    ui.sendEvent('EXIT')
-    ui.sendEvent('DELETE_MODE')
+    send('EXIT')
+    send('DELETE_MODE')
   }
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             aria-label={t.canvas.undo()}
             tabIndex={0}
             className={`toolbox-btn !btn-square !btn-disabled`}
-            onClick={() => ui.sendEvent('UNDO')}>
+            onClick={() => send('UNDO')}>
             <ReplyIcon className="w-6" />
           </button>
         </div>
@@ -81,7 +82,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.delete()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square ${ui.current() == "delete" ? 'btn-active' : ''}`}
+            className={`toolbox-btn !btn-square ${current.name == "delete" ? 'btn-active' : ''}`}
             onClick={_delete}>
             <TrashIcon className="w-6" />
           </button>
@@ -101,8 +102,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.move()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square ${ui.current() == "idle" ? 'btn-active' : ''}`}
-            onClick={() => ui.sendEvent('EXIT')}>
+            className={`toolbox-btn !btn-square ${current.name == "idle" ? 'btn-active' : ''}`}
+            onClick={() => send('EXIT')}>
             <HandIcon className="w-6" />
           </button>
         </div>
@@ -120,10 +121,10 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
             new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
               // figure out how to show clipped tooltip
-              <li key={index} onClick={() => ui.setTooltip(plugin.name)} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
+              <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
                 <button
                   aria-label={plugin.tooltip}
-                  className={`p-0 py-2 md:px-2 btn btn-ghost ${ui.context().tooltipSelected == plugin.name ? 'btn-active' : ''}`}
+                  className={`p-0 py-2 md:px-2 btn btn-ghost ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
                 </button>
@@ -134,7 +135,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       </div>
 
       {/* Popup for data TODO: generalize this logic */}
-      <div className={`modal ${ui.current(true) == "draw.drawCircle" ? 'modal-open' : ''}`}>
+      {/* TODO: change recursive */}
+      <div className={`modal ${current.name == "draw.drawCircle" ? 'modal-open' : ''}`}>
         <div className="modal-box">
           <h3 className="font-bold text-lg mb-2">
             Circunferencia: centro y radio
@@ -143,7 +145,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             type="text"
             placeholder="Elija el Radio"
             className="input input-bordered w-full max-w-xs"
-            onChange={(ev:any) => setRadius(ev.target.value)}
+            onChange={(ev: any) => setRadius(ev.target.value)}
           />
           <div className="modal-action flex items-center">
             <a href="#" className="text-gray-500" onClick={onClickCircleCenterRadiusCancel}>Cancelar</a>
@@ -155,13 +157,13 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       </div>
 
       {/* toas in the corner, info of tooltip selected */}
-      {ui.tooltipSelected &&
+      {current.context.tooltipSelected &&
         <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>
           <div className="alert max-w-[70vw] shadow-lg">
             <div className="!block">
-              <h2 className="font-bold">{t.tools[ui.tooltipSelected.name]?.title()}</h2>
+              <h2 className="font-bold">{t.tools[current.context.tooltipSelected.name]?.title()}</h2>
               <p>
-                {t.tools[ui.tooltipSelected.description]?.desc()}
+                {t.tools[current.context.tooltipSelected.description]?.desc()}
               </p>
             </div>
           </div>

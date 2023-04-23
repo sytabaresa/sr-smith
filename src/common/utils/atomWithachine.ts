@@ -2,9 +2,23 @@ import { Atom, atom, getDefaultStore } from 'jotai'
 import type { Getter } from 'jotai'
 import { interpret, Machine, Service, SendEvent } from 'robot3'
 
+const { create, freeze } = Object
+
+function valueEnumerable(value) {
+    return { enumerable: true, value };
+}
+
+function createCurrent(service) {
+    return freeze(create(service.machine.state, {
+        context: valueEnumerable(service.context || {}),
+        service: valueEnumerable(service)
+    }));
+}
+
 export const atomWithMachine = (
     getMachine: Machine | ((get: Getter) => Machine),
-    getInitialContext?: any | ((get: Getter) => any)
+    getInitialContext?: any | ((get: Getter) => any),
+    getEvent?: any | ((get: Getter) => any),
 ) => {
 
     const cacheCallbackAtom = atom(null)
@@ -54,14 +68,10 @@ export const atomWithMachine = (
         (get, set) => {
             // const { service } = get(serviceAtom)
 
+
             set(cacheCallbackAtom, () => (service) => {
                 // console.log(service)
-                set(cachedMachineAtom, {
-                    name: service.machine.current,
-                    context: service.context,
-                    // service,
-                })
-
+                set(cachedMachineAtom, createCurrent(service))
             })
         })
 
@@ -75,9 +85,12 @@ export const atomWithMachine = (
             const { service } = get(serviceAtom)
             const getMachine = (a) => ([get(a), (s) => set(a, s)])
             service.context['getMachine'] = getMachine
-            service.send(event)
-        }
-    )
+            const add = isGetter(getEvent) ? getEvent(get) : getEvent
+
+            typeof event == 'string' ?
+                service.send({ ...add, type: event, }) :
+                service.send({ ...add, ...event })
+        })
 
     return finalMachineAtom
 }

@@ -10,20 +10,20 @@ interface Context extends JotaiContext {
     code: string,
     smithMode: boolean,
     tooltipPlugins: TooltipType[],
-    hitElement: any
     tooltipPluginMap: {
         [k: string]: TooltipType;
     }
     tooltipPluginsNames: string[]
 }
 
+let hitElement
 const removeElement = (ctx: any, ev: any) => {
     console.log('del', ctx.hitElement)
     const invalidElements = ['image', 'ticks', 'grid', 'text', 'axis']
 
     // removeElement(ev.board, ctx.hitElement)
-    if (!invalidElements.includes(ctx.hitElement?.elType))
-        ev.board.removeObject(ctx.hitElement)
+    if (!invalidElements.includes(hitElement?.elType))
+        ev.board.removeObject(hitElement)
     return ctx
 }
 
@@ -46,7 +46,9 @@ const recreateCode = (ctx: Context, ev) => {
     return { ...ctx, code: ctxCode }
 }
 
-const hit = (ctx, ev) => ({ ...ctx, hitElement: ev.value.element })
+const hit = (ctx, ev) => {
+    hitElement = ev.value.element
+}
 
 export default createMachine<any, Context>('idle', {
     idle: state(
@@ -54,7 +56,7 @@ export default createMachine<any, Context>('idle', {
         transition('DELETE_MODE', 'delete'),
         transition('CHANGE_DRAW', 'pre_draw'),
         transition('SMITH_MODE', 'idle', reduce(smithModeChange)),
-        transition('HIT', 'idle', reduce(hit)),
+        transition('HIT', 'idle', action(hit)),
     ),
     delete: state(
         transition('DELETE', 'idle', reduce(removeElement)),
@@ -62,7 +64,7 @@ export default createMachine<any, Context>('idle', {
         transition('CHANGE_DRAW', 'pre_draw'),
         transition('EXIT', 'idle'),
         transition('CLICK', 'delete', reduce(removeElement)),
-        transition('HIT', 'idle', reduce(hit))
+        transition('HIT', 'idle', action(hit))
     ),
     pre_draw: state(
         immediate('validatePlugin', reduce<Context, any>((ctx, ev) => {
@@ -109,7 +111,6 @@ export default createMachine<any, Context>('idle', {
     return {
         tooltipSelected: '',
         code: '',
-        hitElement: undefined,
         ...rest,
         tooltipPlugins,
         tooltipPluginMap,

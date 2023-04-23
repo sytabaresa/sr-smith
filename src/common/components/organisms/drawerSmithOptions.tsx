@@ -1,12 +1,13 @@
-import { HTMLAttributes, useContext } from "react";
+import { HTMLAttributes } from "react";
 import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
 import { useUser } from "./userContext";
 import { useTranslation } from "@modules/i18n";
-import { SmithContext } from "@providers/smithContext";
 import { useLogout } from "@hooks/useLogout";
 import { Link } from "@modules/router/link";
+import { useSetAtom } from "jotai";
+import { savingServiceAtom } from "@fsm/atoms";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
@@ -14,7 +15,7 @@ export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
 
 const DrawerSmithMenu = (props) => {
     const { labels } = props
-    const { saveService } = useContext(SmithContext)
+    const send = useSetAtom(savingServiceAtom)
     const { useHistory } = useRouter()
     const { push } = useHistory();
     const { t } = useTranslation();
@@ -23,7 +24,7 @@ const DrawerSmithMenu = (props) => {
 
     const logout = async () => {
         await _logout()
-        saveService[1]('LOGOUT')
+        send('LOGOUT')
     }
 
     return <div className="flex flex-col items-start flex-grow w-full">

@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import { useState } from "react";
 import { SmithProject } from "@localtypes/smith";
-import { SmithContext } from "@providers/smithContext";
 import { useTranslation } from "@modules/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
+import { savingServiceAtom } from "@fsm/atoms";
+import { useAtomValue } from "jotai";
 // import { Timestamp } from "firebase/firestore";
 
 type PublishProjectFormProps = {
@@ -11,7 +12,8 @@ type PublishProjectFormProps = {
 
 const PublishProjectForm = ({ }: PublishProjectFormProps) => {
   const { t } = useTranslation()
-  const { projectData } = useContext(SmithContext)
+  const current = useAtomValue(savingServiceAtom)
+  const projectData = current.context.projectData
   const { update } = useDataProvider()
   const [publicState, setPublicState] = useState(projectData?.isPublic || false)
   const [error, setError] = useState("")

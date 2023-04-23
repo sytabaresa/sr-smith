@@ -1,22 +1,23 @@
-import { createMachine, state, transition, reduce, invoke, action } from 'robot3';
+import { createMachine, state, transition, reduce, invoke, action, immediate } from 'robot3';
 import { JXGDrawer } from './tooltipActionsFSM';
 import { wait } from '@utils/time';
+import { JotaiContext } from '@utils/atomWithachine';
+import { boardAtom, boardConfigAtom } from './atoms';
 
-export interface EditorContextType {
+export interface EditorContextType extends JotaiContext {
     errorMsg?: string;
     code: string;
-    ui: JXGDrawer;
-    boardConfig?: { theme: string, name: string, screenSize: string };
 }
 
 const parseExecute = async (ctx: EditorContextType, ev) => {
     // console.log(code)
     // console.log(board)
     // console.log(ctx.theme)
-    const { theme, name, screenSize } = ctx.boardConfig
     try {
-        ctx.ui.recreateBoard({ theme }, name, screenSize)
-        ctx.ui.board.jc.parse(ctx.code);
+        const [_, recreateBoard] = ctx.getMachine(boardAtom)
+        recreateBoard(null)
+        const [board] = ctx.getMachine(boardAtom)
+        board.jc.parse(ctx.code);
     } catch (err) {
         console.log(err)
         return Promise.reject(err)
@@ -29,20 +30,19 @@ const configTransition = transition('CONFIG', 'initializing', reduce(setConfig))
 // fsm
 export default createMachine('init', {
     init: state(
-        configTransition
+        // immediate('initializing')
+        transition('INIT', 'initializing')
     ),
     initializing: invoke(async (ctx: EditorContextType, ev) => {
         await parseExecute(ctx, ev);
         return await wait(50)
     }, // some delay initializing
-        configTransition,
         transition('done', 'idle'),
         transition('error', 'init')
     ),
     idle: state(
         transition('PARSING', 'parsing', reduce(clearErrorMsg)),
         transition("CODE", 'idle', reduce(setCode)),
-        configTransition
     ),
     parsing: invoke(parseExecute,
         transition('done', 'idle'),
