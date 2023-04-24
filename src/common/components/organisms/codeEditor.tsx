@@ -27,7 +27,7 @@ import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
 import { useAtom } from "jotai"
-import { editorServiceAtom } from "@fsm/atoms";
+import { editorServiceAtom } from "@core/atoms/smith";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;

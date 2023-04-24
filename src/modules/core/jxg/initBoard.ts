@@ -3,7 +3,7 @@ import { lightTheme, darkTheme } from "@core/utils/themes"
 import { Infobox } from "@components/atoms/infobox"
 import render from 'preact-render-to-string';
 import { h } from "preact";
-import { BoardOptions } from "@fsm/atoms";
+import { BoardOptions } from "@core/atoms/smith";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {

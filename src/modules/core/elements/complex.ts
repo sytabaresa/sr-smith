@@ -1,5 +1,4 @@
-import JXG, { Board, Circle, GeometryElementAttributes, Point, SmithPoint } from "jsxgraph"
-import { reflecImPart, reflecRePart, zImPart, zRePart } from "@core/utils/transforms";
+import JXG, { SmithPoint } from "jsxgraph"
 
 JXG.OBJECT_TYPE_COMPLEX = 90
 JXG.createComplex = function (board, parents, attributes) {

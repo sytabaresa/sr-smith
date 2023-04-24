@@ -1,7 +1,7 @@
 import { atomWithMachine } from "@utils/atomWithachine";
-import editorFSM from "./editorFSM";
-import savingFSM from "./savingFSM";
-import menuFSM from "./menuFSM";
+import editorFSM from "../fsm/editorFSM";
+import savingFSM from "../fsm/savingFSM";
+import menuFSM from "../fsm/menuFSM";
 
 import PointTooltip from "@tooltips/point";
 import LineTooltip from "@tooltips/line";
@@ -16,11 +16,8 @@ import ImCircleTooltip from "@tooltips/imCircle";
 import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { atom } from "jotai";
-import { initBoard } from "@core/initBoard";
+import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@utils/screen";
-import { atomWithStorage } from 'jotai/utils'
-import { Locales } from "@modules/i18n/i18n-types";
-
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: menuServiceAtom,
@@ -137,32 +134,3 @@ export const boardConfigAtom = atom<BoardOptions>({
     screen: getCurrentBreakpoint(),
     digits: 3,
 })
-
-
-export const codeAtom = atom<string>('')
-
-export const projectDataAtom = atom({
-
-})
-
-const _themeAtom = atomWithStorage<string>('theme', 'light')
-export const themeAtom = atom(
-    (get) => {
-        const theme = get(_themeAtom)
-        if (typeof window != 'undefined')
-            document.documentElement.setAttribute("data-theme", theme);
-        return theme
-    },
-    (get, set, value: string) => {
-        set(_themeAtom, value)
-        document.documentElement.setAttribute("data-theme", value);
-    }
-)
-
-export const appDataAtom = atom({})
-
-export const boardDataAtom = atomWithStorage('config', {
-    coordsPresition: 3
-})
-
-export const langAtom = atomWithStorage<Locales>('lang', 'en')

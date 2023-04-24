@@ -3,7 +3,7 @@ import { SmithProject } from '@localtypes/smith';
 import { EditorContextType } from './editorFSM';
 import { DataProvider } from '@hooks/useDataProvider';
 import { wait } from '@utils/time';
-import { editorServiceAtom } from './atoms';
+import { editorServiceAtom } from '../atoms/smith';
 import { JotaiContext } from '@utils/atomWithachine';
 // import { Timestamp } from 'firebase/firestore';
 

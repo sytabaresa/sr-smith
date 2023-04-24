@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useScreen } from "@utils/screen";
 import { useAtom, useSetAtom } from "jotai";
-import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom, themeAtom } from "@fsm/atoms";
+import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
+import { themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
 import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";

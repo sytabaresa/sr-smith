@@ -5,7 +5,7 @@ import EditorPopup from "./editorPopup";
 import PrimitivesMenu from "./primitivesMenu";
 import CodeEditor from "./codeEditor";
 import { useAtom } from "jotai";
-import { menuServiceAtom } from "@fsm/atoms";
+import { menuServiceAtom } from "@core/atoms/smith";
 
 const CodeTools = () => {
   const { t } = useTranslation();

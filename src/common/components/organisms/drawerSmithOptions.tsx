@@ -7,7 +7,7 @@ import { useTranslation } from "@modules/i18n";
 import { useLogout } from "@hooks/useLogout";
 import { Link } from "@modules/router/link";
 import { useSetAtom } from "jotai";
-import { savingServiceAtom } from "@fsm/atoms";
+import { savingServiceAtom } from "@core/atoms/smith";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>

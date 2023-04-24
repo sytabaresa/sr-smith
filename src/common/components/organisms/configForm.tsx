@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "@modules/i18n"
-import { boardDataAtom } from "@fsm/atoms";
+import { boardDataAtom } from "@core/atoms/common";
 import { useAtom } from "jotai";
 
 type ConfigsFormProps = {

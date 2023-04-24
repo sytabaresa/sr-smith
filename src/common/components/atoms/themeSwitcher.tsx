@@ -1,4 +1,4 @@
-import { themeAtom } from "@fsm/atoms";
+import { themeAtom } from "@core/atoms/common";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import { useAtom } from "jotai";
 import { ChangeEvent, LabelHTMLAttributes } from "react";

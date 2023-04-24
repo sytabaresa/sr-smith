@@ -2,7 +2,7 @@ import { useI18nContext } from "@modules/i18n/i18n-react";
 import { Locales } from "@modules/i18n/i18n-types";
 import { loadLocaleAsync } from "@modules/i18n/i18n-util.async";
 import { useEffect } from "react";
-import { langAtom } from "@fsm/atoms";
+import { langAtom } from "@core/atoms/common";
 import { useAtom } from "jotai";
 
 export const useLang = (_lang: Locales | string = '') => {

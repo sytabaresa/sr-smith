@@ -15,7 +15,7 @@ import { useTranslation } from "@modules/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 import { useAtom } from "jotai";
-import { menuServiceAtom } from "@fsm/atoms";
+import { menuServiceAtom } from "@core/atoms/smith";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { SmithProject } from "@localtypes/smith";
 import { useTranslation } from "@modules/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
-import { savingServiceAtom } from "@fsm/atoms";
+import { savingServiceAtom } from "@core/atoms/smith";
 import { useAtomValue } from "jotai";
 // import { Timestamp } from "firebase/firestore";
 

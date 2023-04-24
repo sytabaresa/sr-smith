@@ -5,7 +5,7 @@ import { loadLocaleAsync } from "./i18n-util.async";
 import { useRouter } from "@modules/router";
 import { loadLocale } from "./i18n-util.sync";
 import { locales } from "./i18n-util";
-import { langAtom } from "@fsm/atoms";
+import { langAtom } from "@core/atoms/common";
 import { useAtom } from "jotai";
 
 export function useTranslation() {
