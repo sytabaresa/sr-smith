@@ -81,6 +81,22 @@ type RootTranslation = {
 		 * L​a​n​g​u​a​g​e
 		 */
 		lang: string
+		/**
+		 * T​h​e​m​e
+		 */
+		theme: string
+		/**
+		 * H​e​l​p
+		 */
+		help: string
+		/**
+		 * C​l​o​s​e
+		 */
+		close: string
+		/**
+		 * C​o​d​e
+		 */
+		code: string
 	}
 	offline: {
 		/**
@@ -113,6 +129,34 @@ type RootTranslation = {
 		 * A​u​t​h​o​r​s
 		 */
 		authors: string
+		/**
+		 * G​P​L​v​3​ ​i​m​a​g​e
+		 */
+		image: string
+	}
+	about: {
+		/**
+		 * T​e​s​i​s
+		 */
+		tesis: string
+		/**
+		 * T​h​i​s​ ​s​o​f​t​w​a​r​e​ ​i​s​ ​p​r​o​d​u​c​t​ ​o​f​ ​m​y​ ​e​n​g​i​n​e​e​r​i​n​g​ ​t​e​s​i​s​,​ ​y​o​u​ ​c​a​n​ ​s​e​e
+		 */
+		desc: string
+		/**
+		 * h​e​r​e
+		 */
+		here: string
+	}
+	theme: {
+		/**
+		 * D​a​r​k
+		 */
+		dark: string
+		/**
+		 * L​i​g​h​t
+		 */
+		light: string
 	}
 	login: {
 		/**
@@ -228,6 +272,14 @@ type RootTranslation = {
 	}
 	canvas: {
 		/**
+		 * S​m​i​t​h​ ​C​h​a​r​t​ ​c​a​n​v​a​s
+		 */
+		title: string
+		/**
+		 * A​n​ ​c​a​n​v​a​s​ ​w​i​t​h​ ​a​ ​s​m​i​t​h​ ​c​h​a​r​t​,​ ​y​o​u​ ​c​a​n​ ​c​r​e​a​t​e​ ​p​o​i​n​t​s​,​ ​l​i​n​e​s​,​ ​c​i​r​c​l​e​s​ ​a​n​d​ ​o​t​h​e​r​ ​g​e​o​m​e​t​r​i​c​ ​c​o​n​t​r​u​c​t​s​ ​o​n​ ​t​o​p​ ​o​f​ ​i​t
+		 */
+		desc: string
+		/**
 		 * R​u​n
 		 */
 		run: string
@@ -252,6 +304,10 @@ type RootTranslation = {
 		 */
 		show_menu: string
 		/**
+		 * E​l​e​m​e​n​t​s​ ​M​e​n​u
+		 */
+		elements_menu: string
+		/**
 		 * C​r​e​a​t​e
 		 */
 		create: string
@@ -260,7 +316,7 @@ type RootTranslation = {
 		 */
 		code: string
 		/**
-		 * W​r​i​t​e​ ​c​o​d​e
+		 * W​r​i​t​e​ ​c​o​d​e​.​.​.
 		 */
 		placeholder: string
 	}
@@ -379,7 +435,7 @@ type RootTranslation = {
 			 */
 			title: string
 		}
-		circle: {
+		circle_point: {
 			/**
 			 * C​i​r​c​l​e​ ​(​c​e​n​t​e​r​,​ ​p​o​i​n​t​)
 			 */
@@ -472,6 +528,22 @@ export type TranslationFunctions = {
 		 * Language
 		 */
 		lang: () => LocalizedString
+		/**
+		 * Theme
+		 */
+		theme: () => LocalizedString
+		/**
+		 * Help
+		 */
+		help: () => LocalizedString
+		/**
+		 * Close
+		 */
+		close: () => LocalizedString
+		/**
+		 * Code
+		 */
+		code: () => LocalizedString
 	}
 	offline: {
 		/**
@@ -504,6 +576,34 @@ export type TranslationFunctions = {
 		 * Authors
 		 */
 		authors: () => LocalizedString
+		/**
+		 * GPLv3 image
+		 */
+		image: () => LocalizedString
+	}
+	about: {
+		/**
+		 * Tesis
+		 */
+		tesis: () => LocalizedString
+		/**
+		 * This software is product of my engineering tesis, you can see
+		 */
+		desc: () => LocalizedString
+		/**
+		 * here
+		 */
+		here: () => LocalizedString
+	}
+	theme: {
+		/**
+		 * Dark
+		 */
+		dark: () => LocalizedString
+		/**
+		 * Light
+		 */
+		light: () => LocalizedString
 	}
 	login: {
 		/**
@@ -619,6 +719,14 @@ export type TranslationFunctions = {
 	}
 	canvas: {
 		/**
+		 * Smith Chart canvas
+		 */
+		title: () => LocalizedString
+		/**
+		 * An canvas with a smith chart, you can create points, lines, circles and other geometric contructs on top of it
+		 */
+		desc: () => LocalizedString
+		/**
 		 * Run
 		 */
 		run: () => LocalizedString
@@ -643,6 +751,10 @@ export type TranslationFunctions = {
 		 */
 		show_menu: () => LocalizedString
 		/**
+		 * Elements Menu
+		 */
+		elements_menu: () => LocalizedString
+		/**
 		 * Create
 		 */
 		create: () => LocalizedString
@@ -651,7 +763,7 @@ export type TranslationFunctions = {
 		 */
 		code: () => LocalizedString
 		/**
-		 * Write code
+		 * Write code...
 		 */
 		placeholder: () => LocalizedString
 	}
@@ -770,7 +882,7 @@ export type TranslationFunctions = {
 			 */
 			title: () => LocalizedString
 		}
-		circle: {
+		circle_point: {
 			/**
 			 * Circle (center, point)
 			 */

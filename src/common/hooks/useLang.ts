@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { langAtom } from "@core/atoms/common";
 import { useAtom } from "jotai";
 
-export const useLang = (_lang: Locales | string = '') => {
+export const useLang = () => {
     const { setLocale } = useI18nContext()
     const [lang, setLang] = useAtom(langAtom)
 

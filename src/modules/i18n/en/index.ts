@@ -21,6 +21,10 @@ const en: Translation = {
 		sign_up: "Sign Up",
 		login: "Login",
 		lang: "Language",
+		theme: "Theme",
+		help: "Help",
+		close: "Close",
+		code: "Code"
 	},
 	offline: {
 		app_ready: 'App ready to work offline',
@@ -32,6 +36,17 @@ const en: Translation = {
 		work: "This work is under",
 		license: "Licence GPL (GNU General Public License) version 3",
 		authors: "Authors",
+		image: "GPLv3 image"
+	},
+	about: {
+		tesis: "Tesis",
+		desc: "This software is product of my engineering tesis, you can see",
+		here: "here",
+	},
+	theme: {
+
+		dark: "Dark",
+		light: "Light"
 	},
 	login: {
 		username: "Username",
@@ -68,12 +83,15 @@ const en: Translation = {
 		antenna_patterns: "Antenna Patterns",
 	},
 	canvas: {
+		title: 'Smith Chart canvas',
+		desc: 'An canvas with a smith chart, you can create points, lines, circles and other geometric contructs on top of it',
 		run: "Run",
 		smith_mode: "Smith Mode",
 		move: "Move",
 		delete: "Delete",
 		undo: "Undo",
 		show_menu: "Show Menu",
+		elements_menu: "Elements Menu",
 		create: "Create",
 		code: "Code",
 		placeholder: "Write code..."
@@ -127,7 +145,7 @@ const en: Translation = {
 		semicircle: {
 			title: "Semicircle"
 		},
-		circle: {
+		circle_point: {
 			title: "Circle (center, point)",
 		},
 		circle_radius: {

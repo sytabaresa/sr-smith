@@ -199,6 +199,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                     spellCheck={false}
                                     autoCorrect={false}
                                     placeholder={t.canvas.placeholder()}
+                                    aria-label={t.common.code()}
                                     onKeyDown={(event) => {
                                         onKeyDown(event, editor)
                                         setEventDown(event)
@@ -208,7 +209,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                         setEventUp(event)
                                         setEvent(event)
                                     }}
-                                />, [current.name == 'parsing'])}
+                                />, [current.name == 'parsing', t])}
                             </Slate>
                         </KeysContext.Provider>
                     </Suspense>}

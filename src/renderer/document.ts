@@ -51,7 +51,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <meta property="og:url" content="https://sr-smith.syta.co">
     <meta property="og:image" content="https://sr-smith.syta.co/pwa/apple-touch-icon.png">
 
-    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover">
 
     <link rel="icon" type="image/png" sizes="196x196" href="${logoUrl}">
 

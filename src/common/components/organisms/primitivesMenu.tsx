@@ -91,7 +91,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       <div className="flex gap-2 flex-0">
         <div className={`btn-group`}>
           <button
-            aria-label={t.canvas.show_menu()}
+            aria-label={t.canvas.elements_menu()}
             tabIndex={0}
             className={`toolbox-btn !btn-square ${showMenu ? 'btn-active' : ''}`}
             onClick={() => setShowMenu(!showMenu)}>
@@ -119,11 +119,11 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
             new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
-            new ImCircleTooltip(), new ImCircleAdTooltip(), new ReCircleAdTooltip()].map((plugin, index) =>
+            new ImCircleTooltip(), new ReCircleAdTooltip(), new ImCircleAdTooltip()].map((plugin, index) =>
               // figure out how to show clipped tooltip
               <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
                 <button
-                  aria-label={plugin.tooltip}
+                  aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip }
                   className={`p-0 py-2 md:px-2 btn btn-ghost ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />

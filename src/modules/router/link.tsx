@@ -8,14 +8,14 @@ export interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
 }
 
 export function Link(props: LinkProps) {
-    const { href, children, query = {} } = props
+    const { href, children, query = {}, ...rest } = props
 
     const { useHistory } = useRouter()
     // const [q] = useLanguageQuery()
     const { push } = useHistory()
     // console.log(href, query)
 
-    return <a href={href + qStr(query)} onClick={() => push(href, query)}>
+    return <a href={href + qStr(query)} onClick={() => push(href, query)} {...rest}>
         {children}
     </a>
 }

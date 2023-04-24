@@ -1,3 +1,6 @@
+import { ModalLabel } from "@components/atoms/modalLabel";
+import { useTranslation } from "@modules/i18n";
+import { labelExtraProps } from "@utils/label";
 import React from "react";
 
 interface ModalContainerProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
@@ -16,6 +19,7 @@ const ModalContainer = ({
   ...rest
 }: ModalContainerProps) => {
   modalName = !modalName || modalName == '' ? `modal-${Math.random().toString().slice(-5)}` : modalName
+  const {t} = useTranslation()
 
   return (
     <label htmlFor={modalName}
@@ -25,19 +29,19 @@ const ModalContainer = ({
     >
       {children}
       {isModal && <>
-        <input type="checkbox" id={modalName} className="modal-toggle" />
-        <div className="modal">
-          <div className="modal-box relative ">
-            <label
+        <input type="checkbox" id={modalName} className="modal-toggle hidden" />
+        <label htmlFor={modalName} className="modal cursor-pointer">
+          <label htmlFor="" className="modal-box relative ">
+            <ModalLabel
               htmlFor={modalName}
-              aria-hidden="true"
               className="btn btn-sm btn-ghost absolute right-2 top-2"
+              aria-label={t.common.close()}
             >
               ✕
-            </label>
+            </ModalLabel>
             <div className="w-full">{modalChild}</div>
-          </div>
-        </div>
+          </label>
+        </label>
       </>}
     </label >
   );

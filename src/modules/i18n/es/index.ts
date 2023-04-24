@@ -21,6 +21,10 @@ const es: BaseTranslation = {
 		sign_up: "Registrarse",
 		login: "Login",
 		lang: "Lenguaje",
+		theme: "Tema",
+		help: "Ayuda",
+		close: "Cerrar",
+		code: "Código"
 	},
 	offline: {
 		app_ready: 'App lista para funcionar offline',
@@ -32,6 +36,16 @@ const es: BaseTranslation = {
 		work: "Este trabajo está bajo",
 		license: "Licencia GPL (GNU General Public License) versión 3",
 		authors: "Autores",
+		image: "Imagen GPLv3"
+	},
+	about: {
+		tesis: "Tesis",
+		desc: "Este software es producto de nuestra tesis de ingeniería, puedes verla",
+		here: "aqui"
+	},
+	theme: {
+		dark: "Oscuro",
+		light: "Claro"
 	},
 	login: {
 		username: "Usuario",
@@ -75,12 +89,15 @@ const es: BaseTranslation = {
 		antenna_patterns: "Antenna Patterns",
 	},
 	canvas: {
-		run: "Run",
+		title: "Canvas Carta de Smith",
+		desc: "Un canvas con una Carta de Smith, puedes crear puntos, líneas, curvas y otros constructores geométricos en él",
+		run: "Correr",
 		smith_mode: "Modo Smith",
 		move: "Mover",
 		delete: "Borrar",
 		undo: "Atrás",
 		show_menu: "Ver menú",
+		elements_menu: "Menú de elementos",
 		create: "Crear",
 		code: "Code",
 		placeholder: "Escribir código..."
@@ -111,19 +128,28 @@ const es: BaseTranslation = {
 		imcircle: {
 			title: "Círculo Imaginario (Punto)"
 		},
-		recicle: {
+		imcirclead: {
+			title: "Círculo Imaginario de Admitacia (Punto)",
+		},
+		recircle: {
 			title: "Círculo Real (Punto)"
+		},
+		recirclead: {
+			title: "Círculo Real de Admitancia (Punto)",
 		},
 		semicircle: {
 			title: "Semicírculo"
 		},
 		circle_point: {
-			title: 	"Círculo (centro, punto)",
+			title: "Círculo (centro, punto)",
 			desc: ""
 		},
 		circle_radius: {
 			title: "Círculo (centro, radio)",
 			desc: "Selecciones punto de centro, luego ingrerse radio"
+		},
+		circumcircle: {
+			title: "Circumcírculo"
 		}
 	},
 }

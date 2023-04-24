@@ -31,7 +31,6 @@ const SmithProjectPage: React.FC = () => {
 
   return (
     <>
-      {/* <HotkeysProvider initiallyActiveScopes={['smith-canvas']}> */}
       <Layout
         title="Smith Chart"
         footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
@@ -48,25 +47,6 @@ const SmithProjectPage: React.FC = () => {
         {/* </div> */}
 
       </Layout>
-      <ModalContainer
-        modalChild={<NewProjectForm />}
-        modalName={labels.NEW_PROJECT_LABEL}
-        isModal
-      >
-      </ModalContainer>
-      <ModalContainer
-        modalChild={<PublishProjectForm />}
-        modalName={labels.PUBLISH_PROJECT_LABEL}
-        isModal
-      >
-      </ModalContainer>
-      <ModalContainer
-        modalChild={<ConfigsForm />}
-        modalName={labels.CONFIGS_LABEL}
-        isModal
-      >
-      </ModalContainer>
-      {/* </HotkeysProvider> */}
     </>
   );
 };

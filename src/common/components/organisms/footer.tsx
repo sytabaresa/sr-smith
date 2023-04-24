@@ -1,21 +1,22 @@
 import { HTMLAttributes } from "react";
 import { About } from "@components/atoms/about";
+import { useTranslation } from "@modules/i18n";
+import createModal from "@components/molecules/createModal";
 
 export interface IFooterProps extends HTMLAttributes<HTMLElement> { }
 
 const Footer: React.FC<IFooterProps> = ({ className }) => {
+  const { t } = useTranslation()
+
+  const modal = createModal('about')
   return (
     <footer className={"flex " + className}>
-      <label htmlFor="about-modal" className="btn btn-sm btn-outline bg-base-100 btn-circle modal-button">
+      <modal.Label className="btn btn-sm btn-outline bg-base-100 btn-circle modal-button" aria-label={t.common.help()}>
         ?
-      </label>
-      <input type="checkbox" id="about-modal" className="modal-toggle" />
-      <label className="modal cursor-pointer" htmlFor="about-modal">
-        <label className="modal-box relative" htmlFor="">
-          <label htmlFor="about-modal" className="btn btn-square btn-sm absolute right-2 top-2">✕</label>
-          <About />
-        </label>
-      </label>
+      </modal.Label>
+      <modal.Modal>
+        <About />
+      </modal.Modal>
     </footer>
   );
 };

@@ -126,6 +126,7 @@ export interface BoardOptions {
     screen: string | number[];
     name: string;
     digits: number;
+    translations: Record<string,any>;
 }
 
 export const boardConfigAtom = atom<BoardOptions>({
@@ -133,4 +134,5 @@ export const boardConfigAtom = atom<BoardOptions>({
     name: 'smith-box',
     screen: getCurrentBreakpoint(),
     digits: 3,
+    translations: {}
 })

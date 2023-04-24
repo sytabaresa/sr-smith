@@ -23,15 +23,21 @@ export function useTranslation() {
             // More info: https://github.com/ivanhofer/typesafe-i18n/tree/main/packages/detectors)
             // const locale = detectLocale(navigatorDetector)
 
-            const [localesLoaded, setLocalesLoaded] = useState(false) //replace with Suspense (React 18)
+            // const [localesLoaded, setLocalesLoaded] = useState(false) //replace with Suspense (React 18)
 
+            const parLang = params?.lang?.[0]
 
+            // console.log(lang)
             useEffect(() => {
-                const parLang = params?.lang?.[0]
-                const finalLang = parLang && locales.includes(parLang) ? parLang : lang
-                loadLocaleAsync(finalLang).then(() => setLocalesLoaded(true))
-                setLang(finalLang)
-            }, [])
+                if(parLang) {
+                    setLang(parLang)
+                }
+                // const parLang = params?.lang?.[0]
+                // const finalLang = parLang && locales.includes(parLang) ? parLang : lang
+                // console.log(lang, finalLang)
+                // loadLocaleAsync(finalLang).then(() => setLocalesLoaded(true))
+                // // setLang(finalLang)
+            }, [parLang])
 
             loadLocale(lang)
 

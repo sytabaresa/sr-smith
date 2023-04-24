@@ -47,8 +47,8 @@ export const initBoard = (options: BoardOptions) => {
     const boundingbox = typeof options.screen == 'string' ? screenBoxSizes[options.screen] : options.screen
 
     const brd = JXG.JSXGraph.initBoard(options.name, {
-        title: 'Smith Chart canvas',
-        description: 'An canvas with a smith chart, you can create points, lines, circles and other geometric contruct on top of it',
+        // title: options.translations.title ?? 'Smith Chart canvas',
+        // description: options.translations.desc ?? 'An canvas with a smith chart',
         boundingbox,
         // maxBoundingBox: [-4, 2, 4, -2], //TODO: revisr porque los eventos touch no funcionan bien con esto
         keepaspectratio: true,

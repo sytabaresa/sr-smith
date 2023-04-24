@@ -8,6 +8,12 @@ import { useLogout } from "@hooks/useLogout";
 import { Link } from "@modules/router/link";
 import { useSetAtom } from "jotai";
 import { savingServiceAtom } from "@core/atoms/smith";
+import createModal from "@components/molecules/createModal";
+
+//modals
+import NewProjectForm from "./newProjectForm";
+import PublishProjectForm from "./publishProjectForm";
+import ConfigsForm from "./configForm";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
@@ -26,42 +32,54 @@ const DrawerSmithMenu = (props) => {
         await _logout()
         send('LOGOUT')
     }
+    const newProject = createModal('new-project')
+    const publish = createModal('publish-project')
+    const config = createModal('config-smith')
 
-    return <div className="flex flex-col items-start flex-grow w-full">
+    return <nav className="flex flex-col items-start flex-grow w-full">
 
         {isAuthenticated ?
             <>
-                <label htmlFor={labels.NEW_PROJECT_LABEL}>
+                <newProject.Label role="menuitem">
                     <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} />
-                </label>
+                </newProject.Label>
+                <newProject.Modal>
+                    <NewProjectForm />
+                </newProject.Modal>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
-
-                <Link href="/saved" >
+                <Link href="/saved" role="menuitem">
                     <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} />
                 </Link>
-                <label htmlFor={labels.PUBLISH_PROJECT_LABEL}>
+                <publish.Label role="menuitem">
                     <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} />
-                </label>
-                <label htmlFor={labels.CONFIGS_LABEL}>
+                </publish.Label>
+                <publish.Modal>
+                    <PublishProjectForm />
+                </publish.Modal>
+                <config.Label role="menuitem">
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
-                </label>
+                </config.Label>
+                <config.Modal>
+                    <ConfigsForm />
+                </config.Modal>
                 {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
-                <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
+                <a href="" role="menuitem" >
+                    <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
+                </a>
             </> :
             <>
                 <Link href="/login">
                     <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} />
                 </Link>
-                <label htmlFor={labels.CONFIGS_LABEL}>
+                <config.Label role="menuitem">
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
-                </label>
+                </config.Label>
+                <config.Modal>
+                    <ConfigsForm />
+                </config.Modal>
             </>
         }
-        <a className="btn btn-warning btn-outline mt-10 text-right " href="/event">
-            <div className="w-4 h-4 bg-red-500 rounded-full mr-1"></div> Sustentación <br /> tesis
-        </a>
-
-    </div>
+    </nav>
 }
 
 export default DrawerSmithMenu

@@ -60,7 +60,7 @@ const Layout = (props: Props) => {
       </Head> */}
       {header}
       <div className="drawer drawer-end h-full relative">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+        <input id="my-drawer" type="checkbox" className="drawer-toggle hidden" />
         <div className="relative drawer-content flex flex-col flex-1 overflow-hidden">
           <header className='z-10'>
             {navbar && (navbarComponent || <Navbar showComplement={showComplement} />)}
