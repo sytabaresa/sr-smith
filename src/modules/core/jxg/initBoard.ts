@@ -1,4 +1,5 @@
-import JXG, { JXGOptions, PointOptions } from "jsxgraph"
+import { JXGOptions, PointOptions } from "jsxgraph"
+import JXG from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
 import { Infobox } from "@components/atoms/infobox"
 import render from 'preact-render-to-string';

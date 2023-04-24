@@ -1,4 +1,5 @@
-import JXG, { SmithPoint } from "jsxgraph"
+import { SmithPoint } from "jsxgraph"
+import JXG from "jsxgraph"
 
 JXG.OBJECT_TYPE_COMPLEX = 90
 JXG.createComplex = function (board, parents, attributes) {

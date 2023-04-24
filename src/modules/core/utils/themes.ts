@@ -1,4 +1,4 @@
-import JXG, { JXGOptions } from "jsxgraph"
+import { JXGOptions } from "jsxgraph"
 
 export const darkTheme = {
     // board: {

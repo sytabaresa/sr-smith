@@ -1,4 +1,5 @@
-import JXG, { Board, Circle, GeometryElementAttributes, Point, SmithPoint } from "jsxgraph"
+import { SmithPoint } from "jsxgraph"
+import JXG from "jsxgraph"
 import { reflecImPart, reflecRePart, zImPart, zRePart } from "@core/utils/transforms";
 
 JXG.OBJECT_TYPE_SMITH_POINT = 99

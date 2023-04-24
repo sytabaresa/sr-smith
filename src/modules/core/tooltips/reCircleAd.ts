@@ -1,5 +1,5 @@
 import { ReCircle } from "jsxgraph";
-import { ReCircleIcon, ReCircleIconAd } from "@components/atoms/icons";
+import { ReCircleIconAd } from "@components/atoms/icons";
 import { normalizeName } from "@core/utils/board";
 import { TooltipType } from "./interfaces";
 import PointTooltip from "./point";

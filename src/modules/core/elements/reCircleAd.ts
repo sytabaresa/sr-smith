@@ -1,7 +1,8 @@
-import JXG, { Point, ReCircle } from "jsxgraph"
+import { Point, ReCircle } from "jsxgraph"
+import JXG from "jsxgraph"
 import { zRePartAd } from "@core/utils/transforms";
 
-JXG.OBJECT_TYPE_REAL_CIRCLE = 91
+JXG.OBJECT_TYPE_REAL_CIRCLE_AD = 96
 
 JXG.createReCircleAd = function (board, parents, attributes) {
     const origAtt = { fixed: true, visible: false }
@@ -15,7 +16,7 @@ JXG.createReCircleAd = function (board, parents, attributes) {
         var orig = board.create('point', [r / (r + 1), 0], origAtt)
         var c1: any = board.create('circle', [orig, 1 / (r + 1)], attr);
 
-        c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE
+        c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE_AD
         c1.elType = 'recirclead'
 
         return c1 as ReCircle
@@ -40,7 +41,7 @@ JXG.createReCircleAd = function (board, parents, attributes) {
         }], attr);
 
         c1.originPoint = p
-        c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE
+        c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE_AD
         c1.elType = 'recirclead'
 
         return c1 as ReCircle

@@ -1,4 +1,5 @@
-import JXG, { Point, ReCircle } from "jsxgraph"
+import { Point, ReCircle } from "jsxgraph"
+import JXG from "jsxgraph"
 import { zRePart } from "@core/utils/transforms";
 
 JXG.OBJECT_TYPE_REAL_CIRCLE = 98
