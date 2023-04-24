@@ -1,8 +1,6 @@
 import { atomWithMachine } from "@utils/atomWithachine"
 import { Getter, atom, useAtom, useAtomValue } from "jotai"
-import { useMachine } from "react-robot"
-import editorMachine from '@fsm/editorFSM'
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { createMachine, reduce, state, transition } from "robot3"
 
 

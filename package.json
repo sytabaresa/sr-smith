@@ -32,8 +32,6 @@
         "react-dom": "npm:@preact/compat",
         "react-hook-form": "^7.43.5",
         "react-hotkeys-hook": "^4.3.8",
-        "react-responsive": "^9.0.2",
-        "react-robot": "^0.3.0",
         "react-simple-code-editor": "^0.13.1",
         "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
         "rxdb": "^14.3.6",

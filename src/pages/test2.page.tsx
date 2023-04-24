@@ -1,9 +1,7 @@
 import { atomWithMachine } from "@utils/atomWithachine"
-import { Getter, atom, useAtom, useAtomValue } from "jotai"
-import { useMachine } from "react-robot"
-import editorMachine from '@fsm/editorFSM'
-import { useEffect, useMemo } from "react"
-import { action, createMachine, invoke, reduce, state, transition } from "robot3"
+import { useAtom } from "jotai"
+import { useEffect } from "react"
+import { action, createMachine, invoke, state, transition } from "robot3"
 import { wait } from "@utils/time"
 
 
@@ -21,13 +19,13 @@ const machinecreate = (init: string, value: any) => createMachine(init, {
         transition('MSG', 'w1'),
     ),
     w1: invoke(() => wait(1000),
-        transition('done', 'polo',sendAction)
+        transition('done', 'polo', sendAction)
     ),
     polo: state(
         transition('MSG', 'w2')
     ),
     w2: invoke(() => wait(1000),
-        transition('done', 'marco',sendAction)
+        transition('done', 'marco', sendAction)
     ),
 }, (ctx) => ({ other: value, ...ctx }))
 
@@ -43,7 +41,7 @@ const TestPage = (props) => {
     const [current1, send1] = useAtom(e1)
     const [current2, send2] = useAtom(e2)
 
-    console.log(current1)
+    // console.log(current1)
 
     useEffect(() => {
         setTimeout(() => {

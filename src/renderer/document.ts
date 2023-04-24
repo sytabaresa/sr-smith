@@ -1,4 +1,4 @@
-import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr";
+import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr/server";
 import logoUrl from '/pwa/favicon-196.png'
 
 export default document
