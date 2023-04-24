@@ -42,7 +42,7 @@ const recreateCode = (ctx: Context, ev) => {
     const [current, send] = ctx.getMachine(editorServiceAtom)
     const code = current.context.code
     send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
-    send('PARSING')
+    send('PARSE')
     return { ...ctx, code: ctxCode }
 }
 

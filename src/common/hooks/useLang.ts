@@ -1,13 +1,13 @@
 import { useI18nContext } from "@modules/i18n/i18n-react";
 import { Locales } from "@modules/i18n/i18n-types";
 import { loadLocaleAsync } from "@modules/i18n/i18n-util.async";
-import { loadLocale } from "@modules/i18n/i18n-util.sync";
 import { useEffect } from "react";
-import { useConfig } from "./useConfig";
+import { langAtom } from "@fsm/atoms";
+import { useAtom } from "jotai";
 
 export const useLang = (_lang: Locales | string = '') => {
     const { setLocale } = useI18nContext()
-    const [lang, setLang] = useConfig<Locales>('lang', _lang as Locales)
+    const [lang, setLang] = useAtom(langAtom)
 
     useEffect(() => {
         loadLocaleAsync(lang).then(() => {

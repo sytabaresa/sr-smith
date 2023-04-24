@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLanguageQuery, useTranslation } from "@modules/i18n"
-import { useConfig } from "@hooks/useConfig";
+import { useTranslation } from "@modules/i18n"
+import { boardDataAtom } from "@fsm/atoms";
+import { useAtom } from "jotai";
 
 type ConfigsFormProps = {
     modalLabel?: string;
@@ -11,15 +12,14 @@ type ConfigsFormProps = {
 
 const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     const { t } = useTranslation()
-    const [query] = useLanguageQuery()
-    const [config, setConfig] = useConfig<Record<string, any>>('config')
+    const [config, setConfig] = useAtom(boardDataAtom)
 
     const {
         register,
         handleSubmit,
         reset,
-        clearErrors,
-        setError,
+        // clearErrors,
+        // setError,
         formState: { errors, isSubmitted, isSubmitting },
     } = useForm<any>({ defaultValues: config });
 
@@ -29,7 +29,7 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
 
     const onSubmit = async (smithOptions) => {
         // console.log(smithOptions)
-        setConfig(op => ({ ...op, ...smithOptions }))
+        setConfig({ ...config, ...smithOptions })
     }
 
     return (

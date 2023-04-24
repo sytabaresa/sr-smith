@@ -162,7 +162,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
 
     // FSM actions
-    const parseExecute = () => send('PARSING')
+    const parseExecute = () => send('PARSE')
     const setActualCode = (code) => send({ type: "CODE", value: code })
 
     const keyValues = useKeyContext()

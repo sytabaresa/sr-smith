@@ -41,7 +41,7 @@ export default createMachine('init', {
         transition('error', 'init')
     ),
     idle: state(
-        transition('PARSING', 'parsing', reduce(clearErrorMsg)),
+        transition('PARSE', 'parsing', reduce(clearErrorMsg)),
         transition("CODE", 'idle', reduce(setCode)),
     ),
     parsing: invoke(parseExecute,
@@ -49,7 +49,7 @@ export default createMachine('init', {
         transition('error', 'error', reduce(setError))
     ),
     error: state(
-        transition('PARSING', 'parsing', reduce(clearErrorMsg)),
+        transition('PARSE', 'parsing', reduce(clearErrorMsg)),
         transition("CODE", 'clearError', reduce(setCode)),
     ),
     clearError: invoke(() => wait(200),

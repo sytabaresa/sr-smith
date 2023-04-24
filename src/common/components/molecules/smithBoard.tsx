@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useScreen } from "@utils/screen";
-import { useTheme } from "@hooks/useTheme";
 import { useAtom, useSetAtom } from "jotai";
-import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@fsm/atoms";
+import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom, themeAtom } from "@fsm/atoms";
 import { useRouter } from "@modules/router";
 import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -10,7 +9,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 export interface ISmithBoardProps { };
 
 const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
-    const [theme] = useTheme()
+    const [theme] = useAtom(themeAtom)
     const screen = useScreen()
     const { isAuthenticated } = useUser()
     const { useParams } = useRouter()
@@ -27,7 +26,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     // hotkeys and keystrokes
     useHotkeys('esc', () => sendMenu("EXIT"))
     useHotkeys('delete', () => sendMenu("DELETE"))
-    useHotkeys('ctrl+enter', () => sendEditor('PARSING'))
+    useHotkeys('ctrl+enter', () => sendEditor('PARSE'))
 
     // console.log(params.id[0])
     // TODO: params.id
@@ -53,7 +52,7 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
         setOptions({ ...options, theme })
         recreate()
         // console.log(theme)
-        // send('PARSING')
+        sendEditor('PARSE')
     }, [theme])
 
     return <>

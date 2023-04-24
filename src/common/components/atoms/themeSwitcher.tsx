@@ -1,12 +1,13 @@
+import { themeAtom } from "@fsm/atoms";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
-import { useTheme } from "@hooks/useTheme";
+import { useAtom } from "jotai";
 import { ChangeEvent, LabelHTMLAttributes } from "react";
 
 
 export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
     const { className = "", ...rest } = props
 
-    const [theme, setTheme] = useTheme()
+    const [theme, setTheme] = useAtom(themeAtom)
 
     const set = (e: ChangeEvent<HTMLInputElement>) => {
         // console.log('set', e.target.checked)

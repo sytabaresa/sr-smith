@@ -75,13 +75,13 @@ function sendCode(ctx: SavingContextType, ev) {
     const [current, send] = ctx.getMachine(editorServiceAtom)
     console.log('send')
     send({ type: 'CODE', value: ctx.projectData.data });
-    send('PARSING')
+    send('PARSE')
 }
 
 function logout(ctx: SavingContextType, ev) {
     const [current, send] = ctx.getMachine(editorServiceAtom)
     send({ type: 'CODE', value: '' });
-    send('PARSING')
+    send('PARSE')
 }
 
 function checkFirstSave(ctx: SavingContextType, ev) {

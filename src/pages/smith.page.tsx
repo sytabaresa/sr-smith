@@ -4,7 +4,6 @@ import SmithBoard from "@components/molecules/smithBoard";
 import CodeTools from "@components/organisms/codeTools";
 import DrawerSmithMenu from "@components/organisms/drawerSmithOptions";
 import { UserMenu } from "@components/organisms/userMenu";
-import { setInitial, useConfig } from "@hooks/useConfig";
 import Footer from "@components/organisms/footer";
 
 import "@core/elements/smithPoint"
@@ -19,12 +18,6 @@ import PublishProjectForm from "@components/organisms/publishProjectForm";
 import ConfigsForm from "@components/organisms/configForm";
 
 import '@styles/jsxgraph.css';
-
-// configs
-const smithOptions = {
-  coordPrecision: 3,
-}
-setInitial('config', smithOptions)
 
 export { SmithProjectPage as Page }
 

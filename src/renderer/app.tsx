@@ -6,7 +6,6 @@ import '@styles/fonts.css'
 
 import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
-import { setConfig, setInitial, useConfig } from '@hooks/useConfig';
 import { PageContextProvider } from './usePageContext';
 import { PageContext } from './types';
 import { initializeSW } from '@modules/pwa/dev';
@@ -22,10 +21,6 @@ if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
   import('robot3/logging')
 }
-
-//configs
-setInitial('theme', 'light')
-setInitial('lang', 'es')
 
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
   initServices()
@@ -121,7 +116,7 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
 
   return (
     <PageContextProvider pageContext={pageContext}>
-      <TranslationWrapper locale="en">
+      <TranslationWrapper>
         <UserProvider>
           {children}
           {import.meta.env.MODE === 'production' &&
