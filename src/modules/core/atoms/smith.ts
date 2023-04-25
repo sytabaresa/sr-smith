@@ -18,6 +18,7 @@ import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@utils/screen";
+import { atomWithStorage } from "jotai/utils";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: menuServiceAtom,
@@ -126,7 +127,7 @@ export interface BoardOptions {
     screen: string | number[];
     name: string;
     digits: number;
-    translations: Record<string,any>;
+    translations: Record<string, any>;
 }
 
 export const boardConfigAtom = atom<BoardOptions>({
@@ -136,3 +137,14 @@ export const boardConfigAtom = atom<BoardOptions>({
     digits: 3,
     translations: {}
 })
+
+export const boardDataAtom = atomWithStorage('config', {
+    coordsPresition: 3
+})
+
+export const codeAtom = atom<string>(
+    (get) => {
+        const current = get(editorServiceAtom)
+        return current.context?.code
+    }
+)

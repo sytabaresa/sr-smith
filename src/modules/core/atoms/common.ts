@@ -2,8 +2,6 @@ import { atomWithStorage } from 'jotai/utils'
 import { atom } from 'jotai'
 import { Locales } from '@modules/i18n/i18n-types'
 
-export const codeAtom = atom<string>('')
-
 export const projectDataAtom = atom({
 
 })
@@ -23,9 +21,5 @@ export const themeAtom = atom(
 )
 
 export const appDataAtom = atom({})
-
-export const boardDataAtom = atomWithStorage('config', {
-    coordsPresition: 3
-})
 
 export const langAtom = atomWithStorage<Locales>('lang', 'en')

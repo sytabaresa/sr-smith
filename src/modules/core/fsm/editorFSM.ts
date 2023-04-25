@@ -25,7 +25,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     return Promise.resolve()
 }
 
-const configTransition = transition('CONFIG', 'initializing', reduce(setConfig))
+// const configTransition = transition('CONFIG', 'initializing', reduce(setConfig))
 
 // fsm
 export default createMachine('init', {

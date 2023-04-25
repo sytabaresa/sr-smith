@@ -6,12 +6,13 @@ import { themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
 import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";
-import { useLang } from "@hooks/useLang";
 import { useTranslation } from "@modules/i18n";
+import { send } from "process";
+import { RESET } from "jotai/utils";
 
-export interface ISmithBoardProps { };
+export interface SmithBoardProps { };
 
-const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
+const SmithBoard = (props: SmithBoardProps) => {
     const [theme] = useAtom(themeAtom)
     const screen = useScreen()
     const { isAuthenticated } = useUser()
@@ -35,6 +36,11 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
     // TODO: params.id
 
     useEffect(() => {
+        sendSave(RESET)
+        sendEditor(RESET)
+    }, [])
+
+    useEffect(() => {
         if (currentEditor.context.code != '')
             sendSave({ type: 'SAVE', value: currentEditor.context.code })
     }, [currentEditor.context.code]);
@@ -52,16 +58,15 @@ const SmithBoard: React.FC<ISmithBoardProps> = (props) => {
         sendEditor('PARSE')
     }, [theme, t, screen])
 
-    return <>
-        <div
-            id={options.name}
-            className="jxgbox full-screen-div w-full"
-            aria-label="canvas"
-        // style={{ width: '500px', height: '500px' }}
-        >
-            <img src="/images/smith-chart.svg" alt="smith-board" srcset="" className="hidden" loading={'lazy'} />
-        </div>
-    </>
+    return <div
+        id={options.name}
+        className="jxgbox full-screen-div w-full"
+        aria-label="canvas"
+    // style={{ width: '500px', height: '500px' }}
+    >
+        <img src="/images/smith-chart.svg" alt="smith-board" srcset="" className="hidden" loading={'lazy'} />
+    </div>
+
 }
 
 export default SmithBoard;

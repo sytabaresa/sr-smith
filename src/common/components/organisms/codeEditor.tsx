@@ -76,7 +76,6 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const renderElement = useCallback(props => <ElementRender {...props} />, [])
 
     // const {user, isAuthenticated, loadingUser} = useUser()
-
     // console.log('inner', contextCode)
 
     const searchElement = useSearcher()
@@ -85,18 +84,16 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { code, errorMsg } = current.context
     // console.log(code)
     // console.log(current.name)
-    const editor = useMemo(
-        () => withReact(withHistory(createEditor())),
-        []
-    )
+    
+    const editor = useMemo(() => withReact(withHistory(createEditor())), [])
     const initialValue = useMemo(() => deserializeCode(code), [])
-    // console.log(initialValue)
-    // useEffect(() => {
-    // console.log(current.name)
-    if (current.name == 'parsing')
-        editor.children = deserializeCode(code) as Descendant[]
-    // }, [current.name])
 
+    // console.log(initialValue)
+    // console.log(current.name)
+
+    const testRender = ['parsing', 'initializing'].includes(current.name)
+    if (testRender)
+        editor.children = deserializeCode(code) as Descendant[]
 
     useEffect(() => {
         send('INIT')
@@ -159,8 +156,6 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         return ranges
     }, [])
 
-
-
     // FSM actions
     const parseExecute = () => send('PARSE')
     const setActualCode = (code) => send({ type: "CODE", value: code })
@@ -195,7 +190,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                     renderElement={renderElement}
                                     renderLeaf={renderLeaf}
                                     decorate={decorate}
-                                    className="font-mono"
+                                    className="font-mono h-full"
                                     spellCheck={false}
                                     autoCorrect={false}
                                     placeholder={t.canvas.placeholder()}
@@ -209,7 +204,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                                         setEventUp(event)
                                         setEvent(event)
                                     }}
-                                />, [current.name == 'parsing', t])}
+                                />, [testRender, t])}
                             </Slate>
                         </KeysContext.Provider>
                     </Suspense>}

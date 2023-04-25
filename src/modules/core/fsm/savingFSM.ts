@@ -73,7 +73,7 @@ function checkId(ctx: SavingContextType, ev: any) {
 }
 function sendCode(ctx: SavingContextType, ev) {
     const [current, send] = ctx.getMachine(editorServiceAtom)
-    console.log('send')
+    // console.log('send')
     send({ type: 'CODE', value: ctx.projectData.data });
     send('PARSE')
 }

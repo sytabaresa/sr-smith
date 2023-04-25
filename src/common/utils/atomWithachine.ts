@@ -1,5 +1,6 @@
 import { Atom, atom, getDefaultStore } from 'jotai'
 import type { Getter } from 'jotai'
+import { RESET } from 'jotai/utils';
 import { interpret, Machine, Service, SendEvent } from 'robot3'
 
 const { create, freeze } = Object
@@ -23,6 +24,9 @@ export const atomWithMachine = (
 
     const cacheCallbackAtom = atom(null)
     const cacheServiceAtom = atom<Service<Machine> | null>(null)
+    if (process.env.NODE_ENV !== 'production') {
+        cacheServiceAtom.debugPrivate = true
+    }
     const serviceAtom = atom(
         (get) => {
             const cachedService = get(cacheServiceAtom)
@@ -56,6 +60,9 @@ export const atomWithMachine = (
     }
 
     const cachedMachineAtom = atom<{ name: string, context: any } | null>(null)
+    if (process.env.NODE_ENV !== 'production') {
+        cachedMachineAtom.debugPrivate = true
+    }
     const machineAtom = atom(
         (get) => {
             const { service } = get(serviceAtom)
@@ -81,15 +88,22 @@ export const atomWithMachine = (
 
     const finalMachineAtom = atom(
         (get) => get(machineAtom),
-        (get, set, event: SendEvent) => {
+        (get, set, event: SendEvent | typeof RESET) => {
             const { service } = get(serviceAtom)
+
+            // utils
             const getMachine = (a) => ([get(a), (s) => set(a, s)])
             service.context['getMachine'] = getMachine
             const add = isGetter(getEvent) ? getEvent(get) : getEvent
 
-            typeof event == 'string' ?
-                service.send({ ...add, type: event, }) :
-                service.send({ ...add, ...event })
+            if (event === RESET) {
+                set(cacheServiceAtom, null)
+                set(serviceAtom)
+            } else {
+                typeof event == 'string' ?
+                    service.send({ ...add, type: event, }) :
+                    service.send({ ...add, ...event })
+            }
         })
 
     return finalMachineAtom
