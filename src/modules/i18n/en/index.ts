@@ -24,13 +24,19 @@ const en: Translation = {
 		theme: "Theme",
 		help: "Help",
 		close: "Close",
-		code: "Code"
+		code: "Code",
+		main_nav: "Navegación Principal",
+		profile_picture: "Profile picture"
 	},
 	offline: {
 		app_ready: 'App ready to work offline',
 		new_content: 'New content available, click on reload button to update',
 		reload: 'Reload',
 		close: 'Close',
+	},
+	lang: {
+		es: "Spanish",
+		en: "English",
 	},
 	license: {
 		work: "This work is under",

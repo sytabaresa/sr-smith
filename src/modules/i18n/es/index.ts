@@ -24,13 +24,19 @@ const es: BaseTranslation = {
 		theme: "Tema",
 		help: "Ayuda",
 		close: "Cerrar",
-		code: "Código"
+		code: "Código",
+		main_nav: "Navegación Principal",
+		profile_picture: "Imagen de perfil"
 	},
 	offline: {
 		app_ready: 'App lista para funcionar offline',
 		new_content: 'Nuevo contenido disponeble, click en el boton de Recargar para actualizar',
 		reload: 'Recargar',
 		close: 'Cerrar',
+	},
+	lang: {
+		es: "Español",
+		en: "Inglés",
 	},
 	license: {
 		work: "Este trabajo está bajo",

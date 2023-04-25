@@ -97,6 +97,14 @@ type RootTranslation = {
 		 * C​o​d​e
 		 */
 		code: string
+		/**
+		 * N​a​v​e​g​a​c​i​ó​n​ ​P​r​i​n​c​i​p​a​l
+		 */
+		main_nav: string
+		/**
+		 * P​r​o​f​i​l​e​ ​p​i​c​t​u​r​e
+		 */
+		profile_picture: string
 	}
 	offline: {
 		/**
@@ -115,6 +123,16 @@ type RootTranslation = {
 		 * C​l​o​s​e
 		 */
 		close: string
+	}
+	lang: {
+		/**
+		 * S​p​a​n​i​s​h
+		 */
+		es: string
+		/**
+		 * E​n​g​l​i​s​h
+		 */
+		en: string
 	}
 	license: {
 		/**
@@ -548,6 +566,14 @@ export type TranslationFunctions = {
 		 * Code
 		 */
 		code: () => LocalizedString
+		/**
+		 * Navegación Principal
+		 */
+		main_nav: () => LocalizedString
+		/**
+		 * Profile picture
+		 */
+		profile_picture: () => LocalizedString
 	}
 	offline: {
 		/**
@@ -566,6 +592,16 @@ export type TranslationFunctions = {
 		 * Close
 		 */
 		close: () => LocalizedString
+	}
+	lang: {
+		/**
+		 * Spanish
+		 */
+		es: () => LocalizedString
+		/**
+		 * English
+		 */
+		en: () => LocalizedString
 	}
 	license: {
 		/**

@@ -16,7 +16,13 @@ export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
         setTheme(e.target.checked ? "dark" : "light")
     }
     return <label className={`swap swap-rotate`} {...rest}>
-        <input type="checkbox" checked={theme == 'dark'} onChange={set} aria-valuenow={t.theme[theme]()} />
+        <input
+            // aria-label={t.common.theme()}
+            type="checkbox"
+            checked={theme == 'dark'}
+            onChange={set}
+            aria-label={`${t.common.theme()} - ${t.theme[theme]()}`}
+        />
         <MoonIcon className={`swap-on w-8 h-8 ${className}`} tabIndex={-1} />
         <SunIcon className={`swap-off w-8 h-8 ${className}`} tabIndex={-1} />
         <span className="hidden" aria-hidden="false">

@@ -37,7 +37,7 @@ const createModal = (modalName: string) => {
     if (ev.which == 9) {
 
       // get list of all children elements in given object
-      const focusableItems = modalRef.current.querySelectorAll('*');
+      const focusableItems = [...modalRef.current.querySelectorAll('*')]
       // console.log(focusableItems)
 
       // get currently focused item

@@ -19,7 +19,7 @@ export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
     labels: Record<string, any>
 }
 
-const DrawerSmithMenu = (props) => {
+const DrawerMenu = (props) => {
     const { labels } = props
     const send = useSetAtom(savingServiceAtom)
     const { useHistory } = useRouter()
@@ -36,34 +36,33 @@ const DrawerSmithMenu = (props) => {
     const publish = createModal('publish-project')
     const config = createModal('config-smith')
 
-    return <nav className="flex flex-col items-start flex-grow w-full">
-
+    return <nav aria-label={t.common.main_nav()} className="flex flex-col items-start flex-grow w-full">
         {isAuthenticated ?
             <>
-                <newProject.Label role="menuitem">
+                <newProject.Label>
                     <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} />
                 </newProject.Label>
                 <newProject.Modal>
                     <NewProjectForm />
                 </newProject.Modal>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
-                <Link href="/saved" role="menuitem">
+                <Link href="/saved">
                     <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} />
                 </Link>
-                <publish.Label role="menuitem">
+                <publish.Label>
                     <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} />
                 </publish.Label>
                 <publish.Modal>
                     <PublishProjectForm />
                 </publish.Modal>
-                <config.Label role="menuitem">
+                <config.Label>
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} aria-label={t.menu.settings_large()} />
                 </config.Label>
                 <config.Modal>
                     <ConfigsForm />
                 </config.Modal>
                 {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
-                <a href="" role="menuitem" >
+                <a href="#">
                     <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
                 </a>
             </> :
@@ -71,7 +70,7 @@ const DrawerSmithMenu = (props) => {
                 <Link href="/login">
                     <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} />
                 </Link>
-                <config.Label role="menuitem">
+                <config.Label>
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
                 </config.Label>
                 <config.Modal>
@@ -82,4 +81,4 @@ const DrawerSmithMenu = (props) => {
     </nav>
 }
 
-export default DrawerSmithMenu
+export default DrawerMenu

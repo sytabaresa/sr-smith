@@ -7,7 +7,7 @@ import CodeEditor from "./codeEditor";
 import { useAtom } from "jotai";
 import { menuServiceAtom } from "@core/atoms/smith";
 
-const CodeTools = () => {
+const CodeToolbar = () => {
   const { t } = useTranslation();
   const [current, send] = useAtom(menuServiceAtom)
 
@@ -40,4 +40,4 @@ const CodeTools = () => {
   );
 };
 
-export default CodeTools;
+export default CodeToolbar;

@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "@components/templates/default";
 import SmithBoard from "@components/molecules/smithBoard";
-import CodeTools from "@components/organisms/codeTools";
-import DrawerSmithMenu from "@components/organisms/drawerSmithOptions";
+import CodeToolbar from "@components/organisms/codeToolbar";
+import DrawerMenu from "@components/organisms/drawerMenu";
 import { UserMenu } from "@components/organisms/userMenu";
 import Footer from "@components/organisms/footer";
 
@@ -31,11 +31,11 @@ const SmithProjectPage: React.FC = () => {
         footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
         navbar={false}
         className=""
-        drawerMenu={<DrawerSmithMenu labels={labels} />}
+        drawerMenu={<DrawerMenu labels={labels} />}
       >
         {/* <div className="h-full relative"> */}
         <SmithBoard />
-        <CodeTools />
+        <CodeToolbar />
         <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
           <UserMenu />
         </div>

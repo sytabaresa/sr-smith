@@ -202,7 +202,7 @@ export const useSearcher = () => {
                     case 'Enter':
                         event.preventDefault()
                         Transforms.select(editor, selectorData.target)
-                        insertMention(editor, itemsFiltered[selectorData.index])
+                        insertSearchItem(editor, itemsFiltered[selectorData.index])
                         updateSelectorData({ target: null })
                         break
                     case 'Escape':
@@ -239,9 +239,8 @@ export const SearcherPopup = (props) => {
     return (
         // <Portal>
         <div
-            id="element-popup"
             ref={ref}
-            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${(selectorData.target && itemsFiltered.length > 0) && 'dropdown-open'}`}
+            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${(selectorData.target && itemsFiltered.length > 0) ? 'dropdown-open' : ''}`}
             data-cy="mentions-portal"
         >
             <ul tabIndex={0}
@@ -258,7 +257,7 @@ export const SearcherPopup = (props) => {
                                     className={`${selectorData.index == item.index ? 'active' : ''}`}
                                     onClick={() => {
                                         Transforms.select(editor, selectorData.target)
-                                        insertMention(editor, item)
+                                        insertSearchItem(editor, item)
                                         updateSelectorData({ target: null })
                                     }}
                                 >
@@ -278,7 +277,7 @@ export const SearcherPopup = (props) => {
 }
 
 
-export const insertMention = (editor, item: Item) => {
+export const insertSearchItem = (editor, item: Item) => {
     const mention: SearchElement = { text: item.value }
     Transforms.insertNodes(editor, mention)
     Transforms.move(editor)
