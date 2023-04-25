@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import { useScreen } from "@utils/screen";
 import { useAtom, useSetAtom } from "jotai";
 import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { loadingAtom, themeAtom } from "@core/atoms/common";
+import { themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
 import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "@modules/i18n";
-import { send } from "process";
 import { RESET } from "jotai/utils";
 
 export interface SmithBoardProps { };
@@ -21,7 +20,7 @@ const SmithBoard = (props: SmithBoardProps) => {
     const { t } = useTranslation()
     const recreate = useSetAtom(boardAtom)
     const [options, setOptions] = useAtom(boardConfigAtom)
-    const setLoading = useSetAtom(loadingAtom)
+    // const setLoading = useSetAtom(loadingAtom)
 
     //machines
     const sendMenu = useSetAtom(menuServiceAtom)
@@ -51,10 +50,6 @@ const SmithBoard = (props: SmithBoardProps) => {
             sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
         }
     }, [isAuthenticated]);
-
-    useEffect(() => {
-        setLoading({ save: currentSave.name == 'saving' })
-    }, [currentSave.name])
 
     useEffect(() => {
         setOptions({ ...options, theme, translations: t.canvas, screen })

@@ -44,14 +44,22 @@ export default createMachine('anon', {
         transition('SAVE', 'tmpSaving', reduce(saveCode)),
     ),
     tmpSaving: state(
-        immediate('saving', guard(checkFirstSave)),
+        immediate('saveWait', guard(checkFirstSave)),
         immediate('doc'),
     ),
-    saving: invoke(cancelableTimeout,
+    saveWait: invoke(cancelableTimeout,
         transition('SAVE', 'tmpSaving', reduce(saveCode)),
-        transition('done', 'doc', action(saveDocument)),
+        transition('done', 'saving'),
         transition('error', 'doc'),
     ),
+    saving: invoke(saveDocument,
+        transition('done', 'doc'),
+        transition('error', 'failSave')
+    ),
+    failSave: state(
+        transition('LOGOUT', 'anon', action(logout)),
+        transition('SAVE', 'tmpSaving', reduce(saveCode)),
+    )
 }, (ctx: SavingContextType) => ({
     ...ctx,
     saveCounter: 0,
@@ -93,7 +101,7 @@ async function getProjectData(ctx: SavingContextType) {
 
     //minimal time for the other machines (code editor fsm)
     // rxdb local cache in mobile is so fast ;)
-    await wait(50) 
+    await wait(50)
 
     try {
         const { getOne } = await DataProvider

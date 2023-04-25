@@ -67,10 +67,7 @@ export const atomWithMachine = (
         (get) => {
             const { service } = get(serviceAtom)
             // console.log(service)
-            return get(cachedMachineAtom) ?? {
-                name: service.machine.current,
-                context: service.context,
-            }
+            return get(cachedMachineAtom) ?? createCurrent(service)
         },
         (get, set) => {
             // const { service } = get(serviceAtom)
@@ -119,11 +116,24 @@ export interface JotaiContext {
 
 export function atomWithToggle(
     initialValue?: boolean
-  ): WritableAtom<boolean, boolean | undefined> {
+): WritableAtom<boolean, boolean | undefined> {
     const anAtom = atom(initialValue, (get, set, nextValue?: boolean) => {
-      const update = nextValue ?? !get(anAtom)
-      set(anAtom, update)
+        const update = nextValue ?? !get(anAtom)
+        set(anAtom, update)
     })
-  
+
     return anAtom as WritableAtom<boolean, boolean | undefined>
-  }
+}
+
+export const atomWithSomeMap = (initial = {}) => {
+    const storeAtom = atom<Record<string, boolean>>(initial)
+    const _someAtom = atom(
+        (get) => {
+            return Object.values(get(storeAtom)).some(a => !!a)
+        },
+        (get, set, value: Record<string, boolean>) => {
+            set(storeAtom, { ...get(storeAtom), ...value })
+        }
+    )
+    return _someAtom
+}

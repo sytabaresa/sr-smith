@@ -20,14 +20,13 @@ import { CustomElement } from "@modules/editor/types";
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
 
-import editorMachine from '@fsm/editorFSM'
-
 // plugins
 import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
-import { useAtom } from "jotai"
-import { editorServiceAtom } from "@core/atoms/smith";
+import { useAtom, useAtomValue } from "jotai"
+import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
+import { UploadIcon, XCircleIcon } from "@heroicons/react/outline";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
@@ -80,11 +79,12 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     const searchElement = useSearcher()
     const [current, send] = useAtom(editorServiceAtom)
+    const currentSave = useAtomValue(savingServiceAtom)
     const { onKeyDown, onChange } = searchElement
     const { code, errorMsg } = current.context
     // console.log(code)
     // console.log(current.name)
-    
+
     const editor = useMemo(() => withReact(withHistory(createEditor())), [])
     const initialValue = useMemo(() => deserializeCode(code), [])
 
@@ -164,9 +164,12 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { setEvent, setEventDown, setEventUp } = keyValues
 
     return (
-        <div className={`border border-primary bg-base-100 p-2 flex flex-col ${className}`} {...rest}>
+        <div className={`border border-primary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
+            <div className="absolute top-0 right-0 mt-2 mr-6 flex">
+                {['saveWait', 'saving'].includes(currentSave.name) && <UploadIcon className="w-5 animate-pulse" />}
+                {currentSave.name == 'failSave' && <XCircleIcon className="w-5 animate-pulse" />}
+            </div>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
-                {/* //TODO: why only when we unfocus the textarea,  parseExecute updates the code variable (hook stale) */}
                 {typeof window != 'undefined' &&
                     <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
                         <KeysContext.Provider value={keyValues}>
@@ -209,7 +212,6 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
                         </KeysContext.Provider>
                     </Suspense>}
             </div>
-
             <div className={`alert alert-error transition-opacity duration-200 
             ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
                 {errorMsg.toString()}
