@@ -1,7 +1,7 @@
 import { createMachine, state, transition, reduce, invoke, action, immediate } from 'robot3';
 import { JXGDrawer } from './tooltipActionsFSM';
 import { wait } from '@utils/time';
-import { JotaiContext } from '@utils/atomWithachine';
+import { JotaiContext } from '@utils/atoms';
 import { boardAtom, boardConfigAtom } from '../atoms/smith';
 
 export interface EditorContextType extends JotaiContext {

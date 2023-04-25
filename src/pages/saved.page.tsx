@@ -1,33 +1,21 @@
 import WithAuth from "@hoc/withAuth";
 import SavedProjectCard from "@components/molecules/savedProjectCard";
 import { SmithProject } from "@localtypes/smith";
-import { useLanguageQuery, useTranslation } from "@modules/i18n"
+import { useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
 import ModalContainer from "@components/molecules/modalContainer";
 import NewProjectForm from "@components/organisms/newProjectForm";
 import { useDataProvider, useList } from "@hooks/useDataProvider";
+import createModal from "@components/molecules/createModal";
 
 export { Saved as Page }
 
 const SavedProjects = () => {
-  const NEW_PROJECT_LABEL = 'new-project'
   const { t } = useTranslation()
   const db = useDataProvider()
-  // const { user } = useUser()
-
   const userProjects = useList({ resource: 'projects' }) as SmithProject[]
-  // useEffect(() => {
-  //   if (user) {
-  //     getSavedProjects(user.uid)
-  //   }
-  // }, [user?.uid])
-
-
-  const newProject = async (e) => {
-
-  }
 
   const refresh = async (e) => {
     db.refresh()
@@ -57,6 +45,8 @@ const SavedProjects = () => {
     </>
   }
 
+  const newProject = createModal('new-project')
+
   return <Layout
     title="Projects | Sr Smith App"
     className="h-screen relative overflow-hidden"
@@ -74,21 +64,17 @@ const SavedProjects = () => {
       </div>
       {renderSavedProjects(userProjects)}
     </div>
-    <label htmlFor={NEW_PROJECT_LABEL}
-      className="fixed right-0 bottom-0 mb-4 mr-4 flex items-center tooltip"
-      data-tip={t.saved.create_project()}
-      onClick={newProject}
-    >
-      <div role="button" className="btn lg:grap-2 btn-lg shadow-lg">
-        <span className="mr-4 hidden lg:block">{t.saved.create_project()}</span>
-        <PlusIcon className="h-8 w-8" />
+    <newProject.Label>
+      <div className="fixed right-0 bottom-0 mb-4 mr-4">
+        <div role="button" className="btn lg:grap-2 btn-lg shadow-lg tooltip flex" data-tip={t.saved.create_project()}>
+          <span className="mr-4 hidden lg:inline-block">{t.saved.create_project()}</span>
+          <PlusIcon className="h-8 w-8" />
+        </div>
       </div>
-    </label>
-    <ModalContainer
-      modalChild={<NewProjectForm />}
-      modalName={NEW_PROJECT_LABEL}
-      isModal
-    />
+    </newProject.Label>
+    <newProject.Modal>
+      <NewProjectForm />
+    </newProject.Modal>
   </Layout>
 };
 

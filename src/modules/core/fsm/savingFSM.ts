@@ -4,7 +4,7 @@ import { EditorContextType } from './editorFSM';
 import { DataProvider } from '@hooks/useDataProvider';
 import { wait } from '@utils/time';
 import { editorServiceAtom } from '../atoms/smith';
-import { JotaiContext } from '@utils/atomWithachine';
+import { JotaiContext } from '@utils/atoms';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType extends JotaiContext {

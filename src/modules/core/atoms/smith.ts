@@ -1,4 +1,4 @@
-import { atomWithMachine } from "@utils/atomWithachine";
+import { atomWithMachine } from "@utils/atoms";
 import editorFSM from "../fsm/editorFSM";
 import savingFSM from "../fsm/savingFSM";
 import menuFSM from "../fsm/menuFSM";

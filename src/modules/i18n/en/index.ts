@@ -73,6 +73,7 @@ const en: Translation = {
 	menu: {
 		publish: "Publish",
 		settings: "Settings",
+		settings_large: "Setting",
 		open: "Open",
 		login: "Login",
 		new: "New",

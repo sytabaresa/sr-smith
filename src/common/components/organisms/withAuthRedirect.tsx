@@ -3,6 +3,8 @@ import { FC, useEffect } from 'react'
 import { useUser } from './userContext'
 import AuthLoading from '@components/atoms/authLoading'
 import { useRouter } from '@modules/router'
+import { useSetAtom } from 'jotai'
+import { loadingAtom } from '@core/atoms/common'
 
 /**
  * Support client-side conditional redirecting based on the user's
@@ -35,7 +37,8 @@ const WithAuthRedirect = ({
     const { push } = useHistory();
     const { pathname } = useLocation()
     const [query] = useLanguageQuery()
-    const { loadingUser, user, isAuthenticated } = useUser()
+    const { loadingUser, isAuthenticated } = useUser()
+    const setLoading = useSetAtom(loadingAtom)
     // console.log(loadingUser, user, isAuthenticated)
 
     useEffect(() => {
@@ -45,8 +48,12 @@ const WithAuthRedirect = ({
       }
     }, [isAuthenticated, loadingUser])
 
+    //only on change
+    useEffect(() => {
+      setLoading({ auth: loadingUser })
+    }, [loadingUser])
+
     return <div>
-      {loadingUser && <progress className="progress h-1 fixed w-full progress-warning"></progress>}
       <WrappedComponent {...props} />
     </div>
   }

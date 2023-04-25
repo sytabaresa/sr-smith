@@ -244,6 +244,10 @@ type RootTranslation = {
 		 */
 		settings: string
 		/**
+		 * S​e​t​t​i​n​g
+		 */
+		settings_large: string
+		/**
 		 * O​p​e​n
 		 */
 		open: string
@@ -690,6 +694,10 @@ export type TranslationFunctions = {
 		 * Settings
 		 */
 		settings: () => LocalizedString
+		/**
+		 * Setting
+		 */
+		settings_large: () => LocalizedString
 		/**
 		 * Open
 		 */

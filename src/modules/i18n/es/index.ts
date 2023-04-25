@@ -80,6 +80,7 @@ const es: BaseTranslation = {
 		new: "Nuevo",
 		publish: "Publicar",
 		settings: "Configs",
+		settings_large: "Configuraciones",
 		open: "Abrir",
 		login: "Login",
 		logout: "Logout"

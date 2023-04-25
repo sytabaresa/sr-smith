@@ -12,11 +12,6 @@ import "@core/elements/imCircle"
 import "@core/elements/imCircleAd"
 import "@core/elements/reCircleAd"
 
-import ModalContainer from "@components/molecules/modalContainer";
-import NewProjectForm from "@components/organisms/newProjectForm";
-import PublishProjectForm from "@components/organisms/publishProjectForm";
-import ConfigsForm from "@components/organisms/configForm";
-
 import '@styles/jsxgraph.css';
 
 export { SmithProjectPage as Page }

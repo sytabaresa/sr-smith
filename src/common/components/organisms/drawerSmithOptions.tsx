@@ -57,7 +57,7 @@ const DrawerSmithMenu = (props) => {
                     <PublishProjectForm />
                 </publish.Modal>
                 <config.Label role="menuitem">
-                    <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
+                    <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} aria-label={t.menu.settings_large()} />
                 </config.Label>
                 <config.Modal>
                     <ConfigsForm />

@@ -1,4 +1,4 @@
-import { Atom, atom, getDefaultStore } from 'jotai'
+import { Atom, WritableAtom, atom, getDefaultStore } from 'jotai'
 import type { Getter } from 'jotai'
 import { RESET } from 'jotai/utils';
 import { interpret, Machine, Service, SendEvent } from 'robot3'
@@ -116,3 +116,14 @@ const isGetter = <T>(v: T | ((get: Getter) => T)): v is (get: Getter) => T =>
 export interface JotaiContext {
     getMachine: (machine: Atom<any>) => [any, (any) => void]
 }
+
+export function atomWithToggle(
+    initialValue?: boolean
+  ): WritableAtom<boolean, boolean | undefined> {
+    const anAtom = atom(initialValue, (get, set, nextValue?: boolean) => {
+      const update = nextValue ?? !get(anAtom)
+      set(anAtom, update)
+    })
+  
+    return anAtom as WritableAtom<boolean, boolean | undefined>
+  }

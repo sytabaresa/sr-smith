@@ -2,7 +2,7 @@ import { TooltipType } from "@tooltips/interfaces"
 import { wait } from "@utils/time"
 import { action, createMachine, guard, immediate, invoke, reduce, state, transition } from "robot3"
 import { editorServiceAtom } from "../atoms/smith"
-import { JotaiContext } from "@utils/atomWithachine"
+import { JotaiContext } from "@utils/atoms"
 
 
 interface Context extends JotaiContext {

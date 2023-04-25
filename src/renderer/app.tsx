@@ -16,6 +16,8 @@ import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { initServices } from "@modules/prepareServices"
 import { CurrentBreakpoint } from '@utils/screen';
+import { useAtomValue } from 'jotai';
+import { loadingAtom } from '@core/atoms/common';
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -118,14 +120,24 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
     <PageContextProvider pageContext={pageContext}>
       <TranslationWrapper>
         <UserProvider>
+          <LoadingComponent />
           {children}
           {import.meta.env.MODE === 'production' &&
             typeof window != 'undefined' &&
             <UpdateSw autoUpdate />
           }
+
           <CurrentBreakpoint />
         </UserProvider>
       </TranslationWrapper>
     </PageContextProvider>
   )
+}
+
+const LoadingComponent = () => {
+  const loading = useAtomValue(loadingAtom)
+  // console.log(loading)
+
+  return (loading && <progress id="loading-progress" className="progress h-1 fixed w-full progress-warning"></progress>)
+
 }

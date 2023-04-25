@@ -1,4 +1,4 @@
-import { atomWithMachine } from "@utils/atomWithachine"
+import { atomWithMachine } from "@utils/atoms"
 import { useAtom } from "jotai"
 import { useEffect } from "react"
 import { action, createMachine, invoke, state, transition } from "robot3"

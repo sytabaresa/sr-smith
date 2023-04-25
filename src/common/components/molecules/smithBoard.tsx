@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useScreen } from "@utils/screen";
 import { useAtom, useSetAtom } from "jotai";
 import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { themeAtom } from "@core/atoms/common";
+import { loadingAtom, themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
 import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -21,11 +21,12 @@ const SmithBoard = (props: SmithBoardProps) => {
     const { t } = useTranslation()
     const recreate = useSetAtom(boardAtom)
     const [options, setOptions] = useAtom(boardConfigAtom)
+    const setLoading = useSetAtom(loadingAtom)
 
     //machines
     const sendMenu = useSetAtom(menuServiceAtom)
     const [currentEditor, sendEditor] = useAtom(editorServiceAtom)
-    const sendSave = useSetAtom(savingServiceAtom)
+    const [currentSave, sendSave] = useAtom(savingServiceAtom)
 
     // hotkeys and keystrokes
     useHotkeys('esc', () => sendMenu("EXIT"))
@@ -50,6 +51,10 @@ const SmithBoard = (props: SmithBoardProps) => {
             sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
         }
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        setLoading({ save: currentSave.name == 'saving' })
+    }, [currentSave.name])
 
     useEffect(() => {
         setOptions({ ...options, theme, translations: t.canvas, screen })
