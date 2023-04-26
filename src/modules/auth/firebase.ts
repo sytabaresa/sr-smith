@@ -62,7 +62,7 @@ export class FireAuthWrapper {
                 }
                 // ...
             } catch (error) {
-                console.log(error);
+                console.log('google auth provider error: ',error);
                 // Handle Errors here.
                 const errorCode = error.code;
                 const errorMessage = error.message;

@@ -70,7 +70,7 @@ export const AutolinkerLeaf = (props) => {
         href={href}
         onMouseEnter={() => setFocus(true)}
         onMouseLeave={() => setFocus(false)}
-        onKeyDown={(event) => { console.log(event); setCtrl(event.ctrlKey) }}
+        onKeyDown={(event) => setCtrl(event.ctrlKey)}
         onKeyUp={(event) => setCtrl(event.ctrlKey)}
         target="_blank"
         onClick={() => {

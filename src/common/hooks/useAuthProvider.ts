@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react"
-import { getAuth } from "@modules/prepareServices"
-import { FireAuthWrapper } from "@auth/firebase"
+import { useAtomValue } from "jotai"
+import { authProvider } from "@core/atoms/providers"
 
 export function useAuthProvider() {
-    const [imported, setImported] = useState<FireAuthWrapper | any>({})
-    useEffect(() => {
-        getAuth().then(auth => setImported(auth))
-    })
-    return imported as FireAuthWrapper
+    return useAtomValue(authProvider)
 }
 
 export function useUserAuth() {

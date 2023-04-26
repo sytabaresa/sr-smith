@@ -1,10 +1,10 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { SmithProject } from '@localtypes/smith';
-import { EditorContextType } from './editorFSM';
-import { DataProvider } from '@hooks/useDataProvider';
 import { wait } from '@utils/time';
 import { editorServiceAtom } from '../atoms/smith';
 import { JotaiContext } from '@utils/atoms';
+import { _dataProvider } from '@core/atoms/providers';
+import { RxDBWrapper } from '@db/rxdb';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType extends JotaiContext {
@@ -26,15 +26,16 @@ const cancelableTimeout = (ctx, ev) => {
 
 export default createMachine('anon', {
     anon: state(
-        transition('LOAD', 'test', reduce(saveId)),
+        transition('LOAD', 'testDoc', reduce(saveId)),
     ),
-    test: state(
+    testDoc: state(
         immediate('checkDoc', guard(checkId)),
         immediate('noDoc'),
     ),
     checkDoc: invoke(getProjectData,
         transition('done', 'doc', reduce(saveData), action(sendCode)),
-        transition('error', 'noDoc', action((ctx, ev: any) => console.log(ev.error))),
+        transition('error', 'noDoc', action((ctx, ev: any) => console.log('checkDoc error: ', ev.error))),
+    ),
     ),
     noDoc: state(
         transition('LOGOUT', 'anon', action(logout)),
@@ -80,14 +81,14 @@ function checkId(ctx: SavingContextType, ev: any) {
     return !!ctx.id
 }
 function sendCode(ctx: SavingContextType, ev) {
-    const [current, send] = ctx.getMachine(editorServiceAtom)
+    const send = ctx.setter(editorServiceAtom)
     // console.log('send')
     send({ type: 'CODE', value: ctx.projectData.data });
     send('PARSE')
 }
 
 function logout(ctx: SavingContextType, ev) {
-    const [current, send] = ctx.getMachine(editorServiceAtom)
+    const send = ctx.setter(editorServiceAtom)
     send({ type: 'CODE', value: '' });
     send('PARSE')
 }
@@ -99,13 +100,8 @@ function checkFirstSave(ctx: SavingContextType, ev) {
 async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
 
-    //minimal time for the other machines (code editor fsm)
-    // rxdb local cache in mobile is so fast ;)
-    await wait(50)
-
     try {
-        const { getOne } = await DataProvider
-
+        const { getOne }: RxDBWrapper = await ctx.getter(_dataProvider)
         const projectData: SmithProject = await getOne({
             resource: 'projects',
             id: ctx.id,
@@ -122,9 +118,14 @@ async function getProjectData(ctx: SavingContextType) {
     }
 };
 
+async function getReadDoc(ctx, SavingContextType) {
+
+}
+
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update } = await DataProvider
+    const { update }: RxDBWrapper = await ctx.getter(_dataProvider)
+
     await update({
         resource: 'projects',
         id: ctx.id,

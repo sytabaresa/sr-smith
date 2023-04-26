@@ -42,6 +42,7 @@ const SmithBoard = (props: SmithBoardProps) => {
     useEffect(() => {
         sendSave(RESET)
         sendEditor(RESET)
+        sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
     }, [])
 
     useEffect(() => {
@@ -49,11 +50,11 @@ const SmithBoard = (props: SmithBoardProps) => {
             sendSave({ type: 'SAVE', value: currentEditor.context.code })
     }, [currentEditor.context.code]);
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
-        }
-    }, [isAuthenticated]);
+    // useEffect(() => {
+    //     if (isAuthenticated) {
+    //         sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
+    //     }
+    // }, [isAuthenticated]);
 
     useEffect(() => {
         setOptions({ ...options, theme, translations: t.canvas, screen })

@@ -39,7 +39,8 @@ const pluginExist = (ctx: Context, event: any) => {
 const recreateCode = (ctx: Context, ev) => {
     const ctxCode = ev.data.code
     // console.log('rec', ctxCode)
-    const [current, send] = ctx.getMachine(editorServiceAtom)
+    const send = ctx.setter(editorServiceAtom)
+    const current = ctx.getter(editorServiceAtom)
     const code = current.context.code
     send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
     send('PARSE')
@@ -100,7 +101,7 @@ export default createMachine<any, Context>('idle', {
         }))
     ),
     error: state(
-        immediate('idle', action((ctx, ev) => console.log("error", ev)))
+        immediate('idle', action((ctx, ev) => console.log("menu FSM error", ev)))
     )
 }, (initialContext) => {
     const { tooltipPlugins = [], ...rest } = initialContext

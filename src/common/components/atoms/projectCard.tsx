@@ -6,11 +6,11 @@ import { useRouter } from "@modules/router";
 import React, { HTMLAttributes } from "react";
 
 
-interface SavedProjectCard extends HTMLAttributes<HTMLDivElement> {
+interface ProjectCard extends HTMLAttributes<HTMLDivElement> {
     project: SmithProject
 }
 
-const SavedProjectCard = (props: SavedProjectCard) => {
+const ProjectCard = (props: ProjectCard) => {
     const { project, className, ...rest } = props
     const { id, name, description } = project
     const image = '/images/smith-app.png'
@@ -48,4 +48,4 @@ const SavedProjectCard = (props: SavedProjectCard) => {
     )
 }
 
-export default SavedProjectCard
+export default ProjectCard

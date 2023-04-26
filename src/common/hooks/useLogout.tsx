@@ -1,22 +1,28 @@
-import { getDB } from "@modules/prepareServices";
 import { useRouter } from "@modules/router";
 import { useAuthProvider } from "./useAuthProvider"
 import { useDataProvider } from "./useDataProvider";
+import { useAtom, useSetAtom } from "jotai";
+import { dataProvider } from "@core/atoms/providers";
+import { RESET } from "jotai/utils";
 
 export const useLogout = () => {
     const { useHistory } = useRouter()
     const { push } = useHistory();
     const { logout } = useAuthProvider()
-    const db = useDataProvider()
+    const [db, resetDb] = useAtom(dataProvider)
+    // console.log(db)
 
     return async () => {
         try {
             if (logout) await logout()
 
-            //reset db
-            await db.db.remove()
-            await db.db.destroy()
-            await getDB(true) 
+            // reset db
+            if (db.data) {
+                await db.data?.db.remove()
+                await db.data?.db.destroy()
+                // await getDB(true) 
+                resetDb(RESET)
+            }
             push('/')
         } catch (err) {
             console.log('logout error', err)

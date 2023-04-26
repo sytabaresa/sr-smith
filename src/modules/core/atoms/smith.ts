@@ -97,7 +97,7 @@ export function recreateBoard(send, params: BoardOptions, oldBoard: any) {
         return board
         // }
     } catch (err) {
-        console.log(err)
+        console.log("recreate board error :", err)
         return null
     }
     //  finally {

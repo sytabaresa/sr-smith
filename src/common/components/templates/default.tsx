@@ -26,7 +26,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const Layout = (props: Props) => {
   const { user } = useUser()
-  const logout = useLogout()
+  // const logout = useLogout()
   const { t } = useTranslation();
 
   const {
@@ -41,7 +41,7 @@ const Layout = (props: Props) => {
     navbar = true,
     drawer = true,
     drawerMenu = <>
-      <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.common.logout()} onClick={logout} />
+      <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.common.logout()} />
     </>,
     header,
     ...rest

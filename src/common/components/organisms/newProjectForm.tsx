@@ -1,11 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { SmithProject } from "@localtypes/smith";
 import { useTranslation } from "@modules/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
-// import { Timestamp } from "firebase/firestore";
-import { useAuthProvider } from "@hooks/useAuthProvider";
-import { qStr } from "@utils/common";
 import { useRouter } from "@modules/router";
 
 type NewProjectFormProps = {
@@ -17,8 +13,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const { useHistory } = useRouter()
   const { push } = useHistory();
-  const { getUserIdentity } = useAuthProvider()
-  const { create } = useDataProvider()
+  const db = useDataProvider()
 
   const {
     register,
@@ -36,7 +31,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     try {
       // const user = await getUserIdentity(null)
 
-      const doc = await create({
+      const doc = await db.data?.create({
         resource: "projects",
         variables: {
           // createdAt: new Date(),

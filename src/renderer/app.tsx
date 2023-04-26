@@ -1,9 +1,10 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import '@styles/index.css'
 import '@styles/main.css';
 import '@styles/animations.css';
 import '@styles/fonts.css'
 
+import '@db/plugins'
 import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
 import { PageContextProvider } from './usePageContext';
@@ -14,7 +15,6 @@ import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
-import { initServices } from "@modules/prepareServices"
 import { CurrentBreakpoint } from '@utils/screen';
 import { useAtomValue } from 'jotai';
 import { loadingAtom } from '@core/atoms/common';
@@ -25,7 +25,6 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
-  initServices()
 
   const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()

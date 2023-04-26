@@ -1,49 +1,17 @@
 import WithAuth from "@hoc/withAuth";
-import SavedProjectCard from "@components/molecules/savedProjectCard";
-import { SmithProject } from "@localtypes/smith";
 import { useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
-import ModalContainer from "@components/molecules/modalContainer";
 import NewProjectForm from "@components/organisms/newProjectForm";
 import { useDataProvider, useList } from "@hooks/useDataProvider";
 import createModal from "@components/molecules/createModal";
+import { ProjectList } from "@components/molecules/projectList";
 
 export { Saved as Page }
 
 const SavedProjects = () => {
   const { t } = useTranslation()
-  const db = useDataProvider()
-  const userProjects = useList({ resource: 'projects' }) as SmithProject[]
-
-  const refresh = async (e) => {
-    db.refresh()
-  }
-
-  const renderSavedProjects = (projects: SmithProject[]) => {
-    return <>
-      {!projects ? <div className="flex items-center justify-center">
-        <RefreshIcon className="animate-spin w-8 h-8 mr-2 my-4" />
-        <h3 className="text-xl uppercase">{t.common.loading()}...</h3>
-      </div> :
-        (projects.length == 0 ?
-          <div className="my-4">
-            <h3 className="text-center text-xl uppercase">{t.saved.no_projects()}</h3>
-          </div>
-          : <div className="flex flex-wrap justify-center lg:justify-start lg:mx-8">
-            {projects.map((item, i) =>
-              <SavedProjectCard
-                key={i}
-                className="m-4"
-                project={item}
-              />
-            )}
-          </div>
-        )
-      }
-    </>
-  }
 
   const newProject = createModal('new-project')
 
@@ -60,9 +28,11 @@ const SavedProjects = () => {
         <h1 className="text-2xl lg:text-3xl font-bold text-center uppercase">
           {t.saved.prev_projects()}
         </h1>
-        <RefreshIcon className="mx-4 w-10 active:animate-spin" onClick={refresh} />
+        {/* <Suspense fallback={<></>}> */}
+        <Refresh />
+        {/* </Suspense> */}
       </div>
-      {renderSavedProjects(userProjects)}
+        <ProjectList />
     </div>
     <newProject.Label>
       <div className="fixed right-0 bottom-0 mb-4 mr-4">
@@ -77,5 +47,17 @@ const SavedProjects = () => {
     </newProject.Modal>
   </Layout>
 };
+
+const Refresh = () => {
+  const db = useDataProvider()
+  // console.log(db)
+
+  const refresh = async (e) => {
+    db.data?.refresh()
+  }
+
+  return <RefreshIcon className="mx-4 w-10 active:animate-spin" onClick={refresh} />
+
+}
 
 const Saved = WithAuth(SavedProjects);

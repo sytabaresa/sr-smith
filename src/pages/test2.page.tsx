@@ -9,7 +9,7 @@ export { TestPage as Page }
 
 const sendAction = action((ctx: any, ev: any) => {
     if (ctx.other) {
-        const [current, send] = ctx.getMachine(ctx.other)
+        const send = ctx.setter(ctx.other)
         send('MSG')
     }
 })

@@ -1,4 +1,4 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, Suspense } from "react";
 import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
@@ -41,7 +41,9 @@ const DrawerMenu = (props) => {
                     <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} />
                 </newProject.Label>
                 <newProject.Modal>
-                    <NewProjectForm />
+                    <Suspense fallback={<></>}>
+                        <NewProjectForm />
+                    </Suspense>
                 </newProject.Modal>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
                 <Link href="/saved">

@@ -3,6 +3,7 @@ import { JXGDrawer } from './tooltipActionsFSM';
 import { wait } from '@utils/time';
 import { JotaiContext } from '@utils/atoms';
 import { boardAtom, boardConfigAtom } from '../atoms/smith';
+import { Board } from 'jsxgraph';
 
 export interface EditorContextType extends JotaiContext {
     errorMsg?: string;
@@ -14,12 +15,12 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     // console.log(board)
     // console.log(ctx.theme)
     try {
-        const [_, recreateBoard] = ctx.getMachine(boardAtom)
+        const recreateBoard = ctx.setter(boardAtom)
         recreateBoard(null)
-        const [board] = ctx.getMachine(boardAtom)
+        const board: Board = ctx.getter(boardAtom)
         board.jc.parse(ctx.code);
     } catch (err) {
-        console.log(err)
+        console.log("parse execute error: ", err)
         return Promise.reject(err)
     }
     return Promise.resolve()

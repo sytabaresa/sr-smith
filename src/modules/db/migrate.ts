@@ -40,7 +40,7 @@ export async function addDeleteFieldFirestore(db) {
     const allDocsResult = await getDocs(query(collection(db, 'projects')));
     allDocsResult.forEach(docu => {
         const docId = docu.id;
-        console.log(docId);
+        console.log("doc ID", docId);
         const ref = doc(db, `projects/${docId}`)
         updateDoc(ref, {
             _deleted: false,

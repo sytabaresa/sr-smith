@@ -89,8 +89,8 @@ export const atomWithMachine = (
             const { service } = get(serviceAtom)
 
             // utils
-            const getMachine = (a) => ([get(a), (s) => set(a, s)])
-            service.context['getMachine'] = getMachine
+            service.context['getter'] = get
+            service.context['setter'] = (a) => (s) => set(a, s)
             const add = isGetter(getEvent) ? getEvent(get) : getEvent
 
             if (event === RESET) {
@@ -110,8 +110,9 @@ const isGetter = <T>(v: T | ((get: Getter) => T)): v is (get: Getter) => T =>
     typeof v === 'function'
 
 
-export interface JotaiContext {
-    getMachine: (machine: Atom<any>) => [any, (any) => void]
+export interface JotaiContext<T = {}, A extends unknown[] = [], R = void> {
+    getter: (a: Atom<T>) => T
+    setter: (a: WritableAtom<T, A, R>) => (args: any) => R
 }
 
 export function atomWithToggle(
