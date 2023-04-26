@@ -33,7 +33,7 @@
         "react-hook-form": "^7.43.9",
         "react-hotkeys-hook": "^4.4.0",
         "react-simple-code-editor": "^0.13.1",
-        "robot3": "https://github.com/sytabaresa/robot#child-machine-send",
+        "robot3": "https://github.com/sytabaresa/robot.git#child-machine-send",
         "rxdb": "^14.10.0",
         "rxjs": "^7.8.0",
         "slate": "^0.94.0",
