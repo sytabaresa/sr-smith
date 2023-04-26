@@ -28,9 +28,13 @@ const SmithBoard = (props: SmithBoardProps) => {
     const [currentSave, sendSave] = useAtom(savingServiceAtom)
 
     // hotkeys and keystrokes
-    useHotkeys('esc', () => sendMenu("EXIT"))
-    useHotkeys('delete', () => sendMenu("DELETE"))
-    useHotkeys('ctrl+enter', () => sendEditor('PARSE'))
+    const hotkeysOptions = {
+        enableOnContentEditable: true
+    }
+
+    useHotkeys('esc', () => sendMenu("EXIT"), hotkeysOptions)
+    useHotkeys('delete', () => sendMenu("DELETE"), hotkeysOptions)
+    useHotkeys('ctrl+enter', () => sendEditor('PARSE'), hotkeysOptions)
 
     // console.log(params.id[0])
     // TODO: params.id

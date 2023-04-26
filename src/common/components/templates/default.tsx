@@ -76,7 +76,7 @@ const Layout = (props: Props) => {
         </div>
         {drawer &&
           <div className="drawer-side overflow-x-hidden">
-            <label htmlFor="my-drawer" className="drawer-overlay"></label>
+            <label htmlFor="my-drawer" className="drawer-overlay !bg-black !opacity-40"></label>
             <div className="p-4 overflow-y-auto scrollbar-thin !scrollbar-w-[4px] 
             scrollbar-track-base-100 scrollbar-thumb-base-content w-60 bg-base-100 text-base-content flex flex-col items-start">
               {user && <div className="flex flex-col items-center mb-4 w-full">

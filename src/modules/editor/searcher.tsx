@@ -183,6 +183,7 @@ export const useSearcher = () => {
             if (event.ctrlKey) {
                 switch (event.key) {
                     case ' ':
+                        event.preventDefault()
                         updateSelectorData(getToken(editor))
                 }
             }

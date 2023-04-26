@@ -100,7 +100,10 @@ module.exports = {
                     success: "#008000",
                     warning: "#ffff00",
                     error: "#ff0000",
-                    ...defaultThemeVariables
+                    ...defaultThemeVariables,
+                    ".modal": {
+                        "background-color": "#0007",
+                    }
                 },
             },
         ],

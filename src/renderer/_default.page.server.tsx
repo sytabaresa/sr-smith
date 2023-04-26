@@ -10,7 +10,6 @@ export const passToClient = ['pageProps', 'documentProps']
 async function render(pageContext) {
   const { Page, pageProps } = pageContext
   const pageHtml = renderToString(
-    // <App pageContext={pageContext}>
     <App pageContext={pageContext}>
       <Page {...pageProps} />
     </App>,

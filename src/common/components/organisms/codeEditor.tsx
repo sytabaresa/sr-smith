@@ -2,11 +2,11 @@ import { HTMLAttributes, Suspense, useCallback, useEffect, useMemo } from "react
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-
+// import "prismjs/components/prism-clike";
+// import "prismjs/components/prism-javascript";
 import '@modules/editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.min.css";
+
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
