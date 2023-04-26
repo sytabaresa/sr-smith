@@ -6,7 +6,7 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 
 import '@modules/editor/jessieCode'
-import "prismjs/themes/prism-solarizedlight.css";
+import "prismjs/themes/prism-solarizedlight.min.css";
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
@@ -16,7 +16,6 @@ import { createEditor, Text, Element, Node, Descendant } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { deserializeCode, serializeCode } from '@modules/editor/serializers'
-import { CustomElement } from "@modules/editor/types";
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
 
@@ -164,7 +163,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { setEvent, setEventDown, setEventUp } = keyValues
 
     return (
-        <div className={`border border-primary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
+        <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex">
                 {['saveWait', 'saving'].includes(currentSave.name) && <UploadIcon className="w-5 animate-pulse" />}
                 {currentSave.name == 'failSave' && <XCircleIcon className="w-5 animate-pulse" />}

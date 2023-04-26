@@ -2,7 +2,7 @@
 const colors = require('tailwindcss/colors')
 
 
-const defaultTHemeVariables = {
+const defaultThemeVariables = {
     "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
     "--rounded-btn": "1.9rem", // border radius rounded-btn utility class, used in buttons and similar element
     "--rounded-badge": "1.9rem", // border radius rounded-badge utility class, used in badges and similar
@@ -80,26 +80,27 @@ module.exports = {
                     "warning-content": "#ffffff",
                     "error": "#DE1C8D",
                     "error-content": "#ffffff",
-                    ...defaultTHemeVariables
+                    ...defaultThemeVariables
                 },
             },
             {
                 dark: {
                     // ...require("daisyui/src/colors/themes")["[data-theme=black]"],
                     "color-scheme": "dark",
-                    primary: "#343232",
+                    primary: "#999",
                     secondary: "#343232",
                     accent: "#343232",
                     "base-100": "#000000",
                     "base-200": "#0D0D0D",
                     "base-300": "#1A1919",
+                    "base-content": "#CCC",
                     neutral: "#272626",
-                    "neutral-focus": "#343232",
+                    "neutral-focus": "#ffffff",
                     info: "#0000ff",
                     success: "#008000",
                     warning: "#ffff00",
                     error: "#ff0000",
-                    ...defaultTHemeVariables
+                    ...defaultThemeVariables
                 },
             },
         ],

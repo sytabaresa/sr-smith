@@ -51,7 +51,7 @@ prism.languages.jc = {
         lookbehind: true,
         alias: 'property'
     },
-    'punctuation': /[[\];(),.:]\<\<|\>\>/,
+    'punctuation': /[[\];(),.:]|\<\<|\>\>/,
     'operator': /[<>]=?|[!=~]=|&&?|\|\||[-+*/%^!=<>?:]/,
     'constant': [
         {

@@ -109,7 +109,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
         </div>
       </div>
       <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] z-0 ${showMenu ? 'dropdown-open' : ''}`}>
-        <div className="dropdown-content mt-2 border-primary border bg-base-100">
+        <div className="dropdown-content mt-2 border-secondary border bg-base-100">
           <ul
             tabIndex={0}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
