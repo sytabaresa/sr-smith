@@ -24,7 +24,6 @@ module.exports = {
         './src/common/components/**/*.{js,ts,jsx,tsx}',
         './src/modules/**/*.{js,ts,jsx,tsx}'
     ],
-    // darkMode: 'class', // or  false, 'media' or 'class'
     theme: {
         extend: {
             dropShadow: {
@@ -41,15 +40,6 @@ module.exports = {
                 'serif': ['ui-serif', 'Georgia'],
                 'mono': ['Fira Code', 'ui-monospace', 'SFMono-Regular'],
             },
-            screens: require('./screens.json'),
-            // ...defaultTheme.screens
-            // colors: {
-            //   principal: {
-            //     DEFAULT: colors.blueGray[800],
-            //     ...colors.blueGray
-            //   },
-            //   contrast: colors.white,
-            // }
         },
     },
     variants: {

@@ -126,7 +126,6 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
             typeof window != 'undefined' &&
             <UpdateSw autoUpdate />
           }
-
           <CurrentBreakpoint />
         </UserProvider>
       </TranslationWrapper>

@@ -16,11 +16,9 @@ import PublishProjectForm from "./publishProjectForm";
 import ConfigsForm from "./configForm";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
-    labels: Record<string, any>
 }
 
 const DrawerMenu = (props) => {
-    const { labels } = props
     const send = useSetAtom(savingServiceAtom)
     const { useHistory } = useRouter()
     const { push } = useHistory();

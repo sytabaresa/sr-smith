@@ -18,12 +18,6 @@ export { SmithProjectPage as Page }
 
 const SmithProjectPage: React.FC = () => {
 
-  const labels = {
-    NEW_PROJECT_LABEL: 'new-project-modal',
-    PUBLISH_PROJECT_LABEL: 'publish-project-modal',
-    CONFIGS_LABEL: 'configs-label'
-  }
-
   return (
     <>
       <Layout
@@ -31,7 +25,7 @@ const SmithProjectPage: React.FC = () => {
         footerComponent={<Footer className="absolute bottom-0 xsh:right-0 xsh:left-[inherit] left-0 ml-1 mb-1" />}
         navbar={false}
         className=""
-        drawerMenu={<DrawerMenu labels={labels} />}
+        drawerMenu={<DrawerMenu />}
       >
         {/* <div className="h-full relative"> */}
         <SmithBoard />
