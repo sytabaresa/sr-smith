@@ -4,7 +4,7 @@ import '@styles/main.css';
 import '@styles/animations.css';
 import '@styles/fonts.css'
 
-import '@db/plugins'
+import '@db/rxdb/plugins'
 import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
 import { PageContextProvider } from './usePageContext';

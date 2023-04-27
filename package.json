@@ -20,6 +20,8 @@
         "@heroicons/react": "^1.0.0",
         "eslint-config-next": "^13.3.1",
         "firebase": "^9",
+        "gql-query-builder": "^3.8.0",
+        "graphql-request": "^6.0.0",
         "gravatar": "^1.8.2",
         "jotai": "^2.0.4",
         "jsxgraph": "^1.5.0",
@@ -69,7 +71,7 @@
         "vite": "^4.3.2",
         "vite-bundle-visualizer": "^0.6.0",
         "vite-plugin-pwa": "^0.14.7",
-        "vite-plugin-ssr": "0.4.115",
+        "vite-plugin-ssr": "0.4.117-draft.92725",
         "vite-tsconfig-paths": "^4.2.0",
         "workbox-core": "^6.5.4",
         "workbox-precaching": "^6.5.4"

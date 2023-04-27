@@ -1,9 +1,14 @@
 import { initApp } from "@app"
 import { FireAuthWrapper, getProvider, initAuth } from "@auth/firebase"
-import { RxDBWrapper } from "@db/rxdb"
 import { FirebaseApp } from "firebase/app"
+import { GraphQLClient } from "graphql-request"
 import { atom } from "jotai"
 import { RESET, loadable } from 'jotai/utils'
+import HasuraDataProvider from "@db/hasura"
+import rxdbDataProvider from "@db/rxdb"
+import { initDB } from "@db/rxdb"
+import { replicate } from "@db/rxdb/replication"
+import { DataProvider } from "@hooks/useDataProviderSW"
 
 
 // App
@@ -53,32 +58,77 @@ authProvider.onMount = (commit) => {
 }
 
 
-// DB
-const cacheDb = atom<RxDBWrapper>(null)
-export const _dataProvider = atom(async (get) => {
+// Data Providers
+const ENDPOINT = import.meta.env.VITE_API_URL
+
+const cacheQL = atom<DataProvider>(null)
+export const dataQLProvider = atom(
+    (get) => {
+        const oldDb = get(cacheQL)
+        if (oldDb)
+            return oldDb
+        const client = new GraphQLClient(ENDPOINT, { headers: {} })
+        const provider = HasuraDataProvider(client, {})
+
+        // headers
+        get(authProvider).auth.onIdTokenChanged(async (user) => {
+            if (user) {
+                const token = await user.getIdToken()
+                client.setHeaders({
+                    'Authorization': `Bearer ${token}`
+                })
+            } else {
+                client.setHeaders({})
+            }
+        })
+
+        return provider
+    },
+    (get, set, reset: typeof RESET) => {
+        if (reset == RESET)
+            set(cacheQL, null)
+        set(cacheQL, get(dataQLProvider))
+
+    })
+
+const cacheDb = atom<DataProvider>(null)
+export const _dataRxdbProvider = atom(async (get) => {
     const oldDb = get(cacheDb)
     if (oldDb)
         return oldDb
     // const { db: _rxdb, coll } = await initRxDB()
-    const db = new RxDBWrapper()
     if (typeof window != 'undefined') {
         console.log('initializing rxdb...')
         try {
-            await db.init()
-            await db.replicate()
-            await db.authDB(get(authProvider).auth)
+            const { db: rxdb, coll } = await initDB()
+            const repl = await replicate(ENDPOINT, coll.projects)
+            const provider = rxdbDataProvider(rxdb)
+
+            // headers
+            get(authProvider).auth.onIdTokenChanged(async (user) => {
+                if (user) {
+                    const token = await user.getIdToken()
+                    repl.setHeaders({
+                        'Authorization': `Bearer ${token}`
+                    })
+                    repl.reSync()
+                } else {
+                    repl.setHeaders({})
+                }
+            })
+
             console.log('rxdb initialized')
+            return provider
         } catch (err) {
             console.log('db init error: ', JSON.stringify(err))
             // throw err
             // return {}
         }
     }
-    return db
 }, (get, set, reset: typeof RESET) => {
     if (reset == RESET)
         set(cacheDb, null)
-    set(cacheDb, get(dataProvider))
+    set(cacheDb, get(dataRxdbProvider))
 })
 
-export const dataProvider = loadable(_dataProvider)
+export const dataRxdbProvider = loadable(_dataRxdbProvider)

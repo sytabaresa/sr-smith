@@ -3,7 +3,7 @@ import { SmithProject } from '@localtypes/smith';
 import { wait } from '@utils/time';
 import { editorServiceAtom } from '../atoms/smith';
 import { JotaiContext } from '@utils/atoms';
-import { _dataProvider } from '@core/atoms/providers';
+import { _dataRxdbProvider } from '@core/atoms/providers';
 import { RxDBWrapper } from '@db/rxdb';
 // import { Timestamp } from 'firebase/firestore';
 
@@ -36,6 +36,12 @@ export default createMachine('anon', {
         transition('done', 'doc', reduce(saveData), action(sendCode)),
         transition('error', 'noDoc', action((ctx, ev: any) => console.log('checkDoc error: ', ev.error))),
     ),
+    checkRead: invoke(getReadDoc,
+        transition('done', 'readOnly'),
+        transition('error', 'noDoc')
+    ),
+    readOnly: state(
+
     ),
     noDoc: state(
         transition('LOGOUT', 'anon', action(logout)),
@@ -101,7 +107,7 @@ async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
 
     try {
-        const { getOne }: RxDBWrapper = await ctx.getter(_dataProvider)
+        const { getOne }: RxDBWrapper = await ctx.getter(_dataRxdbProvider)
         const projectData: SmithProject = await getOne({
             resource: 'projects',
             id: ctx.id,
@@ -124,7 +130,7 @@ async function getReadDoc(ctx, SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update }: RxDBWrapper = await ctx.getter(_dataProvider)
+    const { update }: RxDBWrapper = await ctx.getter(_dataRxdbProvider)
 
     await update({
         resource: 'projects',

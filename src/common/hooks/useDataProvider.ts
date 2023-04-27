@@ -1,14 +1,13 @@
 
-import { list, selectOne } from "@db/db"
-import { dataProvider } from "@core/atoms/providers"
+import { DataProvider, list, selectOne } from "@db/db"
+import { dataRxdbProvider } from "@core/atoms/providers"
 import { useAtomValue } from "jotai"
 import { useObservableState } from "observable-hooks"
-import { RxDBWrapper } from "@db/rxdb"
 
 export function useDataProvider() {
-    return useAtomValue(dataProvider) as {
+    return useAtomValue(dataRxdbProvider) as {
         state: 'loading' | 'hasData' | 'hasError',
-        data?: RxDBWrapper,
+        data?: DataProvider,
         error?: any,
     }
 }
@@ -16,7 +15,7 @@ export function useDataProvider() {
 export function useList(data: list) {
     const db = useDataProvider()
     // console.log(db)
-    if (db.data?.db) {
+    if (db.data) {
         const docs = db.data._getList(data)
         return useObservableState(docs.$)
     }
@@ -24,7 +23,7 @@ export function useList(data: list) {
 
 export function useOne(data: selectOne) {
     const db = useDataProvider()
-    if (db.data?.db) {
+    if (db.data) {
         const doc = db.data._getOne(data)
         return useObservableState(doc.$)
     }

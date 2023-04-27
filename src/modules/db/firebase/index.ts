@@ -3,7 +3,7 @@ import {
     addDoc, collection, deleteDoc, doc, enableIndexedDbPersistence, Firestore,
     getDoc, getDocs, getFirestore, query, updateDoc, where
 } from "firebase/firestore";
-import { DataProvider, list, oneData, selectMany, selectOne } from "./db";
+import { DataProvider, list, oneData, selectMany, selectOne } from "../db";
 
 export async function initDB(app: FirebaseApp) {
     const db = getFirestore(app)

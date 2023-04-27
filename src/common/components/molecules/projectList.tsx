@@ -14,7 +14,8 @@ export const ProjectList = (props: ProjectListProps) => {
     const db = useDataProvider()
     const projects = useList({ resource: 'projects' }) as SmithProject[]
 
-    // console.log(projects)
+    console.log(db)
+    console.log(projects)
     return <>
         {!projects ? <div className="flex items-center justify-center">
             <RefreshIcon className="animate-spin w-8 h-8 mr-2 my-4" />
