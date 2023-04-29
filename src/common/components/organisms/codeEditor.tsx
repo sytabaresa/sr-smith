@@ -25,7 +25,7 @@ import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
 import { useAtom, useAtomValue } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { UploadIcon, XCircleIcon } from "@heroicons/react/outline";
+import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
@@ -164,10 +164,10 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     return (
         <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
-            <div className="absolute top-0 right-0 mt-2 mr-6 flex">
-                {['saveWait', 'saving'].includes(currentSave.name) && <UploadIcon className="w-5 animate-pulse" />}
-                {['readOnly'].includes(currentSave.name) && <span>read only</span>}
-                {currentSave.name == 'failSave' && <XCircleIcon className="w-5 animate-pulse" />}
+            <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
+                {['saveWait', 'saving'].includes(currentSave.name) && <span className="badge badge-info animate-pulse"><UploadIcon className="w-4 mr-1" />{t.canvas.uploading()}...</span>}
+                {['readOnly'].includes(currentSave.name) && <span className="badge"><BookOpenIcon className="w-4 mr-1" />{t.canvas.read_only()}</span>}
+                {currentSave.name == 'failSave' && <span className="badge badge-error"><XCircleIcon className="w-4 mr-1" />{t.canvas.fail()}</span>}
             </div>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
                 {typeof window != 'undefined' &&

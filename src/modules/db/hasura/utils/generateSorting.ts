@@ -1,13 +1,12 @@
-import { CrudSorting } from "@refinedev/core";
-import set from "lodash/set";
+import { set } from "@utils/common";
 
 export type HasuraSortingType = Record<string, "asc" | "desc">;
 
 export type GenerateSortingType = {
-    (sorting?: CrudSorting): HasuraSortingType | undefined;
+    (sorting?: any): HasuraSortingType | undefined;
 };
 
-export const generateSorting: GenerateSortingType = (sorters?: CrudSorting) => {
+export const generateSorting: GenerateSortingType = (sorters?: any) => {
     if (!sorters) {
         return undefined;
     }

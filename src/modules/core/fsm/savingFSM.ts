@@ -145,9 +145,9 @@ async function getReadDoc(ctx, SavingContextType) {
             }
         })
 
-        // console.log(projectData)
+        console.log(projectData)
         if (projectData) {
-            return projectData
+            return projectData.data
         } else
             return Promise.reject('document not exists')
     } catch (err) {

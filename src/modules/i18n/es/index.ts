@@ -107,7 +107,10 @@ const es: BaseTranslation = {
 		elements_menu: "Menú de elementos",
 		create: "Crear",
 		code: "Code",
-		placeholder: "Escribir código..."
+		placeholder: "Escribir código...",
+		read_only: 'solo lectura',
+		fail: 'fallo',
+		uploading: 'subiendo'
 	},
 	settings: {
 		make_public: "Hacer público",

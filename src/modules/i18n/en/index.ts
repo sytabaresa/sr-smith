@@ -101,7 +101,10 @@ const en: Translation = {
 		elements_menu: "Elements Menu",
 		create: "Create",
 		code: "Code",
-		placeholder: "Write code..."
+		placeholder: "Write code...",
+		read_only: 'read only',
+		fail: 'fail',
+		uploading: 'uploading'
 	},
 	settings: {
 		make_public: "Make Public",

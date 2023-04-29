@@ -1,4 +1,4 @@
-import { mapValues } from "lodash";
+import { mapValues } from "@utils/common";
 
 export const upperCaseValues = (obj: any): any => {
     if (!obj) return undefined;

@@ -1,10 +1,15 @@
-import { MetaQuery, BaseKey } from "@refinedev/core";
 import * as gql from "gql-query-builder";
+
+export type MetaQuery = {
+    [k: string]: any;
+    queryContext?: Omit<Record<string, any>, "meta">;
+} & Record<string, any>;
+
 
 type GenerateUseManySubscriptionParams = {
     resource: string;
     meta: MetaQuery;
-    ids?: BaseKey[];
+    ids?: any[];
 };
 
 type GenerateUseManySubscriptionReturnValues = {

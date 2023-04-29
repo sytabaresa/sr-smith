@@ -1,9 +1,3 @@
-import {
-    MetaQuery,
-    Pagination,
-    CrudSorting,
-    CrudFilters,
-} from "@refinedev/core";
 import * as gql from "gql-query-builder";
 
 import { generateFilters } from "./generateFilters";
@@ -11,10 +5,10 @@ import { generateSorting } from "./generateSorting";
 
 type GenerateUseListSubscriptionParams = {
     resource: string;
-    meta: MetaQuery;
-    pagination?: Pagination;
-    sorters?: CrudSorting;
-    filters?: CrudFilters;
+    meta: Record<string, any>;
+    pagination?: Record<string, any>;
+    sorters?: Record<string, any>;
+    filters?: Record<string, any>;
 };
 
 type GenerateUseListSubscriptionReturnValues = {
@@ -51,9 +45,9 @@ export const generateUseListSubscription = ({
             variables: {
                 ...(mode === "server"
                     ? {
-                          limit,
-                          offset: (current - 1) * limit,
-                      }
+                        limit,
+                        offset: (current - 1) * limit,
+                    }
                     : {}),
                 ...(hasuraSorting && {
                     order_by: {

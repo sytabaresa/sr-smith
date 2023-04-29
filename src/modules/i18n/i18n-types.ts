@@ -341,6 +341,18 @@ type RootTranslation = {
 		 * W​r​i​t​e​ ​c​o​d​e​.​.​.
 		 */
 		placeholder: string
+		/**
+		 * r​e​a​d​ ​o​n​l​y
+		 */
+		read_only: string
+		/**
+		 * f​a​i​l
+		 */
+		fail: string
+		/**
+		 * u​p​l​o​a​d​i​n​g
+		 */
+		uploading: string
 	}
 	settings: {
 		/**
@@ -810,6 +822,18 @@ export type TranslationFunctions = {
 		 * Write code...
 		 */
 		placeholder: () => LocalizedString
+		/**
+		 * read only
+		 */
+		read_only: () => LocalizedString
+		/**
+		 * fail
+		 */
+		fail: () => LocalizedString
+		/**
+		 * uploading
+		 */
+		uploading: () => LocalizedString
 	}
 	settings: {
 		/**

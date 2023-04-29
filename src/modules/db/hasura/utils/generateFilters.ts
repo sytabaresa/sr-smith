@@ -1,5 +1,4 @@
-import { CrudFilter, CrudFilters, CrudOperators } from "@refinedev/core";
-import setWith from "lodash/setWith";
+import { set } from "@utils/common";
 
 export type HasuraFilterCondition =
     | "_and"
@@ -23,7 +22,7 @@ export type HasuraFilterCondition =
     | "_regex"
     | "_iregex";
 
-const hasuraFilters: Record<CrudOperators, HasuraFilterCondition | undefined> =
+const hasuraFilters: Record<any, HasuraFilterCondition | undefined> =
     {
         eq: "_eq",
         ne: "_neq",
@@ -53,7 +52,7 @@ const hasuraFilters: Record<CrudOperators, HasuraFilterCondition | undefined> =
         nendswiths: "_nsimilar",
     };
 
-export const handleFilterValue = (operator: CrudOperators, value: any) => {
+export const handleFilterValue = (operator: any, value: any) => {
     switch (operator) {
         case "startswiths":
         case "nstartswiths":
@@ -81,7 +80,7 @@ export const handleFilterValue = (operator: CrudOperators, value: any) => {
     }
 };
 
-export const generateNestedFilterQuery = (filter: CrudFilter): any => {
+export const generateNestedFilterQuery = (filter: any): any => {
     const { operator } = filter;
 
     if (operator !== "or" && operator !== "and" && "field" in filter) {
@@ -96,8 +95,10 @@ export const generateNestedFilterQuery = (filter: CrudFilter): any => {
         const fieldsWithOperator = [...fieldsArray, hasuraOperator];
         const filteredValue = handleFilterValue(operator, value);
 
+        const a = {}
+        set(a, fieldsWithOperator, filteredValue)
         return {
-            ...setWith({}, fieldsWithOperator, filteredValue, Object),
+            ...a
         };
     }
 
@@ -106,7 +107,7 @@ export const generateNestedFilterQuery = (filter: CrudFilter): any => {
     };
 };
 
-export const generateFilters: any = (filters?: CrudFilters) => {
+export const generateFilters: any = (filters?: any) => {
     if (!filters) {
         return undefined;
     }

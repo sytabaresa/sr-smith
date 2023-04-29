@@ -1,4 +1,4 @@
-import mapKeys from "lodash/mapKeys";
+import { mapKeys } from "@utils/common";
 import camelCase from "camelcase";
 
 export const camelizeKeys = (obj: any): any => {

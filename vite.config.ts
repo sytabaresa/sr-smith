@@ -102,7 +102,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
   resolve: {
     alias: {
       'react': 'preact/compat',
-      'react-dom': 'preact/compat'
+      'react-dom': 'preact/compat',
+      'lodash': 'lodash-es'
     }
   },
   ssr: {

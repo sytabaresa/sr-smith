@@ -1,10 +1,9 @@
-import { MetaQuery, BaseKey } from "@refinedev/core";
 import * as gql from "gql-query-builder";
 
 type GenerateUseOneSubscriptionParams = {
     resource: string;
-    meta: MetaQuery;
-    id?: BaseKey;
+    meta: Record<string, any>;
+    id?: any;
 };
 
 type GenerateUseOneSubscriptionReturnValues = {
