@@ -18,10 +18,10 @@ export const useLogout = () => {
 
             // reset db
             if (db.data) {
-                await db.data?.db.remove()
-                await db.data?.db.destroy()
+                // await db.data?.db.remove()
+                // await db.data?.db.destroy()
                 // await getDB(true) 
-                resetDb(RESET)
+                // resetDb(RESET)
             }
             push('/')
         } catch (err) {

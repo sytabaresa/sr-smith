@@ -138,3 +138,23 @@ export const atomWithSomeMap = (initial = {}) => {
     )
     return _someAtom
 }
+
+export const atomCacheCancelable = <T>(getter: ((get: Getter) => T), initialValue: T = null) => {
+
+    const cachedAtom = atom<T>(initialValue)
+    const cancelableAtom = atom((get) => {
+        const cachedValue = get(cachedAtom)
+        if (cachedValue)
+            return cachedValue
+
+        return getter(get)
+    },
+        (get, set, cancel: typeof RESET) => {
+            if (cancel == RESET)
+                set(cachedAtom as any, null)
+            set(cachedAtom as any, get(cancelableAtom))
+        }
+    )
+
+    return cancelableAtom
+}

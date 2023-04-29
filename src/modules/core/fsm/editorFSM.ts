@@ -31,15 +31,8 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
 // fsm
 export default createMachine('init', {
     init: state(
-        // immediate('initializing')
-        transition('INIT', 'initializing')
-    ),
-    initializing: invoke(async (ctx: EditorContextType, ev) => {
-        await parseExecute(ctx, ev);
-        return await wait(50)
-    }, // some delay initializing
-        transition('done', 'idle'),
-        transition('error', 'init')
+        // immediate('idle')
+        transition('INIT', 'idle')
     ),
     idle: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),

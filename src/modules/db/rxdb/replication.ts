@@ -28,6 +28,8 @@ const pullQueryBuilder = (checkpoint, limit) => {
           createdAt
           name
           isPublic
+          role
+          metadata
         }
       }`;
     return {
@@ -60,6 +62,8 @@ const pullStreamQueryBuilder = (checkpoint, limit) => {
           createdAt
           name
           isPublic
+          role
+          metadata
         }
       }`;
     return {
@@ -76,11 +80,11 @@ const pushQueryBuilder = rows => {
     const outRows = rows.map(r => {
         const row = r.newDocumentState
         return row
-    })
+    }).filter(row => row.role != 'example')
 
     const query = `
     mutation PushProjects($updates: [project_insert_input!]!) {
-        documents: insert_project(objects: $updates, on_conflict: {constraint: projects_pkey, update_columns: [data, deleted, description, hashReference, isPublic, name]}) {
+        documents: insert_project(objects: $updates, on_conflict: {constraint: projects_pkey, update_columns: [data, deleted, description, hashReference, isPublic, name, role, metadata]}) {
           affected_rows
         }
       }           
@@ -183,7 +187,7 @@ export async function replicate(endpoint: string, coll: RxCollection) {
         live: true,
         retryTime: 1000 * 5,
         waitForLeadership: true,
-        autoStart: true,
+        autoStart: false,
     });
 
     replicationState.error$.subscribe(err => {

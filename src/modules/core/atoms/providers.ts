@@ -9,34 +9,21 @@ import rxdbDataProvider from "@db/rxdb"
 import { initDB } from "@db/rxdb"
 import { replicate } from "@db/rxdb/replication"
 import { DataProvider } from "@hooks/useDataProviderSW"
+import { RxGraphQLReplicationState } from "rxdb/dist/types/plugins/replication-graphql"
+import { atomCacheCancelable } from "@utils/atoms"
 
 
 // App
-const cacheApp = atom<FirebaseApp>(null)
-export const app = atom((get) => {
-    const oldApp = get(cacheApp)
-    if (oldApp)
-        return oldApp
+export const app = atomCacheCancelable((get) => {
     console.log('initializing app...')
     const app = initApp()
     console.log('app initialized')
     return app
-}, (get, set, reset: typeof RESET) => {
-    if (reset == RESET)
-        set(cacheApp, null)
-    set(cacheApp, get(app))
 })
-
-app.onMount = (commit) => {
-    commit(null)
-}
 
 // Auth
 const cacheAuth = atom<FireAuthWrapper>(null)
-export const authProvider = atom((get) => {
-    const oldAuth = get(cacheAuth)
-    if (oldAuth)
-        return oldAuth
+export const authProvider = atomCacheCancelable((get) => {
     console.log('initializing auth...')
     try {
         const _auth = initAuth(get(app))
@@ -45,64 +32,39 @@ export const authProvider = atom((get) => {
         console.log('auth initialized')
         return auth
     } catch (err) {
-        console.log('db init error: ', JSON.stringify(err))
+        console.log('aith init error: ', JSON.stringify(err))
     }
-}, (get, set, reset: typeof RESET) => {
-    if (reset == RESET)
-        set(cacheAuth, null)
-    set(cacheAuth, get(authProvider))
 })
-
-authProvider.onMount = (commit) => {
-    commit(null)
-}
-
 
 // Data Providers
 const ENDPOINT = import.meta.env.VITE_API_URL
 
-const cacheQL = atom<DataProvider>(null)
-export const dataQLProvider = atom(
-    (get) => {
-        const oldDb = get(cacheQL)
-        if (oldDb)
-            return oldDb
-        const client = new GraphQLClient(ENDPOINT, { headers: {} })
-        const provider = HasuraDataProvider(client, {})
+export const dataQLProvider = atomCacheCancelable((get) => {
+    const client = new GraphQLClient(ENDPOINT, { headers: {} })
+    const provider = HasuraDataProvider(client, {})
 
-        // headers
-        get(authProvider).auth.onIdTokenChanged(async (user) => {
-            if (user) {
-                const token = await user.getIdToken()
-                client.setHeaders({
-                    'Authorization': `Bearer ${token}`
-                })
-            } else {
-                client.setHeaders({})
-            }
-        })
-
-        return provider
-    },
-    (get, set, reset: typeof RESET) => {
-        if (reset == RESET)
-            set(cacheQL, null)
-        set(cacheQL, get(dataQLProvider))
-
+    // headers
+    get(authProvider).auth.onIdTokenChanged(async (user) => {
+        if (user) {
+            const token = await user.getIdToken()
+            client.setHeaders({
+                'Authorization': `Bearer ${token}`
+            })
+        } else {
+            client.setHeaders({})
+        }
     })
 
-const cacheDb = atom<DataProvider>(null)
-export const _dataRxdbProvider = atom(async (get) => {
-    const oldDb = get(cacheDb)
-    if (oldDb)
-        return oldDb
-    // const { db: _rxdb, coll } = await initRxDB()
+    return provider
+})
+
+export const _dataRxdbProvider = atomCacheCancelable(async (get) => {
     if (typeof window != 'undefined') {
         console.log('initializing rxdb...')
         try {
             const { db: rxdb, coll } = await initDB()
-            const repl = await replicate(ENDPOINT, coll.projects)
             const provider = rxdbDataProvider(rxdb)
+            const repl = await replicate(ENDPOINT, coll.projects)
 
             // headers
             get(authProvider).auth.onIdTokenChanged(async (user) => {
@@ -111,11 +73,14 @@ export const _dataRxdbProvider = atom(async (get) => {
                     repl.setHeaders({
                         'Authorization': `Bearer ${token}`
                     })
+                    await repl.start()
                     repl.reSync()
                 } else {
                     repl.setHeaders({})
+                    // await repl.cancel()
                 }
             })
+
 
             console.log('rxdb initialized')
             return provider
@@ -125,10 +90,6 @@ export const _dataRxdbProvider = atom(async (get) => {
             // return {}
         }
     }
-}, (get, set, reset: typeof RESET) => {
-    if (reset == RESET)
-        set(cacheDb, null)
-    set(cacheDb, get(dataRxdbProvider))
 })
 
 export const dataRxdbProvider = loadable(_dataRxdbProvider)

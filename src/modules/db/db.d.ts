@@ -2,7 +2,7 @@
 export interface oneData {
     resource: string
     variables?: Record<string, any>
-    metaData?: Record<string, any>
+    meta?: Record<string, any>
 }
 
 export interface selectOne extends oneData {
@@ -19,7 +19,7 @@ export interface list {
     hasPagination?: boolean
     sort?: { field: string, order: "desc" | "asc" | "null" }
     filters?: Record<string, any> | Record<string, any>[]
-    metaData?: Record<string, any>
+    meta?: Record<string, any>
 }
 
 export interface DataProvider {

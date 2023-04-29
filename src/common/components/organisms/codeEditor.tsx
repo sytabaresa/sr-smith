@@ -166,6 +166,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
         <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex">
                 {['saveWait', 'saving'].includes(currentSave.name) && <UploadIcon className="w-5 animate-pulse" />}
+                {['readOnly'].includes(currentSave.name) && <span>read only</span>}
                 {currentSave.name == 'failSave' && <XCircleIcon className="w-5 animate-pulse" />}
             </div>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">

@@ -2,12 +2,13 @@ import { RxDatabase, createRxDatabase } from "rxdb";
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { projectSchema } from "./schema";
 import uuid from 'uuid-random';
-import { oneData, selectMany, selectOne } from "@db/db";
+import { list, oneData, selectMany, selectOne } from "@db/db";
 
 export async function initDB() {
     const db = await createRxDatabase({
         name: 'sr-smith-db',
-        storage: getRxStorageDexie()
+        storage: getRxStorageDexie(),
+        ignoreDuplicate: process.env.NODE_ENV == 'development'
     });
 
     const coll = await db.addCollections({
@@ -29,28 +30,29 @@ const dataProvider =
         rxdb: RxDatabase
     ) => {
 
-        const _create = ({ resource, variables, metaData }: oneData) => {
+        const _create = ({ resource, variables, meta }: oneData) => {
             const doc = rxdb[resource].insert(variables)
             return doc
         }
-        const _createMany = ({ resource, variables, metaData }: oneData) => {
+        const _createMany = ({ resource, variables, meta }: oneData) => {
             const docs = rxdb[resource].bulkInsert(variables.data)
             return docs
         }
-        const _getList = ({ resource, pagination, hasPagination, sort, filters, metaData }: list) => {
+        const _getList = ({ resource, pagination, hasPagination, sort, filters, meta }: list) => {
             const docs = rxdb[resource]?.find({ selector: filters })
             return docs
         }
-        const _getMany = ({ resource, ids, metaData }: selectMany) => {
+        const _getMany = ({ resource, ids, meta }: selectMany) => {
             const docs = rxdb[resource]?.findByIds(ids)
             return docs
         }
-        const _getOne = ({ resource, id, metaData }: selectOne) => {
+        const _getOne = ({ resource, id, meta }: selectOne) => {
             const doc = rxdb[resource]?.findOne({ selector: { id } })
             return doc
         }
 
         return {
+            db: rxdb,
             _getList,
             _getOne,
             create: async (data: oneData) => {
@@ -73,18 +75,18 @@ const dataProvider =
                 const doc = await _getOne(data)?.exec()
                 return doc?.toJSON()
             },
-            update: async ({ resource, id, variables, metaData }: selectMany & { id: string }) => {
+            update: async ({ resource, id, variables, meta }: selectMany & { id: string }) => {
                 const doc = await rxdb[resource]?.findOne({ selector: { id } })?.exec()
                 return doc?.update({ $set: variables })
             },
-            updateMany: async ({ resource, ids, variables, metaData }: selectMany) => {
+            updateMany: async ({ resource, ids, variables, meta }: selectMany) => {
                 throw new Error("not implemented");
             },
-            deleteOne: async ({ resource, id, variables, metaData }: selectOne) => {
+            deleteOne: async ({ resource, id, variables, meta }: selectOne) => {
                 const doc = await rxdb[resource]?.findOne({ selector: { id } })?.exec()
                 return await doc?.remove()
             },
-            deleteMany: async ({ resource, ids, variables, metaData }: selectMany) => {
+            deleteMany: async ({ resource, ids, variables, meta }: selectMany) => {
                 throw new Error("not implemented");
             }
         }

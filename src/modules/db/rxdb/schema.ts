@@ -22,6 +22,12 @@ export const projectSchema = {
         isPublic: {
             type: 'boolean'
         },
+        role: {
+            type: 'string'
+        },
+        metadata: {
+            type: 'object'
+        },
         userId: {
             type: 'string',
             maxLength: 100
