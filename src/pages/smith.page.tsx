@@ -29,7 +29,7 @@ const SmithProjectPage: React.FC = () => {
       >
         {/* <div className="h-full relative"> */}
         <SmithBoard />
-        <CodeToolbar />
+        <CodeToolbar className="absolute top-0 left-0 pl-2 py-2 md:pl-4 md:pt-4 z-10 flex h-0" />
         <div className="absolute top-0 right-0 mr-2 mt-2 md:mr-4 md:mt-4">
           <UserMenu />
         </div>

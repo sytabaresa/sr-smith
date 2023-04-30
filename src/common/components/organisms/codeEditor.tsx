@@ -17,21 +17,22 @@ import { Slate, Editable, withReact } from 'slate-react'
 import { withHistory } from 'slate-history'
 import { deserializeCode, serializeCode } from '@modules/editor/serializers'
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
-import { KeysContext, useKeyContext } from "@modules/editor/keysContext";
 
 // plugins
 import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
-import { SearcherPopup, useSearcher } from "@modules/editor/searcher";
-import { useAtom, useAtomValue } from "jotai"
+import { SearcherPopup } from "@modules/editor/searcher";
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
+import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atom";
+import { RESET } from "jotai/utils";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
 };
 
-const Leaf = (props) => {
+const LeafRender = (props) => {
     let { attributes, children, leaf } = props
     const { text, type = {}, content, ...rest } = leaf
     const classes = Object.keys(type)
@@ -59,34 +60,23 @@ const ElementRender = props => {
             return <p {...attributes}>{children}</p>
         case 'code-line':
             return <div {...attributes}>{children}</div>
-
         default:
             return <span {...attributes}>{children}</span>
     }
 }
 
-
-
 const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
-    const renderLeaf = useCallback(props => <Leaf {...props} />, [])
-    const renderElement = useCallback(props => <ElementRender {...props} />, [])
-
-    // const {user, isAuthenticated, loadingUser} = useUser()
-    // console.log('inner', contextCode)
-
-    const searchElement = useSearcher()
-    const [current, send] = useAtom(editorServiceAtom)
+    // machines
     const currentSave = useAtomValue(savingServiceAtom)
-    const { onKeyDown, onChange } = searchElement
+    const [current, send] = useAtom(editorServiceAtom)
     const { code, errorMsg } = current.context
     // console.log(code)
     // console.log(current.name)
 
     const editor = useMemo(() => withReact(withHistory(createEditor())), [])
     const initialValue = useMemo(() => deserializeCode(code), [])
-
     // console.log(initialValue)
     // console.log(current.name)
 
@@ -96,6 +86,10 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
 
     useEffect(() => {
         send('INIT')
+
+        return () => {
+            send(RESET)
+        }
     }, [])
 
     const decorate = useCallback(([blockNode, blockPath]) => {
@@ -159,11 +153,16 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     const parseExecute = () => send('PARSE')
     const setActualCode = (code) => send({ type: "CODE", value: code })
 
-    const keyValues = useKeyContext()
-    const { setEvent, setEventDown, setEventUp } = keyValues
+    // key events
+    const setKeyDownEvent = useSetAtom(keyDownAtom)
+    const setKeyUpEvent = useSetAtom(keyUpAtom)
+    const setKeyEvent = useSetAtom(keyAtom)
+
+    const setChangeCode = useSetAtom(changeCodeAtom)
+    const setChange = useSetAtom(changeAtom)
 
     return (
-        <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className}`} {...rest}>
+        <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                 {['saveWait', 'saving'].includes(currentSave.name) && <span className="badge badge-info animate-pulse"><UploadIcon className="w-4 mr-1" />{t.canvas.uploading()}...</span>}
                 {['readOnly'].includes(currentSave.name) && <span className="badge"><BookOpenIcon className="w-4 mr-1" />{t.canvas.read_only()}</span>}
@@ -171,46 +170,46 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
             </div>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
                 {typeof window != 'undefined' &&
-                    <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
-                        <KeysContext.Provider value={keyValues}>
-                            <Slate
-                                editor={editor}
-                                value={initialValue}
-                                onChange={value => {
-                                    const isAstChange = editor.operations.some(
-                                        op => 'set_selection' !== op.type
-                                    )
-                                    if (isAstChange) {
-                                        onChange(editor)
-                                        // Serialize the value and save the string value to Local Storage.
-                                        const code = serializeCode(value)
-                                        setActualCode(code)
-                                    }
-                                }}
-                            >
-                                <SearcherPopup editor={editor} {...searchElement} />
-                                {useMemo(() => <Editable
-                                    renderElement={renderElement}
-                                    renderLeaf={renderLeaf}
-                                    decorate={decorate}
-                                    className="font-mono h-full"
-                                    spellCheck={false}
-                                    autoCorrect={false}
-                                    placeholder={t.canvas.placeholder()}
-                                    aria-label={t.common.code()}
-                                    onKeyDown={(event) => {
-                                        onKeyDown(event, editor)
-                                        setEventDown(event)
-                                        setEvent(event)
-                                    }}
-                                    onKeyUp={(event) => {
-                                        setEventUp(event)
-                                        setEvent(event)
-                                    }}
-                                />, [testRender, t])}
-                            </Slate>
-                        </KeysContext.Provider>
-                    </Suspense>}
+                    <Slate
+                        // <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
+                        editor={editor}
+                        value={initialValue}
+                        onChange={(value) => {
+                            setChange(editor.operations)
+                            const isAstChange = editor.operations.some(
+                                op => 'set_selection' !== op.type
+                            )
+                            if (isAstChange) {
+                                setChangeCode(value)
+                                // Serialize the value and save the string value to Local Storage.
+                                const code = serializeCode(value)
+                                setActualCode(code)
+                            }
+                        }}
+                    >
+                        <SearcherPopup editor={editor} />
+                        <Editable
+                            renderElement={ElementRender}
+                            renderLeaf={LeafRender}
+                            decorate={decorate}
+                            className="font-mono h-full"
+                            spellCheck={false}
+                            autoCorrect={false}
+                            placeholder={t.canvas.placeholder()}
+                            aria-label={t.common.code()}
+                            onKeyDown={(event) => {
+                                event.stopPropagation()
+                                setKeyEvent(event)
+                                setKeyDownEvent(event)
+                            }}
+                            onKeyUp={(event) => {
+                                setKeyEvent(event)
+                                setKeyUpEvent(event)
+                            }}
+                        />
+                    </Slate>
+                    // </Suspense>
+                }
             </div>
             <div className={`alert alert-error transition-opacity duration-200 
             ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>

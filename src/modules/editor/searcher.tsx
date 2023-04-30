@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react"
-import { Editor, Transforms, Range, Element, Node } from "slate"
-import { ReactEditor, useFocused, useSelected, } from "slate-react"
+import { useEffect, useMemo, useRef } from "react"
+import { Editor, Transforms, Range, } from "slate"
+import { ReactEditor } from "slate-react"
 import { groupBy } from "@utils/common"
+import { useAtom, useAtomValue } from "jotai"
+import { changeAtom, keyDownAtom } from "./atom"
+import { action, createMachine, guard, reduce, state, transition } from "robot3"
+import { atomWithMachine } from "@utils/atoms"
 
 export type SearchElement = {
     text: string
@@ -73,47 +77,14 @@ const ITEMS: Item[] = [
     { type: "func", value: "$", label: "$(id)", desc: "Look up the element to the given element id." },
 ]
 
-const withElement = (editor: Editor) => {
-    const { isInline, isVoid, markableVoid } = editor
-
-    editor.isInline = element => {
-        return ['node_const', 'node_var', 'node_op_execfun', 'node_params'].includes(element.type) ? true : isInline(element)
-    }
-
-    editor.isVoid = element => {
-        return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
-    }
-
-    editor.markableVoid = element => {
-        return ['node_assign', 'node_const', 'node_var', 'node_params', 'node_op'].includes(element.type) ? false : isInline(element)
-    }
-
-
-    // const { normalizeNode } = editor
-
-    // editor.normalizeNode = entry => {
-    // const [node, path] = entry
-
-    // console.log(editor,node, path)
-
-    // If the element is a statement, ensure its children are valid.
-    // if (Element.isElement(node) && node.type === 'statement') {
-    //     for (const [child, childPath] of Node.children(editor, path)) {
-    //         if (Element.isElement(child) && !editor.isInline(child)) {
-    //             Transforms.unwrapNodes(editor, { at: childPath })
-    //             return
-    //         }
-    //     }
-    // }
-
-    // Fall back to the original `normalizeNode` to enforce other constraints.
-    // normalizeNode(entry)
-    // }
-
-    return editor
+const insertSearchItem = (editor, item: Item) => {
+    const el: SearchElement = { text: item.value }
+    Transforms.insertNodes(editor, el)
+    // Transforms.move(editor)
 }
 
-function getToken(editor: Editor) {
+function getToken(ctx, ev) {
+    const editor = ctx.editor as Editor
     const { selection } = editor
 
     if (selection && Range.isCollapsed(selection)) {
@@ -131,6 +102,7 @@ function getToken(editor: Editor) {
         // console.log(beforeRange, beforeMatch, 0)
         if (afterMatch) {
             return {
+                ...ctx,
                 target: beforeMatch?.[1] ? beforeRange : afterRange,
                 search: beforeMatch?.[1] ?? '',
                 index: 0,
@@ -141,125 +113,147 @@ function getToken(editor: Editor) {
 
     console.log('not match')
     return {
-        target: null
+        ...ctx,
+        target: null,
+        search: '',
+        index: 0
     }
 }
 
-export const useSearcher = () => {
-    const [selectorData, updateSelectorData] = useReducer(
-        (state, newState) => {
+const recreateList = (ctx, ev) => {
 
-            const nextState = {
-                ...state,
-                ...newState,
-            }
+    const itemsFiltered = ITEMS.filter(c =>
+        c.value.toLowerCase().startsWith(ctx.search.toLowerCase())
+    ).slice(0, 10).map((e, i) => ({ ...e, index: i }))
+    const itemsGrouped = Object.entries(groupBy(itemsFiltered, 'type'))
 
-            return nextState
-        },
-        {
-            target: undefined,
-            index: 0,
-            search: '',
-        })
-
-    const itemsFiltered = useMemo(() => ITEMS.filter(c =>
-        c.value.toLowerCase().startsWith(selectorData.search.toLowerCase())
-    ).slice(0, 10).map((e, i) => ({ ...e, index: i })), [selectorData.search])
-
-    const itemsGrouped = useMemo(() => Object.entries(groupBy(itemsFiltered, 'type')), [itemsFiltered])
-
-
-    const onChange = useCallback((editor) => {
-        if (selectorData.target && itemsFiltered.length > 0) {
-            updateSelectorData(getToken(editor))
-        }
-    }, [itemsFiltered, selectorData])
-
-
-    const onKeyDown = useCallback(
-        (event, editor) => {
-            // console.log(event)
-
-            if (event.ctrlKey) {
-                switch (event.key) {
-                    case ' ':
-                        event.preventDefault()
-                        updateSelectorData(getToken(editor))
-                }
-            }
-            if (selectorData.target && itemsFiltered.length > 0) {
-                switch (event.key) {
-                    case 'ArrowDown':
-                        event.preventDefault()
-                        const prevIndex = selectorData.index >= itemsFiltered.length - 1 ? 0 : selectorData.index + 1
-                        updateSelectorData({ index: prevIndex })
-                        break
-                    case 'ArrowUp':
-                        event.preventDefault()
-                        const nextIndex = selectorData.index <= 0 ? itemsFiltered.length - 1 : selectorData.index - 1
-                        updateSelectorData({ index: nextIndex })
-                        break
-                    case 'Tab':
-                    case 'Enter':
-                        event.preventDefault()
-                        Transforms.select(editor, selectorData.target)
-                        insertSearchItem(editor, itemsFiltered[selectorData.index])
-                        updateSelectorData({ target: null })
-                        break
-                    case 'Escape':
-                        event.preventDefault()
-                        updateSelectorData({ target: null })
-                        break
-                }
-            }
-        },
-        [itemsFiltered, selectorData]
-    )
-
-    return { selectorData, onChange, onKeyDown, updateSelectorData, itemsFiltered, itemsGrouped }
-
+    return {
+        ...ctx,
+        itemsFiltered,
+        itemsGrouped
+    }
 }
 
+const enterCond = (ctx, ev: any) => ev.value?.ctrlKey && ev.value?.key == ' '
+const insertCond = (ctx, ev) => ['Tab', 'Enter'].includes(ev.value?.key)
+const exitCond = (ctx, ev: any) => ev.value?.key == 'Escape'
+
+
+const insert = (ctx, ev) => {
+    // ev.value?.preventDefault()
+    const item = ev.item ?? ctx.itemsFiltered[ctx.index]
+    Transforms.select(ctx.editor, ctx.target)
+    insertSearchItem(ctx.editor, item)
+    return {
+        ...ctx,
+        target: null,
+        search: '',
+        index: 0
+    }
+}
+
+const moveCursor = (ctx, ev) => {
+    const event = ev.value
+    switch (event.key) {
+        case 'ArrowDown':
+            event.preventDefault()
+            const prevIndex = ctx.index >= ctx.itemsFiltered.length - 1 ? 0 : ctx.index + 1
+            return { ...ctx, index: prevIndex }
+        case 'ArrowUp':
+            event.preventDefault()
+            const nextIndex = ctx.index <= 0 ? ctx.itemsFiltered.length - 1 : ctx.index - 1
+            return { ...ctx, index: nextIndex }
+    }
+    return ctx
+}
+
+const clear = (ctx, ev) => {
+    return { ...ctx, index: 0, target: undefined }
+}
+
+const movePopup = (ctx, ev) => {
+    const el = ctx.ref.current
+    const domRange = ReactEditor.toDOMRange(ctx.editor, ctx.target)
+    const rect = domRange.getBoundingClientRect()
+    el.style.top = `${rect.top + window.pageYOffset + 24}px`
+    el.style.left = `${rect.left + window.pageXOffset}px`
+}
+
+const searcherFSM = createMachine('inactive', {
+    // init: state(
+    //     transition('INIT', 'inactive', reduce((ctx: any, ev: any) => ({ ...ctx, ...ev.value })))
+    // ),
+    inactive: state(
+        transition('CHANGE', 'inactive', reduce(getToken), reduce(recreateList)),
+        transition('KEY', 'active', guard(enterCond)),
+    ),
+    active: state(
+        transition('CHANGE', 'active', reduce(getToken), reduce(recreateList), action(movePopup)),
+        transition('SELECT', 'inactive', reduce(insert)),
+        transition('KEY', 'inactive', guard(exitCond), reduce(clear)),
+        transition('KEY', 'inactive', guard(insertCond), reduce(insert)),
+        transition('KEY', 'active', reduce(moveCursor)),
+    )
+}, (ictx) => ({
+    target: undefined,
+    index: 0,
+    search: '',
+    editor: undefined,
+    itemsFiltered: [],
+    itemsGrouped: [],
+    ref: undefined,
+    ...ictx,
+}))
+
+
+// const searcherAtom = atomWithMachine(searcherFSM)
 export const SearcherPopup = (props) => {
-    const { editor, selectorData, itemsFiltered, itemsGrouped, updateSelectorData } = props
+    const { editor } = props
     const ref = useRef<HTMLDivElement | null>()
 
-    // console.log(selectorData, itemsFiltered)
+    const event = useAtomValue(keyDownAtom)
+    const change = useAtomValue(changeAtom)
+
+    const searcherAtom = useMemo(() => atomWithMachine(searcherFSM, { editor, ref }), [editor])
+    const [current, send] = useAtom(searcherAtom)
 
     useEffect(() => {
-        if (selectorData.target && itemsFiltered.length > 0) {
-            const el = ref.current
-            const domRange = ReactEditor.toDOMRange(editor, selectorData.target)
-            const rect = domRange.getBoundingClientRect()
-            el.style.top = `${rect.top + window.pageYOffset + 24}px`
-            el.style.left = `${rect.left + window.pageXOffset}px`
-        }
-    }, [itemsFiltered.length, editor, selectorData.target])
+        // console.log(change)
+        send({ type: 'CHANGE', value: change })
+    }, [change])
+
+    useEffect(() => {
+        // console.log(event)
+        send({ type: 'KEY', value: event })
+    }, [event])
 
 
+    // useEffect(() => {
+    //     send({ type: 'INIT', value: { editor } })
+    // },[])
+
+
+    // console.log(current.context)
     return (
-        // <Portal>
         <div
             ref={ref}
-            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${(selectorData.target && itemsFiltered.length > 0) ? 'dropdown-open' : ''}`}
+            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${current.name == 'active' ? 'dropdown-open' : ''}`}
             data-cy="mentions-portal"
         >
             <ul tabIndex={0}
                 className="dropdown-content menu menu-compact w-96 shadow bg-base-100"
             >
-                {itemsGrouped.map(([key, items]) => {
+                {current.context.itemsGrouped?.map(([key, items]) => {
                     return <>
                         <li className="menu-title">
                             <span>{key}</span>
                         </li>
-                        {items.map((item, i) => (
+                        {items?.map((item, i) => (
                             <li key={item.value}>
                                 <a
-                                    className={`${selectorData.index == item.index ? 'active' : ''}`}
+                                    className={`${current.context.index == item.index ? 'active' : ''}`}
                                     onClick={() => {
-                                        Transforms.select(editor, selectorData.target)
-                                        insertSearchItem(editor, item)
-                                        updateSelectorData({ target: null })
+                                        send({ type: 'SELECT', item: item })
                                     }}
                                 >
                                     {item.label ?? item.value}
@@ -272,37 +266,6 @@ export const SearcherPopup = (props) => {
 
             </ul>
         </div>
-        // </Portal>
     )
 
-}
-
-
-export const insertSearchItem = (editor, item: Item) => {
-    const mention: SearchElement = { text: item.value }
-    Transforms.insertNodes(editor, mention)
-    Transforms.move(editor)
-}
-
-export const JSXElement = ({ attributes, children, element }) => {
-    const selected = useSelected()
-    const focused = useFocused()
-
-    // See if our empty text child has any styling marks applied and apply those
-    // if (element.children[0].bold) {
-    //     style.fontWeight = 'bold'
-    // }
-    // if (element.children[0].italic) {
-    //     style.fontStyle = 'italic'
-    // }
-    return (
-        <span
-            {...attributes}
-            // contentEditable={false}
-            data-cy={`mention-${element.value.replace(' ', '-')}`}
-            className={`p-1 mx-1 align-baseline inline-block bg-gray-200 rounded text-lg`}
-        >
-            {children}
-        </span>
-    )
 }

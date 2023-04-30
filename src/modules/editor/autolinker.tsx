@@ -1,6 +1,7 @@
 import prism from "prismjs/components/prism-core.js"
-import { useCallback, useContext, useEffect, useReducer, useState } from "react";
-import { KeysContext } from "./keysContext";
+import { useState } from "react";
+import { useAtomValue } from "jotai";
+import { keyAtom } from "./atom";
 
 
 export const url = /\b([a-z]{3,7}:\/\/|tel:)[\w\-+%~/.:=&!$'()*,;@]+(?:\?[\w\-+%~/.:=?&!$'()*,;@]*)?(?:#[\w\-+%~/.:#=?&!$'()*,;@]*)?/;
@@ -47,9 +48,9 @@ export const AutolinkerLeaf = (props) => {
     let { attributes, children, leaf, classes } = props
     const { text, type = {}, content, ...rest } = leaf
     const [focus, setFocus] = useState(false)
-    const [ctrl, setCtrl] = useState(false)
-    const { event } = useContext(KeysContext)
-
+    // const [ctrl, setCtrl] = useState(false)
+    const keyEvent = useAtomValue(keyAtom)
+    // console.log(keyEvent, props, focus)
 
     let linkcontent = content
     let href = content
@@ -63,15 +64,15 @@ export const AutolinkerLeaf = (props) => {
         linkcontent = match[1];
     }
 
-    const showLink = event.ctrlKey && focus
-    // console.log(ctrl, focus, props)
+    const showLink = keyEvent?.ctrlKey && focus
+    
     return <a
         className={`link ${showLink ? 'cursor-pointer font-bold' : 'cursor-auto'}`}
         href={href}
         onMouseEnter={() => setFocus(true)}
         onMouseLeave={() => setFocus(false)}
-        onKeyDown={(event) => setCtrl(event.ctrlKey)}
-        onKeyUp={(event) => setCtrl(event.ctrlKey)}
+        // onKeyDown={(event) => setCtrl(event.ctrlKey)}
+        // onKeyUp={(event) => setCtrl(event.ctrlKey)}
         target="_blank"
         onClick={() => {
             if (showLink)

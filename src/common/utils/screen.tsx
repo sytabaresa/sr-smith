@@ -1,9 +1,17 @@
+import { useEffect, useMemo, useState } from "react";
 
-export const useScreen = () => {
+export const useScreen = (reactive = false) => {
     // const tailwindData = { screens: null }
     // console.log(tailwindData)
-    const bp = getCurrentBreakpoint()
-    return bp
+    const [screen, setScreen] = useState(getCurrentBreakpoint())
+    useEffect(() => {
+        if (reactive && typeof window != 'undefined')
+            window.addEventListener('resize', () => setScreen(getCurrentBreakpoint()));
+
+    }, [])
+
+
+    return useMemo(() => screen, [screen])
 }
 
 export const getCurrentBreakpoint = (): string => {
@@ -32,3 +40,7 @@ export function CurrentBreakpoint() {
         <div id="breakpoint-2xl" class="hidden sm:hidden md:hidden lg:hidden xl:hidden 2xl:block w-0 h-0"></div>
     </>
 }
+
+export const isMobile = (s: string) => ['xs', 'sm'].includes(s)
+
+export const isDesktop = (s: string) => ['lg', 'xl', '2xl'].includes(s)

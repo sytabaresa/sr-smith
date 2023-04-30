@@ -66,7 +66,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   }, [])
 
   return (
-    <div className={`flex flex-col ${className}`} {...rest}>
+    <div className={`flex flex-col ${className || ''}`} {...rest}>
       <div className=" flex gap-2 lg:mt-0 mt-2 mb-2 flex-0">
 
         <div className="btn-group">
