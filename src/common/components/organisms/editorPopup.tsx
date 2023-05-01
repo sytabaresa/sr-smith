@@ -34,13 +34,13 @@ const EditorPopup = (props: EditorPopupProps) => {
             <div className={`p-2 bg-transparent lg:hidden z-[999] w-full h-[50vh] ${isOpen ? 'fixed bottom-0 left-0' : 'hidden'}`}>
                 <CodeEditor
                     className="h-full"
-                    toolbar={editor => <div className="">
+                    toolbar={editor => <div className="flex items-start">
                         <button
                             aria-label={t.canvas.undo()}
                             tabIndex={0}
                             className={`btn btn-outline btn-circle btn-sm mr-2`}
                             onClick={() => HistoryEditor.undo(editor)}>
-                            <ReplyIcon className="w-6" />
+                            <ReplyIcon className="w-5" />
                         </button>
                         <button
                             className="btn btn-outline btn-circle btn-sm"

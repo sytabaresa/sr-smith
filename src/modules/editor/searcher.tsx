@@ -111,7 +111,7 @@ function getToken(ctx, ev) {
         }
     }
 
-    console.log('not match')
+    // console.log('not match')
     return {
         ...ctx,
         target: null,

@@ -145,7 +145,7 @@ async function getReadDoc(ctx, SavingContextType) {
             }
         })
 
-        console.log(projectData)
+        // console.log(projectData)
         if (projectData) {
             return projectData.data
         } else

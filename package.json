@@ -72,7 +72,7 @@
         "vite": "^4.3.2",
         "vite-bundle-visualizer": "^0.6.0",
         "vite-plugin-pwa": "^0.14.7",
-        "vite-plugin-ssr": "0.4.117-draft.92725",
+        "vite-plugin-ssr": "^0.4.120",
         "vite-tsconfig-paths": "^4.2.0",
         "workbox-core": "^6.5.4",
         "workbox-precaching": "^6.5.4"
