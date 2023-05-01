@@ -51,7 +51,6 @@ export const AutolinkerLeaf = (props) => {
     const { text, type = {}, content, ...rest } = leaf
     const { t } = useTranslation()
     const [focus, setFocus] = useState(false)
-    const [tooltip, showTooltip] = useState(false)
     const keyEvent = useAtomValue(keyAtom)
     // console.log(keyEvent, props, focus)
 
@@ -68,32 +67,30 @@ export const AutolinkerLeaf = (props) => {
     }
 
     const showLink = keyEvent?.ctrlKey && focus
+    const openLink = () => window.open(href, "_blank", "noopener,noreferrer");
 
     return <a
         className={`relative link ${showLink ? 'cursor-pointer font-bold' : 'cursor-auto'}`}
         href={href}
         onMouseEnter={() => setFocus(true)}
-        onMouseLeave={() => {
-            setFocus(false)
-            showTooltip(false)
-        }}
+        onMouseLeave={() => setFocus(false)}
         target="_blank"
         onClick={() => {
-            showTooltip(true)
+            setFocus(true)
             if (showLink)
-                window.open(href, "_blank", "noopener,noreferrer");
+                openLink()
         }}
     >
         <a
             href={href}
-            onClick={() => window.open(href, "_blank", "noopener,noreferrer")}
+            onClick={() => openLink()}
             className={`absolute text-sm px-1 rounded-sm bg-base-100 bottom-5 transition-opacity delay-300
-                text-warning border-primary border no-underline hover:text-accent-content text-center w-36 lg:w-60
-                ${tooltip ? 'opacity-100' : 'opacity-0'}
+                text-warning border-primary border no-underline hover:text-success text-center w-36 lg:w-60
+                hover:cursor-pointer ${focus ? 'opacity-100' : '-z-10 opacity-0'}
                 `}>
             {`${t.canvas.follow_link()} `}
+            <ExternalLinkIcon className="w-4 inline-block mb-1" />
             <span className="text-base-content hidden lg:inline">{`(${t.canvas.ctrl_click()})`}</span>
-            <ExternalLinkIcon className="w-4 inline-block ml-1 mb-1" />
         </a>
         {children}
     </a >
