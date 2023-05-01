@@ -4,9 +4,10 @@ import EditorPopup from "./editorPopup";
 // import {DotsHorizontalIcon} from "@heroicons/react/outline";
 import PrimitivesMenu from "./primitivesMenu";
 import CodeEditor from "./codeEditor";
-import { useAtom } from "jotai";
-import { menuServiceAtom } from "@core/atoms/smith";
+import { useAtom, useAtomValue } from "jotai";
+import { menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { isMobile, useScreen } from "@utils/screen";
+import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
 
 interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -15,14 +16,23 @@ interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {
 const CodeToolbar = (props: CodeToolbarProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation();
-  const [current, send] = useAtom(menuServiceAtom)
   const screen = isMobile(useScreen(true))
+  
+  const [current, send] = useAtom(menuServiceAtom)
+  const currentSave = useAtomValue(savingServiceAtom)
 
   // console.log(screen)
   return (
     <div className={`${className || ''}`} {...rest}>
       <div id="code-desktop" className="flex">
-        {!screen && <CodeEditor className="flex h-[93vh] w-[30vw] max-w-[30rem]" />}
+        {!screen && <CodeEditor
+          className="flex h-[93vh] w-[30vw] max-w-[30rem]"
+          toolbar={editor => <>
+            {['saveWait', 'saving'].includes(currentSave.name) && <span className="badge badge-info animate-pulse"><UploadIcon className="w-4 mr-1" />{t.canvas.uploading()}...</span>}
+            {['readOnly'].includes(currentSave.name) && <span className="badge"><BookOpenIcon className="w-4 mr-1" />{t.canvas.read_only()}</span>}
+            {currentSave.name == 'failSave' && <span className="badge badge-error"><XCircleIcon className="w-4 mr-1" />{t.canvas.fail()}</span>}
+          </>}
+        />}
       </div>
       {/* {!screen ? <div className="flex h-[93vh] w-[30vw] bg-red-400" ></div>: null} */}
       <div className="flex flex-col md:flex-row-reverse lg:mx-2 lg:mt-0 flex-1">

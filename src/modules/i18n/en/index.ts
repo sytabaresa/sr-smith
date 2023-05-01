@@ -104,7 +104,9 @@ const en: Translation = {
 		placeholder: "Write code...",
 		read_only: 'read only',
 		fail: 'fail',
-		uploading: 'uploading'
+		uploading: 'uploading',
+		follow_link: 'Follow link',
+		ctrl_click: 'ctrl+click'
 	},
 	settings: {
 		make_public: "Make Public",

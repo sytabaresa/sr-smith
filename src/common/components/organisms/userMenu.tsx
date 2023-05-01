@@ -9,7 +9,7 @@ export const UserMenu = () => {
     return (
         <div className="flex items-center">
             {user && <UserImage className="hidden md:block mr-4" />}
-            <div className="md:btn-group">
+            <div className="md:btn-group z-10">
                 {/* <Link href="/">
                     <button className="btn btn-lg btn-active hidden md:block">
                         <ViewGridIcon className="h-5 w-5" />

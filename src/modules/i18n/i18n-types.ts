@@ -353,6 +353,14 @@ type RootTranslation = {
 		 * u​p​l​o​a​d​i​n​g
 		 */
 		uploading: string
+		/**
+		 * F​o​l​l​o​w​ ​l​i​n​k
+		 */
+		follow_link: string
+		/**
+		 * c​t​r​l​+​c​l​i​c​k
+		 */
+		ctrl_click: string
 	}
 	settings: {
 		/**
@@ -834,6 +842,14 @@ export type TranslationFunctions = {
 		 * uploading
 		 */
 		uploading: () => LocalizedString
+		/**
+		 * Follow link
+		 */
+		follow_link: () => LocalizedString
+		/**
+		 * ctrl+click
+		 */
+		ctrl_click: () => LocalizedString
 	}
 	settings: {
 		/**

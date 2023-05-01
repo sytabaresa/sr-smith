@@ -110,7 +110,9 @@ const es: BaseTranslation = {
 		placeholder: "Escribir código...",
 		read_only: 'solo lectura',
 		fail: 'fallo',
-		uploading: 'subiendo'
+		uploading: 'subiendo',
+		follow_link: 'Seguir link',
+		ctrl_click: 'ctrl+click'
 	},
 	settings: {
 		make_public: "Hacer público",

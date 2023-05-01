@@ -1,4 +1,4 @@
-import { HTMLAttributes, Suspense, useCallback, useEffect, useMemo } from "react";
+import { HTMLAttributes, ReactNode, Suspense, useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -10,7 +10,7 @@ import "prismjs/themes/prism-solarizedlight.min.css";
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
-import { createEditor, Text, Element, Node, Descendant } from 'slate'
+import { createEditor, Text, Element, Node, Descendant, Editor } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
@@ -22,14 +22,14 @@ import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
 import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup } from "@modules/editor/searcher";
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
+import { useAtom, useSetAtom } from "jotai"
+import { editorServiceAtom } from "@core/atoms/smith";
 import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atom";
 import { RESET } from "jotai/utils";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
+    toolbar?: (editor: Editor) => ReactNode
 };
 
 const LeafRender = (props) => {
@@ -65,11 +65,10 @@ const ElementRender = props => {
     }
 }
 
-const CodeEditor = ({ className, ...rest }: CodeEditor) => {
+const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
     // machines
-    const currentSave = useAtomValue(savingServiceAtom)
     const [current, send] = useAtom(editorServiceAtom)
     const { code, errorMsg } = current.context
     // console.log(code)
@@ -87,9 +86,9 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     useEffect(() => {
         send('INIT')
 
-        return () => {
-            send(RESET)
-        }
+        // return () => {
+        //     send(RESET)
+        // }
     }, [])
 
     const decorate = useCallback(([blockNode, blockPath]) => {
@@ -164,9 +163,7 @@ const CodeEditor = ({ className, ...rest }: CodeEditor) => {
     return (
         <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
-                {['saveWait', 'saving'].includes(currentSave.name) && <span className="badge badge-info animate-pulse"><UploadIcon className="w-4 mr-1" />{t.canvas.uploading()}...</span>}
-                {['readOnly'].includes(currentSave.name) && <span className="badge"><BookOpenIcon className="w-4 mr-1" />{t.canvas.read_only()}</span>}
-                {currentSave.name == 'failSave' && <span className="badge badge-error"><XCircleIcon className="w-4 mr-1" />{t.canvas.fail()}</span>}
+                {toolbar(editor)}
             </div>
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
                 {typeof window != 'undefined' &&

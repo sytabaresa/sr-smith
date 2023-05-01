@@ -95,7 +95,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <link rel="preload" as="image" href="/images/smith-chart.svg">-->
 </head>
 
-<body classname="antialiased overflow-hidden overflow-y-auto">
+<body classname="antialiased overflow-hidden overflow-y-auto relative">
     <div id="app">${dangerouslySkipEscape(pageHtml)}</div>
 </body>
 
