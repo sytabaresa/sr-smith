@@ -13,7 +13,14 @@ export async function initDB() {
 
     const coll = await db.addCollections({
         projects: {
-            schema: projectSchema
+            schema: projectSchema,
+            migrationStrategies: {
+                1: (oldDoc) => {
+                    oldDoc.metadata = {}
+                    oldDoc.role = 'default'
+                    return oldDoc
+                }
+            }
         },
     });
 

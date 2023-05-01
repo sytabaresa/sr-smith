@@ -2,7 +2,7 @@
 
 export const projectSchema = {
     title: 'sr-smith schema',
-    version: 0,
+    version: 1,
     primaryKey: 'id',
     type: 'object',
     properties: {
