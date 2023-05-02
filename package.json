@@ -25,6 +25,7 @@
         "gravatar": "^1.8.2",
         "jotai": "^2.0.4",
         "jsxgraph": "^1.5.0",
+        "lodash": "^4.17.21",
         "lodash-es": "^4.17.21",
         "node-loader": "^2.0.0",
         "observable-hooks": "^4.2.1",
