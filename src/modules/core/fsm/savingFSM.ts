@@ -4,6 +4,7 @@ import { editorServiceAtom } from '../atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
+import { authAtom } from '@core/atoms/auth';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType extends JotaiContext {
@@ -23,13 +24,22 @@ const cancelableTimeout = (ctx, ev) => {
     });
 }
 
+const checkAuth = (ctx, ev) => {
+    const { isAuthenticated } = ctx.getter(authAtom)
+    return isAuthenticated
+}
+
 export default createMachine('anon', {
     anon: state(
         transition('LOAD', 'testDoc', reduce(saveId)),
     ),
     testDoc: state(
-        immediate('checkDoc', guard(checkId)),
+        immediate('testAuth', guard(checkId)),
         immediate('noDoc'),
+    ),
+    testAuth: state(
+        immediate('checkDoc', guard(checkAuth)),
+        immediate('checkRead')
     ),
     checkDoc: invoke(getProjectData,
         transition('done', 'doc', reduce(saveData), action(sendCodeEditor)),

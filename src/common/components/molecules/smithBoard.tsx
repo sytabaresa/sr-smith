@@ -14,7 +14,7 @@ export interface SmithBoardProps { };
 const SmithBoard = (props: SmithBoardProps) => {
     const [theme] = useAtom(themeAtom)
     const screen = useScreen()
-    const { isAuthenticated } = useUser()
+    const { isAuthenticated, loading } = useUser()
     const { useParams } = useRouter()
     const params = useParams();
     const { t } = useTranslation()
@@ -42,8 +42,13 @@ const SmithBoard = (props: SmithBoardProps) => {
     useEffect(() => {
         sendSave(RESET)
         sendEditor(RESET)
-        sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
     }, [])
+
+    useEffect(() => {
+        if (!loading) {
+            sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
+        }
+    }, [loading])
 
     useEffect(() => {
         if (currentEditor.context.code != '')

@@ -3,9 +3,9 @@ import { Editor, Transforms, Range, } from "slate"
 import { ReactEditor } from "slate-react"
 import { groupBy } from "@utils/common"
 import { useAtom, useAtomValue } from "jotai"
-import { changeAtom, keyDownAtom } from "./atoms"
 import { action, createMachine, guard, reduce, state, transition } from "robot3"
 import { atomWithMachine } from "@utils/atoms"
+import { changeAtom, keyDownAtom } from "@modules/editor/atoms"
 
 export type SearchElement = {
     text: string

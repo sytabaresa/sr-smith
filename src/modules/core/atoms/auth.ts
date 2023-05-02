@@ -1,5 +1,5 @@
-import { initApp } from "@app"
 import firebaseProvider, { getGoogleOauthProvider, initAuth } from "@auth/firebase"
+import { initApp } from "@auth/firebase/appInit"
 import { atomCacheCancelable } from "@utils/atoms"
 import { User } from "firebase/auth"
 import { atom } from "jotai"

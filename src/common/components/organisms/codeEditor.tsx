@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode, Suspense, useCallback, useEffect, useMemo } from "react";
+import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
@@ -19,13 +19,14 @@ import { deserializeCode, serializeCode } from '@modules/editor/serializers'
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 
 // plugins
-import { AutolinkerLeaf, autolinker } from "@modules/editor/autolinker";
-import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
-import { SearcherPopup } from "@modules/editor/searcher";
+import { AutolinkerLeaf } from "@components/molecules/editor/autolinker";
 import { useAtom, useSetAtom } from "jotai"
 import { editorServiceAtom } from "@core/atoms/smith";
 import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
-import { RESET } from "jotai/utils";
+import { colorInline } from "@modules/editor/plugins/colorinline";
+import { autolinker } from "@modules/editor/plugins/autolinker";
+import { ColorInlineLeaf } from "@components/molecules/editor/colorInline";
+import { SearcherPopup } from "@components/molecules/editor/searcher";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
