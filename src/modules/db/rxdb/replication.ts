@@ -3,7 +3,6 @@ import {
     // pullQueryBuilderFromRxSchema,
     // pushQueryBuilderFromRxSchema,
     // pullStreamBuilderFromRxSchema,
-    RxGraphQLReplicationState,
     replicateGraphQL
 } from 'rxdb/plugins/replication-graphql';
 
