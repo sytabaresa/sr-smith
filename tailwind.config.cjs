@@ -20,9 +20,10 @@ const defaultThemeVariables = {
 module.exports = {
     content: [
         './src/index.html',
-        './src/pages/**/*.{js,ts,jsx,tsx}',
-        './src/common/components/**/*.{js,ts,jsx,tsx}',
-        './src/modules/**/*.{js,ts,jsx,tsx}'
+        './src/pages/**/*.{jsx,tsx}',
+        './src/common/components/**/*.{jsx,tsx}',
+        './src/modules/**/*.{jsx,tsx}',
+        './src/renderer/**/*.{jsx,tsx}',
     ],
     theme: {
         extend: {
