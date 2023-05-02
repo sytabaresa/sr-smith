@@ -74,7 +74,7 @@ const SmithBoard = (props: SmithBoardProps) => {
         aria-label="canvas"
     // style={{ width: '500px', height: '500px' }}
     >
-        <img src="/images/smith-chart.svg" alt="smith-board" srcset="" className="hidden" loading={'lazy'} />
+        <img src="/images/smith-chart-dark.svg" alt="smith-board-img" srcset="" className="hidden" loading={'lazy'} />
     </div>
 
 }

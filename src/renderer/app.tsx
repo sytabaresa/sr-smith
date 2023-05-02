@@ -16,18 +16,20 @@ import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { CurrentBreakpoint } from '@utils/screen';
 import { useAtomValue } from 'jotai';
-import { loadingBarAtom } from '@core/atoms/common';
+import { loadingBarAtom, onlineAtom } from '@core/atoms/common';
 
+// robot3 debuging mode
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
-  import('robot3/logging')
+  // import('robot3/logging')
+  import('@fsm/utils')
 }
 
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
 
-  const [isOnline, setIsOnline] = useState(true)
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
+  const isOnline = useAtomValue(onlineAtom)
 
   useEffect(() => {
     // vh variable for many screen properties
@@ -36,29 +38,12 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
     }
-    window.addEventListener('resize', update);
-    update()
-
-    // robot3 debuging mode
 
     if (typeof window != 'undefined') {
+      window.addEventListener('resize', update);
       window.workbox = { messageSW }
     }
-
-    // offline/online mode
-    if (typeof window !== 'undefined' && 'ononline' in window && 'onoffline' in window) {
-      setIsOnline(window.navigator.onLine)
-      if (!window.ononline) {
-        window.addEventListener('online', () => {
-          setIsOnline(true)
-        })
-      }
-      if (!window.onoffline) {
-        window.addEventListener('offline', () => {
-          setIsOnline(false)
-        })
-      }
-    }
+    update()
 
     //register SW
     // service worker lifecycle handlers
@@ -117,13 +102,13 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
   return (
     <PageContextProvider pageContext={pageContext}>
       <TranslationWrapper>
-          <LoadingComponent />
-          {children}
-          {import.meta.env.MODE === 'production' &&
-            typeof window != 'undefined' &&
-            <UpdateSw autoUpdate />
-          }
-          <CurrentBreakpoint />
+        <LoadingComponent />
+        {children}
+        {import.meta.env.MODE === 'production' &&
+          typeof window != 'undefined' &&
+          <UpdateSw autoUpdate />
+        }
+        <CurrentBreakpoint />
       </TranslationWrapper>
     </PageContextProvider>
   )

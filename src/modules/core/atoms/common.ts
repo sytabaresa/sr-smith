@@ -7,7 +7,7 @@ export const projectDataAtom = atom({
 
 })
 
-const _themeAtom = atomWithStorage<string>('theme', 'light')
+const _themeAtom = atomWithStorage<string>('theme', typeof Storage !== "undefined" ? JSON.parse(localStorage.getItem("theme") || '"dark"') : 'dark')
 export const themeAtom = atom(
     (get) => {
         const theme = get(_themeAtom)
@@ -26,3 +26,26 @@ export const appDataAtom = atom({})
 export const langAtom = atomWithStorage<Locales>('lang', 'en')
 
 export const loadingBarAtom = atomWithSomeMap({})
+
+const _onlineAtom = atom(false)
+export const onlineAtom = atom(
+    (get) => get(_onlineAtom),
+    (get, set) => {
+        // offline/online mode
+        if (typeof window !== 'undefined' && 'ononline' in window && 'onoffline' in window) {
+            set(_onlineAtom, window.navigator.onLine)
+            if (!window.ononline) {
+                window.addEventListener('online', () => {
+                    set(_onlineAtom, true)
+                })
+            }
+            if (!window.onoffline) {
+                window.addEventListener('offline', () => {
+                    set(_onlineAtom, false)
+                })
+            }
+        }
+    }
+)
+
+onlineAtom.onMount = (commit) => { commit() }

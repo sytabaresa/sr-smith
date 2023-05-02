@@ -1,7 +1,7 @@
 import { Atom, WritableAtom, atom, getDefaultStore } from 'jotai'
 import type { Getter } from 'jotai'
 import { RESET } from 'jotai/utils';
-import { interpret, Machine, Service, SendEvent } from 'robot3'
+import { interpret, Machine, Service, SendEvent, d } from 'robot3'
 
 const { create, freeze } = Object
 
@@ -47,7 +47,6 @@ export const atomWithMachine = (
             initializing = false
 
             const service = interpret(machine, (service) => get(cacheCallbackAtom)(service), initialContext)
-
             return { service }
         },
         (get, set) => {

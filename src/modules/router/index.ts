@@ -1,9 +1,8 @@
 import { RouterProvider } from "./router"
 import { navigate } from "vite-plugin-ssr/client/router";
 // import { useLocation, Route, Switch } from "wouter"
-import { qParams, qStr } from "@utils/common";
+import { qStr } from "@utils/common";
 import { usePageContext } from "@/renderer/usePageContext";
-import { HTMLAttributes } from "react";
 
 export class RouterWrapper implements RouterProvider {
 

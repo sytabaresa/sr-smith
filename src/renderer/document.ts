@@ -6,7 +6,7 @@ export default document
 function document(title: string, desc: string, pageHtml: string) {
 
     return escapeInject`<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
     <meta charset="UTF-8">
@@ -94,10 +94,12 @@ function document(title: string, desc: string, pageHtml: string) {
     <!--<link rel="preload" as="image" href="/images/smith-chart-dark.svg">
     <link rel="preload" as="image" href="/images/smith-chart.svg">-->
 </head>
-
 <body classname="antialiased overflow-hidden overflow-y-auto relative">
+    <script>
+        if(typeof Storage!=="undefined"){const theme=JSON.parse(localStorage.getItem("theme")||'"notheme"')
+        if(typeof window!='undefined'&&theme!='notheme'){document.documentElement.setAttribute("data-theme",theme)}}
+    </script>
     <div id="app">${dangerouslySkipEscape(pageHtml)}</div>
 </body>
-
 </html>`
 }
