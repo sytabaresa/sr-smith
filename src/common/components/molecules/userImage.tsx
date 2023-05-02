@@ -1,4 +1,4 @@
-import { useUser } from "@components/organisms/userContext"
+import { useUser } from "@hooks/useAuthProvider";
 import gravatar from "gravatar"
 import { Avatar } from "@components/atoms/avatar"
 import { HTMLAttributes } from "react"

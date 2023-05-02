@@ -2,7 +2,7 @@ import { HTMLAttributes, Suspense } from "react";
 import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
-import { useUser } from "./userContext";
+import { useUser } from "@hooks/useAuthProvider";
 import { useTranslation } from "@modules/i18n";
 import { useLogout } from "@hooks/useLogout";
 import { Link } from "@modules/router/link";

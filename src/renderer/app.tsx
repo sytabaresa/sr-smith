@@ -5,7 +5,6 @@ import '@styles/animations.css';
 import '@styles/fonts.css'
 
 import '@db/rxdb/plugins'
-import UserProvider from '@components/organisms/userContext'
 import { useRouter } from '@modules/router';
 import { PageContextProvider } from './usePageContext';
 import { PageContext } from './types';
@@ -17,7 +16,7 @@ import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
 import { CurrentBreakpoint } from '@utils/screen';
 import { useAtomValue } from 'jotai';
-import { loadingAtom } from '@core/atoms/common';
+import { loadingBarAtom } from '@core/atoms/common';
 
 if (process.env.NODE_ENV == 'development') {
   // require('robot3/debug')
@@ -118,7 +117,6 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
   return (
     <PageContextProvider pageContext={pageContext}>
       <TranslationWrapper>
-        <UserProvider>
           <LoadingComponent />
           {children}
           {import.meta.env.MODE === 'production' &&
@@ -126,14 +124,13 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
             <UpdateSw autoUpdate />
           }
           <CurrentBreakpoint />
-        </UserProvider>
       </TranslationWrapper>
     </PageContextProvider>
   )
 }
 
 const LoadingComponent = () => {
-  const loading = useAtomValue(loadingAtom)
+  const loading = useAtomValue(loadingBarAtom)
   // console.log(loading)
 
   return (loading && <progress id="loading-progress" className="progress h-1 fixed w-full progress-warning"></progress>)

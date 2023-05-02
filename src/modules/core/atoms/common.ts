@@ -25,4 +25,4 @@ export const appDataAtom = atom({})
 
 export const langAtom = atomWithStorage<Locales>('lang', 'en')
 
-export const loadingAtom = atomWithSomeMap({})
+export const loadingBarAtom = atomWithSomeMap({})

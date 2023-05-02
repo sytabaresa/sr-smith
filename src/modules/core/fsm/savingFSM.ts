@@ -2,7 +2,7 @@ import { createMachine, state, transition, reduce, invoke, guard, action, immedi
 import { SmithProject } from '@localtypes/smith';
 import { editorServiceAtom } from '../atoms/smith';
 import { JotaiContext } from '@utils/atoms';
-import { _dataRxdbProvider, dataQLProvider } from '@core/atoms/providers';
+import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
 // import { Timestamp } from 'firebase/firestore';
 
@@ -106,7 +106,7 @@ async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
 
     try {
-        const { getOne }: DataProvider = await ctx.getter(_dataRxdbProvider)
+        const { getOne }: DataProvider = await ctx.getter(_dataRxdbProviderAtom)
         const projectData: SmithProject = await getOne({
             resource: 'projects',
             id: ctx.id,
@@ -127,7 +127,7 @@ async function getReadDoc(ctx, SavingContextType) {
     console.log('loading data (read only)', ctx.id)
 
     try {
-        const { getOne }: DataProvider = await ctx.getter(dataQLProvider)
+        const { getOne }: DataProvider = await ctx.getter(dataQLProviderAtom)
         const projectData: SmithProject = await getOne({
             resource: 'project',
             id: ctx.id,
@@ -158,7 +158,7 @@ async function getReadDoc(ctx, SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update }: DataProvider = await ctx.getter(_dataRxdbProvider)
+    const { update }: DataProvider = await ctx.getter(_dataRxdbProviderAtom)
 
     await update({
         resource: 'projects',

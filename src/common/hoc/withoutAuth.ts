@@ -1,4 +1,4 @@
-import WithAuthRedirect from '@components/organisms/withAuthRedirect'
+import WithAuthRedirect from '@hoc/withAuthRedirect'
 
 /**
  * Require the user to be unauthenticated in order to render the component.

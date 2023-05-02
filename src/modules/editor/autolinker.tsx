@@ -1,7 +1,7 @@
 import prism from "prismjs/components/prism-core.js"
 import { useState } from "react";
 import { useAtomValue } from "jotai";
-import { keyAtom } from "./atom";
+import { keyAtom } from "./atoms";
 import { useTranslation } from "@modules/i18n";
 import { ExternalLinkIcon } from "@heroicons/react/outline";
 

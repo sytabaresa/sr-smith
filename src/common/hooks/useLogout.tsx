@@ -2,14 +2,14 @@ import { useRouter } from "@modules/router";
 import { useAuthProvider } from "./useAuthProvider"
 import { useDataProvider } from "./useDataProvider";
 import { useAtom, useSetAtom } from "jotai";
-import { dataRxdbProvider } from "@core/atoms/providers";
+import { dataRxdbProviderAtom } from "@core/atoms/db";
 import { RESET } from "jotai/utils";
 
 export const useLogout = () => {
     const { useHistory } = useRouter()
     const { push } = useHistory();
     const { logout } = useAuthProvider()
-    const [db, resetDb] = useAtom(dataRxdbProvider)
+    const [db, resetDb] = useAtom(dataRxdbProviderAtom)
     // console.log(db)
 
     return async () => {

@@ -1,10 +1,8 @@
 import TypesafeI18n, { useI18nContext } from "./i18n-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Locales } from "./i18n-types";
-import { loadLocaleAsync } from "./i18n-util.async";
 import { useRouter } from "@modules/router";
 import { loadLocale } from "./i18n-util.sync";
-import { locales } from "./i18n-util";
 import { langAtom } from "@core/atoms/common";
 import { useAtom } from "jotai";
 

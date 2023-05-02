@@ -24,7 +24,7 @@ import { ColorInlineLeaf, colorInline } from "@modules/editor/colorInline";
 import { SearcherPopup } from "@modules/editor/searcher";
 import { useAtom, useSetAtom } from "jotai"
 import { editorServiceAtom } from "@core/atoms/smith";
-import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atom";
+import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
 import { RESET } from "jotai/utils";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {

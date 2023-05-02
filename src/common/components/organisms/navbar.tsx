@@ -5,7 +5,7 @@ import { HTMLAttributes } from "react";
 import { LangMenu } from "@components/atoms/langMenu";
 import { ThemeSwitcher } from "@components/atoms/themeSwitcher";
 import { UserImage } from "@components/molecules/userImage";
-import { useUser } from "./userContext";
+import { useUser } from "@hooks/useAuthProvider";
 
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {
     showComplement?: boolean

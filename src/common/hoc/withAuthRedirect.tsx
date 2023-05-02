@@ -1,10 +1,10 @@
 import { useLanguageQuery } from '@modules/i18n'
 import { FC, useEffect } from 'react'
-import { useUser } from './userContext'
+import { useUser } from "@hooks/useAuthProvider";
 import AuthLoading from '@components/atoms/authLoading'
 import { useRouter } from '@modules/router'
 import { useSetAtom } from 'jotai'
-import { loadingAtom } from '@core/atoms/common'
+import { loadingBarAtom } from '@core/atoms/common'
 
 /**
  * Support client-side conditional redirecting based on the user's
@@ -37,21 +37,21 @@ const WithAuthRedirect = ({
     const { push } = useHistory();
     const { pathname } = useLocation()
     const [query] = useLanguageQuery()
-    const { loadingUser, isAuthenticated } = useUser()
-    const setLoading = useSetAtom(loadingAtom)
-    // console.log(loadingUser, user, isAuthenticated)
+    const { loading, user, isAuthenticated } = useUser()
+    const setLoadingBar = useSetAtom(loadingBarAtom)
+    // console.log(loading, user, isAuthenticated)
 
     useEffect(() => {
-      if (typeof window !== 'undefined' && !loadingUser && expectedAuth !== isAuthenticated) {
+      if (typeof window !== 'undefined' && !loading && expectedAuth !== isAuthenticated) {
         // console.log(location, pathname, query)
         push(location, { redirect: pathname, ...query })
       }
-    }, [isAuthenticated, loadingUser])
+    }, [isAuthenticated, loading])
 
     //only on change
     useEffect(() => {
-      setLoading({ auth: loadingUser })
-    }, [loadingUser])
+      setLoadingBar({ auth: loading })
+    }, [loading])
 
     return <div>
       <WrappedComponent {...props} />

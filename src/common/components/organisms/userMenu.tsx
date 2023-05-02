@@ -1,6 +1,6 @@
 import { MenuAlt3Icon } from "@heroicons/react/outline"
 // import {ViewGridIcon} from "@heroicons/react/outline"
-import { useUser } from "./userContext"
+import { useUser } from "@hooks/useAuthProvider";
 import { UserImage } from "@components/molecules/userImage"
 
 export const UserMenu = () => {

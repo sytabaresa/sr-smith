@@ -4,10 +4,10 @@ import { useAtom, useSetAtom } from "jotai";
 import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
-import { useUser } from "@components/organisms/userContext";
 import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "@modules/i18n";
 import { RESET } from "jotai/utils";
+import { useUser } from "@hooks/useAuthProvider";
 
 export interface SmithBoardProps { };
 

@@ -1,5 +1,5 @@
 import { UrlObject } from 'url'
-import WithAuthRedirect from '@components/organisms/withAuthRedirect'
+import WithAuthRedirect from '@hoc/withAuthRedirect'
 
 /**
  * Require the user to be authenticated in order to render the component.

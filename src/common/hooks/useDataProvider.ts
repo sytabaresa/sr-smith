@@ -1,13 +1,13 @@
 
 import { DataProvider, list, selectOne } from "@db/db"
-import { dataRxdbProvider } from "@core/atoms/providers"
+import { dataRxdbProviderAtom } from "@core/atoms/db"
 import { useAtomValue } from "jotai"
 import { useObservableState } from "observable-hooks"
 import { loadable } from "jotai/utils"
 
 export function useDataProvider() {
     // useAtomValue(loadable(rxdbReplicator))
-    return useAtomValue(dataRxdbProvider) as {
+    return useAtomValue(dataRxdbProviderAtom) as {
         state: 'loading' | 'hasData' | 'hasError',
         data?: DataProvider,
         error?: any,

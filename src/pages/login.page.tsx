@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "@components/templates/default";
-import { useUser } from "@components/organisms/userContext";
+import { useUser } from "@hooks/useAuthProvider";
 import SingUpForm from "@components/organisms/login/signupForm";
 import LoginForm from "@components/organisms/login/loginForm";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
