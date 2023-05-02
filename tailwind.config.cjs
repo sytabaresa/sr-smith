@@ -40,6 +40,9 @@ module.exports = {
                 'serif': ['ui-serif', 'Georgia'],
                 'mono': ['Fira Code', 'ui-monospace', 'SFMono-Regular'],
             },
+            transitionProperty: {
+                'size': 'height, weight',
+            }
         },
     },
     variants: {

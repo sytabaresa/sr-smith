@@ -54,6 +54,7 @@ const LeafRender = (props) => {
 
 const ElementRender = props => {
     const { attributes, children, element } = props
+    
     // console.log(props)
     switch (element.type) {
         case 'paragraph':

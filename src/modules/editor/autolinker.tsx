@@ -47,7 +47,7 @@ export function autolinker(grammar) {
 }
 
 export const AutolinkerLeaf = (props) => {
-    let { attributes, children, leaf, classes } = props
+    let { children, leaf, classes } = props
     const { text, type = {}, content, ...rest } = leaf
     const { t } = useTranslation()
     const [focus, setFocus] = useState(false)
@@ -83,11 +83,10 @@ export const AutolinkerLeaf = (props) => {
                 if (showLink)
                     openLink()
             }}
-        >
-            {children}
-        </a>
+        >{children}</a>
         <a
             href={href}
+            contentEditable={false}
             onClick={() => openLink()}
             className={`absolute text-sm px-1 rounded-sm bg-base-100 bottom-5 left-0 transition-opacity delay-300
                 text-warning border-primary border no-underline hover:text-success text-center w-36 lg:w-60
