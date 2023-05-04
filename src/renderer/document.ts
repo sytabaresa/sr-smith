@@ -1,5 +1,4 @@
 import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr/server";
-import logoUrl from '/pwa/favicon-196.png'
 
 export default document
 
@@ -33,7 +32,10 @@ function document(title: string, desc: string, pageHtml: string) {
     <link rel="manifest" href="/manifest.webmanifest">
     <!-- {/*
     <link rel='mask-icon' href='/static/icons/safari-pinned-tab.svg' color='#5bbad5' /> */} -->
-    <link rel="shortcut icon" href="${logoUrl}">
+    <link rel="shortcut icon" href="/pwa/favicon-196.png">
+    <link rel="icon" type="image/png" sizes="196x196" href="/pwa/favicon-196.png">
+    <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"> 
     <link rel="stylesheet" href="./src/common/styles/fonts.css"> -->
@@ -52,8 +54,6 @@ function document(title: string, desc: string, pageHtml: string) {
     <meta property="og:image" content="https://sr-smith.syta.co/pwa/apple-touch-icon.png">
 
     <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover">
-
-    <link rel="icon" type="image/png" sizes="196x196" href="${logoUrl}">
 
     <link rel="apple-touch-icon" href="./public/pwa/apple-icon-180.png">
 

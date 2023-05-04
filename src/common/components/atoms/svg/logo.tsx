@@ -1,0 +1,15 @@
+
+export default function Logo(props) {
+    return <svg fill="none" viewBox="0 0 470 518" {...props}>
+        <path className="stroke-primary stroke-[23]" d="M211 260a122 122 0 0 1 172-148 122 122 0 0 1 0 213" />
+        <path className="stroke-primary stroke-[23]" d="M57 217h389" />
+        <path className="stroke-primary stroke-[23]" d="M63 268a198 198 0 1 1 390-36c-5 58-37 114-86 148" />
+        <path className="stroke-primary stroke-[23]" d="M245 260c61-37 134-51 205-39" />
+        <path className="stroke-primary stroke-[23]" d="M133 59a307 307 0 0 0 317 153" />
+        <circle className="fill-white" cx="135.4" cy="63.6" r="43.9"/>
+        <circle className="stroke-[23]" cx="135.4" cy="63.6" r="32.7" stroke="#3E62AE" />
+        <circle class="stroke-primary stroke-[23]" cx="417.9" cy="440.9" r="32.7" />
+        <path class="fill-primary" fill-rule="evenodd" d="M381 383zm-20-13c12-20 12-48 0-68-13-23-41-31-66-30h-77v189h51v-63h18l33 63h56l-39-71c9-5 18-11 24-20zm20 13c16-25 16-59 5-86a88 88 0 0 0-76-49H194v237h99v-24l13 24h110l-47-87m-66-83c-11-3-23-2-34-2v46c14-1 29 2 41-6 11-10 8-33-7-38z" clip-rule="evenodd" />
+        <path class="fill-primary" fill-rule="evenodd" d="M130 349c-13-3-27-4-38-13-8-9 2-21 13-22s28 0 31 14c3 6 7 4 12 5h38c1-24-15-46-37-54-24-9-52-9-77 1-20 8-37 28-36 51-1 17 8 34 23 41 21 13 47 12 69 22 14 5 9 24-4 26-15 3-37-3-42-14s-2-11-9-11H31c-1 22 9 44 28 55 24 14 53 15 79 10 23-3 45-18 50-41 5-21-3-45-22-57-11-7-23-11-36-13zm65 7c27 31 23 84-10 109-27 21-63 23-96 19-29-3-57-17-71-43-12-20-11-43-11-65 0-4 4-4 7-4s10 1 8-4a76 76 0 0 1 14-92c27-26 69-31 105-24 30 6 57 27 66 56 5 16 3 32 4 48z" clip-rule="evenodd" />
+    </svg>
+}

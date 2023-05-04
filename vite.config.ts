@@ -58,7 +58,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
         "name": "Sr Smith",
         "short_name": "Sr-smith",
         "icons": [{
-          "src": "/pwa/manifest-icon-192.maskable.png",
+          "src": "/pwa/manifest-icon-192.any.png",
           "sizes": "192x192",
           "type": "image/png",
           "purpose": "any"
@@ -70,7 +70,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
           "purpose": "maskable"
         },
         {
-          "src": "/pwa/manifest-icon-512.maskable.png",
+          "src": "/pwa/manifest-icon-512.any.png",
           "sizes": "512x512",
           "type": "image/png",
           "purpose": "any"
@@ -81,8 +81,8 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
           "type": "image/png",
           "purpose": "maskable"
         }],
-        "theme_color": "#FFFFFF",
-        "background_color": "#FFFFFF",
+        "theme_color": "#000000",
+        "background_color": "#000000",
         "start_url": "/",
         "display": "standalone",
         "orientation": "portrait"

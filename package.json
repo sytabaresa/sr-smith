@@ -12,8 +12,6 @@
         "gen:icons": "node scripts/icons.js",
         "prebuild2": "node scripts/tsconfig.js",
         "prestart2": "node scripts/tsconfig.js",
-        "analyze": "parcel build --reporter @parcel/reporter-bundle-analyzer && xdg-open parcel-bundle-reports/default.html",
-        "analyze:buddy": "parcel build --reporter @parcel/reporter-bundle-buddy",
         "typesafe-i18n": "typesafe-i18n"
     },
     "dependencies": {
@@ -73,6 +71,7 @@
         "vite": "^4.3.2",
         "vite-bundle-visualizer": "^0.6.0",
         "vite-plugin-pwa": "^0.14.7",
+        "vite-plugin-singlefile": "^0.13.5",
         "vite-plugin-ssr": "^0.4.120",
         "vite-tsconfig-paths": "^4.2.0",
         "workbox-core": "^6.5.4",
