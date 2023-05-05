@@ -57,30 +57,19 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
       manifest: {
         "name": "Sr Smith",
         "short_name": "Sr-smith",
-        "icons": [{
-          "src": "/pwa/manifest-icon-192.any.png",
-          "sizes": "192x192",
-          "type": "image/png",
-          "purpose": "any"
-        },
-        {
-          "src": "/pwa/manifest-icon-192.maskable.png",
-          "sizes": "192x192",
-          "type": "image/png",
-          "purpose": "maskable"
-        },
-        {
-          "src": "/pwa/manifest-icon-512.any.png",
-          "sizes": "512x512",
-          "type": "image/png",
-          "purpose": "any"
-        },
-        {
-          "src": "/pwa/manifest-icon-512.maskable.png",
-          "sizes": "512x512",
-          "type": "image/png",
-          "purpose": "maskable"
-        }],
+        "icons": [
+          {
+            "src": "/pwa/manifest-icon-192.maskable.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/pwa/manifest-icon-512.maskable.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+          }],
         "theme_color": "#000000",
         "background_color": "#000000",
         "start_url": "/",
@@ -110,6 +99,6 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
     // Add libraries containing invalid ESM here
     noExternal: command == 'serve' ?
       ['jotai', 'jsxgraph', 'react-hotkeys-hook', 'react-robot', 'robot3', 'typesafe-i18n']
-      : ['jotai','jsxgraph', 'react-hotkeys-hook', 'workbox-window', '@heroicons/react']
+      : ['jotai', 'jsxgraph', 'react-hotkeys-hook', 'workbox-window', '@heroicons/react']
   }
 }))

@@ -6,7 +6,6 @@ import LoginForm from "@components/organisms/login/loginForm";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { SmithImage } from "@components/atoms/smithImage";
 import { useRouter } from "@modules/router";
-import Logo from "@components/atoms/svg/logo";
 
 export { Login as Page }
 
@@ -53,9 +52,8 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
 
     <div className="flex-grow flex flex-col items-center justify-start mt-2 lg:mt-20">
       <div className="flex flex-col items-center mb-6 hover:scale-110 transition ease-in-out delay-150">
-        {/* <img className="w-40 drop-shadow-white" src="/images/logo.svg" alt="sr smith logo" /> */}
-        <Logo  className="w-40"  />
-        {/* <h1 className="uppercase font-bold text-6xl my-8">SR Smith</h1> */}
+        <img className="w-40" src="/images/logo.svg" alt="sr smith logo" />
+        <h1 className="uppercase font-bold text-3xl md:text-5xl my-4 md:my-8">SR Smith</h1>
       </div>
       <div className="tabs">
         <a
