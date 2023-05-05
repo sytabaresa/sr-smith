@@ -29,11 +29,11 @@ const ProjectCard = (props: ProjectCard) => {
     }
 
     return (
-        <div className={`border-secondary border-2 hover:border-4 hover:border-primary card 
+        <div className={`border-secondary border-2 hover:border-4 hover:border-primary card bg-base-100
         rounded-b-none w-80 h-80 md:h-72 flex flex-col shadow-md cursor-pointer relative ${className}`}
             onClick={(e) => { goToSavedProject(id) }}
             {...rest}>
-            <figure><img src={image} /></figure>
+            <figure><img src={image} className="w-full" /></figure>
             <div className="p-2 md:h-32 bg-base-100">
                 <h2 className="text-2xs md:text-sm my-2 ml-2 font-bold">{name}</h2>
                 <p>{description}</p>

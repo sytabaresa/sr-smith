@@ -4,7 +4,6 @@ import { useUser } from "@hooks/useAuthProvider";
 import SingUpForm from "@components/organisms/login/signupForm";
 import LoginForm from "@components/organisms/login/loginForm";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
-import { SmithImage } from "@components/atoms/smithImage";
 import { useRouter } from "@modules/router";
 
 export { Login as Page }
@@ -41,12 +40,8 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
     title="Saved | Sr Smith App"
     drawer={false}
     className="relative h-screen overflow-hidden"
-    header={<div className="absolute w-full h-full blur-[6px] lg:blur-[6px]">
-      <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] bottom-[-4rem] opacity-40 hover:opacity-100 stroke-success transform -scale-x-100 scale-y-100 animate-i motion-reduce:animation-none hover:animate-none transition delay-[3000ms]" />
-      <SmithImage className="absolute w-60 lg:w-[30rem] right-[-1rem] lg:right-[-4rem] top-[2rem] opacity-40 hover:opacity-100 stroke-error animate-i motion-reduce:animation-none hover:animate-none" />
-      <div className="opacity-50">
-        <SmithImage className="absolute hiddsen lg:block w-[40rem] lg:w-[60rem] right-[-10rem] bottom-[-20rem] lg:bottom-[-30rem] opacity-40 hover:opacity-100 stroke-orange-400 animate-i motion-reduce:animation-none hover:animate-none transition delay-[7000ms]" />
-      </div>
+    header={<div className="absolute w-full h-full blur-[6px] lg:blur-[2px] opacity-30">
+      <img src="/images/cmyk2.svg" className="absolute w-[50rem] lg:w-[70rem] right-[-10rem] lg:right-[-20rem] bottom-[-4rem] opacity-70 hover:opacity-100" ></img>
     </div>}
   >
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '@styles/index.css'
 import '@styles/main.css';
-import '@styles/animations.css';
+// import '@styles/animations.css';
 import '@styles/fonts.css'
 
 import '@db/rxdb/plugins'

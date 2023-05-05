@@ -1,7 +1,6 @@
 import WithAuth from "@hoc/withAuth";
 import { useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
-import { SmithImage } from "@components/atoms/smithImage";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
 import NewProjectForm from "@components/organisms/newProjectForm";
 import { useDataProvider, useList } from "@hooks/useDataProvider";
@@ -18,10 +17,9 @@ const SavedProjects = () => {
   return <Layout
     title="Projects | Sr Smith App"
     className="h-screen relative overflow-hidden"
-    header={<div className="absolute w-full h-full blur-[3px] lg:blur-sm -z-10">
-      <SmithImage className="absolute w-96 lg:w-[50rem] left-[-10rem] top-[-15rem] opacity-40 hover:opacity-100 stroke-error trasnform -scale-x-100 scale-y-100 motion-safe:animate-pulse hover:animate-none" />
-      <SmithImage className="absolute w-60 lg:w-[30rem] right-0 lg:right-[1rem] bottom-[2rem] opacity-40 hover:opacity-100 stroke-warning motion-safe:animate-pulse hover:animate-none" />
-    </div>}
+    header={<div className="absolute w-full h-full blur-[6px] lg:blur-[2px] opacity-30">
+    <img src="/images/cmyk2.svg" className="absolute w-[50rem] lg:w-[70rem] right-[-10rem] lg:right-[-20rem] bottom-[-4rem] opacity-70 hover:opacity-100" ></img>
+  </div>}
   >
     <div className="w-full">
       <div className="flex items-center justify-center mb-4 lg:mt-4 lg:mb-8">

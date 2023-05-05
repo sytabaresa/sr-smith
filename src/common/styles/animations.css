@@ -1,15 +1,38 @@
 
-.animate-i {
+.animate-pulse-1 {
 	opacity: 1;
-	animation: flickerI 20s linear  reverse infinite;
+	animation: 10s pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	
 }
-.animate-i::after {
+.animate-pulse-2 {
+	opacity: 1;
+	animation: 10s pulse 11.45s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-pulse-3 {
+	opacity: 1;
+	animation: 10s pulse 6.27s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+
+@keyframes upDown {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	1000% {
+		opacity: 0;
+	}
+  }
+/* .animate-i::after {
 	content: '';
 	width: 150%;
 	-webkit-box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
 	-moz-box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
 	box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
-}
+} */
 @keyframes flickerI {
 	0% {
 		opacity: 0.4;

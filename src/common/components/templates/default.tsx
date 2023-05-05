@@ -77,8 +77,9 @@ const Layout = (props: Props) => {
         {drawer &&
           <div className="drawer-side overflow-x-hidden">
             <label htmlFor="my-drawer" className="drawer-overlay !bg-black !opacity-40"></label>
-            <div className="p-4 overflow-y-auto scrollbar-thin !scrollbar-w-[4px] 
-            scrollbar-track-base-100 scrollbar-thumb-base-content w-60 bg-base-100 text-base-content flex flex-col items-start">
+            <div className="p-4 overflow-y-auto overflow-x-hidden scrollbar-thin !scrollbar-w-[4px] 
+            scrollbar-track-base-100 scrollbar-thumb-base-content w-60
+             bg-base-100 text-base-content flex flex-col items-start relative">
               {user && <div className="flex flex-col items-center mb-4 w-full">
                 <UserImage className="mb-2" imageClasses="w-24 h-24" />
                 <div className="w-44 text-center">
@@ -93,6 +94,7 @@ const Layout = (props: Props) => {
                 <LangMenu className="dropdown-top ml-4 flex-grow" />
                 <ThemeSwitcher />
               </div>
+              <img className="absolute bottom-0 left-[-15rem] max-w-none w-[30rem] opacity-20 -z-10" src="/images/logo.png"></img>
             </div>
           </div>}
       </div>

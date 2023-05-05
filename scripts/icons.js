@@ -30,7 +30,18 @@ import path from "path"
             iconOnly: true,
             favicon: true,
             // background: '#FFF',
-            // padding: "10%"
+            padding: "2%",
+            opaque: false,
+            // favicon: true,
+        });
+
+    await generateImages(
+        './public/images/logo.png',
+        ASSETS_PATH, {
+            iconOnly: true,
+            // favicon: true,
+            // background: '#FFF',
+            padding: "22%",
             opaque: false,
             // favicon: true,
         });
