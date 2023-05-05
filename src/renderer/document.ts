@@ -34,8 +34,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <link rel='mask-icon' href='/static/icons/safari-pinned-tab.svg' color='#5bbad5' /> */} -->
     <link rel="shortcut icon" href="/pwa/favicon-196.png">
     <link rel="icon" type="image/png" sizes="196x196" href="/pwa/favicon-196.png">
-    <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
-
+    <!--<link rel="icon" href="/images/logo.svg" type="image/svg+xml">-->
 
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"> 
     <link rel="stylesheet" href="./src/common/styles/fonts.css"> -->
