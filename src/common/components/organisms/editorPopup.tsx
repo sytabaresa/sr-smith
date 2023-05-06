@@ -13,14 +13,6 @@ export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 const EditorPopup = (props: EditorPopupProps) => {
     const [isOpen, setOpen] = useState(false);
     const { t } = useTranslation()
-    const [current, send] = useAtom(drawServiceAtom)
-
-
-    const exit = (e) => {
-        if (e.target === e.currentTarget) {
-            setOpen(false)
-        }
-    }
 
     return (
         <div {...props}>

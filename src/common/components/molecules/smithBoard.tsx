@@ -24,8 +24,8 @@ const SmithBoard = (props: SmithBoardProps) => {
 
     //machines
     const sendMenu = useSetAtom(drawServiceAtom)
-    const [currentEditor, sendEditor] = useAtom(editorServiceAtom)
-    const [currentSave, sendSave] = useAtom(savingServiceAtom)
+    const sendEditor = useSetAtom(editorServiceAtom)
+    const sendSave = useSetAtom(savingServiceAtom)
 
     // hotkeys and keystrokes
     const hotkeysOptions = {
@@ -49,11 +49,6 @@ const SmithBoard = (props: SmithBoardProps) => {
             sendSave({ type: 'LOAD', value: params?.id?.[0] as string })
         }
     }, [loading])
-
-    useEffect(() => {
-        if (currentEditor.context.code != '')
-            sendSave({ type: 'SAVE', value: currentEditor.context.code })
-    }, [currentEditor.context.code]);
 
     // useEffect(() => {
     //     if (isAuthenticated) {

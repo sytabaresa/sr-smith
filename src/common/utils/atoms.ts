@@ -46,7 +46,7 @@ export const atomWithMachine = (
             const initialContext = isGetter(getInitialContext) ? getInitialContext(safeGet) : getInitialContext
             initializing = false
 
-            const service = interpret(machine, (service) => get(cacheCallbackAtom)(service), initialContext)
+            const service = interpret(machine, (service) => get(cacheCallbackAtom)?.(service), initialContext)
             return { service }
         },
         (get, set) => {

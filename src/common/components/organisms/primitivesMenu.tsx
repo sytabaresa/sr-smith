@@ -16,7 +16,6 @@ import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 import { useAtom } from "jotai";
 import { drawServiceAtom } from "@core/atoms/smith";
-import { deepCurrent } from "@utils/atoms"
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
 

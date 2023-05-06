@@ -22,8 +22,10 @@ const CircleRadiusForm = (props: CircleRadiusFormProps) => {
     }
 
     const deep = deepCurrent(current.service)
-    console.log(deep)
-    showModal(deep == "draw.drawCircle")
+    // console.log(deep)
+    useEffect(() => {
+        showModal(deep == "draw.drawCircle")
+    }, [deep])
 
     return <form>
         <h3 className="font-bold text-lg mb-2">

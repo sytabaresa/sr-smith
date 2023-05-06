@@ -114,7 +114,7 @@ export const boardAtom = atom(
 
         return {}
     },
-    (get, set, params: BoardOptions) => {
+    (get, set, params: BoardOptions = null) => {
         // console.log(params)
         const send = (event) => set(drawServiceAtom, event)
         const board = recreateBoard(send, {...get(boardConfigAtom), ...params}, get(cachedBoardAtom))
