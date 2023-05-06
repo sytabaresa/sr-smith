@@ -1,4 +1,4 @@
-import { HTMLAttributes, Suspense } from "react";
+import { HTMLAttributes } from "react";
 import DrawerMenuItem from "@components/molecules/drawerMenuItem";
 import { PlusIcon, FolderOpenIcon, ShareIcon, CogIcon, LogoutIcon, LoginIcon } from "@heroicons/react/outline"
 import { useRouter } from '@modules/router';
@@ -11,9 +11,9 @@ import { savingServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 
 //modals
-import NewProjectForm from "./newProjectForm";
-import PublishProjectForm from "./publishProjectForm";
-import ConfigsForm from "./configForm";
+import NewProjectForm from "@components/molecules/newProjectForm";
+import PublishProjectForm from "@components/molecules/publishProjectForm";
+import ConfigsForm from "@components/molecules/configForm";
 
 export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
 }
@@ -41,9 +41,7 @@ const DrawerMenu = (props) => {
                     <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} />
                 </newProject.Label>
                 <newProject.Modal>
-                    <Suspense fallback={<></>}>
-                        <NewProjectForm />
-                    </Suspense>
+                    <NewProjectForm />
                 </newProject.Modal>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
                 <Link href="/saved">

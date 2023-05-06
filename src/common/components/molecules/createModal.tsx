@@ -1,11 +1,12 @@
 import { useTranslation } from "@modules/i18n";
-import { LabelHTMLAttributes, useRef } from "react";
+import { HTMLAttributes, LabelHTMLAttributes, ReactNode, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface ModalContainerProps extends LabelHTMLAttributes<HTMLLabelElement> {
   withClose?: boolean;
   modalChild?: JSX.Element;
   modalName?: string;
+  children: ReactNode | ((props: { modalState: boolean, showModal: (state: boolean) => void }) => ReactNode)
 };
 
 const createModal = (modalName: string) => {
@@ -15,6 +16,7 @@ const createModal = (modalName: string) => {
   const closeRef = useRef()
   const triggerRef = useRef()
   const modalRef = useRef()
+  const modalStateRef = useRef<HTMLAttributes<HTMLInputElement>>()
 
   const labelProps = {
     tabIndex: 0,
@@ -68,7 +70,7 @@ const createModal = (modalName: string) => {
   }
 
   function onClose(ev) {
-    triggerRef.current.focus()
+    triggerRef.current?.focus()
   }
 
   const Label = (props: LabelHTMLAttributes<HTMLLabelElement> | any) => {
@@ -84,6 +86,14 @@ const createModal = (modalName: string) => {
     </label>
   }
 
+  const modalState = modalStateRef.current?.checked
+  // const showModal = (state: boolean) => {
+  //   if (modalStateRef.current) {
+  //     console.log(modalStateRef, state)
+  //     modalStateRef.current.value = !!state
+  //   }
+  // }
+
   const Modal = ({
     modalChild,
     children,
@@ -92,9 +102,10 @@ const createModal = (modalName: string) => {
     ...rest
   }: ModalContainerProps) => {
     const { t } = useTranslation()
+    const [_defModal, showModal] = useState(false)
 
     const out = <>
-      <input type="checkbox" id={finalModalName} className="modal-toggle hidden" />
+      <input type="checkbox" id={finalModalName} ref={modalStateRef} defaultChecked={_defModal} className="modal-toggle hidden" />
       <label htmlFor={finalModalName} className={`modal cursor-pointer ${className}`} {...rest}>
         <label htmlFor="" ref={modalRef} tabIndex={0} onKeyDown={onKey} className="modal-box relative">
           {withClose &&
@@ -109,7 +120,7 @@ const createModal = (modalName: string) => {
               ✕
             </label>
           }
-          {children}
+          {typeof children == 'function' ? children({ modalState, showModal }) : children}
         </label>
       </label >
     </>

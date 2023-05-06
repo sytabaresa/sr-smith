@@ -1,7 +1,7 @@
 import { atomWithMachine } from "@utils/atoms";
 import editorFSM from "../fsm/editorFSM";
 import savingFSM from "../fsm/savingFSM";
-import menuFSM from "../fsm/drawFSM";
+import drawFSM from "../fsm/drawFSM";
 
 import PointTooltip from "@tooltips/point";
 import LineTooltip from "@tooltips/line";
@@ -21,7 +21,7 @@ import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithStorage } from "jotai/utils";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
-    menuService: menuServiceAtom,
+    menuService: drawServiceAtom,
     code: ''
 }), (get) => ({ board: get(boardAtom) }))
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
@@ -29,7 +29,7 @@ export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
     projectData: {},
     editorService: editorServiceAtom,
 }))
-export const menuServiceAtom = atomWithMachine(menuFSM as any, {
+export const drawServiceAtom = atomWithMachine(drawFSM as any, {
     smithMode: true,
     tooltipPlugins: [
         new PointTooltip(),
@@ -116,7 +116,7 @@ export const boardAtom = atom(
     },
     (get, set, params: BoardOptions) => {
         // console.log(params)
-        const send = (event) => set(menuServiceAtom, event)
+        const send = (event) => set(drawServiceAtom, event)
         const board = recreateBoard(send, {...get(boardConfigAtom), ...params}, get(cachedBoardAtom))
         set(cachedBoardAtom, board)
     }

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useScreen } from "@hooks/useScreen";
 import { useAtom, useSetAtom } from "jotai";
-import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
+import { boardAtom, boardConfigAtom, editorServiceAtom, drawServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { themeAtom } from "@core/atoms/common";
 import { useRouter } from "@modules/router";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -23,7 +23,7 @@ const SmithBoard = (props: SmithBoardProps) => {
     // const setLoading = useSetAtom(loadingAtom)
 
     //machines
-    const sendMenu = useSetAtom(menuServiceAtom)
+    const sendMenu = useSetAtom(drawServiceAtom)
     const [currentEditor, sendEditor] = useAtom(editorServiceAtom)
     const [currentSave, sendSave] = useAtom(savingServiceAtom)
 

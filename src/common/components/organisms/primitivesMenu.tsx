@@ -15,7 +15,10 @@ import { useTranslation } from "@modules/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
 import { useAtom } from "jotai";
-import { menuServiceAtom } from "@core/atoms/smith";
+import { drawServiceAtom } from "@core/atoms/smith";
+import { deepCurrent } from "@utils/atoms"
+import createModal from "@components/molecules/createModal";
+import CircleRadiusForm from "@components/molecules/circleRadiusForm";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -23,15 +26,8 @@ interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation()
-  const [current, send] = useAtom(menuServiceAtom)
+  const [current, send] = useAtom(drawServiceAtom)
 
-  const onClickCircleCenterRadiusValue = (v: string) => {
-    const n = parseFloat(v)
-    n > 0 && send({ type: "RADIUS", value: n })
-  }
-  const onClickCircleCenterRadiusCancel = () => send('CANCEL')
-
-  const [radius, setRadius] = useState("")
   const [offset, setOffset] = useState(0)
 
   const ref = useRef()
@@ -64,6 +60,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       window.addEventListener('resize', () => offsetCalc(ref.current));
     offsetCalc(ref.current)
   }, [])
+
+  const circleRadius = createModal('circle-radius')
 
   return (
     <div className={`flex flex-col ${className || ''}`} {...rest}>
@@ -123,7 +121,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
               // figure out how to show clipped tooltip
               <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
                 <button
-                  aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip }
+                  aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip}
                   className={`p-0 py-2 md:px-2 btn btn-ghost ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
@@ -133,29 +131,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </ul>
         </div>
       </div>
-
-      {/* Popup for data TODO: generalize this logic */}
-      {/* TODO: change recursive */}
-      <div className={`modal ${current.name == "draw.drawCircle" ? 'modal-open' : ''}`}>
-        <div className="modal-box">
-          <h3 className="font-bold text-lg mb-2">
-            Circunferencia: centro y radio
-          </h3>
-          <input
-            type="text"
-            placeholder="Elija el Radio"
-            className="input input-bordered w-full max-w-xs"
-            onChange={(ev: any) => setRadius(ev.target.value)}
-          />
-          <div className="modal-action flex items-center">
-            <a href="#" className="text-gray-500" onClick={onClickCircleCenterRadiusCancel}>Cancelar</a>
-            <a href="#" className="btn" onClick={() => onClickCircleCenterRadiusValue(radius)} >
-              {t.canvas.create()}
-            </a>
-          </div>
-        </div>
-      </div>
-
+      <circleRadius.Modal>
+        {props => <CircleRadiusForm  {...props} />}
+      </circleRadius.Modal>
       {/* toas in the corner, info of tooltip selected */}
       {current.context.tooltipSelected &&
         <div className={`toast toast-end items-end lg:toast-start z-50 transition-all ${!showHelp ? "invisible" : ''}`}>

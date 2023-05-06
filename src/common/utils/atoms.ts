@@ -105,6 +105,21 @@ export const atomWithMachine = (
     return finalMachineAtom
 }
 
+
+export const deepCurrent = (service) => {
+    // if (!deep) return service.machine.current
+    if (!service) return ''
+    let out = `${service.machine.current}`
+
+    let child = !!service.child
+    while (child) {
+        out = `${out}.${service.child.machine.current}`
+        service = service.child
+        child = !!service.child
+    }
+    return out
+}
+
 const isGetter = <T>(v: T | ((get: Getter) => T)): v is (get: Getter) => T =>
     typeof v === 'function'
 

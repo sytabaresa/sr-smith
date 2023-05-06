@@ -5,7 +5,7 @@ import EditorPopup from "./editorPopup";
 import PrimitivesMenu from "./primitivesMenu";
 import CodeEditor from "./codeEditor";
 import { useAtom, useAtomValue } from "jotai";
-import { menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
+import { drawServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { isMobile, useScreen } from "@hooks/useScreen";
 import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
 
@@ -18,7 +18,7 @@ const CodeToolbar = (props: CodeToolbarProps) => {
   const { t } = useTranslation();
   const screen = isMobile(useScreen(true))
   
-  const [current, send] = useAtom(menuServiceAtom)
+  const [current, send] = useAtom(drawServiceAtom)
   const currentSave = useAtomValue(savingServiceAtom)
 
   // console.log(screen)

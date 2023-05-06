@@ -2,7 +2,7 @@ import WithAuth from "@hoc/withAuth";
 import { useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
-import NewProjectForm from "@components/organisms/newProjectForm";
+import NewProjectForm from "@components/molecules/newProjectForm";
 import { useDataProvider, useList } from "@hooks/useDataProvider";
 import createModal from "@components/molecules/createModal";
 import { ProjectList } from "@components/molecules/projectList";

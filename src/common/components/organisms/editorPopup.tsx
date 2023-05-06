@@ -3,7 +3,7 @@ import CodeEditor from "./codeEditor";
 import { useTranslation } from "@modules/i18n";
 import { ChevronDownIcon, ReplyIcon } from "@heroicons/react/outline";
 import { useAtom } from "jotai";
-import { menuServiceAtom } from "@core/atoms/smith";
+import { drawServiceAtom } from "@core/atoms/smith";
 import { HistoryEditor } from "slate-history";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
@@ -13,7 +13,7 @@ export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 const EditorPopup = (props: EditorPopupProps) => {
     const [isOpen, setOpen] = useState(false);
     const { t } = useTranslation()
-    const [current, send] = useAtom(menuServiceAtom)
+    const [current, send] = useAtom(drawServiceAtom)
 
 
     const exit = (e) => {
