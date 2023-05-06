@@ -1,7 +1,7 @@
-import { atomWithMachine, atomWithSomeMap } from "@utils/atoms";
+import { atomWithMachine } from "@utils/atoms";
 import editorFSM from "../fsm/editorFSM";
 import savingFSM from "../fsm/savingFSM";
-import menuFSM from "../fsm/menuFSM";
+import menuFSM from "../fsm/drawFSM";
 
 import PointTooltip from "@tooltips/point";
 import LineTooltip from "@tooltips/line";
@@ -17,7 +17,7 @@ import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
-import { getCurrentBreakpoint } from "@utils/screen";
+import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithStorage } from "jotai/utils";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
@@ -83,7 +83,7 @@ function populateBoard(send, board) {
 export function recreateBoard(send, params: BoardOptions, oldBoard: any) {
     try {
         const { screen, ...rest } = params
-        const boundingBox = screen != '' ? screen : oldBoard.getBoundingBox()
+        const boundingBox = screen && screen != '' ? screen : oldBoard.getBoundingBox()
 
         if (oldBoard) {
             JXG.JSXGraph.freeBoard(oldBoard);
@@ -114,10 +114,10 @@ export const boardAtom = atom(
 
         return {}
     },
-    (get, set) => {
+    (get, set, params: BoardOptions) => {
         // console.log(params)
         const send = (event) => set(menuServiceAtom, event)
-        const board = recreateBoard(send, get(boardConfigAtom), get(cachedBoardAtom))
+        const board = recreateBoard(send, {...get(boardConfigAtom), ...params}, get(cachedBoardAtom))
         set(cachedBoardAtom, board)
     }
 )

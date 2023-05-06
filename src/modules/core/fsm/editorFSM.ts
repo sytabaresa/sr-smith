@@ -16,7 +16,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     // console.log(ctx.theme)
     try {
         const recreateBoard = ctx.setter(boardAtom)
-        recreateBoard(null)
+        recreateBoard({ screen: null })
         const board: Board = ctx.getter(boardAtom)
         board.jc.parse(ctx.code);
     } catch (err) {

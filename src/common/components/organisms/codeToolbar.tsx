@@ -6,7 +6,7 @@ import PrimitivesMenu from "./primitivesMenu";
 import CodeEditor from "./codeEditor";
 import { useAtom, useAtomValue } from "jotai";
 import { menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { isMobile, useScreen } from "@utils/screen";
+import { isMobile, useScreen } from "@hooks/useScreen";
 import { BookOpenIcon, UploadIcon, XCircleIcon } from "@heroicons/react/outline";
 
 interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {

@@ -14,7 +14,7 @@ import { getSW } from '@utils/sw';
 import UpdateSw from '@components/atoms/updateSW';
 import { useTranslation } from '@modules/i18n';
 import { useServiceWoker } from '@hooks/useServiceWorker';
-import { CurrentBreakpoint } from '@utils/screen';
+import { CurrentBreakpoint } from '@components/atoms/screen';
 import { useAtomValue } from 'jotai';
 import { loadingBarAtom, onlineAtom } from '@core/atoms/common';
 

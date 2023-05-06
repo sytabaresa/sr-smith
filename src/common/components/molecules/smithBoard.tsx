@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useScreen } from "@utils/screen";
+import { useScreen } from "@hooks/useScreen";
 import { useAtom, useSetAtom } from "jotai";
 import { boardAtom, boardConfigAtom, editorServiceAtom, menuServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { themeAtom } from "@core/atoms/common";
