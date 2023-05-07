@@ -1,6 +1,6 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { SmithProject } from '@localtypes/smith';
-import { editorServiceAtom } from '../atoms/smith';
+import { editorServiceAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';

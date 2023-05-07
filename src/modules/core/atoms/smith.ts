@@ -1,7 +1,7 @@
 import { atomWithMachine } from "@utils/atoms";
-import editorFSM from "../fsm/editorFSM";
-import savingFSM from "../fsm/savingFSM";
-import drawFSM from "../fsm/drawFSM";
+import editorFSM from "@core/fsm/editorFSM";
+import savingFSM from "@core/fsm/savingFSM";
+import drawFSM from "@core/fsm/drawFSM";
 
 import PointTooltip from "@tooltips/point";
 import LineTooltip from "@tooltips/line";
@@ -76,7 +76,7 @@ function populateBoard(send, board) {
         board.on('up', upHandler)
         board.on('drag', (e) => send({ type: 'DRAG', value: e }));
         board.on('hit', (event, element) => board.hitElement = element)
-        // this.board.on('hit', (e) => this.sendEvent('HIT', e));
+        // board.on('hit', (e) => this.sendEvent('HIT', e));
     }
 }
 

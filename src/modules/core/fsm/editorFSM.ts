@@ -1,13 +1,13 @@
 import { createMachine, state, transition, reduce, invoke, action, immediate } from 'robot3';
-import { JXGDrawer } from './tooltipActionsFSM';
 import { wait } from '@utils/time';
 import { JotaiContext } from '@utils/atoms';
-import { boardAtom, boardConfigAtom } from '../atoms/smith';
+import { boardAtom } from '@core/atoms/smith';
 import { Board } from 'jsxgraph';
 
 export interface EditorContextType extends JotaiContext {
     errorMsg?: string;
     code: string;
+    counter: number
 }
 
 const parseExecute = async (ctx: EditorContextType, ev) => {
@@ -39,7 +39,7 @@ export default createMachine('init', {
         transition("CODE", 'idle', reduce(setCode)),
     ),
     parsing: invoke(parseExecute,
-        transition('done', 'idle'),
+        transition('done', 'idle', reduce(addCounter)),
         transition('error', 'error', reduce(setError))
     ),
     error: state(
@@ -53,15 +53,11 @@ export default createMachine('init', {
 }, (ctx: EditorContextType) => ({
     errorMsg: '',
     code: '',
-    boardConfig: {
-        theme: '',
-        name: '',
-        screenSize: ''
-    },
+    counter: 0,
     ...ctx,
 }) as EditorContextType)
 
-function clearErrorMsg(ctx: any, ev: any) { return { ...ctx, errorMsg: '' } }
-function setCode(ctx: any, ev: any) { return { ...ctx, code: ev.value } }
-function setConfig(ctx: any, ev: any) { return { ...ctx, boardConfig: { ...ctx.config, ...ev.value } } }
-function setError(ctx: any, ev: any) { return { ...ctx, errorMsg: ev.error } }
+function clearErrorMsg(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: '' } }
+function setCode(ctx: EditorContextType, ev: any) { return { ...ctx, code: ev.value } }
+function setError(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: ev.error } }
+function addCounter(ctx: EditorContextType, ev: any) { return { ...ctx, counter: ctx.counter + 1 } }

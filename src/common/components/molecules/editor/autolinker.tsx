@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAtomValue } from "jotai";
-import { keyAtom } from "../../../../modules/editor/atoms";
+import { keyAtom } from "@modules/editor/atoms";
 import { useTranslation } from "@modules/i18n";
 import { ExternalLinkIcon } from "@heroicons/react/outline";
 import { linkMd } from "@modules/editor/plugins/autolinker";

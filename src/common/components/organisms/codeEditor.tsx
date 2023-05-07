@@ -20,7 +20,7 @@ import { normalizeTokens } from "@modules/editor/normalizeTokens";
 
 // plugins
 import { AutolinkerLeaf } from "@components/molecules/editor/autolinker";
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
 import { colorInline } from "@modules/editor/plugins/colorinline";
@@ -125,6 +125,8 @@ const decorate = ([blockNode, blockPath]) => {
     return ranges
 }
 
+const updateEditor = (state) => ['parsing', 'initializing'].includes(state)
+
 const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
@@ -144,6 +146,9 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
         //     send(RESET)
         // }
     }, [])
+
+    // for update on parsing
+    useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
 
     // FSM actions
     const parseExecute = useCallback(() => send('PARSE'), [])
@@ -219,9 +224,12 @@ const EditorUpdater = ({ editor }) => {
     const sendSave = useSetAtom(savingServiceAtom)
     const { code } = current.context
 
-    const testRender = ['parsing', 'initializing'].includes(current.name)
-    if (testRender)
-        editor.children = deserializeCode(code) as Descendant[]
+    useEffect(() => {
+        if (updateEditor(current.name)) {
+            // console.log(current.name, code)
+            editor.children = deserializeCode(code) as Descendant[]
+        }
+    }, [current.name])
 
     useEffect(() => {
         if (code != '')
