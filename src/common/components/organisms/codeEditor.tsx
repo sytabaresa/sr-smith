@@ -73,7 +73,7 @@ const decorate = ([blockNode, blockPath]) => {
     if (!Element.isElement(blockNode) || blockNode.type != 'paragraph') {
         return []
     }
-    console.log(blockNode, blockPath)
+    // console.log(blockNode, blockPath)
 
     const text = blockNode.children.map(line => Node.string(line)).join('\n')
     // console.log(text)
@@ -182,6 +182,7 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                                 setChangeCode(value)
                                 // Serialize the value and save the string value to Local Storage.
                                 const code = serializeCode(value)
+                                // console.log(code)
                                 setActualCode(code)
                             }
                         }}

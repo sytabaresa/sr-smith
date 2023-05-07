@@ -1,5 +1,6 @@
 import { jsx } from 'slate-hyperscript'
 import { Node as SlateNode, Text } from 'slate'
+import { splitLines } from './splitter'
 
 export const deserialize = (el: HTMLElement, markAttributes = {}) => {
     if (el.nodeType === Node.TEXT_NODE) {
@@ -52,7 +53,7 @@ export const serializeCode = nodes => {
     // if(Text.isText(nodes)) {
     //     return SlateNode.string(nodes)
     // }
-    return nodes[0].children.map(n => SlateNode.string(n)).join('\n')
+    return nodes.map(p => p.children.map(n => SlateNode.string(n)).join('\n')).join('\n')
 }
 
 export const deserializeTokens = (el) => {
@@ -74,12 +75,11 @@ export const deserializeTokens = (el) => {
 
 export const deserializeCode = (code: string) => {
 
-    // return code.split('\n').map(line => ({ type: 'paragraph', children: [{ text: line }] })) 
-    return [{
+    return splitLines(code).map(sta => ({
         type: 'paragraph',
-        children: code.split('\n').map(line => ({
+        children: sta.split('\n').map(line => ({
             type: 'code-line',
             children: [{ text: line }]
         }))
-    }]
+    }))
 }
