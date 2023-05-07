@@ -44,7 +44,7 @@ export const initBoard = (options: BoardOptions) => {
         'lg': [-2.5, 1.2, 1.5, -1.2],
     }
 
-    const boundingbox = typeof options.screen == 'string' ? screenBoxSizes[options.screen == 'unknown' ? 'xs' : options.screen] : options.screen
+    const boundingbox = (typeof options.screen == 'string' ? screenBoxSizes[options.screen == 'unknown' ? 'xs' : options.screen] : options.screen) || screenBoxSizes['xs']
 
     const brd = JXG.JSXGraph.initBoard(options.name, {
         // title: options.translations.title ?? 'Smith Chart canvas',

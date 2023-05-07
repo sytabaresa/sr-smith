@@ -75,7 +75,7 @@ export const deserializeTokens = (el) => {
 
 export const deserializeCode = (code: string) => {
 
-    return splitLines(code).map(sta => ({
+    return splitLines(code)[0].map(sta => ({
         type: 'paragraph',
         children: sta.split('\n').map(line => ({
             type: 'code-line',

@@ -27,6 +27,7 @@ import { colorInline } from "@modules/editor/plugins/colorinline";
 import { autolinker } from "@modules/editor/plugins/autolinker";
 import { ColorInlineLeaf } from "@components/molecules/editor/colorInline";
 import { SearcherPopup } from "@components/molecules/editor/searcher";
+import withParagraphs from "@modules/editor/withParagraph";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
@@ -59,7 +60,7 @@ const ElementRender = props => {
     // console.log(props)
     switch (element.type) {
         case 'paragraph':
-            return <p {...attributes}>{children}</p>
+            return <p className="border-neutral border-b"{...attributes}>{children}</p>
         case 'code-line':
             return <div {...attributes}>{children}</div>
         default:
@@ -126,18 +127,25 @@ const decorate = ([blockNode, blockPath]) => {
 }
 
 const updateEditor = (state) => ['parsing', 'initializing'].includes(state)
-
+const updateAtom = atom(0)
+let timer = null // not concurrent
 const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
     // machines
     const send = useSetAtom(editorServiceAtom)
 
-    const editor = useMemo(() => withReact(withHistory(createEditor())), [])
-    const initialValue = [{
-        type: 'paragraph',
-        children: [{ text: '' }]
-    }]
+    const editor = useMemo(() => withParagraphs(withReact(withHistory(createEditor()))), [])
+    const initialValue = useMemo(() => deserializeCode(`g = 2;
+    obj = <<
+    property: 'string',
+    prop: ln(42),
+    a: LN2,
+    method: function(x) {
+        return x * x;
+    } >> ;`), [])
+
+    console.log(initialValue)
 
     useEffect(() => {
         send('INIT')
@@ -148,7 +156,8 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     }, [])
 
     // for update on parsing
-    useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
+    const [u, setU] = useAtom(updateAtom)
+    // useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
 
     // FSM actions
     const parseExecute = useCallback(() => send('PARSE'), [])
@@ -162,6 +171,12 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const setChangeCode = useSetAtom(changeCodeAtom)
     const setChange = useSetAtom(changeAtom)
 
+    const cancelableTimeout = (ctx, ev) => {
+        return new Promise(resolve => {
+            clearTimeout(timer)
+            timer = setTimeout(resolve, 3000)
+        });
+    }
     return (
         <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
@@ -181,9 +196,16 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                             if (isAstChange) {
                                 setChangeCode(value)
                                 // Serialize the value and save the string value to Local Storage.
-                                const code = serializeCode(value)
+
+                                clearTimeout(timer)
+                                timer = setTimeout(() => {
+                                    const code = serializeCode(value)
+                                    setActualCode(code)
+                                    //     editor.children = deserializeCode(code) as Descendant[]
+                                    //     setU(u + 1)
+                                }, 1000)
                                 // console.log(code)
-                                setActualCode(code)
+                                //TODO: delay
                             }
                         }}
                     >
@@ -194,8 +216,6 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                             renderLeaf={LeafRender}
                             decorate={decorate}
                             className="font-mono h-full"
-                            spellCheck={false}
-                            autoCorrect={false}
                             placeholder={t.canvas.placeholder()}
                             aria-label={t.common.code()}
                             onKeyDown={(event) => {
@@ -207,6 +227,12 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                                 setKeyEvent(event)
                                 setKeyUpEvent(event)
                             }}
+                            spellcheck={false}
+                            autocorrect={false}
+                            autocapitalize={false}
+                        // spellCheck={false}
+                        // autoCorrect={false}
+                        // autoCapitalize={false}
                         />
                     </Slate>
                     // </Suspense>
@@ -223,12 +249,14 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
 const EditorUpdater = ({ editor }) => {
     const current = useAtomValue(editorServiceAtom)
     const sendSave = useSetAtom(savingServiceAtom)
+    const [u, setU] = useAtom(updateAtom)
     const { code } = current.context
 
     useEffect(() => {
-        if (updateEditor(current.name)) {
+        if (updateEditor(current.name) && code != '') {
             // console.log(current.name, code)
             editor.children = deserializeCode(code) as Descendant[]
+            setU(u + 1)
         }
     }, [current.name])
 
