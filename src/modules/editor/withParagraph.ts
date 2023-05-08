@@ -1,19 +1,19 @@
 import { Transforms, Element, Node, Path, Editor } from 'slate'
 import { splitLines } from './splitter'
 
-const withParagraphs = editor => {
+const withParagraphs = (editor: Editor) => {
     const { normalizeNode } = editor
 
     editor.normalizeNode = entry => {
         const [node, path] = entry
-
+        console.log(node, path)
         // If the element is a paragraph, ensure its children are valid.
         if (Element.isElement(node) && node.type === 'paragraph') {
             // console.log(path, node)
             const code = [...Node.texts(node)].map(([node, path]) => node.text).join('\n')
             // console.log(code)
             const [blocks, validEnd] = splitLines(code)
-            // console.log(code, blocks, validEnd)
+            console.log(code, blocks, validEnd)
 
             if (!validEnd) {
                 if (Node.has(editor, Path.next(path))) {

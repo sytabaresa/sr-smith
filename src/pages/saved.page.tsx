@@ -34,7 +34,7 @@ const SavedProjects = () => {
     </div>
     <newProject.Label>
       <div className="fixed right-0 bottom-0 mb-4 mr-4">
-        <div role="button" className="btn lg:grap-2 btn-lg shadow-lg tooltip flex" data-tip={t.saved.create_project()}>
+        <div role="button" className="btn btn-primary lg:grap-2 btn-lg shadow-lg tooltip flex" data-tip={t.saved.create_project()}>
           <span className="mr-4 hidden lg:inline-block">{t.saved.create_project()}</span>
           <PlusIcon className="h-8 w-8" />
         </div>

@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 import tsconfigPaths from "vite-tsconfig-paths"
@@ -6,6 +7,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from "rollup-plugin-visualizer";
 
 // import legacy from '@vitejs/plugin-legacy'
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => ({
@@ -23,6 +25,10 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
     headers: {
       'service-worker-allowed': '/'
     }
+  },
+  test: {
+    globals: true,
+    environment: 'happy-dom',
   },
   plugins: [
     preact(),

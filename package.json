@@ -12,7 +12,9 @@
         "gen:icons": "node scripts/icons.js",
         "prebuild2": "node scripts/tsconfig.js",
         "prestart2": "node scripts/tsconfig.js",
-        "typesafe-i18n": "typesafe-i18n"
+        "typesafe-i18n": "typesafe-i18n",
+        "test": "vitest",
+        "coverage": "vitest run --coverage"
     },
     "dependencies": {
         "@heroicons/react": "^1.0.0",
@@ -57,6 +59,7 @@
         "@vitejs/plugin-legacy": "^4.0.3",
         "autoprefixer": "^10.4.14",
         "daisyui": "^2.51.6",
+        "happy-dom": "^9.10.9",
         "npm-run-all": "^4.1.5",
         "onmyjs": "^2.0.2",
         "postcss": "^8.4.23",
@@ -74,6 +77,7 @@
         "vite-plugin-singlefile": "^0.13.5",
         "vite-plugin-ssr": "^0.4.123",
         "vite-tsconfig-paths": "^4.2.0",
+        "vitest": "^0.31.0",
         "workbox-core": "^6.5.4",
         "workbox-precaching": "^6.5.4"
     },

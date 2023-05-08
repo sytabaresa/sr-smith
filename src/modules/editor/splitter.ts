@@ -7,6 +7,7 @@ const states = {
     end: 5,
     preComment: 6,
     text: 7,
+    postEnd: 8,
 }
 type valueof<T> = T[keyof T]
 
@@ -62,7 +63,7 @@ export function splitLines(str: string): [string[], boolean] {
                     i++
                     continue
                 }
-                if (str[i] == ';' && c1 <= 0 && c2 <= 0) {
+                if (str[i] == ';' && c1 == 0 && c2 == 0) {
                     state = states.end
                     i--
                     continue
@@ -115,6 +116,10 @@ export function splitLines(str: string): [string[], boolean] {
                 i++
                 tokens.push(str.slice(f, i))
                 f = str[i] == '\n' ? i + 1 : i
+                state = states.postEnd
+                break
+            case states.postEnd:
+                i--
                 state = states.init
                 break
             default:
@@ -124,86 +129,13 @@ export function splitLines(str: string): [string[], boolean] {
     const rest = str.slice(f, i + 1)
     if (rest != '') {
         tokens.push(rest)
+    }
+    if (str.slice(-1)[0] == '\n' && state == states.postEnd) {
+        tokens.push('')
+    }
+    if (i > 0 && ![states.preEnd, states.postEnd, states.preComment, states.comment].includes(state)) {
         return [tokens, false]
     }
 
     return [tokens, true]
 }
-
-// let code = ''
-// code = `
-// /* 
-// ejemplo de sintaxis
-// ver: https://syta.co/Follow link (ctrl+click)
-
-// */
-
-
-// A = spoint(2, 1.653) << strokeColor: "$ red", face: "[]", size: 7, fillColor: '$ black'>> ;
-// k_a = circle(po, A);
-// a = line(po, A) << strokeColor: '$ blue', color: '$ red' >> ;
-// a.strokeColor = '$ green';
-// B = intersection(k_a, a, 1);
-// k_a = imcircle(A);
-// k_b = recircle(A) << strokecolor: '$ #FF0' >> ;
-// k_a = circle(B, 0.3);
-// E = intersection(k_a, k_b, 1);
-// F = spoint(0.074, -0.469);
-// H = point(-0.485, 3);
-// b = point(1, 2);
-// point(2, 1);
-// G = spoint(0.023, PI / 3);
-// k_a = imcirclead(G) << strokecolor: '$ green' >> ;
-// k_b = recirclead(G);
-// foo = 1;
-// DD = point(1, 1);
-// DD.strokeColor = '$ #123456';
-// DD.size = 10;
-// DD.face = '[]';
-// DD.label.strokecolor = '$ red';
-// point(2, 2) << id: 'foo', name: 'bar' >>;
-// $('foo').strokeColor = '$ #654321';
-// point(-1, 2) << id: 'foo2', name: 'bar2' >>;
-// foo2.strokeColor = '$ #f00f00';
-// point(PI, -2) << id: 'foo3', name: 'bar3' >>;
-// bar3.strokeColor = '$ #541541';
-// obj = <<
-//   property: 'string',
-//   prop: ln(42),
-//   a: LN2,
-//   method: function(x) {
-//       return x * x;
-//   } >> ;
-// sixteen = obj.method(4);
-// f = function(a, b, c) {
-//   return a + b + c;
-// };
-// K = spoint(0.077, 0.308);
-
-
-
-
-// // comment
-
-// true;
-// false;
-// False ? 1 : 2;
-
-// M = spoint(-0.158, 0.306);
-// L = spoint(-0.148, 0.545);
-// N = spoint(0.096, 0.708);`
-
-// // code = `obj = <<
-// //   property: 'string',
-// //   prop: ln(42),
-// //   a: LN2,
-// //   method: function(x) {
-// //       return x * x;
-// //   } >> ;`
-// code = `a
-// b
-// c
-// d
-// e;`
-// code = `a=1;obj = <<`
-// console.log(splitLines(code))

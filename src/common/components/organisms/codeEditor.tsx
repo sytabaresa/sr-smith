@@ -13,8 +13,8 @@ const { languages, tokenize } = prism;
 import { createEditor, Text, Element, Node, Descendant, Editor } from 'slate'
 
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact } from 'slate-react'
-import { withHistory } from 'slate-history'
+import { Slate, Editable, withReact, useSlateStatic } from 'slate-react'
+import { HistoryEditor, withHistory } from 'slate-history'
 import { deserializeCode, serializeCode } from '@modules/editor/serializers'
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 
@@ -56,15 +56,24 @@ const LeafRender = (props) => {
 
 const ElementRender = props => {
     const { attributes, children, element } = props
+    const editor = useSlateStatic() //TODO: implement line number
 
     // console.log(props)
+
     switch (element.type) {
         case 'paragraph':
-            return <p className="border-neutral border-b"{...attributes}>{children}</p>
+            return <p className="border-neutral border-t relative"{...attributes}>
+                {children}
+            </p>
         case 'code-line':
-            return <div {...attributes}>{children}</div>
+            return <div className="relative" {...attributes}>
+                {children}
+            </div>
         default:
-            return <span {...attributes}>{children}</span>
+            const Tag = editor.isInline(element) ? 'span' : 'div'
+            return <Tag {...attributes}>{
+                children}
+            </Tag>
     }
 }
 
@@ -136,16 +145,16 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const send = useSetAtom(editorServiceAtom)
 
     const editor = useMemo(() => withParagraphs(withReact(withHistory(createEditor()))), [])
-    const initialValue = useMemo(() => deserializeCode(`g = 2;
-    obj = <<
-    property: 'string',
-    prop: ln(42),
-    a: LN2,
-    method: function(x) {
-        return x * x;
-    } >> ;`), [])
+    // const initialValue = useMemo(() => deserializeCode(``), [])
+    const initialValue = [{
+        type: 'paragraph',
+        children: [{
+            type: 'code-line', 
+            children: [{ text: '' }]
+        }]
+    }]
 
-    console.log(initialValue)
+    // console.log(initialValue)
 
     useEffect(() => {
         send('INIT')
@@ -156,7 +165,7 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     }, [])
 
     // for update on parsing
-    const [u, setU] = useAtom(updateAtom)
+    useAtomValue(updateAtom)
     // useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
 
     // FSM actions
@@ -171,12 +180,12 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const setChangeCode = useSetAtom(changeCodeAtom)
     const setChange = useSetAtom(changeAtom)
 
-    const cancelableTimeout = (ctx, ev) => {
-        return new Promise(resolve => {
-            clearTimeout(timer)
-            timer = setTimeout(resolve, 3000)
-        });
-    }
+    const changeClipboardContent = useCallback((event) => {
+        const sel = serializeCode(Editor.fragment(editor, editor.selection))
+        event.clipboardData.setData('text/plain', sel)
+        event.preventDefault()
+    }, [])
+
     return (
         <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
@@ -204,8 +213,6 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                                     //     editor.children = deserializeCode(code) as Descendant[]
                                     //     setU(u + 1)
                                 }, 1000)
-                                // console.log(code)
-                                //TODO: delay
                             }
                         }}
                     >
@@ -222,11 +229,18 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                                 event.stopPropagation()
                                 setKeyEvent(event)
                                 setKeyDownEvent(event)
+                                if (event.ctrlKey && event.key == 'z') {
+                                    HistoryEditor.undo(editor)
+                                }
+                                if (event.ctrlKey && event.key == 'y') {
+                                    HistoryEditor.redo(editor)
+                                }
                             }}
                             onKeyUp={(event) => {
                                 setKeyEvent(event)
                                 setKeyUpEvent(event)
                             }}
+                            onCopy={changeClipboardContent}
                             spellcheck={false}
                             autocorrect={false}
                             autocapitalize={false}

@@ -23,6 +23,18 @@ prism.languages.jc = {
         pattern: /(['"])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
         greedy: true,
     },
+    'moperator': {
+        pattern: /([^\<])\<(?!\<)|([^\>])\>(?!\>)/,
+        lookbehind: true,
+        greedy:true,
+        alias: 'operator'
+    },
+    'ternary': {
+        pattern: /(\?.*)\:/,
+        lookbehind: true,
+        alias: 'operator',
+        greedy: true,
+    },
     'function-variable': {
         pattern: /#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)\s*=>))/,
         alias: 'function'
@@ -51,8 +63,8 @@ prism.languages.jc = {
         lookbehind: true,
         alias: 'property'
     },
-    'punctuation': /[[\];(),.:]|\<\<|\>\>/,
-    'operator': /[<>]=?|[!=~]=|&&?|\|\||[-+*/%^!=<>?:]/,
+    'operator': /[<>]=+|[!=~]=|&&?|\|\||[-+*/%^!=?]/,
+    'punctuation': /[[\];(),.:{}]|\<\<|\>\>/,
     'constant': [
         {
             pattern: /\b(?:\$board|LN2|LN10|LOG2E|LOG10E|PI|EULER|SQRT1_2|SQRT2)\b/
