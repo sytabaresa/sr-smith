@@ -93,7 +93,7 @@ function document(title: string, desc: string, pageHtml: string) {
     <!--<link rel="preload" as="image" href="/images/smith-chart-dark.svg">
     <link rel="preload" as="image" href="/images/smith-chart.svg">-->
 </head>
-<body classname="antialiased overflow-hidden overflow-y-auto relative">
+<body class="antialiased overflow-hidden overflow-y-auto relative">
     <script>
         if(typeof Storage!=="undefined"){const theme=JSON.parse(localStorage.getItem("theme")||'"notheme"')
         if(typeof window!='undefined'&&theme!='notheme'){document.documentElement.setAttribute("data-theme",theme)}}

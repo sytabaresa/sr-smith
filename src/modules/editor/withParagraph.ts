@@ -6,14 +6,14 @@ const withParagraphs = (editor: Editor) => {
 
     editor.normalizeNode = entry => {
         const [node, path] = entry
-        console.log(node, path)
+        // console.log(node, path)
         // If the element is a paragraph, ensure its children are valid.
         if (Element.isElement(node) && node.type === 'paragraph') {
             // console.log(path, node)
             const code = [...Node.texts(node)].map(([node, path]) => node.text).join('\n')
             // console.log(code)
             const [blocks, validEnd] = splitLines(code)
-            console.log(code, blocks, validEnd)
+            // console.log(code, blocks, validEnd)
 
             if (!validEnd) {
                 if (Node.has(editor, Path.next(path))) {
