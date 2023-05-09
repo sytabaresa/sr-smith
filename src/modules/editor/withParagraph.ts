@@ -21,7 +21,10 @@ const withParagraphs = (editor: Editor) => {
                     // const lastBlock = blocks.slice(-1)[0]
                     Transforms.mergeNodes(editor, { at: Path.next(path) })
                 }
+                Transforms.setNodes(editor, { error: true }, { at: path })
                 return
+            } else {
+                Transforms.setNodes(editor, { error: false }, { at: path })
             }
 
             if (blocks.length > 1 && blocks[1] != '') {

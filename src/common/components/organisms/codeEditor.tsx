@@ -62,11 +62,11 @@ const ElementRender = props => {
 
     switch (element.type) {
         case 'paragraph':
-            return <p className="border-neutral border-t relative"{...attributes}>
+            return <p className={`border-neutral border-t relative ${element.error ? 'border-error border-r-4' : ''}`} {...attributes}>
                 {children}
             </p>
         case 'code-line':
-            return <div className="relative" {...attributes}>
+            return <div className={`relative`} {...attributes}>
                 {children}
             </div>
         default:
