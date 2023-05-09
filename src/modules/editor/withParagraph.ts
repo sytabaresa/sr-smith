@@ -1,12 +1,13 @@
-import { Transforms, Element, Node, Path, Editor } from 'slate'
+import { Transforms, Element, Node, Path, Editor, nodes } from 'slate'
 import { splitLines } from './splitter'
+import { Transform } from 'stream'
 
 const withParagraphs = (editor: Editor) => {
     const { normalizeNode } = editor
 
     editor.normalizeNode = entry => {
         const [node, path] = entry
-        // console.log(node, path)
+        // console.log(node, path, node.operations)
         // If the element is a paragraph, ensure its children are valid.
         if (Element.isElement(node) && node.type === 'paragraph') {
             // console.log(path, node)
@@ -23,26 +24,32 @@ const withParagraphs = (editor: Editor) => {
                 return
             }
 
-            if (blocks.length > 1) {
-                const [firstBlock, ...rest] = blocks
+            if (blocks.length > 1 && blocks[1] != '') {
+                const lines = blocks[0].split('\n')
+                const index = lines.length - 1
+                const last = lines.slice(-1)[0]
+                // console.log(i, last)
 
-                Transforms.removeNodes(editor, { at: path })
+                Transforms.splitNodes(editor, {
+                    at: {
+                        path: path.concat(index, 0),
+                        offset: last.length
+                    }
+                })
+
                 Transforms.insertNodes(editor, {
                     type: 'paragraph',
-                    children: firstBlock.split('\n').map(b => ({
-                        type: 'code-line',
-                        children: [{ text: b }]
-                    }))
-                }, { at: path })
+                    children: [],
+                }, {
+                    at: Path.next(path)
+                })
 
-                Transforms.insertNodes(editor, {
-                    type: 'paragraph',
-                    children: rest.join('\n').split('\n').map(b => ({
-                        type: 'code-line',
-                        children: [{ text: b }]
-                    }))
-                }, { at: Path.next(path) })
-                Transforms.select(editor, Editor.end(editor, Path.next(path)))
+                Transforms.moveNodes(editor, {
+                    at: path,
+                    match: (node, _path) => _path.length == 2 && Path.isAfter(_path, path.concat(index)),
+                    to: Path.next(path).concat(0)
+                })
+
                 return
             }
         }
