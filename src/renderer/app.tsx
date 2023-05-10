@@ -118,6 +118,10 @@ const LoadingComponent = () => {
   const loading = useAtomValue(loadingBarAtom)
   // console.log(loading)
 
-  return (loading && <progress id="loading-progress" className="progress h-1 fixed w-full progress-warning"></progress>)
+  return (loading && <div className="fixed h-[0.4rem] w-full border-neutral border-b-2">
+    <progress id="loading-progress3" className="absolute progress h-1 w-full progress-accent"></progress>
+    <progress id="loading-progress2" className="absolute progress h-1 w-full progress-secondary progress-multi progress-multi1"></progress>
+    <progress id="loading-progress1" className="absolute progress h-1 w-full progress-primary progress-multi progress-multi2"></progress>
+  </div>)
 
 }

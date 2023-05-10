@@ -2,10 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-.toolbox-btn {
-    @apply btn btn-outline bg-base-100;
+.btn-outline-accent:not(.btn-active) {
+    @apply hover:bg-base-100 hover:text-base-content;
 }
 
-.btn-outline:not(.btn-active) {
-    @apply hover:bg-base-100 hover:text-base-content;
+
+.progress-multi1:indeterminate::after {
+    animation: 5s progress-loading .1s infinite ease-in-out !important;
+}
+
+.progress-multi2:indeterminate::after {
+    animation: 5s progress-loading .2s infinite ease-in-out !important;
+}
+
+
+.progress-multi::-webkit-progress-bar {
+    background-color: transparent !important;
 }

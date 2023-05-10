@@ -5,7 +5,7 @@ export const ColorInlineLeaf = (props) => {
     return <span className="inline-color-wrapper relative">
         <span
             contentEditable={false}
-            className="relative top-[-.6rem] inline-block border border-secondary p-px mr-1 w-3 h-3 bg-clip-content select-none"
+            className="relative top-[-.6rem] inline-block border border-neutral p-px mr-1 w-3 h-3 bg-clip-content select-none"
             style={{ fontSize: 0, backgroundColor: `${content}` }}
         >
             {String.fromCodePoint(160) /* Non-breaking space */}

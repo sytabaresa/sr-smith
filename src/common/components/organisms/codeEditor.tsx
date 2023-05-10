@@ -22,7 +22,7 @@ import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { AutolinkerLeaf } from "@components/molecules/editor/autolinker";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, changeCodeAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
+import { changeAtom, changeCodeAtom, editorAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
 import { colorInline } from "@modules/editor/plugins/colorinline";
 import { autolinker } from "@modules/editor/plugins/autolinker";
 import { ColorInlineLeaf } from "@components/molecules/editor/colorInline";
@@ -62,7 +62,7 @@ const ElementRender = props => {
 
     switch (element.type) {
         case 'paragraph':
-            return <p className={`border-neutral border-t relative ${element.error ? 'border-error border-r-4' : ''}`} {...attributes}>
+            return <p className={`border-base-300 border-t first:border-t-0 relative ${element.error ? 'border-error border-r-4' : ''}`} {...attributes}>
                 {children}
             </p>
         case 'code-line':
@@ -144,12 +144,12 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     // machines
     const send = useSetAtom(editorServiceAtom)
 
-    const editor = useMemo(() => withParagraphs(withReact(withHistory(createEditor()))), [])
+    const editor = useAtomValue(editorAtom)
     // const initialValue = useMemo(() => deserializeCode(``), [])
     const initialValue = [{
         type: 'paragraph',
         children: [{
-            type: 'code-line', 
+            type: 'code-line',
             children: [{ text: '' }]
         }]
     }]
@@ -187,7 +187,7 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     }, [])
 
     return (
-        <div className={`border border-secondary bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
+        <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                 {toolbar?.(editor)}
             </div>
@@ -286,9 +286,18 @@ const ErrorMsg = () => {
     const current = useAtomValue(editorServiceAtom)
     const { errorMsg } = current.context
 
-    return <div className={`alert alert-error transition-opacity duration-200 
+    return <div className={`alert bg-accent text-black transition-opacity duration-200 relative
     ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
-        {errorMsg.toString()}
+        <div className="absolute bottom-0 right-0 h-4 -skew-x-12 mr-4 gap-0">
+            <div className="bg-black h-full w-4 ml-4"></div>
+            <div className="bg-black h-full w-4 ml-4"></div>
+            <div className="bg-black h-full w-4 ml-4"></div>
+            <div className="bg-black h-full w-4 ml-4"></div>
+            <div className="bg-black h-full w-4 ml-4"></div>
+        </div>
+        <p className="">
+            {errorMsg.toString()}
+        </p>
     </div>
 }
 

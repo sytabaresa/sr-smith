@@ -29,7 +29,7 @@ const ProjectCard = (props: ProjectCard) => {
     }
 
     return (
-        <div className={`border-secondary border-2 hover:border-4 hover:border-primary card bg-base-100
+        <div className={`border-neutral border-2 hover:border-4 hover:border-primary card bg-base-100
         rounded-b-none w-80 h-80 md:h-72 flex flex-col shadow-md cursor-pointer relative ${className}`}
             onClick={(e) => { goToSavedProject(id) }}
             {...rest}>

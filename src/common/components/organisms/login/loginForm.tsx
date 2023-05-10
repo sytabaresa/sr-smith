@@ -91,9 +91,9 @@ const LoginForm = ({ }: LoginFormProps) => {
       >
         {isSubmitting ? t.login.logging_in() + "..." : isSubmitSuccessful ? t.login.done() : t.login.login()}
       </button>
-      <button className="group btn btn-outline bg-base-100 text-red-400
-       hover:bg-red-400 hover:border-red-400 w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>
-        <div className="w-6 h-6 fill-red-400 group-hover:fill-base-100 mr-4">
+      <button className="group btn btn-outline bg-base-100 text-secondary
+       hover:bg-secondary hover:border-secondary w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>
+        <div className="w-6 h-6 fill-secondary group-hover:fill-base-100 mr-4">
           <GoogleIcon />
         </div>
         {t.login.google_login()}

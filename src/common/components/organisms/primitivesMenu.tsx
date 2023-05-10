@@ -14,10 +14,12 @@ import ImCircleTooltip from "@core/tooltips/imCircle";
 import { useTranslation } from "@modules/i18n"
 import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { drawServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
+import { HistoryEditor } from "slate-history";
+import { editorAtom } from "@modules/editor/atoms";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -26,6 +28,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation()
   const [current, send] = useAtom(drawServiceAtom)
+  const editor = useAtomValue(editorAtom)
 
   const [offset, setOffset] = useState(0)
 
@@ -66,47 +69,51 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     <div className={`flex flex-col ${className || ''}`} {...rest}>
       <div className=" flex gap-2 lg:mt-0 mt-2 mb-2 flex-0">
 
-        <div className="btn-group">
+        <div className="">
           <button
             aria-label={t.canvas.undo()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square !btn-disabled`}
-            onClick={() => send('UNDO')}>
+            className={`btn btn-outline btn-primary bg-base-100 btn-square`}
+            onClick={() => {
+              send('UNDO')
+              HistoryEditor.undo(editor)
+            }}>
             <ReplyIcon className="w-6" />
+
           </button>
         </div>
-        <div className="btn-group">
+        <div className="">
           <button
             aria-label={t.canvas.delete()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square ${current.name == "delete" ? 'btn-active' : ''}`}
+            className={`btn btn-outline btn-secondary btn-outline-accent bg-base-100 btn-square ${current.name == "delete" ? 'btn-active' : ''}`}
             onClick={_delete}>
             <TrashIcon className="w-6" />
           </button>
         </div>
       </div>
       <div className="flex gap-2 flex-0">
-        <div className={`btn-group`}>
+        <div className={``}>
           <button
             aria-label={t.canvas.elements_menu()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square ${showMenu ? 'btn-active' : ''}`}
+            className={`btn btn-outline btn-square ${showMenu ? 'btn-active' : ''}`}
             onClick={() => setShowMenu(!showMenu)}>
             <TemplateIcon className="w-6" />
           </button>
         </div>
-        <div className="btn-group">
+        <div className="">
           <button
             aria-label={t.canvas.move()}
             tabIndex={0}
-            className={`toolbox-btn !btn-square ${current.name == "idle" ? 'btn-active' : ''}`}
+            className={`btn btn-outline btn-primary btn-outline-accent btn-square ${current.name == "idle" ? ' btn-active' : ''}`}
             onClick={() => send('EXIT')}>
             <HandIcon className="w-6" />
           </button>
         </div>
       </div>
       <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] z-0 ${showMenu ? 'dropdown-open' : ''}`}>
-        <div className="dropdown-content mt-2 border-secondary border bg-base-100">
+        <div className="dropdown-content mt-2 border-neutral border bg-base-100">
           <ul
             tabIndex={0}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
