@@ -27,24 +27,27 @@ const EditorDesktop = (props: EditorPopupProps) => {
     useEffect(() => {
         setTimeout(() => {
             // console.log('focus')
-            document.getElementById('run-code').scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+            document.getElementById('code-end').scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
         }, 1000)
         setWarning(false)
     }, [select])
 
     return (
         <div {...props}>
-            <button
-                // preset="filled"
-                className={`btn btn-outline bg-base-100 ${isOpen ? 'btn-active' : ''}`}
-                onClick={() => setOpen(!isOpen)}
-            >
-                {t.canvas.code()}
-            </button>
+            <div className="indicator">
+                <span className={`indicator-item badge badge-error top-[.5rem] right-[.2rem] ${current.name == 'error' ? '' : 'hidden'}`}></span>
+                <button
+                    // preset="filled"
+                    className={`btn btn-outline bg-base-100 ${isOpen ? 'btn-active' : ''}`}
+                    onClick={() => setOpen(!isOpen)}
+                >
+                    {t.canvas.code()}
+                </button>
+            </div>
             {typeof document != 'undefined' &&
                 createPortal(
                     <>
-                        <div className={`p-2 bg-transparent lg:hidden z-[999] w-full h-[50vh] ${isOpen ? 'absolute bottom-0 left-0' : 'hidden'}`}>
+                        <div className={`p-2 bg-transparent lg:hidden z-20 w-full h-[50vh] ${isOpen ? 'absolute bottom-0 left-0' : 'hidden'}`}>
                             <CodeEditor
                                 className="h-full"
                                 toolbar={editor => <div className="flex items-start">
@@ -55,12 +58,13 @@ const EditorDesktop = (props: EditorPopupProps) => {
                                         <EditorError />
                                     </div>
                                     <div className="flex items-center">
-                                        <button id="run-code" onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
+                                        <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
                                             {t.canvas.run()}
                                         </button>
                                         <button
-                                            className={`btn btn-outline btn-circle mr-2 animate-tilt-shake transition-all
-                                             ${current.name == 'error' ? 'w-12 btn-warning' : 'btn-neutral w-0'}`}
+                                            className={`btn btn-outline btn-circle mr-2 transition-all
+                                            ${warning ? 'animation-none' : ''}
+                                            ${current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0'}`}
                                             tabIndex={0}
                                             onClick={() => setWarning(!warning)}
                                             aria-label={t.canvas.warning()}
@@ -86,7 +90,7 @@ const EditorDesktop = (props: EditorPopupProps) => {
                                 </> as any}
                             />
                         </div>
-                    </> as any, document.body)}
+                    </> as any, document.getElementsByClassName('drawer-content')[0])}
         </div >
     );
 }

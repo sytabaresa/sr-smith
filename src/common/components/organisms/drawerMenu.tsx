@@ -20,8 +20,6 @@ export interface DrawerSmithMenuProps extends HTMLAttributes<HTMLDivElement> {
 
 const DrawerMenu = (props) => {
     const send = useSetAtom(savingServiceAtom)
-    const { useHistory } = useRouter()
-    const { push } = useHistory();
     const { t } = useTranslation();
     const { isAuthenticated } = useUser()
     const _logout = useLogout()

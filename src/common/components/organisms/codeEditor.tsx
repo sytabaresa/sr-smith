@@ -131,7 +131,6 @@ const decorate = ([blockNode, blockPath]) => {
     return ranges
 }
 
-const updateEditor = (state) => ['parsing', 'initializing'].includes(state)
 const updateAtom = atom(0)
 let timer = null // not concurrent
 const CodeEditor = ({ className, toolbar, footer, ...rest }: CodeEditor) => {
@@ -182,7 +181,7 @@ const CodeEditor = ({ className, toolbar, footer, ...rest }: CodeEditor) => {
         event.preventDefault()
     }, [])
 
-    return (
+    return <>
         <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                 {toolbar?.(editor)}
@@ -253,15 +252,24 @@ const CodeEditor = ({ className, toolbar, footer, ...rest }: CodeEditor) => {
                 }
             </div>
             {footer?.(editor)}
-        </div >
-    );
+        </div>
+        <div id="code-end"></div>
+    </>
 }
 
+const updateEditor = (state) => ['parsing', 'initializing'].includes(state)
 const EditorUpdater = ({ editor }) => {
     const current = useAtomValue(editorServiceAtom)
     const sendSave = useSetAtom(savingServiceAtom)
     const [u, setU] = useAtom(updateAtom)
     const { code } = current.context
+
+
+    useEffect(() => {
+        const newCode = deserializeCode(code)
+        if (newCode.length > 0)
+            editor.children = deserializeCode(code) as Descendant[]
+    }, [])
 
     useEffect(() => {
         if (updateEditor(current.name) && code != '') {

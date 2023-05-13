@@ -106,7 +106,9 @@ const en: Translation = {
 		fail: 'fail',
 		uploading: 'uploading',
 		follow_link: 'Follow link',
-		ctrl_click: 'ctrl+click'
+		ctrl_click: 'ctrl+click',
+		warning: 'warning',
+		error: 'error'
 	},
 	settings: {
 		make_public: "Make Public",

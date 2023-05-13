@@ -112,7 +112,9 @@ const es: BaseTranslation = {
 		fail: 'fallo',
 		uploading: 'subiendo',
 		follow_link: 'Seguir link',
-		ctrl_click: 'ctrl+click'
+		ctrl_click: 'ctrl+click',
+		warning: 'atención',
+		error: 'error',
 	},
 	settings: {
 		make_public: "Hacer público",

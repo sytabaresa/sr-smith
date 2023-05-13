@@ -22,7 +22,7 @@ const EditorDesktop = (props: EditorDesktopProps) => {
             toolbar={editor => <ToolbarControls editor={editor} /> as any}
             footer={editor => <>
                 <EditorError />
-                <button id="run-code" onClick={parseExecute} className="btn btn-outline">
+                <button onClick={parseExecute} className="btn btn-outline">
                     {t.canvas.run()}
                 </button>
             </> as any}

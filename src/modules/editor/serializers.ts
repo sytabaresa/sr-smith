@@ -1,5 +1,5 @@
 import { jsx } from 'slate-hyperscript'
-import { Node as SlateNode, Text } from 'slate'
+import { Descendant, Node as SlateNode, Text } from 'slate'
 import { splitLines } from './splitter'
 
 export const deserialize = (el: HTMLElement, markAttributes = {}) => {
@@ -73,7 +73,7 @@ export const deserializeTokens = (el) => {
     return children
 }
 
-export const deserializeCode = (code: string) => {
+export const deserializeCode = (code: string): Descendant[] => {
 
     return splitLines(code)[0].map(sta => ({
         type: 'paragraph',

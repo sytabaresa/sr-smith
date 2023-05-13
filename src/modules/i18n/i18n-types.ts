@@ -361,6 +361,14 @@ type RootTranslation = {
 		 * c​t​r​l​+​c​l​i​c​k
 		 */
 		ctrl_click: string
+		/**
+		 * w​a​r​n​i​n​g
+		 */
+		warning: string
+		/**
+		 * e​r​r​o​r
+		 */
+		error: string
 	}
 	settings: {
 		/**
@@ -850,6 +858,14 @@ export type TranslationFunctions = {
 		 * ctrl+click
 		 */
 		ctrl_click: () => LocalizedString
+		/**
+		 * warning
+		 */
+		warning: () => LocalizedString
+		/**
+		 * error
+		 */
+		error: () => LocalizedString
 	}
 	settings: {
 		/**
