@@ -2,19 +2,16 @@ import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "reac
 import { useTranslation } from "@modules/i18n";
 
 import prism from 'prismjs/components/prism-core.js';
-// import "prismjs/components/prism-clike";
-// import "prismjs/components/prism-javascript";
 import '@modules/editor/jessieCode'
 import "prismjs/themes/prism-solarizedlight.min.css";
-
 const { languages, tokenize } = prism;
 
 // Import the Slate editor factory.
-import { createEditor, Text, Element, Node, Descendant, Editor } from 'slate'
+import { Element, Node, Descendant, Editor, setSelection } from 'slate'
 
 // Import the Slate components and React plugin.
-import { Slate, Editable, withReact, useSlateStatic } from 'slate-react'
-import { HistoryEditor, withHistory } from 'slate-history'
+import { Slate, Editable, useSlateStatic } from 'slate-react'
+import { HistoryEditor } from 'slate-history'
 import { deserializeCode, serializeCode } from '@modules/editor/serializers'
 import { normalizeTokens } from "@modules/editor/normalizeTokens";
 
@@ -22,16 +19,16 @@ import { normalizeTokens } from "@modules/editor/normalizeTokens";
 import { AutolinkerLeaf } from "@components/molecules/editor/autolinker";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, changeCodeAtom, editorAtom, keyAtom, keyDownAtom, keyUpAtom } from "@modules/editor/atoms";
+import { changeAtom, changeCodeAtom, editorAtom, keyAtom, keyDownAtom, keyUpAtom, selectionAtom } from "@modules/editor/atoms";
 import { colorInline } from "@modules/editor/plugins/colorinline";
 import { autolinker } from "@modules/editor/plugins/autolinker";
 import { ColorInlineLeaf } from "@components/molecules/editor/colorInline";
 import { SearcherPopup } from "@components/molecules/editor/searcher";
-import withParagraphs from "@modules/editor/withParagraph";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     // code: string;
     toolbar?: (editor: Editor) => ReactNode
+    footer?: (editor: Editor) => ReactNode
 };
 
 const LeafRender = (props) => {
@@ -59,12 +56,11 @@ const ElementRender = props => {
     const editor = useSlateStatic() //TODO: implement line number
 
     // console.log(props)
-
     switch (element.type) {
         case 'paragraph':
-            return <p className={`border-base-300 border-t first:border-t-0 relative ${element.error ? 'border-error border-r-4' : ''}`} {...attributes}>
+            return <div className={`border-base-300 border-t first:border-t-0 relative ${element.error ? 'border-error border-r-4' : ''}`} {...attributes}>
                 {children}
-            </p>
+            </div>
         case 'code-line':
             return <div className={`relative`} {...attributes}>
                 {children}
@@ -138,7 +134,7 @@ const decorate = ([blockNode, blockPath]) => {
 const updateEditor = (state) => ['parsing', 'initializing'].includes(state)
 const updateAtom = atom(0)
 let timer = null // not concurrent
-const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
+const CodeEditor = ({ className, toolbar, footer, ...rest }: CodeEditor) => {
     const { t } = useTranslation()
 
     // machines
@@ -146,7 +142,7 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
 
     const editor = useAtomValue(editorAtom)
     // const initialValue = useMemo(() => deserializeCode(``), [])
-    const initialValue = [{
+    const initialValue: Descendant[] = [{
         type: 'paragraph',
         children: [{
             type: 'code-line',
@@ -169,7 +165,6 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     // useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
 
     // FSM actions
-    const parseExecute = useCallback(() => send('PARSE'), [])
     const setActualCode = useCallback((code) => send({ type: "CODE", value: code }), [])
 
     // key events
@@ -178,6 +173,7 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
     const setKeyEvent = useSetAtom(keyAtom)
 
     const setChangeCode = useSetAtom(changeCodeAtom)
+    const setSelection = useSetAtom(selectionAtom)
     const setChange = useSetAtom(changeAtom)
 
     const changeClipboardContent = useCallback((event) => {
@@ -194,7 +190,6 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
             <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1">
                 {typeof window != 'undefined' &&
                     <Slate
-                        // <Suspense fallback={<textarea className="w-full h-full flex-1"></textarea>}>
                         editor={editor}
                         value={initialValue}
                         onChange={(value) => {
@@ -213,49 +208,51 @@ const CodeEditor = ({ className, toolbar, ...rest }: CodeEditor) => {
                                     //     editor.children = deserializeCode(code) as Descendant[]
                                     //     setU(u + 1)
                                 }, 1000)
+                            } else {
+                                setSelection({})
                             }
                         }}
                     >
-                        <EditorUpdater editor={editor} />
-                        <SearcherPopup editor={editor} />
-                        <Editable
-                            renderElement={ElementRender}
-                            renderLeaf={LeafRender}
-                            decorate={decorate}
-                            className="font-mono h-full"
-                            placeholder={t.canvas.placeholder()}
-                            aria-label={t.common.code()}
-                            onKeyDown={(event) => {
-                                event.stopPropagation()
-                                setKeyEvent(event)
-                                setKeyDownEvent(event)
-                                if (event.ctrlKey && event.key == 'z') {
-                                    HistoryEditor.undo(editor)
-                                }
-                                if (event.ctrlKey && event.key == 'y') {
-                                    HistoryEditor.redo(editor)
-                                }
-                            }}
-                            onKeyUp={(event) => {
-                                setKeyEvent(event)
-                                setKeyUpEvent(event)
-                            }}
-                            onCopy={changeClipboardContent}
-                            spellcheck={false}
-                            autocorrect={false}
-                            autocapitalize={false}
-                        // spellCheck={false}
-                        // autoCorrect={false}
-                        // autoCapitalize={false}
-                        />
+                        {<>
+                            <EditorUpdater editor={editor} />
+                            <SearcherPopup editor={editor} />
+                            <Editable
+                                renderElement={ElementRender}
+                                renderLeaf={LeafRender}
+                                decorate={decorate}
+                                disableDefaultStyles
+                                className='outline-none whitespace-pre-wrap break-words min-h-full font-mono'
+                                placeholder={t.canvas.placeholder()}
+                                aria-label={t.common.code()}
+                                onKeyDown={(event) => {
+                                    event.stopPropagation()
+                                    setKeyEvent(event)
+                                    setKeyDownEvent(event)
+                                    if (event.ctrlKey && event.key == 'z') {
+                                        HistoryEditor.undo(editor)
+                                    }
+                                    if (event.ctrlKey && event.key == 'y') {
+                                        HistoryEditor.redo(editor)
+                                    }
+                                }}
+                                onKeyUp={(event) => {
+                                    setKeyEvent(event)
+                                    setKeyUpEvent(event)
+                                }}
+                                onCopy={changeClipboardContent}
+                                spellcheck={false}
+                                autocorrect={false}
+                                autocapitalize={false}
+                                autoComplete="false"
+                            // spellCheck={false}
+                            // autoCorrect={false}
+                            // autoCapitalize={false}
+                            />
+                        </> as any}
                     </Slate>
-                    // </Suspense>
                 }
             </div>
-            <ErrorMsg />
-            <button onClick={parseExecute} className="btn btn-outline">
-                {t.canvas.run()}
-            </button>
+            {footer?.(editor)}
         </div >
     );
 }
@@ -280,25 +277,6 @@ const EditorUpdater = ({ editor }) => {
     }, [code]);
 
     return <></>
-}
-
-const ErrorMsg = () => {
-    const current = useAtomValue(editorServiceAtom)
-    const { errorMsg } = current.context
-
-    return <div className={`alert bg-accent text-black transition-opacity duration-200 relative
-    ${current.name == 'error' ? "opacity-100" : "opacity-0 py-0"}`}>
-        <div className="absolute bottom-0 right-0 h-4 -skew-x-12 mr-4 gap-0">
-            <div className="bg-black h-full w-4 ml-4"></div>
-            <div className="bg-black h-full w-4 ml-4"></div>
-            <div className="bg-black h-full w-4 ml-4"></div>
-            <div className="bg-black h-full w-4 ml-4"></div>
-            <div className="bg-black h-full w-4 ml-4"></div>
-        </div>
-        <p className="">
-            {errorMsg.toString()}
-        </p>
-    </div>
 }
 
 export default CodeEditor;

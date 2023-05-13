@@ -11,3 +11,4 @@ export const keyAtom = atom<React.KeyboardEvent<HTMLDivElement>>(null)
 
 export const changeCodeAtom = atom<Descendant[]>(null)
 export const changeAtom = atom<Descendant[]>(null)
+export const selectionAtom = atom<object>({})

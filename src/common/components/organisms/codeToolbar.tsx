@@ -1,10 +1,9 @@
 import { HTMLAttributes } from "react";
 import PrimitivesMenu from "./primitivesMenu";
-import CodeEditor from "./codeEditor";
 import { isMobile, useScreen } from "@hooks/useScreen";
 import SmithButton from "@components/atoms/smithButton";
-import ToolbarControls from "@components/atoms/toolbarControls";
-import EditorPopup from "./editorPopup";
+import EditorMobile from "./editorMobile";
+import EditorDesktop from "./editorDesktop";
 
 interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -18,16 +17,13 @@ const CodeToolbar = (props: CodeToolbarProps) => {
   return (
     <div className={`${className || ''}`} {...rest}>
       <div id="code-desktop" className="flex">
-        {!mobile && <CodeEditor
-          className="flex h-[93vh] w-[30vw] max-w-[30rem]"
-          toolbar={editor => <ToolbarControls editor={editor} />}
-        />}
+        {!mobile && <EditorDesktop className="" />}
       </div>
       {/* {!mobile ? <div className="flex h-[93vh] w-[30vw] bg-red-400" ></div>: null} */}
       <div className="flex flex-col md:flex-row-reverse lg:mx-2 lg:mt-0 flex-1">
         <div className="flex md:flex-col items-center">
           <div className="flex">
-            {mobile && <EditorPopup className="flex-0" />}
+            {mobile && <EditorMobile className="flex-0" />}
           </div>
           <div className="form-control mx-2">
             <SmithButton />

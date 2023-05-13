@@ -1,79 +1,126 @@
+@layer utilities {
 
-.animate-pulse-1 {
-	opacity: 1;
-	animation: 10s pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-	
-}
-.animate-pulse-2 {
-	opacity: 1;
-	animation: 10s pulse 11.45s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
+    .animate-pulse-1 {
+        opacity: 1;
+        animation: 10s pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
-.animate-pulse-3 {
-	opacity: 1;
-	animation: 10s pulse 6.27s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
+    }
+
+    .animate-pulse-2 {
+        opacity: 1;
+        animation: 10s pulse 11.45s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .animate-pulse-3 {
+        opacity: 1;
+        animation: 10s pulse 6.27s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
 
 
-@keyframes upDown {
-	0% {
-		opacity: 0;
-	}
-	50% {
-		opacity: 1;
-	}
-	1000% {
-		opacity: 0;
-	}
-  }
-/* .animate-i::after {
+    @keyframes upDown {
+        0% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        1000% {
+            opacity: 0;
+        }
+    }
+
+    /* .animate-i::after {
 	content: '';
 	width: 150%;
 	-webkit-box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
 	-moz-box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
 	box-shadow: -35px 0px 60px 8px rgba(255,255,255,1);
 } */
-@keyframes flickerI {
-	0% {
-		opacity: 0.4;
-	}
-	5% {
-		opacity: 0.5;
-	}
-	10% {
-		opacity: 0.6;
-	}
-	15% {
-		opacity: 0.85;
-	}
-	25% {
-		opacity: 0.5;
-	}
-	30% {
-		opacity: 1;
-	}
-	35% {
-		opacity: 0.1;
-	}
-	40% {
-		opacity: 0.25;
-	}
-	45% {
-		opacity: 0.5;
-	}
-	60% {
-		opacity: 1;
-	}
-	70% {
-		opacity: 0.85;
-	}
-	80% {
-		opacity: 0.4;
-	}
-	90% {
-		opacity: 0.5;
-	}
-	100% {
-		opacity: 1;
-	}
+    @keyframes flickerI {
+        0% {
+            opacity: 0.4;
+        }
+
+        5% {
+            opacity: 0.5;
+        }
+
+        10% {
+            opacity: 0.6;
+        }
+
+        15% {
+            opacity: 0.85;
+        }
+
+        25% {
+            opacity: 0.5;
+        }
+
+        30% {
+            opacity: 1;
+        }
+
+        35% {
+            opacity: 0.1;
+        }
+
+        40% {
+            opacity: 0.25;
+        }
+
+        45% {
+            opacity: 0.5;
+        }
+
+        60% {
+            opacity: 1;
+        }
+
+        70% {
+            opacity: 0.85;
+        }
+
+        80% {
+            opacity: 0.4;
+        }
+
+        90% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+
+    @keyframes shakeing {
+        0% {
+            transform: translateY(0)
+        }
+
+        25% {
+            transform: translateY(-5px)
+        }
+
+        50% {
+            transform: translateY(0)
+        }
+
+        75% {
+            transform: translateY(-5px)
+        }
+
+        100% {
+            transform: translateY(0)
+        }
+    }
+
+    .animate-tilt-shake {
+        opacity: 1;
+        animation: 0.25s linear shakeing 3;
+    }
 }

@@ -13,9 +13,9 @@ export function useServiceWoker() {
     }
 
     useEffect(() => {
-        navigator.serviceWorker.addEventListener('message', changeHandler)
+        navigator.serviceWorker?.addEventListener('message', changeHandler)
         return () => {
-            navigator.serviceWorker.removeEventListener('message', changeHandler)
+            navigator.serviceWorker?.removeEventListener('message', changeHandler)
         }
     }, [])
 

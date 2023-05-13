@@ -1,8 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import '@styles/index.css'
-import '@styles/main.css';
-// import '@styles/animations.css';
-import '@styles/fonts.css'
 
 import '@db/rxdb/plugins'
 import { useRouter } from '@modules/router';
@@ -26,7 +23,6 @@ if (process.env.NODE_ENV == 'development') {
 }
 
 export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
-
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
   const isOnline = useAtomValue(onlineAtom)
@@ -49,7 +45,7 @@ export function App({ children, pageContext }: { children: preact.ComponentChild
     // service worker lifecycle handlers
     const _async = async () => {
       // await initFirebase() //await
-      if (import.meta.env.MODE === 'development') {
+      if (import.meta.env.MODE === 'development' && typeof navigator != 'undefined') {
         await initializeSW()
       }
 

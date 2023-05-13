@@ -3,7 +3,7 @@
  *  */
 
 
- /* NEcesary in mobile, for full (no overflow) size of canvas */
+ /* Neeesary in mobile, for full (no overflow) size of canvas */
  .full-screen-div {
     height: 100vh; /* Fallback for browsers that do not support Custom Properties */
     height: calc(var(--vh, 1vh) * 100);
