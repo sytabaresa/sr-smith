@@ -6,11 +6,14 @@ import DrawerMenu from "@components/organisms/drawerMenu";
 import { UserMenu } from "@components/organisms/userMenu";
 import Footer from "@components/organisms/footer";
 
+// custom elements
 import "@core/elements/smithPoint"
+import "@core/elements/point"
 import "@core/elements/reCircle"
 import "@core/elements/imCircle"
 import "@core/elements/imCircleAd"
 import "@core/elements/reCircleAd"
+import "@core/elements/complex"
 
 import '@styles/jsxgraph.css';
 

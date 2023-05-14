@@ -1,10 +1,8 @@
-import { JXGOptions, PointOptions } from "jsxgraph"
+import { GeometryElement, JXGOptions, PointOptions } from "jsxgraph"
 import JXG from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
-import { Infobox } from "@components/atoms/infobox"
-import render from 'preact-render-to-string';
-import { h } from "preact";
-import { BoardOptions } from "@core/atoms/smith";
+import { BoardOptions, infoboxAtom } from "@core/atoms/smith";
+import { Getter, Setter } from "jotai";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -33,7 +31,7 @@ export const changeBoardTheme = (theme: string) => {
     }
 }
 
-export const initBoard = (options: BoardOptions) => {
+export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
     // console.log(options)
     changeBoardTheme(options?.theme || 'light')
 
@@ -81,24 +79,20 @@ export const initBoard = (options: BoardOptions) => {
         ...options,
     } as any);
 
-    brd.suspendUpdate()
+    brd.suspendUpdate();
 
 
     // JXG.Options.infobox.strokeColor = 'red';
 
-    brd.highlightInfobox = function (x, y, el) {
-
-        const body = render(
-            h(Infobox, { x, y })
-        )
-        // console.log(body)
-        this.infobox.setText(body);
-
+    brd.highlightInfobox = function (x: number, y: number, el: GeometryElement) {
+        set(infoboxAtom, { x, y, el })
+        this.infobox.setText('')
         return this
-    };
+    }
 
-    (brd.infobox as any).distanceX = 0;
-    (brd.infobox as any).distanceY = 10;
+    brd.infobox.visProp.distancex = options.infobox?.x ?? 0
+    brd.infobox.visProp.distancey = options.infobox?.y ?? 0
+
 
     // brd.create('axis', [[0,0], [1,0]], {
     //     ticks: {

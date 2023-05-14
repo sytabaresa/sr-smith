@@ -140,24 +140,9 @@ const CodeEditor = ({ className, toolbar, footer, ...rest }: CodeEditor) => {
     const send = useSetAtom(editorServiceAtom)
 
     const editor = useAtomValue(editorAtom)
-    // const initialValue = useMemo(() => deserializeCode(``), [])
-    const initialValue: Descendant[] = [{
-        type: 'paragraph',
-        children: [{
-            type: 'code-line',
-            children: [{ text: '' }]
-        }]
-    }]
+    const initialValue = useMemo(() => deserializeCode(''), [])
 
     // console.log(initialValue)
-
-    useEffect(() => {
-        send('INIT')
-
-        // return () => {
-        //     send(RESET)
-        // }
-    }, [])
 
     // for update on parsing
     useAtomValue(updateAtom)

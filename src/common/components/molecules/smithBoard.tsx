@@ -8,6 +8,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { useTranslation } from "@modules/i18n";
 import { RESET } from "jotai/utils";
 import { useUser } from "@hooks/useAuthProvider";
+import InfoboxContainer from "./infoboxContainer";
 
 export interface SmithBoardProps { };
 
@@ -66,6 +67,7 @@ const SmithBoard = (props: SmithBoardProps) => {
         aria-label="canvas"
     // style={{ width: '500px', height: '500px' }}
     >
+        <InfoboxContainer/>
         <img src="/images/smith-chart-dark.svg" alt="smith-board-img" srcset="" className="hidden" loading={'lazy'} />
     </div>
 

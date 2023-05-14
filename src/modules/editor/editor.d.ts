@@ -7,6 +7,7 @@ import { ReactEditor } from 'slate-react'
 type CustomElement = {
     type: 'paragraph' | 'code-line';
     children: Array<CustomElement | CustomText>
+    error?: boolean
 }
 
 type CustomText = { text: string }

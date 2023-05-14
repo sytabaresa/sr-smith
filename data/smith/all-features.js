@@ -1,8 +1,9 @@
-/* 
-  ejemplo de sintaxis
-  ver: https://syta.co/
-*/
-
+/**
+ * All Features Example
+ * @author: Sebastian Tabares (me@syta.co)
+ * @webpage: https://syta.co/
+ * @version: 1.0
+ **/
 
 A = spoint(2, 1.653) << strokeColor: "red", face: "[]", size: 7, fillColor: 'black' >> ;
 k_a = circle(po, A);

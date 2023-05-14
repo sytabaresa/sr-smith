@@ -29,11 +29,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
 // const configTransition = transition('CONFIG', 'initializing', reduce(setConfig))
 
 // fsm
-export default createMachine('init', {
-    init: state(
-        // immediate('idle')
-        transition('INIT', 'idle')
-    ),
+export default createMachine('idle', {
     idle: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),
         transition("CODE", 'idle', reduce(setCode)),

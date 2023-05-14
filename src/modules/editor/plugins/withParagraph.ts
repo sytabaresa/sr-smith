@@ -1,6 +1,5 @@
-import { Transforms, Element, Node, Path, Editor, nodes } from 'slate'
-import { splitLines } from './splitter'
-import { Transform } from 'stream'
+import { Transforms, Element, Node, Path, Editor } from 'slate'
+import { splitLines } from '../splitter'
 
 const withParagraphs = (editor: Editor) => {
     const { normalizeNode } = editor
@@ -11,7 +10,7 @@ const withParagraphs = (editor: Editor) => {
         // If the element is a paragraph, ensure its children are valid.
         if (Element.isElement(node) && node.type === 'paragraph') {
             // console.log(path, node)
-            const code = [...Node.texts(node)].map(([node, path]) => node.text).join('\n')
+            const code = [...Node.texts(node)].map(([node, _path]) => node.text).join('\n')
             // console.log(code)
             const [blocks, validEnd] = splitLines(code)
             // console.log(code, blocks, validEnd)
@@ -49,7 +48,7 @@ const withParagraphs = (editor: Editor) => {
 
                 Transforms.moveNodes(editor, {
                     at: path,
-                    match: (node, _path) => _path.length == 2 && Path.isAfter(_path, path.concat(index)),
+                    match: (_node, _path) => _path.length == 2 && Path.isAfter(_path, path.concat(index)),
                     to: Path.next(path).concat(0)
                 })
 

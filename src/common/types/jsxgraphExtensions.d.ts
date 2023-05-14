@@ -168,6 +168,7 @@ declare namespace JXG {
     }
     export function createSmithPoint(board: Board, parents: unknown[], attributes: SmithPointAttributes): SmithPoint
     export function createPoint(board: Board, parents: unknown[], attributes: PointAttributes): Point
+    export function createPointOld(board: Board, parents: unknown[], attributes: PointAttributes): Point
     export function createComplex(board: Board, parents: unknown[], attributes: PointAttributes): Point
 
     export interface JXGOptions {

@@ -15,14 +15,20 @@ import ReCircleTooltip from "@tooltips/reCircle";
 import ImCircleTooltip from "@tooltips/imCircle";
 import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
-import { atom } from "jotai";
+import { Getter, Setter, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithStorage } from "jotai/utils";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
-    code: ''
+    code:
+        `/**
+ * My smith design
+ * @author: your name (me@example.org)
+ * @version: 1.0
+**/\n`+
+        'Z_o = 50;'
 }), (get) => ({ board: get(boardAtom) }))
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
     // id: params?.id?.[0],
@@ -80,8 +86,10 @@ function populateBoard(send, board) {
     }
 }
 
-export function recreateBoard(send, params: BoardOptions, oldBoard: any) {
+export function recreateBoard(get: Getter, set: Setter, params: BoardOptions, oldBoard: any) {
     try {
+        const send = (event) => set(drawServiceAtom, event)
+
         const { screen, ...rest } = params
         const boundingBox = screen && screen != '' ? screen : oldBoard.getBoundingBox()
 
@@ -91,7 +99,7 @@ export function recreateBoard(send, params: BoardOptions, oldBoard: any) {
         // if (!this.recreatingBoard) {
         // this.recreatingBoard = true
         // console.log(boardName, options, boundingBox)
-        const board = initBoard({ ...rest, screen: boundingBox })
+        const board = initBoard(get, set, { ...rest, screen: boundingBox })
 
         populateBoard(send, board)
         return board
@@ -116,8 +124,7 @@ export const boardAtom = atom(
     },
     (get, set, params: BoardOptions = null) => {
         // console.log(params)
-        const send = (event) => set(drawServiceAtom, event)
-        const board = recreateBoard(send, {...get(boardConfigAtom), ...params}, get(cachedBoardAtom))
+        const board = recreateBoard(get, set, { ...get(boardConfigAtom), ...params }, get(cachedBoardAtom))
         set(cachedBoardAtom, board)
     }
 )
@@ -128,6 +135,10 @@ export interface BoardOptions {
     name: string;
     digits: number;
     translations: Record<string, any>;
+    infobox: {
+        x: number,
+        y: number
+    }
 }
 
 export const boardConfigAtom = atom<BoardOptions>({
@@ -135,7 +146,11 @@ export const boardConfigAtom = atom<BoardOptions>({
     name: 'smith-box',
     screen: getCurrentBreakpoint(),
     digits: 3,
-    translations: {}
+    translations: {},
+    infobox: {
+        x: -10,
+        y: 10
+    }
 })
 
 export const boardDataAtom = atomWithStorage('config', {
@@ -148,3 +163,9 @@ export const codeAtom = atom<string>(
         return current.context?.code
     }
 )
+
+export const infoboxAtom = atom<{
+    x: number,
+    y: number,
+    el: any
+}>({ x: 0, y: 0, el: undefined })

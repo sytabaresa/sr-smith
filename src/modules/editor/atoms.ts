@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { BaseEditor, Descendant, createEditor } from "slate";
-import withParagraphs from "./withParagraph";
+import withParagraphs from "./plugins/withParagraph";
 import { ReactEditor, withReact } from "slate-react";
 import { HistoryEditor, withHistory } from "slate-history";
 
