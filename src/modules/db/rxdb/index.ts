@@ -82,7 +82,7 @@ const dataProvider =
                 const doc = await _getOne(data)?.exec()
                 return doc?.toJSON()
             },
-            update: async ({ resource, id, variables, meta }: selectMany & { id: string }) => {
+            update: async ({ resource, id, variables, meta }: selectOne & { id: string }) => {
                 const doc = await rxdb[resource]?.findOne({ selector: { id } })?.exec()
                 return doc?.update({ $set: variables })
             },

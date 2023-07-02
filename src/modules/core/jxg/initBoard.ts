@@ -3,6 +3,7 @@ import JXG from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
 import { BoardOptions, infoboxAtom } from "@core/atoms/smith";
 import { Getter, Setter } from "jotai";
+import { getMouseCoords } from "@core/utils/board";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -94,6 +95,58 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
     brd.infobox.visProp.distancey = options.infobox?.y ?? 0
 
 
+    // taken for the original funtion, but modified
+    brd.updateInfobox = function (el) {
+        var x, y, xc, yc,
+            vpinfoboxdigits,
+            distX, distY,
+            vpsi = JXG.evaluate(el.visProp.showinfobox);
+        if ((!JXG.evaluate(this.attr.showinfobox) && vpsi === "inherit") || !vpsi) {
+            return this;
+        }
+        if (JXG.isPoint(el)) {
+            xc = el.coords.usrCoords[1];
+            yc = el.coords.usrCoords[2];
+            distX = JXG.evaluate(this.infobox.visProp.distancex);
+            distY = JXG.evaluate(this.infobox.visProp.distancey);
+            vpinfoboxdigits = JXG.evaluate(el.visProp.infoboxdigits);
+            this.infobox.setCoords(
+                xc + distX / this.unitX,
+                yc + distY / this.unitY
+            );
+
+            if (typeof el.infoboxText !== "string") {
+                if (vpinfoboxdigits === "auto") {
+                    x = JXG.autoDigits(xc);
+                    y = JXG.autoDigits(yc);
+                } else if (JXG.isNumber(vpinfoboxdigits)) {
+                    x = JXG.toFixed(xc, vpinfoboxdigits);
+                    y = JXG.toFixed(yc, vpinfoboxdigits);
+                } else {
+                    x = xc;
+                    y = yc;
+                }
+                this.highlightInfobox(x, y, el);
+            } else {
+                this.highlightCustomInfobox(el.infoboxText, el);
+            }
+            this.displayInfobox(true);
+        } else {
+            const coords = this.getUsrCoordsOfMouse()
+            xc = coords[0];
+            yc = coords[1];
+            distX = JXG.evaluate(this.infobox.visProp.distancex);
+            distY = JXG.evaluate(this.infobox.visProp.distancey);
+            this.infobox.setCoords(
+                xc + distX / this.unitX,
+                yc + distY / this.unitY
+            );
+            this.highlightInfobox(xc, yc, el)
+            this.displayInfobox(true);
+        }
+        return this;
+    }
+
     // brd.create('axis', [[0,0], [1,0]], {
     //     ticks: {
     //         type: 'polar',         // Polar grid
@@ -132,8 +185,8 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
     brd.create('point', [0, 1], { name: 'px2', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [-1, 0], { name: 'px3', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [0, -1], { name: 'px4', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('axis', [[0, 0], [1, 0]], { inmutable: true, name: 'ax_x' })
-    brd.create('axis', [[0, 0], [0, 1]], { inmutable: true, name: 'ax_y' })
+    brd.create('axis', [[0, 0], [1, 0]], { showinfobox: false, inmutable: true, name: 'ax_x' })
+    brd.create('axis', [[0, 0], [0, 1]], { showinfobox: false, inmutable: true, name: 'ax_y' })
 
     brd.unsuspendUpdate()
 

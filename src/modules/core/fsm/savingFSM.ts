@@ -1,6 +1,6 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { SmithProject } from '@localtypes/smith';
-import { editorServiceAtom } from '@core/atoms/smith';
+import { editorServiceAtom, projectDataAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
@@ -9,7 +9,6 @@ import { authAtom } from '@core/atoms/auth';
 
 export interface SavingContextType extends JotaiContext {
     id: string;
-    projectData: SmithProject;
     // loadHandler: (ctx: SavingContextType, ev: any) => void;
     code?: string;
     saveCounter?: number;
@@ -42,11 +41,11 @@ export default createMachine('anon', {
         immediate('checkRead')
     ),
     checkDoc: invoke(getProjectData,
-        transition('done', 'doc', reduce(saveData), action(sendCodeEditor)),
+        transition('done', 'doc', action(saveData), action(sendCodeEditor)),
         transition('error', 'checkRead', action((ctx, ev: any) => console.log('checkDoc error: ', ev.error))),
     ),
     checkRead: invoke(getReadDoc,
-        transition('done', 'readOnly', reduce(saveData), action(sendCodeEditor)),
+        transition('done', 'readOnly', action(saveData), action(sendCodeEditor)),
         transition('error', 'noDoc')
     ),
     readOnly: state(
@@ -82,7 +81,8 @@ export default createMachine('anon', {
 }) as SavingContextType)
 
 function saveData(ctx: SavingContextType, ev: any) {
-    return { ...ctx, projectData: ev.data }
+    const setData = ctx.setter(projectDataAtom)
+    setData(ev.data)
 }
 
 function saveCode(ctx: SavingContextType, ev: any) {
@@ -98,7 +98,7 @@ function checkId(ctx: SavingContextType, ev: any) {
 function sendCodeEditor(ctx: SavingContextType, ev) {
     const send = ctx.setter(editorServiceAtom)
     // console.log('send')
-    send({ type: 'CODE', value: ctx.projectData.data });
+    send({ type: 'CODE', value: ev.data.data });
     send('PARSE')
 }
 

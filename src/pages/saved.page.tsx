@@ -51,7 +51,8 @@ const Refresh = () => {
   // console.log(db)
 
   const refresh = async (e) => {
-    db.data?.refresh()
+    // db.data?.refresh()
+    console.error('not implemented with new db')
   }
 
   return <RefreshIcon className="mx-4 w-10 active:animate-spin" onClick={refresh} />
