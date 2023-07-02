@@ -3,7 +3,7 @@ import { useDataProvider } from "@hooks/useDataProvider";
 import { SmithProject } from "@localtypes/smith";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { useRouter } from "@modules/router";
-import React, { HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 
 
 interface ProjectCard extends HTMLAttributes<HTMLDivElement> {
@@ -18,13 +18,14 @@ const ProjectCard = (props: ProjectCard) => {
     const [query] = useLanguageQuery()
     const { useHistory } = useRouter()
     const { push } = useHistory();
-    const { deleteOne } = useDataProvider()
+    const { data } = useDataProvider()
 
     const goToSavedProject = (id: string) => {
         push('/', { ...query, id: id })
     }
 
     const removeProject = async (id: string) => {
+        const { deleteOne } = data
         await deleteOne({ resource: 'projects', id: id })
     }
 

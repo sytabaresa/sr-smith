@@ -137,11 +137,14 @@ declare namespace JXG {
     // custom
     export let OBJECT_TYPE_SMITH_POINT: number;
     export let OBJECT_TYPE_REAL_CIRCLE: number;
-    export let OBJECT_TYPE_IMAGINARY_CIRCLE: number;
+    export let OBJECT_TYPE_IMAG_CIRCLE: number;
+    export let OBJECT_TYPE_REAL_CIRCLE_AD: number;
+    export let OBJECT_TYPE_IMAG_CIRCLE_AD: number;
 
     // real
     export interface ReCircle extends Circle {
         originPoint: Point;
+        sradius: number;
     }
     export interface ReCircleAttributes extends CircleAttributes {
 

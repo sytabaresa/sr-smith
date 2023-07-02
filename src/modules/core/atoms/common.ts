@@ -3,10 +3,6 @@ import { atom } from 'jotai'
 import { Locales } from '@modules/i18n/i18n-types'
 import { atomWithSomeMap } from '@utils/atoms'
 
-export const projectDataAtom = atom({
-
-})
-
 const _themeAtom = atomWithStorage<string>('theme', typeof Storage !== "undefined" ? JSON.parse(localStorage.getItem("theme") || '"dark"') : 'dark')
 export const themeAtom = atom(
     (get) => {

@@ -4,6 +4,11 @@ import { useTranslation } from "@modules/i18n"
 import { useDataProvider } from "@hooks/useDataProvider";
 import { useRouter } from "@modules/router";
 
+type FormData = {
+  projectName: string;
+  projectDescription: string;
+}
+
 type NewProjectFormProps = {
   // onSubmit: (data: any) => void;
 };
@@ -13,7 +18,7 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
   const { t } = useTranslation()
   const { useHistory } = useRouter()
   const { push } = useHistory();
-  const db = useDataProvider()
+  const { data: dbData } = useDataProvider()
 
   const {
     register,
@@ -22,16 +27,17 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     clearErrors,
     setError,
     formState: { errors, isSubmitted, isSubmitting },
-  } = useForm();
+  } = useForm<FormData>();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormData) => {
+    const { create } = dbData
     if (isSubmitting) return
     // clearErrors()
     const { projectName, projectDescription } = data;
     try {
       // const user = await getUserIdentity(null)
 
-      const doc = await db.data?.create({
+      const doc = await create({
         resource: "projects",
         variables: {
           // createdAt: new Date(),
@@ -48,12 +54,12 @@ const NewProjectForm = ({ }: NewProjectFormProps) => {
     } catch (e) {
       console.error("Error adding document: ", e);
       setError('projectName', { type: 'custom', message: e })
-      reset({ keepValues: true })
+      reset({}, { keepValues: true })
     }
   };
 
   return (
-    <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex flex-col justify-center md:px-20" onSubmit={handleSubmit(onSubmit) as any}>
       <label htmlFor="projectName" className="label">
         <span className="label-text uppercase font-bold">{t.project.name()}*</span>
       </label>
