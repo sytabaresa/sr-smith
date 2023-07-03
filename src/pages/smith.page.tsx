@@ -7,6 +7,7 @@ import { UserMenu } from "@components/organisms/userMenu";
 import Footer from "@components/organisms/footer";
 
 // custom elements
+import "@core/elements/common"
 import "@core/elements/smithPoint"
 import "@core/elements/point"
 import "@core/elements/reCircle"

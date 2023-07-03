@@ -16,6 +16,7 @@ JXG.createReCircle = function (board, parents, attributes) {
         var orig = board.create('point', [r / (r + 1), 0], origAtt)
         var c1: any = board.create('circle', [orig, 1 / (r + 1)], attr);
 
+        c1.sradius = r
         c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE
         c1.elType = 'recircle'
 
@@ -40,6 +41,11 @@ JXG.createReCircle = function (board, parents, attributes) {
             return Math.abs(1 / (r + 1))
         }], attr);
 
+        c1.sradius = function () {
+            const a = p.X()
+            const b = p.Y()
+            return zRePart(a, b)
+        }
         c1.originPoint = p
         c1.type = JXG.OBJECT_TYPE_REAL_CIRCLE
         c1.elType = 'recircle'

@@ -21,7 +21,7 @@ JXG.createSmithPoint = function (board, parents: any[], attributes) {
         sp.SX = () => zRePart(sp.X(), sp.Y())
         sp.SY = () => zImPart(sp.X(), sp.Y())
         return sp as SmithPoint
-    } else if (JXG.isObject(parents[0]) && parents[0].isComplex) {
+    } else if (parents.length == 1 && JXG.isObject(parents[0]) && parents[0].isComplex) {
         var c: JXG.Complex = parents[0]
 
         const re = reflecRePart(c.real, c.imaginary)
@@ -33,7 +33,10 @@ JXG.createSmithPoint = function (board, parents: any[], attributes) {
         sp.SX = () => zRePart(sp.X(), sp.Y())
         sp.SY = () => zImPart(sp.X(), sp.Y())
         return sp as SmithPoint
-
+    } else if (parents.length == 1 && JXG.isNumber(parents[0])) {
+        const re = parents[0]
+        var sp: any = board.create('spoint', [re, 0], attr)
+        return sp as SmithPoint
     } else {
         throw ("Can't create smith point with parent types '" + (typeof parents[0]) + " and " + (typeof parents[1]));
     }

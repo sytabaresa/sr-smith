@@ -3,12 +3,12 @@ import JXG from "jsxgraph"
 import { reflecImPart, reflecRePart } from "@core/utils/transforms";
 
 JXG.createPointOld = JXG.createPoint
-JXG.createPoint = function (board, parents: any[], attributes) {
-
-    if (JXG.isObject(parents[0]) && parents[0].isComplex) {
+JXG.createPoint = function (board, parents: any[], attributes): Point {
+    const attr = JXG.copyAttributes(attributes, board.options, 'point');
+    // console.log(parents)
+    if (parents.length == 1 && JXG.isObject(parents[0]) && parents[0].isComplex) {
         if (!JXG.exists(attributes))
             attributes = {};
-        const attr = JXG.copyAttributes(attributes, board.options, 'point');
 
         var c: JXG.Complex = parents[0]
 
@@ -17,8 +17,12 @@ JXG.createPoint = function (board, parents: any[], attributes) {
         sp.cY = () => reflecImPart(sp.X(), sp.Y())
         return sp as Point
 
+    } else if (parents.length == 1 && JXG.isNumber(parents[0])) {
+        const re = parents[0]
+        var sp: any = board.create('point', [re, 0], attr)
+        return sp as Point
     } else {
-        return JXG.createPointOld(board, parents, attributes)
+        return JXG.createPointOld(board, parents, attr)
     }
 };
 

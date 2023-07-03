@@ -17,7 +17,8 @@ JXG.createImCircle = function (board, parents, attributes) {
         var orig = board.create('point', [1, 1 / r], origAtt)
         var c1: any = board.create('circle', [orig, 1 / r], attr);
 
-        c1.type = JXG.OBJECT_TYPE_IMAGINARY_CIRCLE
+        c1.sradius = r
+        c1.type = JXG.OBJECT_TYPE_IMAG_CIRCLE
         c1.elType = 'imcircle'
 
         return c1 as ImCircle
@@ -38,8 +39,13 @@ JXG.createImCircle = function (board, parents, attributes) {
         var orig = board.create('point', [1, f], origAtt)
         var c1: any = board.create('circle', [orig, () => Math.abs(f())], attr);
 
+        c1.sradius = function () {
+            const a = p.X()
+            const b = p.Y()
+            return zImPart(a, b)
+        }
         c1.originPoint = p
-        c1.type = JXG.OBJECT_TYPE_IMAGINARY_CIRCLE
+        c1.type = JXG.OBJECT_TYPE_IMAG_CIRCLE
         c1.elType = 'imcircle'
 
         return c1 as ImCircle
