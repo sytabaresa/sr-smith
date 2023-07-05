@@ -20,7 +20,7 @@ module.exports = {
     content: [
         './src/index.html',
         './src/pages/**/*.{jsx,tsx}',
-        './src/common/components/**/*.{jsx,tsx}',
+        './src/common/components/**/*.{jsx,tsx,ts}',
         './src/modules/**/*.{jsx,tsx}',
         './src/renderer/**/*.{jsx,tsx}',
     ],

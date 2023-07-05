@@ -1,8 +1,8 @@
 export const ColorInlineLeaf = (props) => {
-    let { children, leaf } = props
-    const { text, type = {}, content, ...rest } = leaf
+    let { children, leaf, attributes, ...rest } = props
+    const { text, type = {}, pos, content } = leaf
 
-    return <span className="inline-color-wrapper relative">
+    return <span className="inline-color-wrapper relative" {...attributes}>
         <span
             contentEditable={false}
             className="relative top-[-.6rem] inline-block border border-neutral p-px mr-1 w-3 h-3 bg-clip-content select-none"

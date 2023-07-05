@@ -23,15 +23,16 @@ export function autolinker(grammar) {
             def.inside = def.inside || {};
 
             if (type == 'comment') {
-                def.inside['md-link'] = linkMd;
+                // def.inside['link'] = { inside: { 'md-link': linkMd } }
+                def.inside['md-link'] = { pattern: linkMd, alias: 'link' };
             }
             if (type == 'attr-value') {
-                prism.languages.insertBefore('inside', 'punctuation', { 'url-link': url }, def);
+                prism.languages.insertBefore('inside', 'punctuation', { 'url-link': { pattern: url, alias: 'link' } }, def);
             } else {
-                def.inside['url-link'] = url;
+                def.inside['url-link'] = { pattern: url, alias: 'link' };
             }
 
-            def.inside['email-link'] = email;
+            def.inside['email-link'] = { pattern: email, alias: 'link' }
         }
     });
     grammar['url-link'] = url;

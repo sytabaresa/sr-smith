@@ -18,8 +18,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { drawServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
-import { HistoryEditor } from "slate-history";
-import { editorAtom } from "@modules/editor/atoms";
+import { editorAtom } from "@components/editor/common/atoms";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -76,7 +75,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             className={`btn btn-outline btn-primary bg-base-100 btn-square`}
             onClick={() => {
               send('UNDO')
-              HistoryEditor.undo(editor)
+              editor.undo()
             }}>
             <ReplyIcon className="w-6" />
 

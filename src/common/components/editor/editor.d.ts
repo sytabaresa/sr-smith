@@ -2,10 +2,10 @@
 import { BaseEditor, Descendant } from 'slate'
 import { HistoryEditor } from 'slate-history';
 import { ReactEditor } from 'slate-react'
-
+import { ELEMENT_PARAGRAPH, ELEMENT_CODE_LINE } from "@udecode/plate-headless"
 
 type CustomElement = {
-    type: 'paragraph' | 'code-line';
+    type: typeof ELEMENT_PARAGRAPH | typeof ELEMENT_CODE_LINE;
     children: Array<CustomElement | CustomText>
     error?: boolean
 }

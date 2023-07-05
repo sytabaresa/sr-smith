@@ -1,5 +1,5 @@
 import ToolbarControls from "@components/atoms/toolbarControls"
-import CodeEditor from "./codeEditor"
+import CodeEditor from "@components/editor/editor"
 import EditorError from "@components/atoms/editorError"
 import { useTranslation } from "@modules/i18n"
 import { useSetAtom } from "jotai"

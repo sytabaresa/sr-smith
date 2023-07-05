@@ -1,14 +1,15 @@
-import { Transforms, Element, Node, Path, Editor } from 'slate'
-import { splitLines } from '../splitter'
+import { Transforms, Element, Node, Path } from 'slate'
+import { splitLines } from '../serializers/splitter'
+import { ELEMENT_PARAGRAPH, PlateEditor, Value } from '@udecode/plate-headless'
 
-const withParagraphs = (editor: Editor) => {
+const withParagraphs = (editor: PlateEditor<Value>) => {
     const { normalizeNode } = editor
 
     editor.normalizeNode = entry => {
         const [node, path] = entry
-        // console.log(node, path, node.operations)
+        console.log(node, path, node.operations)
         // If the element is a paragraph, ensure its children are valid.
-        if (Element.isElement(node) && node.type === 'paragraph') {
+        if (Element.isElement(node) && node.type === ELEMENT_PARAGRAPH) {
             // console.log(path, node)
             const code = [...Node.texts(node)].map(([node, _path]) => node.text).join('\n')
             // console.log(code)
