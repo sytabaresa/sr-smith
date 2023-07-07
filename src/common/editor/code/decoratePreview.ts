@@ -5,8 +5,8 @@ import './prism-jessieCode'
 import "prismjs/themes/prism-solarizedlight.min.css";
 
 import { normalizeTokens } from "../normalize/normalizeTokens";
-import { autolinker } from "@components/editor/autolinker/autolinker-grammar"
-import { colorInline } from "@components/editor/color/colorinline-grammar"
+import { autolinker } from "@editor/autolinker/autolinker-grammar"
+import { colorInline } from "@editor/color/colorinline-grammar"
 import { DecorateEntry, PlateEditor, getPlugin } from "@udecode/plate-common";
 import { CodeBlockPlugin, CodeSyntaxRange, ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE } from "@udecode/plate-code-block"
 import { MyValue } from "../types";

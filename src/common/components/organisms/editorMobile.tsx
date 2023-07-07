@@ -1,5 +1,5 @@
 import { HTMLAttributes, useCallback, useEffect, useState } from "react";
-import CodeEditor from "@components/editor/editor";
+import CodeEditor from "@editor/editor";
 import { useTranslation } from "@modules/i18n";
 import { ChevronDownIcon, ExclamationIcon, ReplyIcon } from "@heroicons/react/outline";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -7,7 +7,7 @@ import { editorServiceAtom } from "@core/atoms/smith";
 import { HistoryEditor } from "slate-history";
 import { createPortal } from "react-dom";
 import EditorError from "@components/atoms/editorError";
-import { selectionAtom } from "@components/editor/common/atoms";
+import { selectionAtom } from "@editor/common/atoms";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 

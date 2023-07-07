@@ -31,6 +31,13 @@
         "common/components/*",
         "common/components/index"
       ],
+      "@editor": [
+        "common/editor/index"
+      ],
+      "@editor/*": [
+        "common/editor/*",
+        "common/editor/index"
+      ],
       "@hoc": [
         "common/hoc/index"
       ],

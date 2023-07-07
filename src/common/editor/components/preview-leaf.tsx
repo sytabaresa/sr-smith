@@ -1,5 +1,4 @@
-import BaseLeaf from "./BaseLeaf";
-import { RenderLeaf } from "@udecode/plate-common";
+import { PlateLeaf, RenderLeaf } from "@udecode/plate-common";
 
 const PreviewLeaf: RenderLeaf = (props) => {
     const { children, attributes, leaf } = props;
@@ -10,7 +9,7 @@ const PreviewLeaf: RenderLeaf = (props) => {
     // const comp = useMemo(() => createPlateUI(), [])
     const classes = Object.keys(type)
     const className = 'token ' + classes.join(' ')
-    let C = BaseLeaf
+    let C = PlateLeaf
 
     // console.log(leaf)
     return <C className={className} leaf={leaf} {...props} {...attributes}>{children}</C>

@@ -18,7 +18,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { drawServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
-import { editorAtom } from "@components/editor/common/atoms";
+import { editorAtom } from "@editor/common/atoms";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };

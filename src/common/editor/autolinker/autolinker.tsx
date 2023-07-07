@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { linkMd } from "@components/editor/autolinker/autolinker-grammar";
+import { linkMd } from "@editor/autolinker/autolinker-grammar";
 import { useHotkeys } from "@udecode/plate-common";
 import { useAtom, useSetAtom } from "jotai";
 import { linkActiveAtom, linkPropsAtom } from "./common";

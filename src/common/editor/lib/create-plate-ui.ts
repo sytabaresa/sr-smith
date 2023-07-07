@@ -1,6 +1,8 @@
 import {
   PlatePluginComponent,
   withProps,
+  PlateElement,
+  PlateLeaf,
 } from '@udecode/plate-common';
 import {
   MARK_BOLD,
@@ -12,9 +14,9 @@ import {
   ELEMENT_CODE_LINE
 } from "@udecode/plate-code-block"
 
-import { DefaultPlatePluginKey } from './DefaultPlatePluginKey';
-import BaseElement from './components/BaseElement';
-import BaseLeaf from './components/BaseLeaf';
+import { DefaultPlatePluginKey } from '../DefaultPlatePluginKey';
+import { CodeBlockElement } from '../components/code-block-element';
+
 
 export const createPlateUI = <T extends string = string>(
   overrideByKey?: Partial<
@@ -22,15 +24,12 @@ export const createPlateUI = <T extends string = string>(
   >
 ) => {
   const components = {
-    [ELEMENT_CODE_BLOCK]: withProps(BaseElement, {
-      as: 'div',
-      className: `border-base-300 border-t first:border-t-0` //${element.error ? 'border-error border-r-4' : ''}`} 
-    }),
-    [ELEMENT_CODE_LINE]: withProps(BaseLeaf, { as: 'div' }),
-    [MARK_BOLD]: withProps(BaseLeaf, { as: 'strong' }),
-    [MARK_CODE]: withProps(BaseLeaf, {
+    [ELEMENT_CODE_BLOCK]: CodeBlockElement,
+    [ELEMENT_CODE_LINE]: withProps(PlateLeaf, { as: 'div' }),
+    [MARK_BOLD]: withProps(PlateLeaf, { as: 'strong' }),
+    [MARK_CODE]: withProps(PlateLeaf, {
       as: 'code',
-      className: `whitespace-pre-wrap text-sm font-mono bg-neutral-200 rounded-sm px-2 py-1`
+      className: `whitespace - pre - wrap text - sm font - mono bg - neutral - 200 rounded - sm px - 2 py - 1`
     }),
   };
 

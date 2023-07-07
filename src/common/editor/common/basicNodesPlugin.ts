@@ -1,5 +1,5 @@
 import { basicMarksPlugins } from './basicMarksPlugins';
-import { createPlateUI } from '../createPlateUI';
+import { createPlateUI } from '../lib/create-plate-ui';
 import { createMyPlugins } from '../types';
 import { basicElementsPlugins } from './basicElementsPlugins';
 

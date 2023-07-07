@@ -5,7 +5,7 @@ import { groupBy } from "@utils/common"
 import { useAtom, useAtomValue } from "jotai"
 import { action, createMachine, guard, reduce, state, transition } from "robot3"
 import { atomWithMachine } from "@utils/atoms"
-import { changeAtom } from "@components/editor/common/atoms"
+import { changeAtom } from "@editor/common/atoms"
 
 export type SearchElement = {
     text: string

@@ -1,8 +1,8 @@
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "react";
-import { deserializeCode, serializeCode } from '@components/editor/serializers/serializers'
+import { deserializeCode, serializeCode } from '@editor/serializers/serializers'
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, changeCodeAtom, editorAtom, selectionAtom } from "@components/editor/common/atoms";
+import { changeAtom, changeCodeAtom, editorAtom, selectionAtom } from "@editor/common/atoms";
 // import { SearcherPopup } from "@components/molecules/editor/searcher";
 import { Plate, PlateEditor, PlateProvider } from '@udecode/plate-common';
 import { useCutomEditableProps } from './common/useCustomEditableProps';

@@ -1,10 +1,10 @@
-import { MyValue, createMyPlugins } from "@components/editor/types";
+import { MyValue, createMyPlugins } from "@editor/types";
 import { createPlateEditor } from "@udecode/plate-common";
 import { WritableAtom, atom } from "jotai";
 
 // plugins
 import { basicNodesPlugins } from "./basicNodesPlugin";
-import { createClipboardPlugin } from "@components/editor/clipboard/createClipboardPlugin";
+import { createClipboardPlugin } from "@editor/clipboard/createClipboardPlugin";
 
 export const plugins = createMyPlugins(
     [

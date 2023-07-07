@@ -1,4 +1,4 @@
-import { serializeCode } from "@components/editor/serializers/serializers"
+import { serializeCode } from "@editor/serializers/serializers"
 import { PlateEditor } from "@udecode/plate-common-core"
 import { MyDOMHandler, MyValue } from "../types"
 
