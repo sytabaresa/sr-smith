@@ -75,10 +75,10 @@ const Layout = (props: Props) => {
           </div>
         </div>
         {drawer &&
-          <div className="drawer-side overflow-x-hidden">
-            <label htmlFor="my-drawer" className="drawer-overlay !bg-black !opacity-40"></label>
+          <div className="drawer-side overflow-x-hidden z-50">
+            <label htmlFor="my-drawer" className="drawer-overlay"></label>
             <div className="p-4 overflow-y-auto overflow-x-hidden scrollbar-thin !scrollbar-w-[4px] 
-            scrollbar-track-base-100 scrollbar-thumb-base-content w-60
+            scrollbar-track-base-100 scrollbar-thumb-base-content w-60 h-full
              bg-base-100 text-base-content flex flex-col items-start relative">
               {user && <div className="flex flex-col items-center mb-4 w-full">
                 <UserImage className="mb-2" imageClasses="w-24 h-24" />

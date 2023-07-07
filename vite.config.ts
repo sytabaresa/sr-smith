@@ -1,6 +1,6 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite'
+// import preact from '@preact/preset-vite'
 import tsconfigPaths from "vite-tsconfig-paths"
 import { ssr } from 'vite-plugin-ssr/plugin'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -31,7 +31,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
     environment: 'happy-dom',
   },
   plugins: [
-    preact(),
+    // preact(),
     tsconfigPaths(),
     ssr({ prerender: true }),
     // legacy({
@@ -91,13 +91,13 @@ export default defineConfig(({ command, mode, ssrBuild }) => ({
     }),
   ],
   // We manually add a list of dependencies to be pre-bundled, in order to avoid a page reload at dev start which breaks vite-plugin-ssr's CI
-  optimizeDeps: {
-    include: ['preact', 'preact/devtools', 'preact/debug', 'preact/jsx-dev-runtime', 'preact/hooks']
-  },
+  // optimizeDeps: {
+  //   include: ['preact', 'preact/devtools', 'preact/debug', 'preact/jsx-dev-runtime', 'preact/hooks']
+  // },
   resolve: {
     alias: {
-      'react': 'preact/compat',
-      'react-dom': 'preact/compat',
+      // 'react': 'preact/compat',
+      // 'react-dom': 'preact/compat',
       'lodash': 'lodash-es'
     }
   },

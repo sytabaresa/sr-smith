@@ -1,4 +1,6 @@
-import renderToString from 'preact-render-to-string'
+// import renderToString from 'preact-render-to-string'
+import ReactDOMServer from "react-dom/server";
+
 import { App } from '@/renderer/app'
 import document from './document'
 import config from './config'
@@ -9,12 +11,12 @@ export const passToClient = ['pageProps', 'documentProps']
 
 async function render(pageContext) {
   const { Page, pageProps } = pageContext
-  const pageHtml = renderToString(
+  const pageHtml = ReactDOMServer.renderToString(
     <App pageContext={pageContext}>
       <Page {...pageProps} />
-    </App>,
-    {},
-    { pretty: true }
+    </App>
+    // {},
+    // { pretty: true }
   )
 
   // console.log('a', pageHtml)

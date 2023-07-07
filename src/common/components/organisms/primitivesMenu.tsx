@@ -124,10 +124,11 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
             new ImCircleTooltip(), new ReCircleAdTooltip(), new ImCircleAdTooltip()].map((plugin, index) =>
               // figure out how to show clipped tooltip
-              <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="tooltip2 tooltip-right" data-tip={t.tools[plugin.tooltip].title}>
+              <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="" >
                 <button
                   aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip}
-                  className={`p-0 py-2 md:px-2 btn btn-ghost ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
+                  // data-tip={t.tools[plugin.tooltip]?.title || ''}
+                  className={`p-0 py-2 md:px-2 btn btn-ghost  tooltip2 tooltip-right ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
                 >
                   <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
                 </button>

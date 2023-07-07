@@ -2,7 +2,9 @@ export { render }
 export const clientRouting = true
 
 import { App } from '@/renderer/app'
-import { hydrate, render as render_ } from 'preact'
+// import { hydrate, render as render_ } from 'preact'
+import { createRoot, hydrateRoot } from 'react-dom/client';
+
 import config from './config'
 import { initializeSW } from './sw'
 
@@ -16,11 +18,12 @@ async function render(pageContext) {
         </App>
     )
     const container = document.getElementById("app");
-    if (pageContext.isHydration) {
-        hydrate(page, container)
-    } else {
-        render_(page, container)
-    }
+    // if (pageContext.isHydration) {
+        // hydrateRoot(container, page)
+    // } else {
+        const root = createRoot(container); // createRoot(container!) if you use TypeScript
+        root.render(page)
+    // }
     document.title = getPageTitle(pageContext)
 }
 

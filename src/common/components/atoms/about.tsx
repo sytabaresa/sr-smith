@@ -6,7 +6,7 @@ export const About = () => {
 
     return <div className="card">
         <div className="card-body">
-            <article class="prose prose-headings:uppercase prose-headings:my-4">
+            <article className="prose prose-headings:uppercase prose-headings:my-4">
                 <h1>Sr Smith</h1>
                 <a rel="license" href="https://www.gnu.org/licenses/gpl-3.0.en.html">
                     <img

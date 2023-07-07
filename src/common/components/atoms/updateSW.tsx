@@ -67,7 +67,7 @@ function UpdateSw({ autoUpdate }: UpdateSwProps) {
                             : <span>{t.offline.new_content()}.</span>
                         }
                     </div>
-                    <div class="flex-none">
+                    <div className="flex-none">
 
                         {needRefresh && <button className="btn btn-info" onClick={() => updateServiceWorker(true)}>{t.offline.reload()}</button>}
                         <button className="btn btn-info btn-ghost" onClick={() => close()}>{t.offline.close()}</button>

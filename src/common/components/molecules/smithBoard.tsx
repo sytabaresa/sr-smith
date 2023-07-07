@@ -68,7 +68,7 @@ const SmithBoard = (props: SmithBoardProps) => {
     // style={{ width: '500px', height: '500px' }}
     >
         <InfoboxContainer/>
-        <img src="/images/smith-chart-dark.svg" alt="smith-board-img" srcset="" className="hidden" loading={'lazy'} />
+        <img src="/images/smith-chart-dark.svg" alt="smith-board-img" srcSet="" className="hidden" loading={'lazy'} />
     </div>
 
 }

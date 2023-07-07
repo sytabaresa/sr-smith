@@ -21,7 +21,7 @@ const PublishProjectForm = ({ }: PublishProjectFormProps) => {
 
   useEffect(() => {
     // console.log(projectData)
-    setPublicState(projectData?.isPublic)
+    setPublicState(!!projectData?.isPublic)
   }, [projectData])
 
   const updatePublicState = useCallback(async (e) => {

@@ -100,7 +100,7 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
                 {/* <EditorUpdater editor={editor} /> */}
                 {/* <SearcherPopup editor={editor} /> */}
                 <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
-                 scrollbar-thumb-base-content flex-1 mb-1">
+                 scrollbar-thumb-base-content flex-1 mb-1 h-full">
                     <Plate<MyValue>
                         editableProps={editableProps}
                     />
