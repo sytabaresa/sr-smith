@@ -12,11 +12,9 @@ import {
   ELEMENT_CODE_LINE
 } from "@udecode/plate-code-block"
 
-import tw from 'tailwind-styled-components';
 import { DefaultPlatePluginKey } from './DefaultPlatePluginKey';
 import BaseElement from './components/BaseElement';
 import BaseLeaf from './components/BaseLeaf';
-import { CodeLineElement } from './components/TestElement';
 
 export const createPlateUI = <T extends string = string>(
   overrideByKey?: Partial<
@@ -24,17 +22,15 @@ export const createPlateUI = <T extends string = string>(
   >
 ) => {
   const components = {
-    [ELEMENT_CODE_BLOCK]: CodeLineElement,
-    [ELEMENT_CODE_LINE]: CodeLineElement,
-    // [ELEMENT_CODE_BLOCK]: withProps(BaseElement, {
-    //   as: 'p',
-    //   className: tw`border-base-300 border-t first:border-t-0` //${element.error ? 'border-error border-r-4' : ''}`} 
-    // }),
-    // [ELEMENT_CODE_LINE]: withProps(BaseLeaf, { as: 'div' }),
+    [ELEMENT_CODE_BLOCK]: withProps(BaseElement, {
+      as: 'div',
+      className: `border-base-300 border-t first:border-t-0` //${element.error ? 'border-error border-r-4' : ''}`} 
+    }),
+    [ELEMENT_CODE_LINE]: withProps(BaseLeaf, { as: 'div' }),
     [MARK_BOLD]: withProps(BaseLeaf, { as: 'strong' }),
     [MARK_CODE]: withProps(BaseLeaf, {
-    as: 'code',
-      className: tw`whitespace-pre-wrap text-sm font-mono bg-neutral-200 rounded-sm px-2 py-1`
+      as: 'code',
+      className: `whitespace-pre-wrap text-sm font-mono bg-neutral-200 rounded-sm px-2 py-1`
     }),
   };
 

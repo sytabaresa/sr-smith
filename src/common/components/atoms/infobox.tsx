@@ -101,10 +101,10 @@ const Table = ({
 
     return <div className="flex font-mono text-xs">
         <div className={`flex flex-col mr-2 ${labelsClasses}`}>
-            {Object.keys(data).map(key => <div>{key}</div>)}
+            {Object.keys(data).map(key => <div key={key}>{key}</div>)}
         </div>
         <div className={`flex flex-col ${valuesClasses}`}>
-            {Object.values(data).map(values => <div>{formatter(values)}</div>)}
+            {Object.values(data).map((values, index) => <div key={index}>{formatter(values)}</div>)}
         </div>
     </div>
 }

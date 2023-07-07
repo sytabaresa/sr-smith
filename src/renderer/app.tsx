@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import '@styles/index.css'
 
 import '@db/rxdb/plugins'
@@ -22,7 +22,7 @@ if (process.env.NODE_ENV == 'development') {
   import('@fsm/utils')
 }
 
-export function App({ children, pageContext }: { children: preact.ComponentChildren; pageContext: PageContext }) {
+export function App({ children, pageContext }: { children: ReactNode; pageContext: PageContext }) {
   const { TranslationWrapper, t } = useTranslation()
   const sw = useServiceWoker()
   const isOnline = useAtomValue(onlineAtom)

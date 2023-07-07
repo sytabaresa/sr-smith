@@ -75,7 +75,7 @@ const EditorDesktop = (props: EditorPopupProps) => {
                                             aria-label={t.canvas.undo()}
                                             tabIndex={0}
                                             className={`btn btn-outline btn-primary btn-circle mr-2`}
-                                            onClick={() => HistoryEditor.undo(editor)}>
+                                            onClick={() => editor.undo()}>
                                             <ReplyIcon className="w-5" />
                                         </button>
                                         <button

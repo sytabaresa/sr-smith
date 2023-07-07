@@ -42,7 +42,7 @@ const LoginForm = ({ }: LoginFormProps) => {
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control" method="post">
       <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
         <span className="">
-          {errors?.root?.login?.message?.code}
+          {errors?.root?.login?.message}
         </span>
       </div>
       <label htmlFor="user" className="label">

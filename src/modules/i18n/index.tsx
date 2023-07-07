@@ -1,5 +1,5 @@
 import TypesafeI18n, { useI18nContext } from "./i18n-react";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { Locales } from "./i18n-types";
 import { useRouter } from "@modules/router";
 import { loadLocale } from "./i18n-util.sync";
@@ -12,7 +12,7 @@ export function useTranslation() {
     // const { T } = useT();
     return {
         t: LL,
-        TranslationWrapper: ({ children }: { children: preact.ComponentChildren, locale: Locales }) => {//<>{props.children}</>
+        TranslationWrapper: ({ children }: { children: ReactNode, locale?: Locales }) => {//<>{props.children}</>
             const { useParams } = useRouter()
             const params = useParams();
             const [lang, setLang] = useAtom(langAtom)

@@ -1,4 +1,4 @@
-import React from "react"
+import { FC } from "react"
 import { Machine } from "robot3"
 
 
@@ -9,7 +9,7 @@ export interface TooltipType<S = {}, C = {}, G = any> {
     // action: (board: any, e: any, attributes: Record<string, any>) => void
     machine: Machine<S, C, string>
     tooltip: string
-    icon: React.ReactNode
+    icon: FC
     paramsStr: (ob: G) => string
 }
 

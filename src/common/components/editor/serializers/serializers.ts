@@ -1,7 +1,8 @@
 import { jsx } from 'slate-hyperscript'
-import { Descendant, Node as SlateNode, Text } from 'slate'
+import {  Node as SlateNode, Text } from 'slate'
 import { splitLines } from './splitter'
 import { ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE } from '@udecode/plate-code-block'
+import { MyValue } from '../types'
 
 export const deserialize = (el: HTMLElement, markAttributes = {}) => {
     if (el.nodeType === Node.TEXT_NODE) {
@@ -74,7 +75,7 @@ export const deserializeTokens = (el) => {
     return children
 }
 
-export const deserializeCode = (code: string): Descendant[] => {
+export const deserializeCode = (code: string): MyValue => {
 
     return splitLines(code)[0].map(sta => ({
         type: ELEMENT_CODE_BLOCK,

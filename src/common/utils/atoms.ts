@@ -22,8 +22,8 @@ export const atomWithMachine = (
     getEvent?: any | ((get: Getter) => any),
 ) => {
 
-    const cacheCallbackAtom = atom(null)
-    const cacheServiceAtom = atom<Service<Machine> | null>(null)
+    const cacheCallbackAtom = atom(null) as WritableAtom<(service: Service<Machine>) => void, [(service: Service<Machine>) => void,], unknown>
+    const cacheServiceAtom = atom(null) as WritableAtom<Service<Machine>, [Service<Machine>], unknown>
     if (process.env.NODE_ENV !== 'production') {
         cacheServiceAtom.debugPrivate = true
     }
@@ -58,7 +58,7 @@ export const atomWithMachine = (
         commit()
     }
 
-    const cachedMachineAtom = atom<{ name: string, context: any } | null>(null)
+    const cachedMachineAtom = atom(null) as WritableAtom<{ name: string; context: any; }, [any], unknown>
     if (process.env.NODE_ENV !== 'production') {
         cachedMachineAtom.debugPrivate = true
     }
@@ -131,13 +131,13 @@ export interface JotaiContext<T = {}, A extends unknown[] = [], R = void> {
 
 export function atomWithToggle(
     initialValue?: boolean
-): WritableAtom<boolean, boolean | undefined> {
+) {
     const anAtom = atom(initialValue, (get, set, nextValue?: boolean) => {
         const update = nextValue ?? !get(anAtom)
         set(anAtom, update)
     })
 
-    return anAtom as WritableAtom<boolean, boolean | undefined>
+    return anAtom
 }
 
 export const atomWithSomeMap = (initial = {}) => {

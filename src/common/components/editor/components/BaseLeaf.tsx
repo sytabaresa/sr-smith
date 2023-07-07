@@ -7,7 +7,8 @@ const Component = tw.span`
 
 const BaseLeaf: React.FC<{
     className?: string;
-    as?: string | Element;
+    as?: any;
+    attributes: Record<string, any>
     children?: ReactNode;
 }> = ({ className, as, children, attributes, ...rest }, ...props) => {
     return <Component className={className} $as={as} {...attributes}>

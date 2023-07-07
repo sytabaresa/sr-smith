@@ -17,7 +17,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     try {
         const recreateBoard = ctx.setter(boardAtom)
         recreateBoard({ screen: null })
-        const board: Board = ctx.getter(boardAtom)
+        const board = ctx.getter(boardAtom) as Board
         board.jc.parse(ctx.code);
     } catch (err) {
         console.log("parse execute error: ", err)

@@ -39,7 +39,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
       <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
         <span className="">
-          {errors?.root?.login?.message?.code}
+          {errors?.root?.login?.message}
         </span>
       </div>
       <label htmlFor="user" className="label">

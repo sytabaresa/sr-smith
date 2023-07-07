@@ -21,4 +21,5 @@ export type SmithProject = {
   isPublic?: boolean
   name?: string
   userId?: string
+  readonly: boolean;
 }

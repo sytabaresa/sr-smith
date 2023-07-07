@@ -33,3 +33,8 @@ export interface DataProvider {
     update(data: selectOne): Promise<void>
     updateMany(data: selectMany): Promise<void>
 }
+
+export interface DataProviderPrivate extends DataProvider {
+    _getList(data: list): RxQuery<any, any[]>
+    _getOne(data: selectOne): RxQuery<any, any>
+}

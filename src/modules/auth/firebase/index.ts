@@ -38,7 +38,7 @@ const authProvider =
         oauthProvider: AuthProvider
     ) => ({
         auth,
-        login: async (data: { email: string, password: string, provider: string }) => {
+        login: async (data: { email?: string, password?: string, provider?: string }) => {
             // console.log(data)
             if (data.provider == 'google') {
                 try {

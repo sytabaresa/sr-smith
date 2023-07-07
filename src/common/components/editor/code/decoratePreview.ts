@@ -1,4 +1,4 @@
-import { Node, Element } from "slate"
+import { Node, Element, BaseRange } from "slate"
 
 import prism from 'prismjs/components/prism-core.js';
 import './prism-jessieCode'
@@ -13,17 +13,24 @@ import { MyValue } from "../types";
 
 const { languages, tokenize } = prism;
 
+interface Range extends BaseRange {
+    pos: BaseRange,
+    token: boolean,
+    type: { [key: string]: boolean }
+    content: string
+}
+
 export const decorateCodeLine = <
     V extends MyValue = MyValue,
     E extends PlateEditor<V> = PlateEditor<V>
 >(
     editor: E, plugin
-): DecorateEntry => {
+): DecorateEntry<MyValue> => {
     const code_block = getPlugin<CodeBlockPlugin, V>(editor, ELEMENT_CODE_BLOCK);
     const code_line = getPlugin<{}, V>(editor, ELEMENT_CODE_LINE);
 
-    return ([blockNode, blockPath]): CodeSyntaxRange[] => {
-        const ranges: CodeSyntaxRange[] = [];
+    return ([blockNode, blockPath]): Range[] => {
+        const ranges: Range[] = [];
 
         // console.log(blockNode, blockPath)
         if (!Element.isElement(blockNode) || blockNode.type != code_block.type) {

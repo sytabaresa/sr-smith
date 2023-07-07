@@ -4,7 +4,7 @@ import { HTMLAttributes } from "react";
 
 export interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
     href: string
-    query: Record<string, string>
+    query?: Record<string, string>
 }
 
 export function Link(props: LinkProps) {

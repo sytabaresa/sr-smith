@@ -1,7 +1,6 @@
-import { createMyPlugins } from "@components/editor/types";
+import { MyValue, createMyPlugins } from "@components/editor/types";
 import { createPlateEditor } from "@udecode/plate-common";
-import { atom } from "jotai";
-import { Descendant } from "slate";
+import { WritableAtom, atom } from "jotai";
 
 // plugins
 import { basicNodesPlugins } from "./basicNodesPlugin";
@@ -21,6 +20,6 @@ export const editorAtom = atom(
         plugins: plugins
     }))
 
-export const changeCodeAtom = atom<Descendant[]>(null)
-export const changeAtom = atom<Descendant[]>(null)
-export const selectionAtom = atom<object>({})
+export const changeCodeAtom = atom<MyValue>(null) as WritableAtom<MyValue, [MyValue], void>
+export const changeAtom = atom<MyValue>(null) as WritableAtom<MyValue, [MyValue], void>
+export const selectionAtom = atom<object>({}) as WritableAtom<object, [object], void>

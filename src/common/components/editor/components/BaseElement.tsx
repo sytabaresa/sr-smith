@@ -7,7 +7,8 @@ const Component = tw.span`
 
 const BaseElement: React.FC<{
     className?: string;
-    as?: string | Element;
+    as?: any;
+    attributes: Record<string, any>
     children?: ReactNode;
 }> = (props) => {
     // console.log(props)

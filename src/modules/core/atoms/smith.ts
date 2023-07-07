@@ -15,13 +15,14 @@ import ReCircleTooltip from "@tooltips/reCircle";
 import ImCircleTooltip from "@tooltips/imCircle";
 import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
-import { Getter, Setter, atom } from "jotai";
+import { Getter, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithStorage } from "jotai/utils";
 import { SmithProject } from "@localtypes/smith";
-import { _dataRxdbProviderAtom } from "./db";
+import { _dataRxdbProviderAtom, dataQLProviderAtom } from "./db";
 import { Loadable } from "jotai/vanilla/utils/loadable";
+import { Board } from "jsxgraph";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
@@ -117,7 +118,7 @@ export function recreateBoard(get: Getter, set: Setter, params: BoardOptions, ol
     // }
 }
 
-const cachedBoardAtom = atom<JXG.Board>(null)
+const cachedBoardAtom = atom(null) as WritableAtom<Board, [Board], unknown>
 export const boardAtom = atom(
     (get) => {
         const cached = get(cachedBoardAtom)

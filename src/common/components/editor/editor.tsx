@@ -4,15 +4,13 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
 import { changeAtom, changeCodeAtom, editorAtom, selectionAtom } from "@components/editor/common/atoms";
 // import { SearcherPopup } from "@components/molecules/editor/searcher";
-import { Descendant, Editor } from 'slate'
-import { Plate, PlateProvider } from '@udecode/plate-common';
+import { Plate, PlateEditor, PlateProvider } from '@udecode/plate-common';
 import { useCutomEditableProps } from './common/useCustomEditableProps';
-import { MyParagraphElement, MyValue } from './types';
-import { ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE } from "@udecode/plate-code-block";
+import { MyValue } from './types';
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
-    toolbar?: (editor: Editor) => ReactNode
-    footer?: (editor: Editor) => ReactNode
+    toolbar?: (editor: PlateEditor<MyValue>) => ReactNode
+    footer?: (editor: PlateEditor<MyValue>) => ReactNode
     id?: string;
 };
 
@@ -52,33 +50,8 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
         }
     }
 
-    // const initialValue = useMemo(() => deserializeCode('\n'), [])
-
-    const initialValue = [
-        {
-            type: ELEMENT_CODE_BLOCK,
-            children: [
-                {
-                    type: ELEMENT_CODE_LINE,
-                    children: [{
-                        text: '1+1;'
-                    }]
-                }
-            ]
-        }
-    ]
-    // [
-    //     {
-    //         type: 'p',
-    //         children: [
-    //             {
-    //                 text: '',
-    //             },
-    //         ],
-    //     } as MyParagraphElement,
-    // ];
-
-    console.log(initialValue)
+    const initialValue = useMemo(() => deserializeCode('\n'), [])
+    // console.log(initialValue)
 
     // for update on parsing
     useAtomValue(updateAtom)
@@ -97,7 +70,7 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
                 <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                     {toolbar?.(editor)}
                 </div>
-                {/* <EditorUpdater editor={editor} /> */}
+                <EditorUpdater editor={editor} />
                 {/* <SearcherPopup editor={editor} /> */}
                 <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
                  scrollbar-thumb-base-content flex-1 mb-1 h-full">
@@ -123,13 +96,13 @@ const EditorUpdater = ({ editor }) => {
     useEffect(() => {
         const newCode = deserializeCode(code)
         if (newCode.length > 0)
-            editor.children = deserializeCode(code) as Descendant[]
+            editor.children = deserializeCode(code)
     }, [])
 
     useEffect(() => {
         if (updateEditor(current.name) && code != '') {
             // console.log(current.name, code)
-            editor.children = deserializeCode(code) as Descendant[]
+            editor.children = deserializeCode(code)
             setU(u + 1)
         }
     }, [current.name])

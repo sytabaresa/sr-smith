@@ -5,7 +5,7 @@ import { groupBy } from "@utils/common"
 import { useAtom, useAtomValue } from "jotai"
 import { action, createMachine, guard, reduce, state, transition } from "robot3"
 import { atomWithMachine } from "@utils/atoms"
-import { changeAtom, keyDownAtom } from "@components/editor/common/atoms"
+import { changeAtom } from "@components/editor/common/atoms"
 
 export type SearchElement = {
     text: string
@@ -211,7 +211,7 @@ export const SearcherPopup = (props) => {
     const { editor } = props
     const ref = useRef<HTMLDivElement | null>()
 
-    const event = useAtomValue(keyDownAtom)
+    // const event = useAtomValue(keyDownAtom)
     const change = useAtomValue(changeAtom)
 
     const searcherAtom = useMemo(() => atomWithMachine(searcherFSM, { editor, ref }), [editor])

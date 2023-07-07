@@ -11,12 +11,8 @@ export const createCodeBlockPlugin = createPluginFactory<
 >({
   key: ELEMENT_CODE_BLOCK,
   isElement: true,
-  // decorate: decorateCodeLine,
+  decorate: decorateCodeLine,
   withOverrides: withCodeNormalizer,
-  //   deserializeHtml: deserializeHtmlCodeBlock,
-  //   handlers: {
-  //     onKeyDown: onKeyDownCodeBlock,
-  //   },
   options: {
     hotkey: ['mod+opt+8', 'mod+shift+8'],
     syntax: true,

@@ -1,4 +1,4 @@
-import { TEditableProps } from '@udecode/plate-common-core';
+import { TEditableProps } from '@udecode/plate-core';
 import { MyValue } from '../types';
 import { useTranslation } from '@modules/i18n';
 import PreviewLeaf from '../components/PreviewLeaf';

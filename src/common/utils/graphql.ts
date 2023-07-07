@@ -1,3 +1,4 @@
+import { RxGraphQLReplicationClientState, RxGraphQLReplicationQueryBuilderResponseObject } from "rxdb/dist/types/types";
 
 export const GRAPHQL_REPLICATION_PLUGIN_IDENTITY_PREFIX = 'graphql';
 

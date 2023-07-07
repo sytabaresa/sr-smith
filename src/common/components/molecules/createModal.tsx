@@ -2,7 +2,7 @@ import { useTranslation } from "@modules/i18n";
 import { HTMLAttributes, LabelHTMLAttributes, ReactNode, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-interface ModalContainerProps extends LabelHTMLAttributes<HTMLLabelElement> {
+interface ModalContainerProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'> {
   withClose?: boolean;
   modalChild?: JSX.Element;
   modalName?: string;
@@ -13,10 +13,10 @@ const createModal = (modalName: string) => {
 
   const finalModalName = !modalName || modalName == '' ? `modal-${Math.random().toString().slice(-5)}` : modalName
 
-  const closeRef = useRef()
-  const triggerRef = useRef()
-  const modalRef = useRef()
-  const modalStateRef = useRef<HTMLAttributes<HTMLInputElement>>()
+  const closeRef = useRef<HTMLLabelElement>()
+  const triggerRef = useRef<HTMLLabelElement>()
+  const modalRef = useRef<HTMLLabelElement>()
+  const modalStateRef = useRef<HTMLInputElement>()
 
   const labelProps = {
     tabIndex: 0,
@@ -53,7 +53,7 @@ const createModal = (modalName: string) => {
         //back tab
         // if focused on first item and user preses back-tab, go to the last focusable item
         if (focusedItemIndex == 0) {
-          focusableItems[focusableItems.length - 1].focus();
+          (focusableItems[focusableItems.length - 1] as HTMLElement).focus();
           ev.preventDefault();
         }
 
@@ -61,7 +61,7 @@ const createModal = (modalName: string) => {
         //forward tab
         // if focused on the last item and user preses tab, go to the first focusable item
         if (focusedItemIndex >= focusableItems.length - 1) {
-          focusableItems[0].focus();
+          (focusableItems[0] as HTMLElement).focus();
           ev.preventDefault();
         }
       }

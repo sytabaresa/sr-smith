@@ -2,7 +2,7 @@ import { RxDatabase, createRxDatabase } from "rxdb";
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { projectSchema } from "./schema";
 import uuid from 'uuid-random';
-import { list, oneData, selectMany, selectOne } from "@db/db";
+import { DataProviderPrivate, list, oneData, selectMany, selectOne } from "@db/db";
 
 export async function initDB() {
     const db = await createRxDatabase({
@@ -32,10 +32,8 @@ export async function initDB() {
     return { db, coll }
 }
 
-const dataProvider =
-    (
-        rxdb: RxDatabase
-    ) => {
+const dataProvider: (rxdb: RxDatabase) => DataProviderPrivate =
+    (rxdb) => {
 
         const _create = ({ resource, variables, meta }: oneData) => {
             const doc = rxdb[resource].insert(variables)
