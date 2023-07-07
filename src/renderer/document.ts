@@ -1,8 +1,9 @@
-import { dangerouslySkipEscape, escapeInject } from "vite-plugin-ssr/server";
+import { escapeInject } from "vite-plugin-ssr/server";
+import { ROOT_APP } from "./constants";
 
 export default document
 
-function document(title: string, desc: string, pageHtml: string) {
+function document(title: string, desc: string, pageHtml: string | ReadableStream | any) {
 
     return escapeInject`<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -98,7 +99,7 @@ function document(title: string, desc: string, pageHtml: string) {
         if(typeof Storage!=="undefined"){const theme=JSON.parse(localStorage.getItem("theme")||'"notheme"')
         if(typeof window!='undefined'&&theme!='notheme'){document.documentElement.setAttribute("data-theme",theme)}}
     </script>
-    <div id="app">${dangerouslySkipEscape(pageHtml)}</div>
+    <div id="${ROOT_APP}">${pageHtml}</div>
 </body>
 </html>`
 }

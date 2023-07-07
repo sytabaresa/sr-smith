@@ -1,7 +1,4 @@
-import { lifecycleListenterRegister } from "@pwa/lifecycle";
-import { messageSW } from "workbox-window";
 import swUrl from '@modules/pwa/service-worker?url'
-import { getSW } from "@utils/sw";
 
 export async function initializeSW() {
     const { Workbox } = await import('workbox-window');

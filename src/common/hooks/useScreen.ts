@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { debounce } from "lodash"
 
 export const useScreen = (reactive = false) => {
     // const tailwindData = { screens: null }
@@ -6,7 +7,11 @@ export const useScreen = (reactive = false) => {
     const [screen, setScreen] = useState(getCurrentBreakpoint())
     useEffect(() => {
         if (reactive && typeof window != 'undefined')
-            window.addEventListener('resize', () => setScreen(getCurrentBreakpoint()));
+            window.addEventListener('resize', debounce(() => {
+                const bp = getCurrentBreakpoint()
+                // console.log('resize Event', bp)
+                setScreen(bp)
+            }, 200))
 
     }, [])
 

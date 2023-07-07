@@ -18,7 +18,7 @@ export const useLogout = () => {
             if (logout) await logout()
 
             // reset db
-            if (db.data) {
+            if (db.state == 'hasData' && db.data) {
                 await db.data?.db.remove()
                 await db.data?.db.destroy()
                 // await getDB(true) 

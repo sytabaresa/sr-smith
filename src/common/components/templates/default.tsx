@@ -52,7 +52,7 @@ const Layout = (props: Props) => {
   // }
 
   return (
-    <div className={`flex flex-col relative overflow-hidden full-screen-div ${className}`} {...rest}>
+    <div id="root-container" className={`flex flex-col relative overflow-hidden full-screen-div ${className}`} {...rest}>
       {/* <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />

@@ -1,39 +1,48 @@
 // import renderToString from 'preact-render-to-string'
-import ReactDOMServer from "react-dom/server";
-
-import { App } from '@/renderer/app'
+// import { renderToReadableStream as renderToStream } from "react-dom/server";
+import { renderToStream } from 'react-streaming/server'
+import { App as PageShell } from '@/renderer/app'
 import document from './document'
 import config from './config'
 
 export { render }
+export { passToClient }
+
 // See https://vite-plugin-ssr.com/data-fetching
-export const passToClient = ['pageProps', 'documentProps']
+const passToClient = ['pageProps', 'documentProps', 'someAsyncProps']
 
 async function render(pageContext) {
   const { Page, pageProps } = pageContext
-  const pageHtml = ReactDOMServer.renderToString(
-    <App pageContext={pageContext}>
+
+  const pageHtmlStream = await renderToStream(
+    <PageShell pageContext={pageContext}>
       <Page {...pageProps} />
-    </App>
-    // {},
-    // { pretty: true }
-  )
+    </PageShell>, {
+    // disable: true
+  })
 
   // console.log('a', pageHtml)
-  
+
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext
   const title = (documentProps && documentProps.title) || config.title
   const desc = (documentProps && documentProps.description) || config.desc
 
-  const documentHtml = document(title, desc, pageHtml)
+  const documentHtml = document(title, desc, pageHtmlStream)
 
   // console.log('b', documentHtml)
 
+  const pageContextPromise = async () => {
+    // I'm called after the stream has ended
+    return {
+      // initialData,
+    }
+  }
   return {
     documentHtml,
-    pageContext: {
-      // We can add cdsome `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
-    }
+    pageContext: pageContextPromise
+    // pageContext: {
+    // We can add cdsome `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
+    // }
   }
 }

@@ -1,3 +1,4 @@
+import { ROOT_APP } from "@/renderer/constants"
 import { Infobox } from "@components/atoms/infobox"
 import { boardAtom, infoboxAtom } from "@core/atoms/smith"
 import { useAtomValue } from "jotai"
@@ -5,7 +6,7 @@ import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
 const InfoboxContainer = (props) => {
-    const [root, setRoot] = useState<Element>(typeof window != 'undefined' ? document.body : null)
+    const [root, setRoot] = useState<Element>(typeof window != 'undefined' ? document?.getElementById(ROOT_APP) : null)
     const data = useAtomValue(infoboxAtom)
     const board = useAtomValue(boardAtom)
     if (typeof window == 'undefined')

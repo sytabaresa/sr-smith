@@ -8,12 +8,13 @@ import { HistoryEditor } from "slate-history";
 import { createPortal } from "react-dom";
 import EditorError from "@components/atoms/editorError";
 import { selectionAtom } from "@editor/common/atoms";
+import { cn } from "@editor/lib/utils";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 
 }
 
-const EditorDesktop = (props: EditorPopupProps) => {
+const EditorMobile = (props: EditorPopupProps) => {
     const [isOpen, setOpen] = useState(false);
     const [warning, setWarning] = useState(false);
     const { t } = useTranslation()
@@ -27,10 +28,50 @@ const EditorDesktop = (props: EditorPopupProps) => {
     useEffect(() => {
         setTimeout(() => {
             // console.log('focus')
-            document.getElementById('code-end').scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
+            document?.getElementById('code-end')?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
         }, 1000)
         setWarning(false)
     }, [select])
+
+    const OutEditor = <CodeEditor
+        className={cn("p-2 bg-transparent lg:hidden z-20 w-full h-[50vh]", isOpen ? 'absolute bottom-0 left-0' : 'hidden', "h-full")}
+        toolbar={editor => <div className="flex items-start"></div> as any}
+        footer={editor => <>
+            <div className={`mb-2 z-10 ${warning ? '' : 'hidden'}`}>
+                <EditorError />
+            </div>
+            <div className="flex items-center">
+                <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
+                    {t.canvas.run()}
+                </button>
+                <button
+                    className={`btn btn-outline btn-circle mr-2 transition-all
+                    ${warning ? 'animation-none' : ''}
+                    ${current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0'}`}
+                    tabIndex={0}
+                    onClick={() => setWarning(!warning)}
+                    aria-label={t.canvas.warning()}
+                >
+                    <ExclamationIcon className="w-6" />
+                </button>
+                <button
+                    aria-label={t.canvas.undo()}
+                    tabIndex={0}
+                    className={`btn btn-outline btn-primary btn-circle mr-2`}
+                    onClick={() => editor.undo()}>
+                    <ReplyIcon className="w-5" />
+                </button>
+                <button
+                    className="btn btn-outline btn-circle"
+                    tabIndex={0}
+                    onClick={() => setOpen(!isOpen)}
+                    aria-label={t.canvas.undo()}
+                >
+                    <ChevronDownIcon className="w-6" />
+                </button>
+            </div>
+        </> as any}
+    />
 
     return (
         <div {...props}>
@@ -44,55 +85,14 @@ const EditorDesktop = (props: EditorPopupProps) => {
                     {t.canvas.code()}
                 </button>
             </div>
-            {typeof document != 'undefined' &&
-                createPortal(
-                    <>
-                        <div className={`p-2 bg-transparent lg:hidden z-20 w-full h-[50vh] ${isOpen ? 'absolute bottom-0 left-0' : 'hidden'}`}>
-                            <CodeEditor
-                                className="h-full"
-                                toolbar={editor => <div className="flex items-start">
-
-                                </div> as any}
-                                footer={editor => <>
-                                    <div className={`mb-2 z-10 ${warning ? '' : 'hidden'}`}>
-                                        <EditorError />
-                                    </div>
-                                    <div className="flex items-center">
-                                        <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
-                                            {t.canvas.run()}
-                                        </button>
-                                        <button
-                                            className={`btn btn-outline btn-circle mr-2 transition-all
-                                            ${warning ? 'animation-none' : ''}
-                                            ${current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0'}`}
-                                            tabIndex={0}
-                                            onClick={() => setWarning(!warning)}
-                                            aria-label={t.canvas.warning()}
-                                        >
-                                            <ExclamationIcon className="w-6" />
-                                        </button>
-                                        <button
-                                            aria-label={t.canvas.undo()}
-                                            tabIndex={0}
-                                            className={`btn btn-outline btn-primary btn-circle mr-2`}
-                                            onClick={() => editor.undo()}>
-                                            <ReplyIcon className="w-5" />
-                                        </button>
-                                        <button
-                                            className="btn btn-outline btn-circle"
-                                            tabIndex={0}
-                                            onClick={() => setOpen(!isOpen)}
-                                            aria-label={t.canvas.undo()}
-                                        >
-                                            <ChevronDownIcon className="w-6" />
-                                        </button>
-                                    </div>
-                                </> as any}
-                            />
-                        </div>
-                    </> as any, document.getElementsByClassName('drawer-content')[0])}
+            <div>
+                {typeof document != 'undefined' ?
+                    createPortal(OutEditor, document.getElementsByClassName('drawer-content')[0]) :
+                    OutEditor
+                }
+            </div>
         </div >
     );
 }
 
-export default EditorDesktop;
+export default EditorMobile;

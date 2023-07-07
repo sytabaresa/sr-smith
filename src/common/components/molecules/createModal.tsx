@@ -1,3 +1,4 @@
+import { ROOT_APP } from "@/renderer/constants";
 import { useTranslation } from "@modules/i18n";
 import { HTMLAttributes, LabelHTMLAttributes, ReactNode, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -129,7 +130,7 @@ const createModal = (modalName: string) => {
       return out
     }
 
-    return createPortal(out, document?.body)
+    return createPortal(out, document?.getElementById(ROOT_APP))
   };
 
   return { Modal, Label }

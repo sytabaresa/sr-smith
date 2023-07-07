@@ -50,7 +50,7 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
         }
     }
 
-    const initialValue = useMemo(() => deserializeCode('\n'), [])
+    const initialValue = useMemo(() => deserializeCode(' '), [])
     // console.log(initialValue)
 
     // for update on parsing
@@ -59,30 +59,28 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
 
     const editableProps = useCutomEditableProps()
 
-    return <div>
-        <PlateProvider<MyValue>
-            editor={editor}
-            plugins={editor.plugins}
-            initialValue={initialValue}
-            onChange={onEditorChanged}
-        >
-            <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
-                <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
-                    {toolbar?.(editor)}
-                </div>
-                <EditorUpdater editor={editor} />
-                {/* <SearcherPopup editor={editor} /> */}
-                <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
+    return <PlateProvider<MyValue>
+        editor={editor}
+        plugins={editor.plugins}
+        initialValue={initialValue}
+        onChange={onEditorChanged}
+    >
+        <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
+            <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
+                {toolbar?.(editor)}
+            </div>
+            {/* <SearcherPopup editor={editor} /> */}
+            <EditorUpdater editor={editor} />
+            <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
                  scrollbar-thumb-base-content flex-1 mb-1 h-full">
-                    <Plate<MyValue>
-                        editableProps={editableProps}
-                    />
-                </div>
-                {footer?.(editor)}
-            </div >
-            <div id="code-end"></div>
-        </PlateProvider>
-    </div>
+                <Plate<MyValue>
+                    editableProps={editableProps}
+                />
+            </div>
+            {footer?.(editor)}
+        </div >
+        <div id="code-end"></div>
+    </PlateProvider>
 }
 
 const updateEditor = (state) => ['parsing', 'initializing'].includes(state)

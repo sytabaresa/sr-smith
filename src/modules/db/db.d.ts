@@ -1,3 +1,4 @@
+import { RxDatabase } from "rxdb"
 
 export interface oneData {
     resource: string
@@ -35,6 +36,7 @@ export interface DataProvider {
 }
 
 export interface DataProviderPrivate extends DataProvider {
+    db: RxDatabase
     _getList(data: list): RxQuery<any, any[]>
     _getOne(data: selectOne): RxQuery<any, any>
 }
