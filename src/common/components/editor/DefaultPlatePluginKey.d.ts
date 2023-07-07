@@ -33,7 +33,7 @@ import {
     ELEMENT_TD,
     ELEMENT_TH,
     ELEMENT_TR,
-  } from '@udecode/plate-headless';
+  } from '@udecode/plate-common';
   
   export type DefaultPlatePluginKey =
     | typeof ELEMENT_BLOCKQUOTE

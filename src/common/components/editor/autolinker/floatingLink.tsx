@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from "@heroicons/react/outline";
 import { useTranslation } from "@modules/i18n";
-import { ELEMENT_LINK, TEditableProps, TLinkElement, findNode, getAboveNode, getDefaultBoundingClientRect, getPluginType, getRangeBoundingClientRect, useEditableProps, useEditorRef, useFloatingLinkSelectors, usePlateSelection, useVirtualFloating, useVirtualFloatingLink } from "@udecode/plate-headless";
+import { TEditableProps, useEditorRef  } from "@udecode/plate-common";
+import {useVirtualFloating,  getDefaultBoundingClientRect, getRangeBoundingClientRect} from "@udecode/plate-floating"
 import { useAtomValue } from "jotai";
 import { useCallback, useMemo, useState } from "react";
 import { linkActiveAtom, linkPropsAtom } from "./common";

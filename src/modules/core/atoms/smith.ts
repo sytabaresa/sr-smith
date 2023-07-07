@@ -30,8 +30,9 @@ export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
  * My smith design
  * @author: your name (me@example.org)
  * @version: 1.0
-**/\n`+
-        'Zo = 50;'
+**/
+a = 1;
+Zo = 50;`
 }), (get) => ({ board: get(boardAtom) }))
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
     // id: params?.id?.[0],

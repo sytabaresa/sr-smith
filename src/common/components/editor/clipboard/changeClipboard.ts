@@ -1,5 +1,5 @@
 import { serializeCode } from "@components/editor/serializers/serializers"
-import { PlateEditor } from "@udecode/plate-core"
+import { PlateEditor } from "@udecode/plate-common-core"
 import { MyDOMHandler, MyValue } from "../types"
 
 export const changeClipboardContent: MyDOMHandler = (editor, event) => {

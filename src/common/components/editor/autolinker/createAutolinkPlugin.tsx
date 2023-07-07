@@ -1,4 +1,4 @@
-import { RenderAfterEditable, createPluginFactory } from "@udecode/plate-headless";
+import { RenderAfterEditable, createPluginFactory } from "@udecode/plate-common";
 import { MyValue } from "../types";
 import { FloatingLink } from "./floatingLink";
 import { AutolinkerLeaf } from "./autolinker";

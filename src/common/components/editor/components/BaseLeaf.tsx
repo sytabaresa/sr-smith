@@ -9,8 +9,8 @@ const BaseLeaf: React.FC<{
     className?: string;
     as?: string | Element;
     children?: ReactNode;
-}> = ({ className, as, children, ...rest }, ...props) => {
-    return <Component className={className} $as={as} {...rest}>
+}> = ({ className, as, children, attributes, ...rest }, ...props) => {
+    return <Component className={className} $as={as} {...attributes}>
         {children}
     </Component>
 }

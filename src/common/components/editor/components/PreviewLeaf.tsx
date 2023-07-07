@@ -1,5 +1,5 @@
 import BaseLeaf from "./BaseLeaf";
-import { RenderLeaf } from "@udecode/plate-headless";
+import { RenderLeaf } from "@udecode/plate-common";
 
 const PreviewLeaf: RenderLeaf = (props) => {
     const { children, attributes, leaf } = props;

@@ -1,13 +1,14 @@
-import { HTMLAttributes, ReactNode, useCallback, useEffect } from "react";
+import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "react";
 import { deserializeCode, serializeCode } from '@components/editor/serializers/serializers'
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
 import { editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, changeCodeAtom, editorAtom,  selectionAtom } from "@components/editor/common/atoms";
+import { changeAtom, changeCodeAtom, editorAtom, selectionAtom } from "@components/editor/common/atoms";
 // import { SearcherPopup } from "@components/molecules/editor/searcher";
 import { Descendant, Editor } from 'slate'
-import { Plate, PlateProvider } from '@udecode/plate-headless';
+import { Plate, PlateProvider } from '@udecode/plate-common';
 import { useCutomEditableProps } from './common/useCustomEditableProps';
 import { MyParagraphElement, MyValue } from './types';
+import { ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE } from "@udecode/plate-code-block";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     toolbar?: (editor: Editor) => ReactNode
@@ -22,6 +23,13 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
     // machines
     const send = useSetAtom(editorServiceAtom)
     const editor = useAtomValue(editorAtom)
+
+    // FSM actions
+    const setActualCode = useCallback((code) => send({ type: "CODE", value: code }), [])
+
+    const setChangeCode = useSetAtom(changeCodeAtom)
+    const setSelection = useSetAtom(selectionAtom)
+    const setChange = useSetAtom(changeAtom)
 
     const onEditorChanged = (value: MyValue) => {
         setChange(editor.operations)
@@ -44,39 +52,52 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
         }
     }
 
+    // const initialValue = useMemo(() => deserializeCode('\n'), [])
+
     const initialValue = [
         {
-            type: 'p',
+            type: ELEMENT_CODE_BLOCK,
             children: [
                 {
-                    text: '',
-                },
-            ],
-        } as MyParagraphElement,
-    ];//useMemo(() => [] || deserializeCode(''), [])
+                    type: ELEMENT_CODE_LINE,
+                    children: [{
+                        text: '1+1;'
+                    }]
+                }
+            ]
+        }
+    ]
+    // [
+    //     {
+    //         type: 'p',
+    //         children: [
+    //             {
+    //                 text: '',
+    //             },
+    //         ],
+    //     } as MyParagraphElement,
+    // ];
 
-    // console.log(initialValue)
+    console.log(initialValue)
 
     // for update on parsing
     useAtomValue(updateAtom)
     // useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
 
-    // FSM actions
-    const setActualCode = useCallback((code) => send({ type: "CODE", value: code }), [])
-
-    const setChangeCode = useSetAtom(changeCodeAtom)
-    const setSelection = useSetAtom(selectionAtom)
-    const setChange = useSetAtom(changeAtom)
-
     const editableProps = useCutomEditableProps()
 
     return <div>
-        <PlateProvider<MyValue> editor={editor} plugins={editor.plugins} initialValue={initialValue} onChange={onEditorChanged}>
+        <PlateProvider<MyValue>
+            editor={editor}
+            plugins={editor.plugins}
+            initialValue={initialValue}
+            onChange={onEditorChanged}
+        >
             <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
                 <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                     {toolbar?.(editor)}
                 </div>
-                <EditorUpdater editor={editor} />
+                {/* <EditorUpdater editor={editor} /> */}
                 {/* <SearcherPopup editor={editor} /> */}
                 <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
                  scrollbar-thumb-base-content flex-1 mb-1">

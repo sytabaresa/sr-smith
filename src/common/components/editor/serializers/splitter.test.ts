@@ -121,6 +121,13 @@ t = 1;`
         expect(splitLines(code)).toStrictEqual([['/* \nejemplo de sintaxis\nver: https://syta.co/\n*/\n', 't = 1;'], true])
     })
 
+    it('split end block comment', () => {
+        const code = `/**
+* My smith design
+**/Zo = 50;`
+        expect(splitLines(code)).toStrictEqual([['/**\n* My smith design\n**/', 'Zo = 50;'], true])
+    })
+
     it('add aditional lines in comment (pre and post)', () => {
         const code = `\n\n// comment`
         expect(splitLines(code)).toStrictEqual([['\n\n// comment'], true])
@@ -261,4 +268,6 @@ K = spoint(0.077, 0.308);`
 };`,
             `K = spoint(0.077, 0.308);`], true])
     })
+
+
 })

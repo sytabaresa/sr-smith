@@ -1,6 +1,6 @@
-import { RenderAfterEditable, createPluginFactory } from "@udecode/plate-headless";
+import { RenderAfterEditable, createPluginFactory } from "@udecode/plate-common";
 import { MyValue } from "../types";
-import { ColorInlineLeaf } from "@components/molecules/editor/colorInline";
+import { ColorInlineLeaf } from "./colorInline";
 
 const MARK_COLOR = 'color'
 

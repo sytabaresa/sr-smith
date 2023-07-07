@@ -1,27 +1,18 @@
 import { createMyPlugins } from "@components/editor/types";
-import { createPlateEditor } from "@udecode/plate-headless";
+import { createPlateEditor } from "@udecode/plate-common";
 import { atom } from "jotai";
 import { Descendant } from "slate";
-import { createPlateUI } from "@components/editor/createPlateUI";
 
 // plugins
-import { basicNodesPlugins } from "@components/editor/basic-nodes/basicNodesPlugin";
+import { basicNodesPlugins } from "./basicNodesPlugin";
 import { createClipboardPlugin } from "@components/editor/clipboard/createClipboardPlugin";
-import { createPreviewPlugin } from "@components/editor/preview/createPreviewPlugin";
-import { createCodeNormalizePlugin } from "@components/editor/normalize/createCodeNormalizePlugin";
-import { createColorPlugin } from "@components/editor/color/createColorPlugin";
 
-const plugins = createMyPlugins(
+export const plugins = createMyPlugins(
     [
         ...basicNodesPlugins,
-        createClipboardPlugin(),
-        createPreviewPlugin(),
-        createCodeNormalizePlugin(),
-        createColorPlugin(),
-    ],
-    {
-        components: createPlateUI(),
-    });
+        // createClipboardPlugin(),
+    ]
+);
 
 
 export const editorAtom = atom(

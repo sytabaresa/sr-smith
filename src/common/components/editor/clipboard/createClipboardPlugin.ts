@@ -1,4 +1,4 @@
-import { createPluginFactory } from '@udecode/plate-headless';
+import { createPluginFactory } from '@udecode/plate-common';
 import { changeClipboardContent } from './changeClipboard';
 import { MyValue } from '../types';
 

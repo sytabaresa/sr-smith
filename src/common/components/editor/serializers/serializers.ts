@@ -1,7 +1,7 @@
 import { jsx } from 'slate-hyperscript'
 import { Descendant, Node as SlateNode, Text } from 'slate'
 import { splitLines } from './splitter'
-import { ELEMENT_CODE_LINE, ELEMENT_PARAGRAPH } from '@udecode/plate-headless'
+import { ELEMENT_CODE_BLOCK, ELEMENT_CODE_LINE } from '@udecode/plate-code-block'
 
 export const deserialize = (el: HTMLElement, markAttributes = {}) => {
     if (el.nodeType === Node.TEXT_NODE) {
@@ -77,7 +77,7 @@ export const deserializeTokens = (el) => {
 export const deserializeCode = (code: string): Descendant[] => {
 
     return splitLines(code)[0].map(sta => ({
-        type: ELEMENT_PARAGRAPH,
+        type: ELEMENT_CODE_BLOCK,
         children: sta.split('\n').map(line => ({
             type: ELEMENT_CODE_LINE,
             children: [{ text: line }]

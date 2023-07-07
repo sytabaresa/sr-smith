@@ -108,12 +108,12 @@ export function splitLines(str: string): [string[], boolean] {
             case states.preEnd:
                 if (str[i] != '\n') {
                     state = states.end
-                    i -= 3
+                    i -= 2
                     continue
                 }
                 break
             case states.end:
-                i++
+                i = str[i] == '\n' ? i : i + 1
                 tokens.push(str.slice(f, i))
                 f = str[i] == '\n' ? i + 1 : i
                 state = states.postEnd

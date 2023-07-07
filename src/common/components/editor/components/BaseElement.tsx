@@ -9,9 +9,11 @@ const BaseElement: React.FC<{
     className?: string;
     as?: string | Element;
     children?: ReactNode;
-}> = ({ className, as, children }, leaf, ...props) => {
-    // console.log('props')
-    return <Component className={className} $as={as} {...props}>
+}> = (props) => {
+    // console.log(props)
+    const { className, as, attributes, children, ...rest } = props
+    // console.log(props)
+    return <Component className={className} $as={as} {...attributes}>
         {children}
     </Component>
 }

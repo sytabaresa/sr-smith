@@ -35,7 +35,7 @@ const SmithBoard = (props: SmithBoardProps) => {
 
     useHotkeys('esc', () => sendMenu("EXIT"), hotkeysOptions)
     useHotkeys('delete', () => sendMenu("DELETE"), hotkeysOptions)
-    useHotkeys('ctrl+enter', () => sendEditor('PARSE'), hotkeysOptions)
+    useHotkeys('ctrl+space', () => sendEditor('PARSE'), hotkeysOptions)
 
     useEffect(() => {
         sendSave(RESET)
