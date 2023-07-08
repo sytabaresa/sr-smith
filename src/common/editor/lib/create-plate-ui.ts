@@ -25,7 +25,7 @@ export const createPlateUI = <T extends string = string>(
 ) => {
   const components = {
     [ELEMENT_CODE_BLOCK]: CodeBlockElement,
-    [ELEMENT_CODE_LINE]: withProps(PlateLeaf, { as: 'div' }),
+    [ELEMENT_CODE_LINE]: withProps(PlateLeaf, { as: 'div', 'aria-label': 'code block' }),
     [MARK_BOLD]: withProps(PlateLeaf, { as: 'strong' }),
     [MARK_CODE]: withProps(PlateLeaf, {
       as: 'code',

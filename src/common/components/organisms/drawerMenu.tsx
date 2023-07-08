@@ -22,6 +22,9 @@ const DrawerMenu = (props) => {
     const send = useSetAtom(savingServiceAtom)
     const { t } = useTranslation();
     const { isAuthenticated } = useUser()
+    const { useHistory } = useRouter()
+    const { push } = useHistory();
+
     const _logout = useLogout()
 
     const logout = async () => {
@@ -42,9 +45,7 @@ const DrawerMenu = (props) => {
                     <NewProjectForm />
                 </newProject.Modal>
                 {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
-                <Link href="/saved">
-                    <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} />
-                </Link>
+                <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} onClick={() => push('/saved')} />
                 <publish.Label>
                     <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} />
                 </publish.Label>
@@ -63,9 +64,7 @@ const DrawerMenu = (props) => {
                 </a>
             </> :
             <>
-                <Link href="/login">
-                    <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} />
-                </Link>
+                <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} onClick={() => push('/login')} />
                 <config.Label>
                     <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
                 </config.Label>

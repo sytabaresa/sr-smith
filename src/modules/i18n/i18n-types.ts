@@ -126,7 +126,7 @@ type RootTranslation = {
 	}
 	lang: {
 		/**
-		 * S​p​a​n​i​s​h
+		 * E​s​p​a​ñ​o​l
 		 */
 		es: string
 		/**
@@ -330,6 +330,10 @@ type RootTranslation = {
 		 */
 		elements_menu: string
 		/**
+		 * N​a​v​i​g​a​t​i​o​n​ ​m​e​n​u
+		 */
+		nav_menu: string
+		/**
 		 * C​r​e​a​t​e
 		 */
 		create: string
@@ -403,6 +407,10 @@ type RootTranslation = {
 		description: string
 	}
 	tools: {
+		/**
+		 * E​l​e​m​e​n​t​s​ ​m​e​n​u​ ​e​x​p​a​n​d​e​d
+		 */
+		menu: string
 		two_points: {
 			/**
 			 * S​e​l​e​c​t​ ​t​w​o​ ​p​o​i​n​t​s
@@ -623,7 +631,7 @@ export type TranslationFunctions = {
 	}
 	lang: {
 		/**
-		 * Spanish
+		 * Español
 		 */
 		es: () => LocalizedString
 		/**
@@ -827,6 +835,10 @@ export type TranslationFunctions = {
 		 */
 		elements_menu: () => LocalizedString
 		/**
+		 * Navigation menu
+		 */
+		nav_menu: () => LocalizedString
+		/**
 		 * Create
 		 */
 		create: () => LocalizedString
@@ -900,6 +912,10 @@ export type TranslationFunctions = {
 		description: () => LocalizedString
 	}
 	tools: {
+		/**
+		 * Elements menu expanded
+		 */
+		menu: () => LocalizedString
 		two_points: {
 			/**
 			 * Select two points

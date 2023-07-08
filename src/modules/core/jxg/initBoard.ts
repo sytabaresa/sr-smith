@@ -48,8 +48,8 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
         options.screen
 
     const brd = JXG.JSXGraph.initBoard(options.name, {
-        // title: options.translations.title ?? 'Smith Chart canvas',
-        // description: options.translations.desc ?? 'An canvas with a smith chart',
+        title: options.translations.title ?? 'Smith Chart canvas',
+        description: options.translations.desc ?? 'An canvas with a smith chart',
         boundingbox,
         keepaspectratio: true,
         // grid: true,

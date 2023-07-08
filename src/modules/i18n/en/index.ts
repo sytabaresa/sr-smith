@@ -35,7 +35,7 @@ const en: Translation = {
 		close: 'Close',
 	},
 	lang: {
-		es: "Spanish",
+		es: "Español",
 		en: "English",
 	},
 	license: {
@@ -99,6 +99,7 @@ const en: Translation = {
 		undo: "Undo",
 		show_menu: "Show Menu",
 		elements_menu: "Elements Menu",
+		nav_menu: "Navigation menu",
 		create: "Create",
 		code: "Code",
 		placeholder: "Write code...",
@@ -122,6 +123,7 @@ const en: Translation = {
 		description: "Project description"
 	},
 	tools: {
+		menu: 'Elements menu expanded',
 		two_points: {
 			desc: "Select two points"
 		},

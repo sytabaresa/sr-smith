@@ -32,7 +32,6 @@ export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
  * @author: your name (me@example.org)
  * @version: 1.0
 **/
-a = 1;
 Zo = 50;`
 }), (get) => ({ board: get(boardAtom) }))
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({

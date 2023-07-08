@@ -7,20 +7,20 @@ interface ModalContainerProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>
   withClose?: boolean;
   modalChild?: JSX.Element;
   modalName?: string;
+  onCancel?: () => void;
   children: ReactNode | ((props: { modalState: boolean, showModal: (state: boolean) => void }) => ReactNode)
 };
 
 const createModal = (modalName: string) => {
 
   const finalModalName = !modalName || modalName == '' ? `modal-${Math.random().toString().slice(-5)}` : modalName
+  const [modalOpened, showModal] = useState(false)
 
   const closeRef = useRef<HTMLLabelElement>()
-  const triggerRef = useRef<HTMLLabelElement>()
   const modalRef = useRef<HTMLLabelElement>()
-  const modalStateRef = useRef<HTMLInputElement>()
 
   const labelProps = {
-    tabIndex: 0,
+    // tabIndex: 0,
     onKeyPress: e => {
       e.stopPropagation()
       if (e.key == "Enter")
@@ -29,10 +29,13 @@ const createModal = (modalName: string) => {
   }
 
   function onKey(ev) {
+
+    if (!modalOpened) return
+
     // console.log(ev)
     // if escape pressed
     if (ev.which == 27) {
-      closeRef.current.click()
+      showModal(false)
       return
     }
 
@@ -70,58 +73,71 @@ const createModal = (modalName: string) => {
     }
   }
 
-  function onClose(ev) {
-    triggerRef.current?.focus()
-  }
-
   const Label = (props: LabelHTMLAttributes<HTMLLabelElement> | any) => {
+    const triggerRef = useRef<HTMLLabelElement>()
 
     return <label
       {...labelProps}
       ref={triggerRef}
-      htmlFor={finalModalName}
       onClick={e => {
-        setTimeout(() => closeRef.current.focus(), 500)
+        showModal(old => {
+          setTimeout(() => old ?
+            (triggerRef.current
+              .querySelector('button,a,input,textarea,*[tabindex="0"]') as HTMLElement).focus()
+            : closeRef.current.focus(), 500)
+          return !old
+        })
       }}
       {...props}>
     </label>
   }
-
-  const modalState = modalStateRef.current?.checked
-  // const showModal = (state: boolean) => {
-  //   if (modalStateRef.current) {
-  //     console.log(modalStateRef, state)
-  //     modalStateRef.current.value = !!state
-  //   }
-  // }
 
   const Modal = ({
     modalChild,
     children,
     withClose = true,
     className,
+    onCancel,
     ...rest
   }: ModalContainerProps) => {
     const { t } = useTranslation()
-    const [_defModal, showModal] = useState(false)
+    const [focus, setFocus] = useState(false)
+
+    const closeModal = () => {
+      onCancel && onCancel()
+      showModal(false)
+    }
 
     const out = <>
-      <input type="checkbox" id={finalModalName} ref={modalStateRef} defaultChecked={_defModal} className="modal-toggle hidden" />
-      <label htmlFor={finalModalName} className={`modal cursor-pointer ${className}`} {...rest}>
-        <label htmlFor="" ref={modalRef} tabIndex={0} onKeyDown={onKey} className="modal-box relative">
+      <input type="checkbox" id={finalModalName} checked={modalOpened} className="modal-toggle hidden" readOnly />
+      <label
+        aria-hidden={!modalOpened}
+        className={`modal cursor-pointer ${className}`}
+        onClick={() => { !focus && closeModal() }}
+        {...rest}
+      >
+        <label
+          ref={modalRef}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+          onKeyDown={onKey}
+          aria-hidden={!modalOpened}
+          className="modal-box relative"
+        >
           {withClose &&
             <label
               {...labelProps}
               ref={closeRef}
-              htmlFor={finalModalName}
-              onClick={onClose}
+              tabIndex={0}
+              // onClick={onClose}
+              onClick={closeModal}
               className="btn btn-sm btn-ghost absolute right-2 top-2"
               aria-label={t.common.close()}
             >
               ✕
             </label>
           }
-          {typeof children == 'function' ? children({ modalState, showModal }) : children}
+          {typeof children == 'function' ? children({ modalState: modalOpened, showModal }) : children}
         </label>
       </label >
     </>

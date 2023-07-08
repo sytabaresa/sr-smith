@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from "react";
 
-interface DrawerMenuItemProps extends HTMLAttributes<HTMLDivElement> {
+interface DrawerMenuItemProps extends HTMLAttributes<HTMLButtonElement> {
     label: string;
     icon: JSX.Element
     onClick?: () => void
@@ -8,10 +8,10 @@ interface DrawerMenuItemProps extends HTMLAttributes<HTMLDivElement> {
 
 const DrawerMenuItem = ({ label, icon, onClick, ...rest }: DrawerMenuItemProps) => {
     return (
-        <div className="btn btn-ghost" role="button" onClick={onClick} {...rest}>
+        <button className="btn btn-ghost" onClick={onClick} {...rest}>
             {icon}
             <span className="pl-3 text-xl">{label}</span>
-        </div>
+        </button>
     )
 }
 

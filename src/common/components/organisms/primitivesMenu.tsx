@@ -19,6 +19,7 @@ import { drawServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
 import { editorAtom } from "@editor/common/atoms";
+import { cn } from "@editor/lib/utils";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -28,7 +29,6 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { t } = useTranslation()
   const [current, send] = useAtom(drawServiceAtom)
   const editor = useAtomValue(editorAtom)
-
   const [offset, setOffset] = useState(0)
 
   const ref = useRef()
@@ -113,8 +113,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
       </div>
       <div ref={ref} className={`dropdown xsh:fixed xsh:bottom-[5rem] z-0 ${showMenu ? 'dropdown-open' : ''}`}>
         <div className="dropdown-content mt-2 border-neutral border bg-base-100">
-          <ul
+          <div
             tabIndex={0}
+            aria-label={t.tools.menu()}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
             className={`p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full overflow-x-hidden scrollbar !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content
           flex-nowrap   ${showMenu ? '' : 'hidden'}`}
@@ -123,21 +124,21 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
             new ImCircleTooltip(), new ReCircleAdTooltip(), new ImCircleAdTooltip()].map((plugin, index) =>
-              // figure out how to show clipped tooltip
-              <li key={index} onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })} className="" >
-                <button
-                  aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip}
-                  // data-tip={t.tools[plugin.tooltip]?.title || ''}
-                  className={`p-0 py-2 md:px-2 btn btn-ghost  tooltip2 tooltip-right ${current.context.tooltipSelected == plugin.name ? 'btn-active' : ''}`}
-                >
-                  <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
-                </button>
-              </li>
+              // TODO: figure out how to show clipped tooltip
+              <button
+                key={index}
+                aria-label={t.tools[plugin.tooltip]?.title() || plugin.tooltip}
+                onClick={() => send({ type: 'CHANGE_DRAW', value: plugin.name })}
+                // data-tip={t.tools[plugin.tooltip]?.title || ''}
+                className={cn('p-0 py-2 md:px-2 btn btn-ghost', current.context.tooltipSelected == plugin.name ? 'btn-active' : '')}
+              >
+                <plugin.icon className="w-8 h-8 stroke-base-content fill-base-content" />
+              </button>
             )}
-          </ul>
+          </div>
         </div>
       </div>
-      <circleRadius.Modal>
+      <circleRadius.Modal onCancel={() => send('CANCEL')}>
         {props => <CircleRadiusForm  {...props} />}
       </circleRadius.Modal>
       {/* toas in the corner, info of tooltip selected */}

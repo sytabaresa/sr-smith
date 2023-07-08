@@ -36,7 +36,7 @@ const es: BaseTranslation = {
 	},
 	lang: {
 		es: "Español",
-		en: "Inglés",
+		en: "English",
 	},
 	license: {
 		work: "Este trabajo está bajo",
@@ -105,6 +105,7 @@ const es: BaseTranslation = {
 		undo: "Atrás",
 		show_menu: "Ver menú",
 		elements_menu: "Menú de elementos",
+		nav_menu: "Navigation menu",
 		create: "Crear",
 		code: "Code",
 		placeholder: "Escribir código...",
@@ -121,6 +122,7 @@ const es: BaseTranslation = {
 		precision: "Precisión",
 	},
 	tools: {
+		menu: 'Menu de elementos expandido',
 		common: {
 			two_points: "Seleccione dos puntos",
 			three_points: "Seleccione tres puntos"

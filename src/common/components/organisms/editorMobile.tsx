@@ -33,45 +33,48 @@ const EditorMobile = (props: EditorPopupProps) => {
         setWarning(false)
     }, [select])
 
-    const OutEditor = <CodeEditor
-        className={cn("p-2 bg-transparent lg:hidden z-20 w-full h-[50vh]", isOpen ? 'absolute bottom-0 left-0' : 'hidden', "h-full")}
-        toolbar={editor => <div className="flex items-start"></div> as any}
-        footer={editor => <>
-            <div className={`mb-2 z-10 ${warning ? '' : 'hidden'}`}>
-                <EditorError />
-            </div>
-            <div className="flex items-center">
-                <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
-                    {t.canvas.run()}
-                </button>
-                <button
-                    className={`btn btn-outline btn-circle mr-2 transition-all
+    const OutEditor = <div className={cn("p-2 bg-transparent lg:hidden z-20 w-full h-[50vh]", isOpen ? 'absolute bottom-0 left-0' : 'hidden', props.className)}>
+        <CodeEditor
+            id="mobile-editor"
+            className="h-full"
+            toolbar={editor => <div className="flex items-start"></div> as any}
+            footer={editor => <>
+                <div className={`mb-2 z-10 ${warning ? '' : 'hidden'}`}>
+                    <EditorError />
+                </div>
+                <div className="flex items-center">
+                    <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
+                        {t.canvas.run()}
+                    </button>
+                    <button
+                        className={`btn btn-outline btn-circle mr-2 transition-all
                     ${warning ? 'animation-none' : ''}
                     ${current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0'}`}
-                    tabIndex={0}
-                    onClick={() => setWarning(!warning)}
-                    aria-label={t.canvas.warning()}
-                >
-                    <ExclamationIcon className="w-6" />
-                </button>
-                <button
-                    aria-label={t.canvas.undo()}
-                    tabIndex={0}
-                    className={`btn btn-outline btn-primary btn-circle mr-2`}
-                    onClick={() => editor.undo()}>
-                    <ReplyIcon className="w-5" />
-                </button>
-                <button
-                    className="btn btn-outline btn-circle"
-                    tabIndex={0}
-                    onClick={() => setOpen(!isOpen)}
-                    aria-label={t.canvas.undo()}
-                >
-                    <ChevronDownIcon className="w-6" />
-                </button>
-            </div>
-        </> as any}
-    />
+                        tabIndex={0}
+                        onClick={() => setWarning(!warning)}
+                        aria-label={t.canvas.warning()}
+                    >
+                        <ExclamationIcon className="w-6" />
+                    </button>
+                    <button
+                        aria-label={t.canvas.undo()}
+                        tabIndex={0}
+                        className={`btn btn-outline btn-primary btn-circle mr-2`}
+                        onClick={() => editor.undo()}>
+                        <ReplyIcon className="w-5" />
+                    </button>
+                    <button
+                        className="btn btn-outline btn-circle"
+                        tabIndex={0}
+                        onClick={() => setOpen(!isOpen)}
+                        aria-label={t.canvas.undo()}
+                    >
+                        <ChevronDownIcon className="w-6" />
+                    </button>
+                </div>
+            </> as any}
+        />
+    </div>
 
     return (
         <div {...props}>

@@ -16,7 +16,7 @@ export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
 
 const updateAtom = atom(0)
 let timer = null // not concurrent
-const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => {
+const CodeEditor = ({ className, toolbar, footer, id = '', ...rest }: CodeEditor) => {
 
     // machines
     const send = useSetAtom(editorServiceAtom)
@@ -60,6 +60,7 @@ const CodeEditor = ({ className, toolbar, footer, id, ...rest }: CodeEditor) => 
     const editableProps = useCutomEditableProps()
 
     return <PlateProvider<MyValue>
+        // id={id}
         editor={editor}
         plugins={editor.plugins}
         initialValue={initialValue}

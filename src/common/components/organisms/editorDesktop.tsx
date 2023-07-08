@@ -18,6 +18,7 @@ const EditorDesktop = (props: EditorDesktopProps) => {
     const parseExecute = useCallback(() => send('PARSE'), [])
 
     return <CodeEditor
+        id="desktop-editor"
         className={cn("flex h-[93vh] w-[30vw] max-w-[30rem]", props.className)}
         toolbar={editor => <ToolbarControls editor={editor} /> as any}
         footer={editor => <>

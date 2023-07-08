@@ -22,7 +22,7 @@ const CircleRadiusForm = (props: CircleRadiusFormProps) => {
     }
 
     const deep = deepCurrent(current.service)
-    // console.log(deep)
+    // console.log(showModal, deep)
     useEffect(() => {
         showModal(deep == "draw.drawCircle")
     }, [deep])
