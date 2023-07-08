@@ -3,6 +3,7 @@ import { linkMd } from "@editor/autolinker/autolinker-grammar";
 import { useHotkeys } from "@udecode/plate-common";
 import { useAtom, useSetAtom } from "jotai";
 import { linkActiveAtom, linkPropsAtom } from "./common";
+import { cn } from "@utils/styles";
 
 export const AutolinkerLeaf = (props) => {
     let { children, leaf, attributes, ...rest } = props
@@ -44,7 +45,7 @@ export const AutolinkerLeaf = (props) => {
     >
         <a
             {...attributes}
-            className={`link ${showLink ? 'cursor-pointer font-bold' : 'cursor-auto'}`}
+            className={cn('link', showLink ? 'cursor-pointer font-bold' : 'cursor-auto')}
             href={href}
             target="_blank"
             onClick={() => {

@@ -1,3 +1,4 @@
+import { cn } from "@utils/styles"
 import React, { cloneElement } from "react"
 
 interface IconProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -152,7 +153,7 @@ export function ReCircleIcon(props) {
 export function ReCircleIconAd(props) {
     const { className, ...rest } = props
 
-    return <svg width="512" height="512" viewBox="0 0 512 512" className={`-scale-x-100 ${className}`}  {...rest}>
+    return <svg width="512" height="512" viewBox="0 0 512 512" className={cn('-scale-x-100', className)}  {...rest}>
         <path fill="none" className="stroke-secondary" opacity=".6" strokeWidth="13" d="M440.11 256c0 101.502-82.429 183.785-184.11 183.785-101.681 0-184.11-82.283-184.11-183.785S154.319 72.215 256 72.215c101.682 0 184.11 82.283 184.11 183.785z" />
         <path className="stroke-content" strokeWidth="13" opacity=".6" d="m 256.36387,52.551227 1.69377,414.810723" />
         <path className="stroke-content" strokeWidth="13" opacity=".6" d="M 464.57321,256.94796 49.762482,258.64173" />
@@ -177,7 +178,7 @@ export function ImCircleIcon(props) {
 export function ImCircleIconAd(props) {
     const { className, ...rest } = props
 
-    return <svg width="512" height="512" viewBox="0 0 512 512" className={`-scale-x-100 ${className}`} {...rest}>
+    return <svg width="512" height="512" viewBox="0 0 512 512" className={cn('-scale-x-100', className)} {...rest}>
         <path fill="none" className="stroke-secondary" opacity=".6" strokeWidth="13" d="M440.11 256c0 101.502-82.429 183.785-184.11 183.785-101.681 0-184.11-82.283-184.11-183.785S154.319 72.215 256 72.215c101.682 0 184.11 82.283 184.11 183.785z" />
         <path className="stroke-content" strokeWidth="13" opacity=".6" d="m 256.36387,52.551227 1.69377,414.810723" />
         <path className="stroke-content" strokeWidth="13" opacity=".6" d="M 464.57321,256.94796 49.762482,258.64173" />

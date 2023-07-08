@@ -19,9 +19,7 @@ import { Getter, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithStorage } from "jotai/utils";
-import { SmithProject } from "@localtypes/smith";
-import { _dataRxdbProviderAtom, dataQLProviderAtom } from "./db";
-import { Loadable } from "jotai/vanilla/utils/loadable";
+import { _dataRxdbProviderAtom } from "./db";
 import { Board } from "jsxgraph";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
@@ -165,104 +163,6 @@ export const codeAtom = atom<string>(
     (get) => {
         const current = get(editorServiceAtom)
         return current.context?.code
-    }
-)
-
-const _projectDataAtom = atom<Loadable<SmithProject> & { readonly: boolean }>({
-    readonly: true,
-    state: 'loading'
-})
-
-const _getData = async (get) => {
-    const oldProject = get(_projectDataAtom)
-
-    if (oldProject)
-        return oldProject
-
-    const id = get(_projectIDAtom)
-    console.log('loading data', id)
-
-    try {
-        const { getOne } = await get(_dataRxdbProviderAtom)
-        const projectData: SmithProject = await getOne({
-            resource: 'projects',
-            id: id,
-        })
-
-        // console.log(projectData)
-        if (projectData) {
-            return { state: 'hasData', readonly: false, data: projectData }
-        }
-        // } else
-        //     return Promise.reject('document not exists')
-    } catch (err) {
-        console.log("document loading error", err)
-        return Promise.reject(err)
-    }
-
-    console.log('loading data (read only)', id)
-
-    try {
-        const { getOne } = await get(dataQLProviderAtom)
-        const projectData: SmithProject = await getOne({
-            resource: 'project',
-            id: id,
-            meta: {
-                fields: [
-                    'data',
-                    'description',
-                    'id',
-                    'deleted',
-                    'updatedAt',
-                    'createdAt',
-                    'name',
-                    'isPublic',
-                ]
-            }
-        })
-
-        // console.log(projectData)
-        if (projectData) {
-            return { state: 'hasData', readonly: true, data: projectData.data }
-        } else
-            return Promise.reject('document not exists')
-    } catch (err) {
-        console.log("document loading error", err)
-        return Promise.reject(err)
-    }
-}
-
-const _projectIDAtom = atom('')
-export const projectDataAtom = atom(
-    (get) => {
-        return get(_projectDataAtom)
-    },
-    async (get, set, values: Partial<SmithProject>) => {
-        const oldProject = get(_projectDataAtom)
-        if (oldProject.state == 'loading') {
-            set(_projectDataAtom, {
-                state: 'hasData',
-                readOnly: values.readonly,
-                data: values.data
-            })
-        }
-        if (!oldProject.readonly) {
-            const { update, getOne } = await get(_dataRxdbProviderAtom)
-
-            await update({
-                resource: 'projects',
-                id: oldProject.data.id,
-                variables: values
-            })
-
-            const project = await getOne({
-                resource: 'projects',
-                id: get(_projectDataAtom).project.id,
-            })
-            set(_projectDataAtom, { ...oldProject, project })
-        } else {
-            set(_projectDataAtom, { ...oldProject, project: { ...oldProject.project, ...values } })
-        }
     }
 )
 

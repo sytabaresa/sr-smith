@@ -35,22 +35,22 @@ export class FirebaseWrapper implements DataProvider {
         this.db = db
     }
 
-    async create({ resource, variables, metaData }: oneData) {
+    async create({ resource, variables, meta }: oneData) {
         const doc = await addDoc(collection(this.db, resource), variables)
         return { id: doc.id }
     }
-    async createMany({ resource, variables, metaData }: oneData) {
+    async createMany({ resource, variables, meta }: oneData) {
         throw new Error("not implemented");
         return []
     }
-    async deleteOne({ resource, id, variables, metaData }: selectOne) {
+    async deleteOne({ resource, id, variables, meta }: selectOne) {
         return await deleteDoc(doc(this.db, `${resource}/${id}`));
     }
-    async deleteMany({ resource, ids, variables, metaData }: selectMany) {
+    async deleteMany({ resource, ids, variables, meta }: selectMany) {
         throw new Error("not implemented");
         return
     }
-    async getList({ resource, pagination, hasPagination, sort, filters, metaData }: list) {
+    async getList({ resource, pagination, hasPagination, sort, filters, meta }: list) {
 
         const q = query(collection(this.db, resource), ...(filters?.map(f => where(f.v1, f.op as any, f.v2)) || []));
 
@@ -62,7 +62,7 @@ export class FirebaseWrapper implements DataProvider {
         });
         return data
     }
-    async getMany({ resource, ids, metaData }: selectMany) {
+    async getMany({ resource, ids, meta }: selectMany) {
         const q = query(collection(this.db, resource), where('id', 'in', ids));
 
         const querySnapshot = await getDocs(q);
@@ -73,18 +73,18 @@ export class FirebaseWrapper implements DataProvider {
         });
         return data
     }
-    async getOne({ resource, id, metaData }: selectOne) {
+    async getOne({ resource, id, meta }: selectOne) {
         const docRef = doc(this.db, `${resource}/${id}`);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             return docSnap.data()
         }
     }
-    async update({ resource, id, variables, metaData }) {
+    async update({ resource, id, variables, meta }) {
         const docRef = doc(this.db, `${resource}/${id}`);
         return await updateDoc(docRef, variables)
     }
-    async updateMany({ resource, ids, variables, metaData }: selectMany) {
+    async updateMany({ resource, ids, variables, meta }: selectMany) {
         throw new Error("not implemented");
     }
 }

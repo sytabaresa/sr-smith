@@ -28,7 +28,7 @@ export type HasuraDataProviderOptions = {
 const dataProvider = (
     client: GraphQLClient,
     options?: HasuraDataProviderOptions,
-): Required<DataProvider> => {
+): DataProvider => {
     const { idType, namingConvention = "hasura-default" } = options ?? {};
     const defaultNamingConvention = namingConvention === "hasura-default";
 
@@ -430,13 +430,6 @@ const dataProvider = (
                 data: result[deleteOperation]["returning"],
             };
         },
-
-        getApiUrl: () => {
-            throw new Error(
-                "getApiUrl method is not implemented on refine-hasura data provider.",
-            );
-        },
-
         custom: async ({ url, method, headers, meta }) => {
             let gqlClient = client;
 

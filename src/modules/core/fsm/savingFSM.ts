@@ -1,13 +1,13 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
 import { SmithProject } from '@localtypes/smith';
-import { editorServiceAtom, projectDataAtom } from '@core/atoms/smith';
+import { editorServiceAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
 import { authAtom } from '@core/atoms/auth';
 // import { Timestamp } from 'firebase/firestore';
 
-export interface SavingContextType extends JotaiContext {
+export interface SavingContextType<T = any, A = any, B = any> extends JotaiContext<T, A, B> {
     id: string;
     // loadHandler: (ctx: SavingContextType, ev: any) => void;
     code?: string;
@@ -41,11 +41,11 @@ export default createMachine('anon', {
         immediate('checkRead')
     ),
     checkDoc: invoke(getProjectData,
-        transition('done', 'doc', action(saveData), action(sendCodeEditor)),
+        transition('done', 'doc', action(sendCodeEditor)),
         transition('error', 'checkRead', action((ctx, ev: any) => console.log('checkDoc error: ', ev.error))),
     ),
-    checkRead: invoke(getReadDoc,
-        transition('done', 'readOnly', action(saveData), action(sendCodeEditor)),
+    checkRead: invoke(getPublicDoc,
+        transition('done', 'readOnly', action(sendCodeEditor)),
         transition('error', 'noDoc')
     ),
     readOnly: state(
@@ -80,11 +80,6 @@ export default createMachine('anon', {
     saveCounter: 0,
 }) as SavingContextType)
 
-function saveData(ctx: SavingContextType, ev: any) {
-    const setData = ctx.setter(projectDataAtom)
-    setData(ev.data)
-}
-
 function saveCode(ctx: SavingContextType, ev: any) {
     return { ...ctx, code: ev.value, saveCounter: ctx.saveCounter + 1 }
 }
@@ -116,7 +111,7 @@ async function getProjectData(ctx: SavingContextType) {
     console.log('loading data', ctx.id)
 
     try {
-        const { getOne }: DataProvider = await ctx.getter(_dataRxdbProviderAtom)
+        const { getOne } = await ctx.getter(_dataRxdbProviderAtom) as DataProvider
         const projectData: SmithProject = await getOne({
             resource: 'projects',
             id: ctx.id,
@@ -133,7 +128,7 @@ async function getProjectData(ctx: SavingContextType) {
     }
 };
 
-async function getReadDoc(ctx, SavingContextType) {
+async function getPublicDoc(ctx, SavingContextType) {
     console.log('loading data (read only)', ctx.id)
 
     try {
@@ -168,7 +163,7 @@ async function getReadDoc(ctx, SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update }: DataProvider = await ctx.getter(_dataRxdbProviderAtom)
+    const { update } = await ctx.getter(_dataRxdbProviderAtom) as DataProvider
 
     await update({
         resource: 'projects',

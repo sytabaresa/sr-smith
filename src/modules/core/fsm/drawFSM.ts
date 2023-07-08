@@ -5,7 +5,7 @@ import { editorServiceAtom } from "@core/atoms/smith"
 import { JotaiContext } from "@utils/atoms"
 
 
-interface Context extends JotaiContext {
+interface Context extends JotaiContext<any, any, any> {
     tooltipSelected: string,
     code: string,
     smithMode: boolean,
@@ -48,7 +48,7 @@ const recreateCode = (ctx: Context, ev) => {
 }
 
 const hit = (ctx, ev) => {
-    hitElement = ev.value.element
+    let hitElement = ev.value.element
 }
 
 export default createMachine<any, Context>('idle', {

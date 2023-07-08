@@ -2,6 +2,7 @@ import { useTranslation } from "@modules/i18n";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
 import { GoogleIcon } from "@components/atoms/icons";
+import { cn } from "@utils/styles";
 
 type LoginFormProps = {
   // onSubmit: (data: any) => void;
@@ -40,7 +41,7 @@ const LoginForm = ({ }: LoginFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control" method="post">
-      <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
         <span className="">
           {errors?.root?.login?.message}
         </span>

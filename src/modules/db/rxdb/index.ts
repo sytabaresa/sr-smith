@@ -1,4 +1,4 @@
-import { RxDatabase, createRxDatabase } from "rxdb";
+import { MangoQuerySelector, RxDatabase, createRxDatabase } from "rxdb";
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 import { projectSchema } from "./schema";
 import uuid from 'uuid-random';
@@ -44,7 +44,7 @@ const dataProvider: (rxdb: RxDatabase) => DataProviderPrivate =
             return docs
         }
         const _getList = ({ resource, pagination, hasPagination, sort, filters, meta }: list) => {
-            const docs = rxdb[resource]?.find({ selector: filters })
+            const docs = rxdb[resource]?.find({ selector: filters as MangoQuerySelector<any> })
             return docs
         }
         const _getMany = ({ resource, ids, meta }: selectMany) => {
@@ -74,7 +74,7 @@ const dataProvider: (rxdb: RxDatabase) => DataProviderPrivate =
             },
             getMany: async (data: selectMany) => {
                 const docs = await _getMany(data)
-                return docs?.values() as unknown as Record<string, any>[]
+                return Array.from(docs?._result.docsDataMap.values()) as unknown as Record<string, any>[]
             },
             getOne: async (data: selectOne) => {
                 const doc = await _getOne(data)?.exec()

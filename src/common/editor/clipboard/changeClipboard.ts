@@ -1,8 +1,9 @@
+import { ClipboardEvent } from "react"
 import { serializeCode } from "@editor/serializers/serializers"
-import { PlateEditor } from "@udecode/plate-common-core"
-import { MyDOMHandler, MyValue } from "../types"
+import { MyDOMHandler, MyEditor, MyValue } from "../types"
+import { DOMHandler } from "@udecode/plate-common"
 
-export const changeClipboardContent: MyDOMHandler = (editor, event) => {
+export const changeClipboardContent: MyDOMHandler = (editor: MyEditor) => (event: ClipboardEvent<Element>) => {
     // event.preventDefault()
     const sel = serializeCode(editor.fragment(editor.selection))
     event.clipboardData.setData('text/plain', sel)

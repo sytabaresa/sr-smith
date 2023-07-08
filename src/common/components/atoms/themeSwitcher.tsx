@@ -1,6 +1,7 @@
 import { themeAtom } from "@core/atoms/common";
 import { MoonIcon, SunIcon } from "@heroicons/react/outline";
 import { useTranslation } from "@modules/i18n";
+import { cn } from "@utils/styles";
 import { useAtom } from "jotai";
 import { ChangeEvent, LabelHTMLAttributes } from "react";
 
@@ -15,7 +16,7 @@ export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
         // console.log('set', e.target.checked)
         setTheme(e.target.checked ? "dark" : "light")
     }
-    return <label className={`swap swap-rotate`} {...rest}>
+    return <label className='swap swap-rotate' {...rest}>
         <input
             // aria-label={t.common.theme()}
             type="checkbox"
@@ -23,8 +24,8 @@ export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
             onChange={set}
             aria-label={`${t.common.theme()} - ${t.theme[theme]()}`}
         />
-        <MoonIcon className={`swap-on w-8 h-8 ${className}`} tabIndex={-1} />
-        <SunIcon className={`swap-off w-8 h-8 ${className}`} tabIndex={-1} />
+        <MoonIcon className={cn('swap-on w-8 h-8', className)} tabIndex={-1} />
+        <SunIcon className={cn('swap-off w-8 h-8', className)} tabIndex={-1} />
         <span className="hidden" aria-hidden="false">
             {t.common.theme()}
         </span>

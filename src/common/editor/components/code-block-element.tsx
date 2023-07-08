@@ -5,7 +5,7 @@ import {
 } from '@udecode/plate-code-block';
 import { PlateElement, PlateElementProps, Value } from '@udecode/plate-common';
 
-import { cn } from '@editor/lib/utils';
+import { cn } from '@utils/styles';
 
 const CodeBlockElement = forwardRef<
   HTMLDivElement,

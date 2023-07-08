@@ -191,10 +191,10 @@ declare namespace JXG {
     export let Options: JXGOptions;
 
     export interface GeometryElementAttributes extends GeometryElementAttributes {
-        showinfobox: string;
+        showinfobox?: string;
     }
 
     export interface CircleOptions extends CircleOptions {
-        showinfobox: string;
+        showinfobox?: string;
     }
 }

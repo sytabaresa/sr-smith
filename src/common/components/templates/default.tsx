@@ -9,6 +9,7 @@ import { UserImage } from '@components/molecules/userImage';
 import { LogoutIcon } from '@heroicons/react/outline';
 import DrawerMenuItem from '@components/molecules/drawerMenuItem';
 import { useLogout } from '@hooks/useLogout';
+import { cn } from '@utils/styles';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
@@ -52,7 +53,7 @@ const Layout = (props: Props) => {
   // }
 
   return (
-    <div id="root-container" className={`flex flex-col relative overflow-hidden full-screen-div ${className}`} {...rest}>
+    <div id="root-container" className={cn('flex flex-col relative overflow-hidden full-screen-div', className)} {...rest}>
       {/* <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />

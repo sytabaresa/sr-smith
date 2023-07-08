@@ -5,6 +5,7 @@ import SingUpForm from "@components/organisms/login/signupForm";
 import LoginForm from "@components/organisms/login/loginForm";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { useRouter } from "@modules/router";
+import { cn } from "@utils/styles";
 
 export { Login as Page }
 
@@ -52,14 +53,13 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
       </div>
       <div className="tabs">
         <a
-          className={`tab tab-lg tab-bordered uppercase font-bold ${isLogin ? "tab-active" : ""}`}
+          className={cn('tab tab-lg tab-bordered uppercase font-bold', isLogin ? "tab-active" : "")}
           onClick={() => setIsLogin(true)}
         >
           {t.login.login()}
         </a>
         <a
-          className={`tab tab-lg tab-bordered uppercase font-bold ${!isLogin ? "tab-active" : ""
-            }`}
+          className={cn('tab tab-lg tab-bordered uppercase font-bold', !isLogin ? "tab-active" : "")}
           onClick={() => setIsLogin(false)}
         >
           {t.login.sign_up()}

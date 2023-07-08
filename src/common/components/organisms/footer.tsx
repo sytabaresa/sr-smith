@@ -2,7 +2,7 @@ import { HTMLAttributes } from "react";
 import { About } from "@components/atoms/about";
 import { useTranslation } from "@modules/i18n";
 import createModal from "@components/molecules/createModal";
-import { cn } from "@editor/lib/utils";
+import { cn } from "@utils/styles";
 
 export interface IFooterProps extends HTMLAttributes<HTMLElement> { }
 

@@ -35,7 +35,7 @@ JXG.createSmithPoint = function (board, parents: any[], attributes) {
         return sp as SmithPoint
     } else if (parents.length == 1 && JXG.isNumber(parents[0])) {
         const re = parents[0]
-        var sp: any = board.create('spoint', [re, 0], attr)
+        var sp: any = board.create('spoint', [re, 0], attr as Record<string, any>)
         return sp as SmithPoint
     } else {
         throw ("Can't create smith point with parent types '" + (typeof parents[0]) + " and " + (typeof parents[1]));

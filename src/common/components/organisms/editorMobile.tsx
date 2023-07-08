@@ -8,7 +8,7 @@ import { HistoryEditor } from "slate-history";
 import { createPortal } from "react-dom";
 import EditorError from "@components/atoms/editorError";
 import { selectionAtom } from "@editor/common/atoms";
-import { cn } from "@editor/lib/utils";
+import { cn } from "@utils/styles";
 
 export interface EditorPopupProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -39,7 +39,7 @@ const EditorMobile = (props: EditorPopupProps) => {
             className="h-full"
             toolbar={editor => <div className="flex items-start"></div> as any}
             footer={editor => <>
-                <div className={`mb-2 z-10 ${warning ? '' : 'hidden'}`}>
+                <div className={cn('mb-2 z-10', warning ? '' : 'hidden')}>
                     <EditorError />
                 </div>
                 <div className="flex items-center">
@@ -47,9 +47,9 @@ const EditorMobile = (props: EditorPopupProps) => {
                         {t.canvas.run()}
                     </button>
                     <button
-                        className={`btn btn-outline btn-circle mr-2 transition-all
-                    ${warning ? 'animation-none' : ''}
-                    ${current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0'}`}
+                        className={cn('btn btn-outline btn-circle mr-2 transition-all',
+                            warning ? 'animation-none' : '',
+                            current.name == 'error' ? 'w-12 btn-error animate-tilt-shake' : 'btn-neutral w-0')}
                         tabIndex={0}
                         onClick={() => setWarning(!warning)}
                         aria-label={t.canvas.warning()}
@@ -59,7 +59,7 @@ const EditorMobile = (props: EditorPopupProps) => {
                     <button
                         aria-label={t.canvas.undo()}
                         tabIndex={0}
-                        className={`btn btn-outline btn-primary btn-circle mr-2`}
+                        className='btn btn-outline btn-primary btn-circle mr-2'
                         onClick={() => editor.undo()}>
                         <ReplyIcon className="w-5" />
                     </button>
@@ -79,10 +79,11 @@ const EditorMobile = (props: EditorPopupProps) => {
     return (
         <div {...props}>
             <div className="indicator">
-                <span className={`indicator-item badge badge-error top-[.5rem] right-[.2rem] ${current.name == 'error' ? '' : 'hidden'}`}></span>
+                <span className={cn('indicator-item badge badge-error top-[.5rem] right-[.2rem]',
+                    current.name == 'error' ? '' : 'hidden')}></span>
                 <button
                     // preset="filled"
-                    className={`btn btn-outline bg-base-100 ${isOpen ? 'btn-active' : ''}`}
+                    className={cn('btn btn-outline bg-base-100', isOpen ? 'btn-active' : '')}
                     onClick={() => setOpen(!isOpen)}
                 >
                     {t.canvas.code()}

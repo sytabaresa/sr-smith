@@ -4,7 +4,7 @@ import { JotaiContext } from '@utils/atoms';
 import { boardAtom } from '@core/atoms/smith';
 import { Board } from 'jsxgraph';
 
-export interface EditorContextType extends JotaiContext {
+export interface EditorContextType extends JotaiContext<any,any,any> {
     errorMsg?: string;
     code: string;
     counter: number

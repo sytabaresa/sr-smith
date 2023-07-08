@@ -7,6 +7,7 @@ import { changeAtom, changeCodeAtom, editorAtom, selectionAtom } from "@editor/c
 import { Plate, PlateEditor, PlateProvider } from '@udecode/plate-common';
 import { useCutomEditableProps } from './common/useCustomEditableProps';
 import { MyValue } from './types';
+import { cn } from "@utils/styles";
 
 export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
     toolbar?: (editor: PlateEditor<MyValue>) => ReactNode
@@ -66,14 +67,13 @@ const CodeEditor = ({ className, toolbar, footer, id = '', ...rest }: CodeEditor
         initialValue={initialValue}
         onChange={onEditorChanged}
     >
-        <div className={`border border-neutral bg-base-100 p-2 flex flex-col relative ${className || ''}`} {...rest}>
+        <div className={cn('border border-neutral bg-base-100 p-2 flex flex-col relative', className)} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                 {toolbar?.(editor)}
             </div>
             {/* <SearcherPopup editor={editor} /> */}
             <EditorUpdater editor={editor} />
-            <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100
-                 scrollbar-thumb-base-content flex-1 mb-1 h-full">
+            <div className="overflow-y-auto scrollbar-thin !scrollbar-w-[4px] scrollbar-track-base-100 scrollbar-thumb-base-content flex-1 mb-1 h-full">
                 <Plate<MyValue>
                     editableProps={editableProps}
                 />

@@ -1,4 +1,5 @@
 import { abs, angle, zImPart, zRePart } from "@core/utils/transforms";
+import { cn } from "@utils/styles";
 import { Circle, OBJECT_TYPE_IMAG_CIRCLE_AD } from "jsxgraph";
 
 export interface InfoboxProps {
@@ -100,10 +101,10 @@ const Table = ({
 }: TableProps) => {
 
     return <div className="flex font-mono text-xs">
-        <div className={`flex flex-col mr-2 ${labelsClasses}`}>
+        <div className={cn('flex flex-col mr-2', labelsClasses)}>
             {Object.keys(data).map(key => <div key={key}>{key}</div>)}
         </div>
-        <div className={`flex flex-col ${valuesClasses}`}>
+        <div className={cn('flex flex-col', valuesClasses)}>
             {Object.values(data).map((values, index) => <div key={index}>{formatter(values)}</div>)}
         </div>
     </div>

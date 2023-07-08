@@ -96,7 +96,7 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
 
 
     // taken for the original funtion, but modified
-    brd.updateInfobox = function (el) {
+    brd.updateInfobox = function (el: GeometryElement & { infoboxText: string }) {
         var x, y, xc, yc,
             vpinfoboxdigits,
             distX, distY,

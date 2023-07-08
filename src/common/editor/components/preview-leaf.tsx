@@ -12,7 +12,7 @@ const PreviewLeaf: RenderLeaf = (props) => {
     let C = PlateLeaf
 
     // console.log(leaf)
-    return <C className={className} leaf={leaf} aria-label={content} {...props} {...attributes}>{children}</C>
+    return <C className={className} leaf={leaf} {...props} {...attributes}>{children}</C>
 }
 
 export default PreviewLeaf

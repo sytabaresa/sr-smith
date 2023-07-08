@@ -124,9 +124,9 @@ const isGetter = <T>(v: T | ((get: Getter) => T)): v is (get: Getter) => T =>
     typeof v === 'function'
 
 
-export interface JotaiContext<T = {}, A extends unknown[] = [], R = void> {
+export interface JotaiContext<T, A, R> {
     getter: (a: Atom<T>) => T
-    setter: (a: WritableAtom<T, A, R>) => (args: any) => R
+    setter: (a: WritableAtom<T, A[], R>) => (args: any) => R
 }
 
 export function atomWithToggle(

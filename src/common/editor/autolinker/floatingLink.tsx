@@ -1,10 +1,11 @@
 import { ExternalLinkIcon } from "@heroicons/react/outline";
 import { useTranslation } from "@modules/i18n";
-import { TEditableProps, useEditorRef  } from "@udecode/plate-common";
-import {useVirtualFloating,  getDefaultBoundingClientRect, getRangeBoundingClientRect} from "@udecode/plate-floating"
+import { TEditableProps, useEditorRef } from "@udecode/plate-common";
+import { useVirtualFloating, getDefaultBoundingClientRect, getRangeBoundingClientRect } from "@udecode/plate-floating"
 import { useAtomValue } from "jotai";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { linkActiveAtom, linkPropsAtom } from "./common";
+import { cn } from "@utils/styles";
 
 export const FloatingLink = (props: TEditableProps) => {
     const { t } = useTranslation()
@@ -40,11 +41,10 @@ export const FloatingLink = (props: TEditableProps) => {
         target="_blank"
         contentEditable={false}
         // onClick={() => openLink()}
-        className={`absolute text-sm px-1 rounded-sm bg-base-100 bottom-5 left-0 transition-opacity delay-300
-            text-warning border-primary border no-underline hover:text-success text-center w-32  lg:w-48 h-6
-            flex items-center justify-center
-            hover:cursor-pointer select-none 
-            `} //${focus ? 'opacity-100' : '-z-10 opacity-0 hidden'}
+        className={cn('absolute text-sm px-1 rounded-sm bg-base-100 bottom-5 left-0 transition-opacity delay-300',
+            'text-warning border-primary border no-underline hover:text-success text-center w-32  lg:w-48 h-6',
+            'flex items-center justify-center',
+            'hover:cursor-pointer select-none')} //${focus ? 'opacity-100' : '-z-10 opacity-0 hidden'}
         ref={refs.setFloating}
         style={style}
         onMouseEnter={() => setFocus(true)}

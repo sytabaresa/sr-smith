@@ -6,6 +6,7 @@ import { useAtom, useAtomValue } from "jotai"
 import { action, createMachine, guard, reduce, state, transition } from "robot3"
 import { atomWithMachine } from "@utils/atoms"
 import { changeAtom } from "@editor/common/atoms"
+import { cn } from "@utils/styles"
 
 export type SearchElement = {
     text: string
@@ -237,7 +238,7 @@ export const SearcherPopup = (props) => {
     return (
         <div
             ref={ref}
-            className={`dropdown absolute z-10 top-[-9999px] left-[-9999px] ${current.name == 'active' ? 'dropdown-open' : ''}`}
+            className={cn('dropdown absolute z-10 top-[-9999px] left-[-9999px]', current.name == 'active' ? 'dropdown-open' : '')}
             data-cy="mentions-portal"
         >
             <ul tabIndex={0}
@@ -251,7 +252,7 @@ export const SearcherPopup = (props) => {
                         {items?.map((item, i) => (
                             <li key={item.value}>
                                 <a
-                                    className={`${current.context.index == item.index ? 'active' : ''}`}
+                                    className={current.context.index == item.index ? 'active' : ''}
                                     onClick={() => {
                                         send({ type: 'SELECT', item: item })
                                     }}

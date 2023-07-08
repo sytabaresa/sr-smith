@@ -1,5 +1,6 @@
 import { ROOT_APP } from "@/renderer/constants";
 import { useTranslation } from "@modules/i18n";
+import { cn } from "@utils/styles";
 import { HTMLAttributes, LabelHTMLAttributes, ReactNode, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -112,7 +113,7 @@ const createModal = (modalName: string) => {
       <input type="checkbox" id={finalModalName} checked={modalOpened} className="modal-toggle hidden" readOnly />
       <label
         aria-hidden={!modalOpened}
-        className={`modal cursor-pointer ${className}`}
+        className={cn('modal cursor-pointer', className)}
         onClick={() => { !focus && closeModal() }}
         {...rest}
       >

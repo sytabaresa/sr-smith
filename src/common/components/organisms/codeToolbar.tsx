@@ -4,6 +4,7 @@ import { isMobile, useScreen } from "@hooks/useScreen";
 import SmithButton from "@components/atoms/smithButton";
 import EditorMobile from "./editorMobile";
 import EditorDesktop from "./editorDesktop";
+import { cn } from "@utils/styles";
 
 interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -25,15 +26,15 @@ const CodeToolbar = (props: CodeToolbarProps) => {
 
   // console.log(screen)
   return (
-    <div className={`${className || ''}`} {...rest}>
+    <div className={cn(className)} {...rest}>
       <div id="code-desktop" className="flex">
-        {!mobile && <EditorDesktop className={`transition-all duration-300 ${mobile2 ? 'w-0 p-0 opacity-0' : ''}`} />}
+        {!mobile && <EditorDesktop className={cn('transition-all duration-300', mobile2 ? 'w-0 p-0 opacity-0' : '')} />}
       </div>
       {/* {!mobile ? <div className="flex h-[93vh] w-[30vw] bg-red-400" ></div>: null} */}
       <div className="flex flex-col md:flex-row-reverse lg:mx-2 lg:mt-0 flex-1">
         <div className="flex md:flex-col items-center">
           <div className="flex">
-            {mobile && <EditorMobile className={`flex-0  ${mobile ? '' : 'hidden'}`} />}
+            {mobile && <EditorMobile className={cn('flex-0', mobile ? '' : 'hidden')} />}
           </div>
           <div className="form-control mx-2">
             <SmithButton />

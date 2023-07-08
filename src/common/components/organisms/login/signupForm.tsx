@@ -3,6 +3,7 @@ import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
+import { cn } from "@utils/styles";
 
 type SignUpFormProps = {
   // onSubmit?: (data: any) => void;
@@ -37,7 +38,7 @@ const SingUpForm = ({ }: SignUpFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
-      <div className={`alert alert-warning my-2 transition-opacity ${errors?.root?.login ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
         <span className="">
           {errors?.root?.login?.message}
         </span>

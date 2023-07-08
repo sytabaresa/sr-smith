@@ -34,7 +34,7 @@ if (!import.meta.env.VITE_SW_DEV) {
 
   // This "catch" handler is triggered when any of the other routes fail to
   // generate a response.
-  setCatchHandler(({ event }) => {
+  setCatchHandler(async ({ event }) => {
     // The FALLBACK_URL entries must be added to the cache ahead of time, either
     // via runtime or precaching. If they are precached, then call
     // `matchPrecache(FALLBACK_URL)` (from the `workbox-precaching` package)
@@ -43,7 +43,7 @@ if (!import.meta.env.VITE_SW_DEV) {
     // Use event, request, and url to figure out how to respond.
     // One approach would be to use request.destination, see
     // https://medium.com/dev-channel/service-worker-caching-strategies-based-on-request-types-57411dd7652c
-    switch (event.request.destination) {
+    switch ((event as any).request.destination) {
       case 'document':
         // If using precached URLs:
         return matchPrecache('/');
