@@ -1,5 +1,5 @@
 import { MyValue, createMyPlugins } from "@editor/types";
-import { createPlateEditor } from "@udecode/plate-common";
+import { PlateEditor, createPlateEditor } from "@udecode/plate-common";
 import { WritableAtom, atom } from "jotai";
 
 // plugins
@@ -13,13 +13,11 @@ export const plugins = createMyPlugins(
     ]
 );
 
-
-export const editorAtom = atom(
+export const editorAtom = atom<PlateEditor<MyValue>>(
     createPlateEditor({
         id: '',
         plugins: plugins
     }))
 
-export const changeCodeAtom = atom<MyValue>(null) as WritableAtom<MyValue, [MyValue], void>
 export const changeAtom = atom<MyValue>(null) as WritableAtom<MyValue, [MyValue], void>
 export const selectionAtom = atom<object>({}) as WritableAtom<object, [object], void>

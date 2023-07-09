@@ -1,16 +1,16 @@
-import { createMachine, state, transition, reduce, invoke, guard, action, immediate, SendFunction, Service } from 'robot3';
+import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
 import { SmithProject } from '@localtypes/smith';
-import { editorServiceAtom } from '@core/atoms/smith';
+import { _codeAtom, codeAtom, editorServiceAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
 import { authAtom } from '@core/atoms/auth';
+import { RESET } from 'jotai/utils';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType<T = any, A = any, B = any> extends JotaiContext<T, A, B> {
     id: string;
     // loadHandler: (ctx: SavingContextType, ev: any) => void;
-    code?: string;
     saveCounter?: number;
 }
 
@@ -30,7 +30,7 @@ const checkAuth = (ctx, ev) => {
 
 export default createMachine('anon', {
     anon: state(
-        transition('LOAD', 'testDoc', reduce(saveId)),
+        transition('LOAD', 'testDoc', reduce(saveId), action(resetCode)),
     ),
     testDoc: state(
         immediate('testAuth', guard(checkId)),
@@ -56,14 +56,14 @@ export default createMachine('anon', {
     ),
     doc: state(
         transition('LOGOUT', 'anon', action(logout)),
-        transition('SAVE', 'tmpSaving', reduce(saveCode)),
+        transition('SAVE', 'tmpSaving'),
     ),
     tmpSaving: state(
         immediate('saveWait', guard(checkFirstSave)),
         immediate('doc'),
     ),
     saveWait: invoke(cancelableTimeout,
-        transition('SAVE', 'tmpSaving', reduce(saveCode)),
+        transition('SAVE', 'tmpSaving'),
         transition('done', 'saving'),
         transition('error', 'doc'),
     ),
@@ -73,15 +73,16 @@ export default createMachine('anon', {
     ),
     failSave: state(
         transition('LOGOUT', 'anon', action(logout)),
-        transition('SAVE', 'tmpSaving', reduce(saveCode)),
+        transition('SAVE', 'tmpSaving'),
     )
 }, (ctx: SavingContextType) => ({
     ...ctx,
     saveCounter: 0,
 }) as SavingContextType)
 
-function saveCode(ctx: SavingContextType, ev: any) {
-    return { ...ctx, code: ev.value, saveCounter: ctx.saveCounter + 1 }
+function resetCode(ctx: SavingContextType, ev) {
+    const send = ctx.setter(editorServiceAtom)
+    send({ type: 'CODE', value: RESET });
 }
 
 function saveId(ctx: SavingContextType, ev: any) {
@@ -90,7 +91,7 @@ function saveId(ctx: SavingContextType, ev: any) {
 function checkId(ctx: SavingContextType, ev: any) {
     return !!ctx.id
 }
-function sendCodeEditor(ctx: SavingContextType, ev) {
+function sendCodeEditor(ctx: SavingContextType, ev: { data: SmithProject }) {
     const send = ctx.setter(editorServiceAtom)
     // console.log('send')
     send({ type: 'CODE', value: ev.data.data });
@@ -164,12 +165,13 @@ async function getPublicDoc(ctx, SavingContextType) {
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
     const { update } = await ctx.getter(_dataRxdbProviderAtom) as DataProvider
+    const code = ctx.getter(codeAtom) as string
 
     await update({
         resource: 'projects',
         id: ctx.id,
         variables: {
-            data: ctx.code,
+            data: code,
             // updatedAt: new Date()
         } as SmithProject
     })

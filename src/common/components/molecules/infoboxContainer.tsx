@@ -1,26 +1,33 @@
-import { ROOT_APP } from "@/renderer/constants"
-import { Infobox } from "@components/atoms/infobox"
-import { boardAtom, infoboxAtom } from "@core/atoms/smith"
-import { useAtomValue } from "jotai"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { createPortal } from "react-dom"
+import { useAtomValue } from "jotai"
+import { Infobox } from "@components/atoms/infobox"
+import { infoboxAtom } from "@core/atoms/smith"
 
 const InfoboxContainer = (props) => {
-    const [root, setRoot] = useState<Element>(typeof window != 'undefined' ? document?.getElementById(ROOT_APP) : null)
     const data = useAtomValue(infoboxAtom)
-    const board = useAtomValue(boardAtom)
-    if (typeof window == 'undefined')
-        return null
+
+    if (typeof window == 'undefined') {
+        return <></>
+    }
+
+    const infobox = document?.querySelector('.JXGinfobox')
+    // console.log(board, infobox)
 
     useEffect(() => {
-        setTimeout(() => {
-            setRoot(document.getElementsByClassName('JXGinfobox')[0])
-        }, 500) //delay
-    }, [board])
+        return () => {
+            // eslint-disable-next-line no-unmodified-loop-condition
+            while (infobox && infobox.firstChild) {
+                infobox.removeChild(infobox.firstChild);
+            }
+        }
+    }, [])
 
-    // console.log(root)
-    return createPortal(<Infobox {...data} /> as any, root)
+    if (!infobox) {
+        return <></>
+    }
+
+    return createPortal(<Infobox {...data} /> as any, infobox)
 }
-
 
 export default InfoboxContainer

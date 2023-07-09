@@ -1,12 +1,11 @@
 import { createMachine, state, transition, reduce, invoke, action, immediate } from 'robot3';
 import { wait } from '@utils/time';
 import { JotaiContext } from '@utils/atoms';
-import { boardAtom } from '@core/atoms/smith';
+import { _codeAtom, boardAtom } from '@core/atoms/smith';
 import { Board } from 'jsxgraph';
 
-export interface EditorContextType extends JotaiContext<any,any,any> {
+export interface EditorContextType extends JotaiContext<any, any, any> {
     errorMsg?: string;
-    code: string;
     counter: number
 }
 
@@ -17,8 +16,11 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
     try {
         const recreateBoard = ctx.setter(boardAtom)
         recreateBoard({ screen: null })
+
+        const code = ctx.getter(_codeAtom) as string
         const board = ctx.getter(boardAtom) as Board
-        board.jc.parse(ctx.code);
+
+        board.jc.parse(code);
     } catch (err) {
         console.log("parse execute error: ", err)
         return Promise.reject(err)
@@ -32,7 +34,7 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
 export default createMachine('idle', {
     idle: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),
-        transition("CODE", 'idle', reduce(setCode)),
+        transition("CODE", 'idle', action(setCode)),
     ),
     parsing: invoke(parseExecute,
         transition('done', 'idle', reduce(addCounter)),
@@ -40,10 +42,10 @@ export default createMachine('idle', {
     ),
     error: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),
-        transition("CODE", 'clearError', reduce(setCode)),
+        transition("CODE", 'clearError', action(setCode)),
     ),
     clearError: invoke(() => wait(200),
-        transition("CODE", 'clearError', reduce(setCode)),
+        transition("CODE", 'clearError', action(setCode)),
         transition('done', 'idle', reduce(clearErrorMsg))
     )
 }, (ctx: EditorContextType) => ({
@@ -54,6 +56,9 @@ export default createMachine('idle', {
 }) as EditorContextType)
 
 function clearErrorMsg(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: '' } }
-function setCode(ctx: EditorContextType, ev: any) { return { ...ctx, code: ev.value } }
 function setError(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: ev.error } }
 function addCounter(ctx: EditorContextType, ev: any) { return { ...ctx, counter: ctx.counter + 1 } }
+function setCode(ctx: EditorContextType, ev: { value: string }) {
+    const setCode = ctx.setter(_codeAtom)
+    setCode(ev.value)
+}

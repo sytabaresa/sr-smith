@@ -18,20 +18,14 @@ import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { Getter, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
-import { atomWithStorage } from "jotai/utils";
+import { atomWithReset, atomWithStorage } from "jotai/utils";
 import { _dataRxdbProviderAtom } from "./db";
 import { Board } from "jsxgraph";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
-    code:
-        `/**
- * My smith design
- * @author: your name (me@example.org)
- * @version: 1.0
-**/
-Zo = 50;`
-}), (get) => ({ board: get(boardAtom) }))
+}))
+
 export const savingServiceAtom = atomWithMachine(savingFSM, (get) => ({
     // id: params?.id?.[0],
     projectData: {},
@@ -159,12 +153,20 @@ export const boardDataAtom = atomWithStorage('config', {
     coordsPresition: 3
 })
 
+// read only atom
 export const codeAtom = atom<string>(
     (get) => {
-        const current = get(editorServiceAtom)
-        return current.context?.code
+        return get(_codeAtom)
     }
 )
+
+export const _codeAtom = atomWithReset<string>(
+    `/**
+* My smith design
+* @author: your name (me@example.org)
+* @version: 1.0
+**/
+Zo = 50;`)
 
 export const infoboxAtom = atom<{
     x: number,
