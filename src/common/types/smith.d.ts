@@ -23,3 +23,8 @@ export type SmithProject = {
   userId?: string
   readonly: boolean;
 }
+
+export type RuntimeProject = {
+  readOnly: boolean;
+  project: SmithProject
+}

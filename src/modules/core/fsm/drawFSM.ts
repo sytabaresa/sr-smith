@@ -1,13 +1,12 @@
 import { TooltipType } from "@tooltips/interfaces"
 import { wait } from "@utils/time"
 import { action, createMachine, guard, immediate, invoke, reduce, state, transition } from "robot3"
-import { editorServiceAtom } from "@core/atoms/smith"
+import { codeAtom, editorServiceAtom } from "@core/atoms/smith"
 import { JotaiContext } from "@utils/atoms"
 
 
 interface Context extends JotaiContext<any, any, any> {
     tooltipSelected: string,
-    code: string,
     smithMode: boolean,
     tooltipPlugins: TooltipType[],
     tooltipPluginMap: {
@@ -38,10 +37,8 @@ const pluginExist = (ctx: Context, event: any) => {
 
 const recreateCode = (ctx: Context, ev) => {
     const ctxCode = ev.data.code
-    // console.log('rec', ctxCode)
     const send = ctx.setter(editorServiceAtom)
-    const current = ctx.getter(editorServiceAtom)
-    const code = current.context.code
+    const code = ctx.getter(codeAtom)
     send({ type: 'CODE', value: code.slice(-1) == '\n' ? code + ctxCode : code + '\n' + ctxCode })
     send('PARSE')
     return { ...ctx, code: ctxCode }

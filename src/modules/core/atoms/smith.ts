@@ -15,12 +15,14 @@ import ReCircleTooltip from "@tooltips/reCircle";
 import ImCircleTooltip from "@tooltips/imCircle";
 import ReCircleAdTooltip from "@tooltips/reCircleAd";
 import ImCircleAdTooltip from "@tooltips/imCircleAd";
-import { Getter, Setter, WritableAtom, atom } from "jotai";
+import { Getter, PrimitiveAtom, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import { _dataRxdbProviderAtom } from "./db";
 import { Board } from "jsxgraph";
+import { RuntimeProject, SmithProject } from "@localtypes/smith";
+import { DataProvider } from "@db/db";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
@@ -153,12 +155,35 @@ export const boardDataAtom = atomWithStorage('config', {
     coordsPresition: 3
 })
 
-// read only atom
-export const codeAtom = atom<string>(
-    (get) => {
-        return get(_codeAtom)
+
+export const _projectDataAtom = atom(null) as PrimitiveAtom<RuntimeProject>
+export const projectDataAtom = atom<RuntimeProject, [Partial<SmithProject>, Partial<RuntimeProject>], void>(
+    (get) => get(_projectDataAtom),
+    async (get, set, project, runtime) => {
+        const oldData = get(_projectDataAtom)
+        set(_projectDataAtom, {
+            ...oldData,
+            ...runtime,
+            project: {
+                ...oldData.project,
+                ...project
+            }
+        })
+
+        if (!oldData?.readOnly) {
+            const { update } = await get(_dataRxdbProviderAtom) as DataProvider
+
+            await update({
+                resource: 'projects',
+                id: oldData.project.id,
+                variables: {
+                    ...project
+                } as SmithProject
+            })
+        }
     }
 )
+
 
 export const _codeAtom = atomWithReset<string>(
     `/**
@@ -167,6 +192,13 @@ export const _codeAtom = atomWithReset<string>(
 * @version: 1.0
 **/
 Zo = 50;`)
+
+// read only atom
+export const codeAtom = atom<string>(
+    (get) => {
+        return get(_codeAtom)
+    }
+)
 
 export const infoboxAtom = atom<{
     x: number,

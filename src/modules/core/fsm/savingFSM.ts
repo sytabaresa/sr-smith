@@ -1,6 +1,6 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
-import { SmithProject } from '@localtypes/smith';
-import { _codeAtom, codeAtom, editorServiceAtom } from '@core/atoms/smith';
+import { RuntimeProject, SmithProject } from '@localtypes/smith';
+import { _codeAtom, _projectDataAtom, codeAtom, editorServiceAtom, projectDataAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
@@ -41,11 +41,11 @@ export default createMachine('anon', {
         immediate('checkRead')
     ),
     checkDoc: invoke(getProjectData,
-        transition('done', 'doc', action(sendCodeEditor)),
+        transition('done', 'doc', action(sendCodeEditor), action(saveProject)),
         transition('error', 'checkRead', action((ctx, ev: any) => console.log('checkDoc error: ', ev.error))),
     ),
     checkRead: invoke(getPublicDoc,
-        transition('done', 'readOnly', action(sendCodeEditor)),
+        transition('done', 'readOnly', action(sendCodeEditor), action(saveProject)),
         transition('error', 'noDoc')
     ),
     readOnly: state(
@@ -56,7 +56,7 @@ export default createMachine('anon', {
     ),
     doc: state(
         transition('LOGOUT', 'anon', action(logout)),
-        transition('SAVE', 'tmpSaving'),
+        transition('SAVE', 'tmpSaving', reduce(setCounter)),
     ),
     tmpSaving: state(
         immediate('saveWait', guard(checkFirstSave)),
@@ -77,7 +77,7 @@ export default createMachine('anon', {
     )
 }, (ctx: SavingContextType) => ({
     ...ctx,
-    saveCounter: 0,
+    saveCounter: 1,
 }) as SavingContextType)
 
 function resetCode(ctx: SavingContextType, ev) {
@@ -88,14 +88,26 @@ function resetCode(ctx: SavingContextType, ev) {
 function saveId(ctx: SavingContextType, ev: any) {
     return { ...ctx, id: ev.value }
 }
+
+function setCounter(ctx: SavingContextType, ev: any) {
+    return { ...ctx, saveCounter: ctx.saveCounter + 1 }
+}
+
 function checkId(ctx: SavingContextType, ev: any) {
     return !!ctx.id
 }
-function sendCodeEditor(ctx: SavingContextType, ev: { data: SmithProject }) {
+
+function sendCodeEditor(ctx: SavingContextType, ev: { data: RuntimeProject }) {
     const send = ctx.setter(editorServiceAtom)
     // console.log('send')
-    send({ type: 'CODE', value: ev.data.data });
+    send({ type: 'CODE', value: ev.data.project.data });
     send('PARSE')
+}
+
+function saveProject(ctx: SavingContextType, ev: { data: RuntimeProject }) {
+    const setData = ctx.setter(_projectDataAtom)
+    // console.log('send')
+    setData(ev.data)
 }
 
 function logout(ctx: SavingContextType, ev) {
@@ -105,10 +117,11 @@ function logout(ctx: SavingContextType, ev) {
 }
 
 function checkFirstSave(ctx: SavingContextType, ev) {
+    // console.log(ctx.saveCounter)
     return ctx.saveCounter > 1
 }
 
-async function getProjectData(ctx: SavingContextType) {
+async function getProjectData(ctx: SavingContextType): Promise<RuntimeProject> {
     console.log('loading data', ctx.id)
 
     try {
@@ -120,7 +133,7 @@ async function getProjectData(ctx: SavingContextType) {
 
         // console.log(projectData)
         if (projectData) {
-            return projectData
+            return { project: projectData, readOnly: false }
         } else
             return Promise.reject('document not exists')
     } catch (err) {
@@ -129,12 +142,12 @@ async function getProjectData(ctx: SavingContextType) {
     }
 };
 
-async function getPublicDoc(ctx, SavingContextType) {
+async function getPublicDoc(ctx, SavingContextType): Promise<RuntimeProject> {
     console.log('loading data (read only)', ctx.id)
 
     try {
         const { getOne }: DataProvider = await ctx.getter(dataQLProviderAtom)
-        const projectData: SmithProject = await getOne({
+        const projectData: { data: SmithProject } = await getOne({
             resource: 'project',
             id: ctx.id,
             meta: {
@@ -153,7 +166,7 @@ async function getPublicDoc(ctx, SavingContextType) {
 
         // console.log(projectData)
         if (projectData) {
-            return projectData.data
+            return { project: projectData.data, readOnly: true }
         } else
             return Promise.reject('document not exists')
     } catch (err) {
@@ -164,16 +177,10 @@ async function getPublicDoc(ctx, SavingContextType) {
 
 async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
     console.log('saving data...')
-    const { update } = await ctx.getter(_dataRxdbProviderAtom) as DataProvider
-    const code = ctx.getter(codeAtom) as string
 
-    await update({
-        resource: 'projects',
-        id: ctx.id,
-        variables: {
-            data: code,
-            // updatedAt: new Date()
-        } as SmithProject
-    })
+    const setData = ctx.setter(projectDataAtom)
+    const code = ctx.getter(codeAtom) as string
+    await setData({ data: code })
+
     console.log('saving done.')
 };

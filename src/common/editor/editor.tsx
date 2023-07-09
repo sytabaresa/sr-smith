@@ -1,10 +1,10 @@
 import { debounce } from "lodash";
 import { useAtomValue, useSetAtom } from "jotai"
 import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "react";
-import { Plate, PlateEditor, PlateProvider } from '@udecode/plate-common';
-import { deserializeCode, serializeCode } from '@editor/serializers/serializers'
-import { codeAtom, editorServiceAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, editorAtom, selectionAtom } from "@editor/common/atoms";
+import { Plate, PlateEditor, usePlateEditorRef } from '@udecode/plate-common';
+import { serializeCode } from '@editor/serializers/serializers'
+import { codeAtom, editorServiceAtom, projectDataAtom, savingServiceAtom } from "@core/atoms/smith";
+import { changeAtom, selectionAtom } from "@editor/common/atoms";
 import { cn } from "@utils/styles";
 // import { SearcherPopup } from "@components/molecules/editor/searcher";
 import { useCutomEditableProps } from './common/useCustomEditableProps';
@@ -17,56 +17,24 @@ export interface CodeEditor extends HTMLAttributes<HTMLDivElement> {
 };
 
 const CodeEditor = ({ className, toolbar, footer, id = '', ...rest }: CodeEditor) => {
-
-    // machines
-    const editor = useAtomValue(editorAtom)
-    const sendEditor = useSetAtom(editorServiceAtom)
-    const code = useAtomValue(codeAtom)
-    const sendSave = useSetAtom(savingServiceAtom)
-
-    // FSM actions
-    const setSelection = useSetAtom(selectionAtom)
-    const setChange = useSetAtom(changeAtom)
-
-    const onEditorChanged = useCallback((value: MyValue) => {
-        setChange(editor.operations)
-        const isAstChange = editor.operations.some(
-            op => 'set_selection' !== op.type
-        )
-        if (isAstChange) {
-            // Serialize the value and save the string value
-            debounce(() => {
-                const code = serializeCode(value)
-                sendEditor({ type: "CODE", value: code })
-            }, 1000)
-        } else {
-            setSelection({})
-        }
-    }, [])
-
-    const editorValue = useMemo(() => deserializeCode(code), [code])
-    // console.log(initialValue)
-
-    // useAtom(useMemo(() => atom((get) => get(editorServiceAtom).context.counter), []))
+    const editor = usePlateEditorRef<MyValue>()
+    const projectData = useAtomValue(projectDataAtom)
+    const editorService = useAtomValue(editorServiceAtom)
 
     const editableProps = useCutomEditableProps()
 
     useEffect(() => {
         // for get new initialValue in editor
         editor.reset()
+    }, [projectData])
 
-        if (code != '') {
-            sendSave({ type: 'SAVE' })
-        }
-    }, [code])
+    useEffect(() => {
+        // for get new initialValue in editor
+        if (editorService.name == 'parsing')
+            editor.reset()
+    }, [editorService.name])
 
-    return <PlateProvider<MyValue>
-        // id={id}
-        editor={editor}
-        plugins={editor.plugins}
-        value={editorValue}
-        onChange={onEditorChanged}
-    >
+    return <>
         <div className={cn('border border-neutral bg-base-100 p-2 flex flex-col relative', className)} {...rest}>
             <div className="absolute top-0 right-0 mt-2 mr-6 flex z-10 opacity-50">
                 {toolbar?.(editor)}
@@ -80,7 +48,7 @@ const CodeEditor = ({ className, toolbar, footer, id = '', ...rest }: CodeEditor
             {footer?.(editor)}
         </div >
         <div id="code-end"></div>
-    </PlateProvider>
+    </>
 }
 
 export default CodeEditor;

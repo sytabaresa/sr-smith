@@ -5,6 +5,7 @@ import SmithButton from "@components/atoms/smithButton";
 import EditorMobile from "./editorMobile";
 import EditorDesktop from "./editorDesktop";
 import { cn } from "@utils/styles";
+import { EditorProvider } from "@editor/components/editorProvider";
 
 interface CodeToolbarProps extends HTMLAttributes<HTMLDivElement> {
 
@@ -25,7 +26,7 @@ const CodeToolbar = (props: CodeToolbarProps) => {
   }, [mobile])
 
   // console.log(screen)
-  return (
+  return <EditorProvider>
     <div className={cn(className)} {...rest}>
       <div id="code-desktop" className="flex">
         {!mobile && <EditorDesktop className={cn('transition-all duration-300', mobile2 ? 'w-0 p-0 opacity-0' : '')} />}
@@ -43,7 +44,7 @@ const CodeToolbar = (props: CodeToolbarProps) => {
         <PrimitivesMenu />
       </div>
     </div>
-  );
+  </EditorProvider>
 };
 
 export default CodeToolbar;

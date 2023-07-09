@@ -18,8 +18,8 @@ import { useAtom, useAtomValue } from "jotai";
 import { drawServiceAtom } from "@core/atoms/smith";
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
-import { editorAtom } from "@editor/common/atoms";
 import { cn } from "@utils/styles";
+import { usePlateEditorRef } from "@udecode/plate-common";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -28,7 +28,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation()
   const [current, send] = useAtom(drawServiceAtom)
-  const editor = useAtomValue(editorAtom)
+  const editor = usePlateEditorRef()
   const [offset, setOffset] = useState(0)
 
   const ref = useRef()
