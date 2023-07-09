@@ -55,7 +55,11 @@ export const serializeCode = nodes => {
     // if(Text.isText(nodes)) {
     //     return SlateNode.string(nodes)
     // }
-    return nodes.map(p => p.children.map(n => SlateNode.string(n)).join('\n')).join('\n')
+    return nodes.map(p => p.children.map(n => {
+        const str = SlateNode.string(n)
+        // console.log(str)
+        return str
+    }).join('\n')).join('\n')
 }
 
 export const deserializeTokens = (el) => {

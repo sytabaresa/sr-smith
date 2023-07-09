@@ -4,6 +4,7 @@ import { lightTheme, darkTheme } from "@core/utils/themes"
 import { BoardOptions, infoboxAtom } from "@core/atoms/smith";
 import { Getter, Setter } from "jotai";
 import { getMouseCoords } from "@core/utils/board";
+import { addComplexSupport } from "./complex";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -47,7 +48,7 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
         screenBoxSizes[options.screen == 'unknown' ? 'xs' : options.screen] || screenBoxSizes['lg'] :
         options.screen
 
-    const brd = JXG.JSXGraph.initBoard(options.name, {
+    let brd = JXG.JSXGraph.initBoard(options.name, {
         title: options.translations.title ?? 'Smith Chart canvas',
         description: options.translations.desc ?? 'An canvas with a smith chart',
         boundingbox,
@@ -82,6 +83,8 @@ export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
 
     brd.suspendUpdate();
 
+    // complex op support
+    brd = addComplexSupport(brd)
 
     // JXG.Options.infobox.strokeColor = 'red';
 

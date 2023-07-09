@@ -14,7 +14,6 @@ import "@core/elements/reCircle"
 import "@core/elements/imCircle"
 import "@core/elements/imCircleAd"
 import "@core/elements/reCircleAd"
-import "@core/elements/complex"
 
 import '@styles/jsxgraph.css';
 

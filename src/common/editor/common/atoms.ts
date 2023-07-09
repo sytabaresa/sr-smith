@@ -9,7 +9,7 @@ import { createClipboardPlugin } from "@editor/clipboard/createClipboardPlugin";
 export const plugins = createMyPlugins(
     [
         ...basicNodesPlugins,
-        // createClipboardPlugin(),
+        createClipboardPlugin(),
     ]
 );
 
