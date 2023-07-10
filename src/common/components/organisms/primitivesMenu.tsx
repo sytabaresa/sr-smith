@@ -120,7 +120,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             tabIndex={0}
             aria-label={t.tools.menu()}
             style={{ maxHeight: `calc(calc(var(--vh, 1vh)*100) - ${offset}px)` }}
-            className={cn('p-2 menu xsh:bottom-[2rem] overflow-y-auto xsh:flex-row xsh:!max-h-full flex-nowrap',
+            className={cn('p-2 menu xs:bottom-[2rem] overflow-y-auto xs:flex-row xs:!max-h-full flex-nowrap',
               'overflow-x-hidden scrollbar !scrollbar-w-[1px] scrollbar-track-base-100 scrollbar-thumb-base-content',
               showMenu ? '' : 'hidden')}
           >

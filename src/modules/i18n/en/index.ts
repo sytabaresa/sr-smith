@@ -46,7 +46,7 @@ const en: Translation = {
 	},
 	about: {
 		tesis: "Tesis",
-		desc: "This software is product of my engineering tesis, you can see",
+		desc: "This software is a derived product of the code that my and my colleague publish as engineering thesis, you can see it",
 		here: "here",
 	},
 	theme: {

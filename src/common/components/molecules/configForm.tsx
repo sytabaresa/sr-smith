@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "@modules/i18n"
-import { boardDataAtom } from "@core/atoms/smith";
+import { boardConfigAtom } from "@core/atoms/smith";
 import { useAtom } from "jotai";
+import { BoardConfigOptions } from "@localtypes/smith";
 
 type ConfigsFormProps = {
     modalLabel?: string;
@@ -12,8 +13,9 @@ type ConfigsFormProps = {
 
 const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
     const { t } = useTranslation()
-    const [config, setConfig] = useAtom(boardDataAtom)
+    const [config, setConfig] = useAtom(boardConfigAtom)
 
+    // console.log(config)
     const {
         register,
         handleSubmit,
@@ -21,7 +23,7 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
         // clearErrors,
         // setError,
         formState: { errors, isSubmitted, isSubmitting },
-    } = useForm<any>({ defaultValues: config });
+    } = useForm<BoardConfigOptions>({ defaultValues: config });
 
     useEffect(() => {
         reset(config)
@@ -34,19 +36,17 @@ const ConfigsForm = ({ modalLabel }: ConfigsFormProps) => {
 
     return (
         <form className="flex flex-col justify-center form-control md:px-20" onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="coordPrecision" className="label">
+            <label htmlFor="digits" className="label">
                 <span className="label-text uppercase font-bold">{t.settings.precision()}</span>
             </label>
             <input
-                id="coordPrecision"
-                name="coordPrecision"
                 type="number"
                 className="input input-bordered"
-                {...register("coordPrecision", { required: true })}
+                {...register("digits", { required: true })}
             />
-            {errors.coordPrecision && (
+            {errors.digits && (
                 <label className="label">
-                    <span className="label-text-alt uppercase">{errors.coordPrecision.message as unknown as string}</span>
+                    <span className="label-text-alt uppercase">{errors.digits.message as unknown as string}</span>
                 </label>
             )}
             <button className="btn btn-primary mt-10 w-1/2 self-center" type="submit">

@@ -46,7 +46,7 @@ const es: BaseTranslation = {
 	},
 	about: {
 		tesis: "Tesis",
-		desc: "Este software es producto de nuestra tesis de ingeniería, puedes verla",
+		desc: "Este software es un producto derivado del código que mi colega y yo publicamos como tesis de ingeniería, puedes verla",
 		here: "aqui"
 	},
 	theme: {

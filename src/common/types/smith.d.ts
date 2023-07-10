@@ -28,3 +28,15 @@ export type RuntimeProject = {
   readOnly: boolean;
   project: SmithProject
 }
+
+export interface BoardConfigOptions {
+  theme: string;
+  screen: string | number[];
+  name: string;
+  digits: number;
+  translations: Record<string, any>;
+  infobox: {
+      x: number,
+      y: number
+  }
+}

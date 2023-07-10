@@ -6,9 +6,9 @@ interface EventProps {
     style?: Object;
 }
 
-export { Event as Page }
+export { Page }
 
-const Event = (props: EventProps) => {
+const Page = (props: EventProps) => {
     const nextDate = new Date(2022, 10, 21, 11, 0, 0, 0)
     // const nextDate = new Date(2022, 10, 18, 17, 0, 0, 0)
 

@@ -113,7 +113,7 @@ const createModal = (modalName: string) => {
       <input type="checkbox" id={finalModalName} checked={modalOpened} className="modal-toggle hidden" readOnly />
       <label
         aria-hidden={!modalOpened}
-        className={cn('modal cursor-pointer', className)}
+        className={cn('modal cursor-pointer')}
         onClick={() => { !focus && closeModal() }}
         {...rest}
       >
@@ -123,7 +123,7 @@ const createModal = (modalName: string) => {
           onBlur={() => setFocus(false)}
           onKeyDown={onKey}
           aria-hidden={!modalOpened}
-          className="modal-box relative"
+          className={cn("modal-box relative scrollbar-thin !scrollbar-w-[4px] scrollbar-track-transparent scrollbar-thumb-base-content", className)}
         >
           {withClose &&
             <label
@@ -132,7 +132,7 @@ const createModal = (modalName: string) => {
               tabIndex={0}
               // onClick={onClose}
               onClick={closeModal}
-              className="btn btn-sm btn-ghost absolute right-2 top-2"
+              className="btn btn-sm btn-ghost absolute right-2 top-2 z-10"
               aria-label={t.common.close()}
             >
               ✕

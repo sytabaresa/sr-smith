@@ -3,8 +3,10 @@
     "version": "0.0.5",
     "source": "src/index.html",
     "type": "module",
+    "private": true,
+    "license": "UNLICENSED",
     "scripts": {
-        "dev": "npm-run-all --parallel start typesafe-i18n",
+        "dev": "npm-run-all --parallel typesafe-i18n start",
         "start": "vite",
         "build": "vite build",
         "preview": "vite preview",
@@ -79,6 +81,5 @@
         "vitest": "^0.33.0",
         "workbox-core": "^7.0.0",
         "workbox-precaching": "^7.0.0"
-    },
-    "license": "MIT"
+    }
 }

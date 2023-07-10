@@ -21,7 +21,7 @@ import { getCurrentBreakpoint } from "@hooks/useScreen";
 import { atomWithReset, atomWithStorage } from "jotai/utils";
 import { _dataRxdbProviderAtom } from "./db";
 import { Board } from "jsxgraph";
-import { RuntimeProject, SmithProject } from "@localtypes/smith";
+import { BoardConfigOptions, RuntimeProject, SmithProject } from "@localtypes/smith";
 import { DataProvider } from "@db/db";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
@@ -84,7 +84,7 @@ function populateBoard(send, board) {
     }
 }
 
-export function recreateBoard(get: Getter, set: Setter, params: BoardOptions, oldBoard: any) {
+export function recreateBoard(get: Getter, set: Setter, params: BoardConfigOptions, oldBoard: any) {
     try {
         const send = (event) => set(drawServiceAtom, event)
 
@@ -120,26 +120,14 @@ export const boardAtom = atom(
 
         return {}
     },
-    (get, set, params: BoardOptions = null) => {
+    (get, set, params: BoardConfigOptions = null) => {
         // console.log(params)
         const board = recreateBoard(get, set, { ...get(boardConfigAtom), ...params }, get(cachedBoardAtom))
         set(cachedBoardAtom, board)
     }
 )
 
-export interface BoardOptions {
-    theme: string;
-    screen: string | number[];
-    name: string;
-    digits: number;
-    translations: Record<string, any>;
-    infobox: {
-        x: number,
-        y: number
-    }
-}
-
-export const boardConfigAtom = atom<BoardOptions>({
+export const boardConfigAtom = atom<BoardConfigOptions>({
     theme: 'light',
     name: 'smith-box',
     screen: getCurrentBreakpoint(),
@@ -150,11 +138,6 @@ export const boardConfigAtom = atom<BoardOptions>({
         y: 10
     }
 })
-
-export const boardDataAtom = atomWithStorage('config', {
-    coordsPresition: 3
-})
-
 
 export const _projectDataAtom = atom(null) as PrimitiveAtom<RuntimeProject>
 export const projectDataAtom = atom<RuntimeProject, [Partial<SmithProject>, Partial<RuntimeProject>], void>(

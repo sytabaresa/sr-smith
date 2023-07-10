@@ -17,7 +17,7 @@ const Footer: React.FC<IFooterProps> = ({ className }) => {
           ?
         </button>
       </modal.Label>
-      <modal.Modal>
+      <modal.Modal className="overflow-x-clip overflow-y-auto p-0">
         <About />
       </modal.Modal>
     </footer>

@@ -1,10 +1,11 @@
 import { GeometryElement, JXGOptions, PointOptions } from "jsxgraph"
 import JXG from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
-import { BoardOptions, infoboxAtom } from "@core/atoms/smith";
+import { infoboxAtom } from "@core/atoms/smith";
 import { Getter, Setter } from "jotai";
 import { getMouseCoords } from "@core/utils/board";
 import { addComplexSupport } from "./complex";
+import { BoardConfigOptions } from "@localtypes/smith";
 
 // default style for intercept objects
 JXG.Options.intersection = JXG.merge(JXG.Options.intersection, {
@@ -33,7 +34,7 @@ export const changeBoardTheme = (theme: string) => {
     }
 }
 
-export const initBoard = (get: Getter, set: Setter, options: BoardOptions) => {
+export const initBoard = (get: Getter, set: Setter, options: BoardConfigOptions) => {
     // console.log(options)
     changeBoardTheme(options?.theme || 'light')
 

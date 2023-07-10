@@ -158,7 +158,7 @@ type RootTranslation = {
 		 */
 		tesis: string
 		/**
-		 * T​h​i​s​ ​s​o​f​t​w​a​r​e​ ​i​s​ ​p​r​o​d​u​c​t​ ​o​f​ ​m​y​ ​e​n​g​i​n​e​e​r​i​n​g​ ​t​e​s​i​s​,​ ​y​o​u​ ​c​a​n​ ​s​e​e
+		 * T​h​i​s​ ​s​o​f​t​w​a​r​e​ ​i​s​ ​a​ ​d​e​r​i​v​e​d​ ​p​r​o​d​u​c​t​ ​o​f​ ​t​h​e​ ​c​o​d​e​ ​t​h​a​t​ ​m​y​ ​a​n​d​ ​m​y​ ​c​o​l​l​e​a​g​u​e​ ​p​u​b​l​i​s​h​ ​a​s​ ​e​n​g​i​n​e​e​r​i​n​g​ ​t​h​e​s​i​s​,​ ​y​o​u​ ​c​a​n​ ​s​e​e​ ​i​t
 		 */
 		desc: string
 		/**
@@ -663,7 +663,7 @@ export type TranslationFunctions = {
 		 */
 		tesis: () => LocalizedString
 		/**
-		 * This software is product of my engineering tesis, you can see
+		 * This software is a derived product of the code that my and my colleague publish as engineering thesis, you can see it
 		 */
 		desc: () => LocalizedString
 		/**
