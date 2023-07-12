@@ -38,36 +38,26 @@ const DrawerMenu = (props) => {
     return <nav aria-label={t.common.main_nav()} className="flex flex-col items-start flex-grow w-full">
         {isAuthenticated ?
             <>
-                <newProject.Label>
-                    <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} />
-                </newProject.Label>
+                <DrawerMenuItem icon={<PlusIcon className="w-8 h-8" />} label={t.menu.new()} onClick={(e) => newProject.showModal(true, e.target)} />
+                {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
+                <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} onClick={() => push('/saved')} />
+                <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} onClick={(e) => publish.showModal(true, e.target)} />
+                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} aria-label={t.menu.settings_large()} onClick={(e) => config.showModal(true, e.target)} />
                 <newProject.Modal>
                     <NewProjectForm />
                 </newProject.Modal>
-                {/* <DrawerMenuItem icon={<SaveIcon className="w-8 h-8" />} label="Save" /> */}
-                <DrawerMenuItem icon={<FolderOpenIcon className="w-8 h-8" />} label={t.menu.open()} onClick={() => push('/saved')} />
-                <publish.Label>
-                    <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label={t.menu.publish()} />
-                </publish.Label>
                 <publish.Modal>
                     <PublishProjectForm />
                 </publish.Modal>
-                <config.Label>
-                    <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} aria-label={t.menu.settings_large()} />
-                </config.Label>
                 <config.Modal>
                     <ConfigsForm />
                 </config.Modal>
                 {/* <DrawerMenuItem icon={<ShareIcon className="w-8 h-8" />} label="Share" /> */}
-                <a href="#">
-                    <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
-                </a>
+                <DrawerMenuItem icon={<LogoutIcon className="w-8 h-8" />} label={t.menu.logout()} onClick={logout} />
             </> :
             <>
                 <DrawerMenuItem icon={<LoginIcon className="w-8 h-8" />} label={t.menu.login()} onClick={() => push('/login')} />
-                <config.Label>
-                    <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} />
-                </config.Label>
+                <DrawerMenuItem icon={<CogIcon className="w-8 h-8" />} label={t.menu.settings()} onClick={(e) => config.showModal(true, e.target)} />
                 <config.Modal>
                     <ConfigsForm />
                 </config.Modal>

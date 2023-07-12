@@ -1,40 +1,44 @@
+import { DialogHTMLAttributes, HTMLAttributes, ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { cn } from "@utils/styles";
 import { ROOT_APP } from "@/renderer/constants";
 import { useTranslation } from "@modules/i18n";
-import { cn } from "@utils/styles";
-import { HTMLAttributes, LabelHTMLAttributes, ReactNode, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
-interface ModalContainerProps extends Omit<LabelHTMLAttributes<HTMLLabelElement>, 'children'> {
+interface ModalContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   withClose?: boolean;
-  modalChild?: JSX.Element;
   modalName?: string;
   onCancel?: () => void;
+  dialogProps?: DialogHTMLAttributes<HTMLDialogElement>
   children: ReactNode | ((props: { modalState: boolean, showModal: (state: boolean) => void }) => ReactNode)
 };
 
 const createModal = (modalName: string) => {
-
+  const [modal, setModal] = useState(false)
+  const [oldTarget, setOldTarget] = useState(null)
+  // console.log(modal)
   const finalModalName = !modalName || modalName == '' ? `modal-${Math.random().toString().slice(-5)}` : modalName
-  const [modalOpened, showModal] = useState(false)
-
-  const closeRef = useRef<HTMLLabelElement>()
-  const modalRef = useRef<HTMLLabelElement>()
-
-  const labelProps = {
-    // tabIndex: 0,
-    onKeyPress: e => {
-      e.stopPropagation()
-      if (e.key == "Enter")
-        e.target.click()
+  const modalRef = useRef<HTMLDialogElement>()
+  const closeRef = useRef<HTMLButtonElement>()
+  // const modal = modalRef.current.open
+  const showModal = (state: boolean, target = null) => {
+    if (state) {
+      modalRef.current.show()
+      setTimeout(() => {
+        closeRef.current?.focus()
+      }, 500)
+      setOldTarget(target)
+    } else {
+      console.log('close')
+      modalRef.current.close()
+      oldTarget?.focus()
     }
   }
 
   function onKey(ev) {
+    // console.log(ev, modal)
 
-    if (!modalOpened) return
+    if (!modal) return
 
-    // console.log(ev)
-    // if escape pressed
     if (ev.which == 27) {
       showModal(false)
       return
@@ -44,7 +48,7 @@ const createModal = (modalName: string) => {
     if (ev.which == 9) {
 
       // get list of all children elements in given object
-      const focusableItems = [...modalRef.current.querySelectorAll('*')]
+      const focusableItems = [...modalRef.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')]
       // console.log(focusableItems)
 
       // get currently focused item
@@ -58,14 +62,14 @@ const createModal = (modalName: string) => {
         //back tab
         // if focused on first item and user preses back-tab, go to the last focusable item
         if (focusedItemIndex == 0) {
-          (focusableItems[focusableItems.length - 1] as HTMLElement).focus();
+          (focusableItems[focusableItems.length - 2] as HTMLElement).focus();
           ev.preventDefault();
         }
 
       } else {
         //forward tab
         // if focused on the last item and user preses tab, go to the first focusable item
-        if (focusedItemIndex >= focusableItems.length - 1) {
+        if (focusedItemIndex >= focusableItems.length - 2) {
           (focusableItems[0] as HTMLElement).focus();
           ev.preventDefault();
         }
@@ -74,73 +78,59 @@ const createModal = (modalName: string) => {
     }
   }
 
-  const Label = (props: LabelHTMLAttributes<HTMLLabelElement> | any) => {
-    const triggerRef = useRef<HTMLLabelElement>()
-
-    return <label
-      {...labelProps}
-      ref={triggerRef}
-      onClick={e => {
-        showModal(old => {
-          setTimeout(() => old ?
-            (triggerRef.current
-              .querySelector('button,a,input,textarea,*[tabindex="0"]') as HTMLElement).focus()
-            : closeRef.current.focus(), 500)
-          return !old
-        })
-      }}
-      {...props}>
-    </label>
-  }
-
-  const Modal = ({
-    modalChild,
+  const Modal = useCallback(({
     children,
     withClose = true,
     className,
+    dialogProps,
     onCancel,
     ...rest
   }: ModalContainerProps) => {
     const { t } = useTranslation()
-    const [focus, setFocus] = useState(false)
 
-    const closeModal = () => {
-      onCancel && onCancel()
-      showModal(false)
-    }
+    useEffect(() => {
+
+      const OpenEvent = new Event('dialog-open')
+      const ObserverM = new MutationObserver(recs => {
+        recs.forEach(({ attributeName: attr, target: dial }) => {
+          if (attr === 'open' && (dial as HTMLDialogElement).open)
+            dial.dispatchEvent(OpenEvent);
+        })
+      })
+
+      ObserverM.observe(modalRef.current, { attributes: true });
+
+      const onClose = () => { setModal(false) }
+      const onOpen = () => { setModal(true) }
+      modalRef.current.addEventListener('close', onClose)
+      modalRef.current.addEventListener('dialog-open', onOpen)
+      return () => {
+        modalRef.current?.removeEventListener('cancel', onClose)
+        modalRef.current?.removeEventListener('dialog-open', onOpen)
+      }
+    }, [])
 
     const out = <>
-      <input type="checkbox" id={finalModalName} checked={modalOpened} className="modal-toggle hidden" readOnly />
-      <label
-        aria-hidden={!modalOpened}
-        className={cn('modal cursor-pointer')}
-        onClick={() => { !focus && closeModal() }}
-        {...rest}
-      >
-        <label
-          ref={modalRef}
-          onFocus={() => setFocus(true)}
-          onBlur={() => setFocus(false)}
+      <dialog id={finalModalName} ref={modalRef} className={cn("modal",modal ? '': 'hidden')} {...dialogProps} open={modal}>
+        <div
+          className={cn("modal-box", className)}
           onKeyDown={onKey}
-          aria-hidden={!modalOpened}
-          className={cn("modal-box relative scrollbar-thin !scrollbar-w-[4px] scrollbar-track-transparent scrollbar-thumb-base-content", className)}
-        >
+          {...rest}>
           {withClose &&
-            <label
-              {...labelProps}
-              ref={closeRef}
-              tabIndex={0}
-              // onClick={onClose}
-              onClick={closeModal}
-              className="btn btn-sm btn-ghost absolute right-2 top-2 z-10"
+            <button
               aria-label={t.common.close()}
+              onClick={() => showModal(false)}
+              ref={closeRef}
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10"
             >
               ✕
-            </label>
-          }
-          {typeof children == 'function' ? children({ modalState: modalOpened, showModal }) : children}
-        </label>
-      </label >
+            </button>}
+          {typeof children == 'function' ? children({ modalState: modal, showModal }) : children}
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={() => showModal(false)}>close</button>
+        </form>
+      </dialog>
     </>
 
     if (typeof document == 'undefined') {
@@ -148,9 +138,9 @@ const createModal = (modalName: string) => {
     }
 
     return createPortal(out, document?.getElementById(ROOT_APP))
-  };
+  }, [modal])
 
-  return { Modal, Label }
+  return { Modal, showModal, modal }
 }
 
 export default createModal;

@@ -1,5 +1,6 @@
 
 import { useTranslation } from "@modules/i18n"
+import { EinvLogo } from "./icons"
 
 export const About = () => {
     const { t } = useTranslation()
@@ -29,17 +30,21 @@ export const About = () => {
                 </a> */}
                     <h2>{t.license.authors()}:</h2>
                     <span>
+                        Made with ❤️ by {' '}
                         <a
                             className="link"
                             href="https://www.linkedin.com/in/sytabaresa"
                         >
                             @sytabares
                         </a>
+                        <br />
+                        A product of <a href="https://einv.tech" className="" ><EinvLogo className="ml-1 inline fill-current w-6 h-6" /></a>
                     </span>
                     <h2>{t.about.tesis()}:</h2>
                     <p>
                         {t.about.desc()} <a className="link" href="/event">{t.about.here()}.</a>
                     </p>
+                    {/* <h2></h2> */}
                 </article>
             </div>
         </div>

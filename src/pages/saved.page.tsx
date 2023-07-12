@@ -18,8 +18,8 @@ const SavedProjects = () => {
     title="Projects | Sr Smith App"
     className="h-screen relative overflow-hidden"
     header={<div className="absolute w-full h-full blur-[6px] lg:blur-[2px] opacity-30">
-    <img src="/images/cmyk2.svg" className="absolute w-[50rem] lg:w-[70rem] right-[-10rem] lg:right-[-20rem] bottom-[-4rem] opacity-70 hover:opacity-100" ></img>
-  </div>}
+      <img src="/images/cmyk2.svg" className="absolute w-[50rem] lg:w-[70rem] right-[-10rem] lg:right-[-20rem] bottom-[-4rem] opacity-70 hover:opacity-100" ></img>
+    </div>}
   >
     <div className="w-full">
       <div className="flex items-center justify-center mb-4 lg:mt-4 lg:mb-8">
@@ -30,16 +30,18 @@ const SavedProjects = () => {
         <Refresh />
         {/* </Suspense> */}
       </div>
-        <ProjectList />
+      <ProjectList />
     </div>
-    <newProject.Label>
-      <div className="fixed right-0 bottom-0 mb-4 mr-4">
-        <div role="button" className="btn btn-primary lg:grap-2 btn-lg shadow-lg tooltip flex" data-tip={t.saved.create_project()}>
-          <span className="mr-4 hidden lg:inline-block">{t.saved.create_project()}</span>
-          <PlusIcon className="h-8 w-8" />
-        </div>
-      </div>
-    </newProject.Label>
+    <div className="fixed right-0 bottom-0 mb-4 mr-4">
+      <button
+        className="btn btn-primary lg:grap-2 btn-lg shadow-lg tooltip flex"
+        data-tip={t.saved.create_project()}
+        onClick={(e) => newProject.showModal(true, e.target)}
+      >
+        <span className="mr-4 hidden lg:inline-block">{t.saved.create_project()}</span>
+        <PlusIcon className="h-8 w-8" />
+      </button>
+    </div>
     <newProject.Modal>
       <NewProjectForm />
     </newProject.Modal>

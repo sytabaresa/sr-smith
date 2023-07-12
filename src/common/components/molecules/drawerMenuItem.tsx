@@ -3,7 +3,6 @@ import React, { HTMLAttributes } from "react";
 interface DrawerMenuItemProps extends HTMLAttributes<HTMLButtonElement> {
     label: string;
     icon: JSX.Element
-    onClick?: () => void
 }
 
 const DrawerMenuItem = ({ label, icon, onClick, ...rest }: DrawerMenuItemProps) => {

@@ -12,11 +12,13 @@ const Footer: React.FC<IFooterProps> = ({ className }) => {
   const modal = createModal('about')
   return (
     <footer className={cn("flex", className)}>
-      <modal.Label>
-        <button className="btn btn-sm btn-outline bg-base-100 btn-circle modal-button" aria-label={t.common.help()}>
-          ?
-        </button>
-      </modal.Label>
+      <button
+        className="btn btn-sm btn-outline bg-base-100 btn-circle modal-button"
+        aria-label={t.common.help()}
+        onClick={(e) => modal.showModal(true, e.target)}
+      >
+        ?
+      </button>
       <modal.Modal className="overflow-x-clip overflow-y-auto p-0">
         <About />
       </modal.Modal>
