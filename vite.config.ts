@@ -5,7 +5,6 @@ import tsconfigPaths from "vite-tsconfig-paths"
 import { ssr } from 'vite-plugin-ssr/plugin'
 import { VitePWA } from 'vite-plugin-pwa'
 import { visualizer } from "rollup-plugin-visualizer";
-
 // import legacy from '@vitejs/plugin-legacy'
 
 

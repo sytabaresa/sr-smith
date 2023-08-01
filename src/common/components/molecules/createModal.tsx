@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { cn } from "@utils/styles";
 import { ROOT_APP } from "@/renderer/constants";
 import { useTranslation } from "@modules/i18n";
+import "dialog-polyfill/dist/dialog-polyfill.css"
 
 interface ModalContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   withClose?: boolean;
@@ -19,17 +20,39 @@ const createModal = (modalName: string) => {
   const finalModalName = !modalName || modalName == '' ? `modal-${Math.random().toString().slice(-5)}` : modalName
   const modalRef = useRef<HTMLDialogElement>()
   const closeRef = useRef<HTMLButtonElement>()
+  const dialogPolyfillRef = useRef(null)
+
+  // polyfill dialog compat
+  useEffect(() => {
+    (async () => {
+      if (modalRef.current && !modalRef.current.show && !dialogPolyfillRef.current) {
+        dialogPolyfillRef.current = (await import('dialog-polyfill')).default
+        console.log("registered polyfill for dialog")
+      }
+    })()
+  })
+
   // const modal = modalRef.current.open
   const showModal = (state: boolean, target = null) => {
+    if (!modalRef.current) {
+      return
+    }
+
+    // polyfill dialog compat
+    dialogPolyfillRef.current?.registerDialog?.(modalRef.current);
+
+
     if (state) {
-      modalRef.current.show()
+      modalRef.current?.show?.()
       setTimeout(() => {
-        closeRef.current?.focus()
+        closeRef.current?.focus?.()
       }, 500)
       setOldTarget(target)
-    } else {
-      console.log('close')
-      modalRef.current.close()
+    }
+
+    if(!state && modalRef.current.open) {
+      // console.log('close', modalRef.current)
+      modalRef.current?.close?.()
       oldTarget?.focus()
     }
   }
@@ -111,7 +134,7 @@ const createModal = (modalName: string) => {
     }, [])
 
     const out = <>
-      <dialog id={finalModalName} ref={modalRef} className={cn("modal",modal ? '': 'hidden')} {...dialogProps} open={modal}>
+      <dialog id={finalModalName} ref={modalRef} className={cn("modal", modal ? '' : 'hidden')} {...dialogProps} open={modal}>
         <div
           className={cn("modal-box", className)}
           onKeyDown={onKey}

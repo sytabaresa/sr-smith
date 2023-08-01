@@ -10,7 +10,7 @@ export const createAutolinkPlugin = createPluginFactory({
     isLeaf: true,
     component: AutolinkerLeaf,
     // TODO: activate when @udecode/plate-floating works with Plate 2.0
-    // renderAfterEditable: FloatingLink as RenderAfterEditable<MyValue>,
+    renderAfterEditable: FloatingLink as RenderAfterEditable<MyValue>,
     options: {
         defaultLinkAttributes: {
             target: '_blank',
