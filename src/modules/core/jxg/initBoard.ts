@@ -34,7 +34,7 @@ export const changeBoardTheme = (theme: string) => {
     }
 }
 
-export const initBoard = (get: Getter, set: Setter, options: BoardConfigOptions) => {
+export const initBoard = (options: BoardConfigOptions) => {
     // console.log(options)
     changeBoardTheme(options?.theme || 'light')
 
@@ -89,11 +89,6 @@ export const initBoard = (get: Getter, set: Setter, options: BoardConfigOptions)
 
     // JXG.Options.infobox.strokeColor = 'red';
 
-    brd.highlightInfobox = function (x: number, y: number, el: GeometryElement) {
-        set(infoboxAtom, { x, y, el })
-        this.infobox.setText('')
-        return this
-    }
 
     brd.infobox.visProp.distancex = options.infobox?.x ?? 0
     brd.infobox.visProp.distancey = options.infobox?.y ?? 0

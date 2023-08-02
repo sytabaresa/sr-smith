@@ -7,6 +7,17 @@ import { useDataProvider, useList } from "@hooks/useDataProvider";
 import createModal from "@components/molecules/createModal";
 import { ProjectList } from "@components/molecules/projectList";
 
+// custom elements
+import "@core/elements/common"
+import "@core/elements/smithPoint"
+import "@core/elements/point"
+import "@core/elements/reCircle"
+import "@core/elements/imCircle"
+import "@core/elements/imCircleAd"
+import "@core/elements/reCircleAd"
+
+import '@styles/jsxgraph.css';
+
 export { Saved as Page }
 
 const SavedProjects = () => {

@@ -30,12 +30,12 @@ export type RuntimeProject = {
 }
 
 export interface BoardConfigOptions {
-  theme: string;
-  screen: string | number[];
+  theme?: string;
+  screen?: string | number[];
   name: string;
-  digits: number;
-  translations: Record<string, any>;
-  infobox: {
+  digits?: number;
+  translations?: Record<string, any>;
+  infobox?: {
       x: number,
       y: number
   }

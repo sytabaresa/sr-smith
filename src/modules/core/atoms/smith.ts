@@ -18,9 +18,9 @@ import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { Getter, PrimitiveAtom, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
-import { atomWithReset, atomWithStorage } from "jotai/utils";
+import { atomWithReset } from "jotai/utils";
 import { _dataRxdbProviderAtom } from "./db";
-import { Board } from "jsxgraph";
+import { Board, GeometryElement } from "jsxgraph";
 import { BoardConfigOptions, RuntimeProject, SmithProject } from "@localtypes/smith";
 import { DataProvider } from "@db/db";
 
@@ -84,6 +84,20 @@ function populateBoard(send, board) {
     }
 }
 
+
+
+const initBoardWrapper = (get: Getter, set: Setter, options: BoardConfigOptions) => {
+    const brd = initBoard(options)
+
+    brd.highlightInfobox = function (x: number, y: number, el: GeometryElement) {
+        set(infoboxAtom, { x, y, el })
+        this.infobox.setText('')
+        return this
+    }
+
+    return brd
+}
+
 export function recreateBoard(get: Getter, set: Setter, params: BoardConfigOptions, oldBoard: any) {
     try {
         const send = (event) => set(drawServiceAtom, event)
@@ -97,7 +111,7 @@ export function recreateBoard(get: Getter, set: Setter, params: BoardConfigOptio
         // if (!this.recreatingBoard) {
         // this.recreatingBoard = true
         // console.log(boardName, options, boundingBox)
-        const board = initBoard(get, set, { ...rest, screen: boundingBox })
+        const board = initBoardWrapper(get, set, { ...rest, screen: boundingBox })
 
         populateBoard(send, board)
         return board
@@ -120,10 +134,11 @@ export const boardAtom = atom(
 
         return {}
     },
-    (get, set, params: BoardConfigOptions = null) => {
+    (get, set, params: Partial<BoardConfigOptions> = null) => {
         // console.log(params)
         const board = recreateBoard(get, set, { ...get(boardConfigAtom), ...params }, get(cachedBoardAtom))
         set(cachedBoardAtom, board)
+        return board
     }
 )
 
