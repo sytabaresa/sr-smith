@@ -29,7 +29,7 @@ export type RuntimeProject = {
   project: SmithProject
 }
 
-export interface BoardConfigOptions {
+export interface BoardConfigOptions extends JXG.BoardAttributes {
   theme?: string;
   screen?: string | number[];
   name: string;

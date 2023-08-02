@@ -1,9 +1,6 @@
 import { GeometryElement, JXGOptions, PointOptions } from "jsxgraph"
 import JXG from "jsxgraph"
 import { lightTheme, darkTheme } from "@core/utils/themes"
-import { infoboxAtom } from "@core/atoms/smith";
-import { Getter, Setter } from "jotai";
-import { getMouseCoords } from "@core/utils/board";
 import { addComplexSupport } from "./complex";
 import { BoardConfigOptions } from "@localtypes/smith";
 
@@ -160,7 +157,7 @@ export const initBoard = (options: BoardConfigOptions) => {
 
     const imgTheme = {
         'dark': '/images/smith-chart-dark.svg',
-        'light': '/images/smith-chart.svg'
+        'light': '/images/smith-chart-light.svg'
     }
     const tt = 1.1555
     // const x = 0.0025
@@ -184,8 +181,11 @@ export const initBoard = (options: BoardConfigOptions) => {
     brd.create('point', [0, 1], { name: 'px2', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [-1, 0], { name: 'px3', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [0, -1], { name: 'px4', color: 'blue', size: 1, fixed: true, inmutable: true })
-    brd.create('axis', [[0, 0], [1, 0]], { showinfobox: false, inmutable: true, name: 'ax_x' })
-    brd.create('axis', [[0, 0], [0, 1]], { showinfobox: false, inmutable: true, name: 'ax_y' })
+
+    if (options.axis === undefined || options.axis) {
+        brd.create('axis', [[0, 0], [1, 0]], { showinfobox: false, inmutable: true, name: 'ax_x' })
+        brd.create('axis', [[0, 0], [0, 1]], { showinfobox: false, inmutable: true, name: 'ax_y' })
+    }
 
     brd.unsuspendUpdate()
 
