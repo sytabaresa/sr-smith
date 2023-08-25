@@ -45,9 +45,14 @@ const ProjectCard = (props: ProjectCard) => {
                 <h2 className="text-2xs md:text-md my-2 font-bold">{name}</h2>
                 <p>{description}</p>
                 <div className="absolute right-0 bottom-0 dropdown dropdown-end" onClick={e => e.stopPropagation()}>
-                    <label tabIndex={0} className="btn btn-ghost"><DotsVerticalIcon className="w-6" /></label>
+                    <label tabIndex={0} className="btn btn-ghost rounded-none"><DotsVerticalIcon className="w-6" /></label>
                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
-                        <li><a role="button" onClick={(e) => { e.stopPropagation(); removeProject(id) }}><TrashIcon className="w-6" />{t.saved.delete()}</a></li>
+                        <li>
+                            <a role="button" onClick={(e) => { e.stopPropagation(); removeProject(id) }}>
+                                <TrashIcon className="w-6" />
+                                {t.saved.delete()}
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

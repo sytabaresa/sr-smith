@@ -3,18 +3,12 @@ import { useTranslation } from "@modules/i18n"
 import Layout from "@components/templates/default";
 import { PlusIcon, RefreshIcon } from "@heroicons/react/outline"
 import NewProjectForm from "@components/molecules/newProjectForm";
-import { useDataProvider, useList } from "@hooks/useDataProvider";
+import { useDataProvider } from "@hooks/useDataProvider";
 import createModal from "@components/molecules/createModal";
 import { ProjectList } from "@components/molecules/projectList";
 
 // custom elements
-import "@core/elements/common"
-import "@core/elements/smithPoint"
-import "@core/elements/point"
-import "@core/elements/reCircle"
-import "@core/elements/imCircle"
-import "@core/elements/imCircleAd"
-import "@core/elements/reCircleAd"
+import  "@core/elements"
 
 import '@styles/jsxgraph.css';
 

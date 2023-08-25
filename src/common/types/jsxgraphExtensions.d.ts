@@ -173,6 +173,9 @@ declare namespace JXG {
     export function createPoint(board: Board, parents: unknown[], attributes: PointAttributes): Point
     export function createPointOld(board: Board, parents: unknown[], attributes: PointAttributes): Point
     export function createComplex(board: Board, parents: unknown[], attributes: PointAttributes): Point
+    export function createAngle(board: Board, parents: unknown[], attributes: AngleAttributes): Angle
+    export function createAngleOld(board: Board, parents: unknown[], attributes: AngleAttributes): Angle
+
 
     export interface JXGOptions {
         recircle: CircleOptions | GeometryElementAttributes;

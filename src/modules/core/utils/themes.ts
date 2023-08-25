@@ -103,14 +103,14 @@ export const darkTheme = {
     //         layer: 5
     //     }
     // },
-
-    // text: {
-    //     fontSize: 10,
-    //     strokeColor: 'gray',
-    //     useASCIIMathML: false,
-    //     useMathJax: false,
-    //     defaultDisplay: 'html'
-    // },
+    text: {
+        // fontSize: 10,
+        strokeColor: 'gray',
+        highlightStrokeColor: 'gray',
+        // useASCIIMathML: false,
+        // useMathJax: false,
+        // defaultDisplay: 'html'
+    },
 
     // curve: {
     //     strokeWidth: '2px',

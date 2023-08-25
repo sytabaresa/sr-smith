@@ -94,7 +94,7 @@ export const initBoard = (options: BoardConfigOptions) => {
     // taken for the original funtion, but modified
     brd.updateInfobox = function (el: GeometryElement & { infoboxText: string }) {
         var x, y, xc, yc,
-            vpinfoboxdigits,
+            // vpinfoboxdigits,
             distX, distY,
             vpsi = JXG.evaluate(el.visProp.showinfobox);
         if ((!JXG.evaluate(this.attr.showinfobox) && vpsi === "inherit") || !vpsi) {
@@ -105,29 +105,29 @@ export const initBoard = (options: BoardConfigOptions) => {
             yc = el.coords.usrCoords[2];
             distX = JXG.evaluate(this.infobox.visProp.distancex);
             distY = JXG.evaluate(this.infobox.visProp.distancey);
-            vpinfoboxdigits = JXG.evaluate(el.visProp.infoboxdigits);
+            // vpinfoboxdigits = JXG.evaluate(el.visProp.infoboxdigits);
             this.infobox.setCoords(
                 xc + distX / this.unitX,
                 yc + distY / this.unitY
             );
 
             if (typeof el.infoboxText !== "string") {
-                if (vpinfoboxdigits === "auto") {
-                    x = JXG.autoDigits(xc);
-                    y = JXG.autoDigits(yc);
-                } else if (JXG.isNumber(vpinfoboxdigits)) {
-                    x = JXG.toFixed(xc, vpinfoboxdigits);
-                    y = JXG.toFixed(yc, vpinfoboxdigits);
-                } else {
-                    x = xc;
-                    y = yc;
-                }
+                //     if (vpinfoboxdigits === "auto") {
+                //         x = JXG.autoDigits(xc);
+                //         y = JXG.autoDigits(yc);
+                //     } else if (JXG.isNumber(vpinfoboxdigits)) {
+                //         x = JXG.toFixed(xc, vpinfoboxdigits);
+                //         y = JXG.toFixed(yc, vpinfoboxdigits);
+                //     } else {
+                x = xc;
+                y = yc;
+                // }
                 this.highlightInfobox(x, y, el);
             } else {
                 this.highlightCustomInfobox(el.infoboxText, el);
             }
             this.displayInfobox(true);
-        } else {
+        } else { // added to the original version
             const coords = this.getUsrCoordsOfMouse()
             xc = coords[0];
             yc = coords[1];

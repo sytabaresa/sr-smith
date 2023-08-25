@@ -11,7 +11,7 @@ export interface InfoboxProps {
 export function Infobox(props: InfoboxProps) {
     const { x, y, el } = props
 
-    // console.log(el)
+    // console.log(el, x, y)
 
     if (JXG.isPoint(el)) {
         const sx = zRePart(x, y)

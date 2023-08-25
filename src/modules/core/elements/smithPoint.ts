@@ -1,6 +1,6 @@
 import { SmithPoint } from "jsxgraph"
 import JXG from "jsxgraph"
-import { reflecImPart, reflecRePart, zImPart, zRePart } from "@core/utils/transforms";
+import { reflecImPart, reflecRePart } from "@core/utils/transforms";
 
 JXG.OBJECT_TYPE_SMITH_POINT = 99
 JXG.createSmithPoint = function (board, parents: any[], attributes) {
@@ -18,8 +18,6 @@ JXG.createSmithPoint = function (board, parents: any[], attributes) {
 
         sp.type = JXG.OBJECT_TYPE_SMITH_POINT
         sp.elType = 'spoint'
-        sp.SX = () => zRePart(sp.X(), sp.Y())
-        sp.SY = () => zImPart(sp.X(), sp.Y())
         return sp as SmithPoint
     } else if (parents.length == 1 && JXG.isObject(parents[0]) && parents[0].isComplex) {
         var c: JXG.Complex = parents[0]
@@ -30,8 +28,6 @@ JXG.createSmithPoint = function (board, parents: any[], attributes) {
 
         sp.type = JXG.OBJECT_TYPE_SMITH_POINT
         sp.elType = 'spoint'
-        sp.SX = () => zRePart(sp.X(), sp.Y())
-        sp.SY = () => zImPart(sp.X(), sp.Y())
         return sp as SmithPoint
     } else if (parents.length == 1 && JXG.isNumber(parents[0])) {
         const re = parents[0]

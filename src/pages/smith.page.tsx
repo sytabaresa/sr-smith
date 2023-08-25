@@ -7,14 +7,7 @@ import { UserMenu } from "@components/organisms/userMenu";
 import Footer from "@components/organisms/footer";
 
 // custom elements
-import "@core/elements/common"
-import "@core/elements/smithPoint"
-import "@core/elements/point"
-import "@core/elements/reCircle"
-import "@core/elements/imCircle"
-import "@core/elements/imCircleAd"
-import "@core/elements/reCircleAd"
-
+import  "@core/elements"
 import '@styles/jsxgraph.css';
 
 export { SmithProjectPage as Page }
