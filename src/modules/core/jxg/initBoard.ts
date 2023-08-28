@@ -182,10 +182,9 @@ export const initBoard = (options: BoardConfigOptions) => {
     brd.create('point', [-1, 0], { name: 'px3', color: 'blue', size: 1, fixed: true, inmutable: true })
     brd.create('point', [0, -1], { name: 'px4', color: 'blue', size: 1, fixed: true, inmutable: true })
 
-    if (options.axis === undefined || options.axis) {
-        brd.create('axis', [[0, 0], [1, 0]], { showinfobox: false, inmutable: true, name: 'ax_x' })
-        brd.create('axis', [[0, 0], [0, 1]], { showinfobox: false, inmutable: true, name: 'ax_y' })
-    }
+    const showGrid = options.axis === undefined || options.axis
+    brd.create('axis', [[0, 0], [1, 0]], { showinfobox: false, inmutable: true, ticks: { visible: showGrid }, name: 'ax_x' })
+    brd.create('axis', [[0, 0], [0, 1]], { showinfobox: false, inmutable: true, ticks: { visible: showGrid }, name: 'ax_y' })
 
     brd.unsuspendUpdate()
 

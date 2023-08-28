@@ -70,6 +70,7 @@ export function useBoardSnapshot() {
                         return txt
                     } catch (err) {
                         console.log('snapshot error', err)
+                        return cache.get(`_${options.theme}`).read()
                         // throw err
                     }
                 }

@@ -22,7 +22,6 @@ export const ProjectList = (props: ProjectListProps) => {
     const [img, setImg] = useState<string>()
 
     useEffect(() => {
-        // console.log(projects)
         (async () => {
             try {
                 const i = await _getImageUrl('', { theme }).promise

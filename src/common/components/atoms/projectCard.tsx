@@ -69,7 +69,10 @@ const ProjectImage = ({ code }) => {
     const image = getImageUrl(code, { theme }).read()
     // console.log(image)
 
-    return <div style={{ backgroundImage: `url(${image}` }} className="group-hover:backdrop-brightness-90 group-hover:grayscale w-full grow bg-cover bg-center" />
+    return <div
+        style={{ backgroundImage: `url(${image}` }}
+        className="group-hover:backdrop-brightness-90 group-hover:grayscale w-full grow bg-cover bg-center"
+    />
 
 
 }
