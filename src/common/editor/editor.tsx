@@ -1,10 +1,7 @@
-import { debounce } from "lodash";
-import { useAtomValue, useSetAtom } from "jotai"
-import { HTMLAttributes, ReactNode, useCallback, useEffect, useMemo } from "react";
+import { useAtomValue } from "jotai"
+import { HTMLAttributes, ReactNode, useEffect } from "react";
 import { Plate, PlateEditor, usePlateEditorRef } from '@udecode/plate-common';
-import { serializeCode } from '@editor/serializers/serializers'
-import { codeAtom, editorServiceAtom, projectDataAtom, savingServiceAtom } from "@core/atoms/smith";
-import { changeAtom, selectionAtom } from "@editor/common/atoms";
+import { editorServiceAtom, projectDataAtom } from "@core/atoms/smith";
 import { cn } from "@utils/styles";
 // import { SearcherPopup } from "@components/molecules/editor/searcher";
 import { useCutomEditableProps } from './common/useCustomEditableProps';
@@ -22,17 +19,6 @@ const CodeEditor = ({ className, toolbar, footer, id = '', ...rest }: CodeEditor
     const editorService = useAtomValue(editorServiceAtom)
 
     const editableProps = useCutomEditableProps()
-
-    useEffect(() => {
-        // for get new initialValue in editor
-        editor.reset()
-    }, [projectData])
-
-    useEffect(() => {
-        // for get new initialValue in editor
-        if (editorService.name == 'parsing')
-            editor.reset()
-    }, [editorService.name])
 
     return <>
         <div className={cn('border border-neutral bg-base-100 p-2 flex flex-col relative', className)} {...rest}>

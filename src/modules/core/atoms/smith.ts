@@ -26,6 +26,8 @@ import CircumcircleTooltip from "@core/tooltips/circumcircle";
 import SemicircleTooltip from "@core/tooltips/semicircle";
 import ArcTooltip from "@core/tooltips/arc";
 import ReCircleTooltip from "@core/tooltips/reCircle";
+import { PlateEditor } from "@udecode/plate-common";
+import { MyValue } from "@editor/types";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
@@ -147,7 +149,7 @@ export const boardAtom = atom(
     }
 )
 
-export const boardConfigAtom = atom<BoardConfigOptions>({
+export const boardConfigAtom = atom<Partial<BoardConfigOptions>>({
     theme: 'light',
     name: 'smith-box',
     screen: getCurrentBreakpoint(),
@@ -208,3 +210,5 @@ export const infoboxAtom = atom<{
     y: number,
     el: any
 }>({ x: 0, y: 0, el: undefined })
+
+export const editorAtom = atom<React.MutableRefObject<PlateEditor<MyValue>>>(null)

@@ -1,11 +1,13 @@
 import { createMachine, state, transition, reduce, invoke, guard, action, immediate } from 'robot3';
 import { RuntimeProject, SmithProject } from '@localtypes/smith';
-import { _codeAtom, _projectDataAtom, codeAtom, editorServiceAtom, projectDataAtom } from '@core/atoms/smith';
+import { _codeAtom, _projectDataAtom, codeAtom, editorAtom, editorServiceAtom, projectDataAtom } from '@core/atoms/smith';
 import { JotaiContext } from '@utils/atoms';
 import { _dataRxdbProviderAtom, dataQLProviderAtom } from '@core/atoms/db';
 import { DataProvider } from '@hooks/useDataProviderSW';
 import { authAtom } from '@core/atoms/auth';
 import { RESET } from 'jotai/utils';
+import { PlateEditor } from '@udecode/plate-common';
+import { MyValue } from '@editor/types';
 // import { Timestamp } from 'firebase/firestore';
 
 export interface SavingContextType<T = any, A = any, B = any> extends JotaiContext<T, A, B> {
@@ -106,8 +108,12 @@ function sendCodeEditor(ctx: SavingContextType, ev: { data: RuntimeProject }) {
 
 function saveProject(ctx: SavingContextType, ev: { data: RuntimeProject }) {
     const setData = ctx.setter(_projectDataAtom)
+    const editorRef: React.MutableRefObject<PlateEditor<MyValue>> = ctx.getter(editorAtom)
     // console.log('send')
     setData(ev.data)
+    setTimeout(() => {
+        editorRef.current.reset()
+    }, 200)
 }
 
 function logout(ctx: SavingContextType, ev) {
@@ -180,6 +186,7 @@ async function saveDocument(ctx: SavingContextType, ev: { value: string }) {
 
     const setData = ctx.setter(projectDataAtom)
     const code = ctx.getter(codeAtom) as string
+    // console.log(code)
     await setData({ data: code })
 
     console.log('saving done.')

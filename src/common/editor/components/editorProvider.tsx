@@ -1,10 +1,10 @@
-import { codeAtom, editorServiceAtom, savingServiceAtom } from "@core/atoms/smith"
+import { codeAtom, editorAtom, editorServiceAtom, savingServiceAtom } from "@core/atoms/smith"
 import { plugins } from "@editor/common/plugins"
 import { deserializeCode, serializeCode } from "@editor/serializers/serializers"
 import { MyValue } from "@editor/types"
 import { PlateEditor, PlateProvider } from "@udecode/plate-common"
-import { useAtomValue, useSetAtom } from "jotai"
-import { useCallback, useMemo, useRef } from "react"
+import { WritableAtom, useAtomValue, useSetAtom } from "jotai"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { debounce } from "lodash"
 import { changeAtom, selectionAtom } from "@editor/common/atoms"
 
@@ -19,7 +19,11 @@ export const EditorProvider = ({ children }) => {
     // FSM actions
     const setSelection = useSetAtom(selectionAtom)
     const setChange = useSetAtom(changeAtom)
+    const setEditor = useSetAtom(editorAtom as any)
 
+    useEffect(() => {
+        setEditor(editorRef)
+    }, [])
 
     const saveCode = debounce((value) => {
         // console.log("code")

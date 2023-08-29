@@ -1,12 +1,17 @@
 import { createMachine, state, transition, reduce, invoke, action, immediate } from 'robot3';
 import { wait } from '@utils/time';
 import { JotaiContext } from '@utils/atoms';
-import { _codeAtom, boardAtom } from '@core/atoms/smith';
+import { _codeAtom, boardAtom, editorAtom } from '@core/atoms/smith';
 import { Board } from 'jsxgraph';
+import { PlateEditor } from '@udecode/plate-common';
+import { MyValue } from '@editor/types';
+import { Transforms } from 'slate';
+import { deserializeCode } from '@editor/serializers/serializers';
 
 export interface EditorContextType extends JotaiContext<any, any, any> {
     errorMsg?: string;
-    counter: number
+    counter: number;
+    editor: PlateEditor
 }
 
 const parseExecute = async (ctx: EditorContextType, ev) => {
@@ -50,7 +55,6 @@ export default createMachine('idle', {
     )
 }, (ctx: EditorContextType) => ({
     errorMsg: '',
-    code: '',
     counter: 0,
     ...ctx,
 }) as EditorContextType)
@@ -58,7 +62,17 @@ export default createMachine('idle', {
 function clearErrorMsg(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: '' } }
 function setError(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: ev.error } }
 function addCounter(ctx: EditorContextType, ev: any) { return { ...ctx, counter: ctx.counter + 1 } }
-function setCode(ctx: EditorContextType, ev: { value: string }) {
+function setCode(ctx: EditorContextType, ev: { value: string, append: boolean }) {
+    const code = ctx.getter(_codeAtom)
     const setCode = ctx.setter(_codeAtom)
-    setCode(ev.value)
+    const editorRef: React.MutableRefObject<PlateEditor<MyValue>> = ctx.getter(editorAtom)
+    if (ev.append) {
+        const editor = editorRef.current
+        const nodes = deserializeCode(ev.value)
+        // console.log(ev.value, nodes)
+        Transforms.insertNodes(editor, nodes.slice(0, -1), { at: [editor.children.length] })
+        setCode(code + ev.value)
+    } else {
+        setCode(ev.value)
+    }
 }
