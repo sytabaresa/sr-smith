@@ -1,4 +1,4 @@
-import type { Translation } from '../i18n-types'
+import type { Translation } from "../i18n-types"
 
 const en: Translation = {
 	// this is an example Translation, just rename or delete this folder if you want
@@ -9,6 +9,7 @@ const en: Translation = {
 	},
 	common: {
 		back: "Back",
+		cancel: "Cancel",
 		done: "Done",
 		new: "New",
 		home: "Home",
@@ -29,10 +30,10 @@ const en: Translation = {
 		profile_picture: "Profile picture"
 	},
 	offline: {
-		app_ready: 'App ready to work offline',
-		new_content: 'New content available, click on reload button to update',
-		reload: 'Reload',
-		close: 'Close',
+		app_ready: "App ready to work offline",
+		new_content: "New content available, click on reload button to update",
+		reload: "Reload",
+		close: "Close",
 	},
 	lang: {
 		es: "Español",
@@ -90,8 +91,8 @@ const en: Translation = {
 		antenna_patterns: "Antenna Patterns",
 	},
 	canvas: {
-		title: 'Smith Chart canvas',
-		desc: 'An canvas with a smith chart, you can create points, lines, circles and other geometric contructs on top of it',
+		title: "Smith Chart canvas",
+		desc: "An canvas with a smith chart, you can create points, lines, circles and other geometric contructs on top of it",
 		run: "Run",
 		smith_mode: "Smith Mode",
 		move: "Move",
@@ -103,13 +104,13 @@ const en: Translation = {
 		create: "Create",
 		code: "Code",
 		placeholder: "Write code...",
-		read_only: 'read only',
-		fail: 'fail',
-		uploading: 'uploading',
-		follow_link: 'Follow link',
-		ctrl_click: 'ctrl+click',
-		warning: 'warning',
-		error: 'error'
+		read_only: "read only",
+		fail: "fail",
+		uploading: "uploading",
+		follow_link: "Follow link",
+		ctrl_click: "ctrl+click",
+		warning: "warning",
+		error: "error"
 	},
 	settings: {
 		make_public: "Make Public",
@@ -123,7 +124,7 @@ const en: Translation = {
 		description: "Project description"
 	},
 	tools: {
-		menu: 'Elements menu expanded',
+		menu: "Elements menu expanded",
 		two_points: {
 			desc: "Select two points"
 		},
@@ -166,11 +167,25 @@ const en: Translation = {
 		},
 		circle_radius: {
 			title: "Circle (center, radius)",
-			desc: "Select center point, then enter radius"
+			desc: "Select center point, then enter radius",
+			form_title: "Circunference: center and radius",
+			placeholder: "Enter radius value or variable (>0)",
+
 		},
 		circumcircle: {
 			title: "Circumcircle",
-		}
+		},
+		angle: {
+			title: "Angle (leg point, vertex, value)",
+			desc: "Select leg point, then vertex, and then angle value",
+			form_title: "Angle: leg point, vertex and value",
+			placeholder: "Enter angle value or variable (radians)",
+			help: "The value must be in radians, but can be written in grads like <value in grads>*PI/180"
+		},
+		angle_points: {
+			title: "Angle (leg point, vertex, leg point)",
+			desc: "Select leg point, then vertex, and then last leg point",
+		},
 	}
 }
 

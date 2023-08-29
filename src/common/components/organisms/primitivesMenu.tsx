@@ -1,25 +1,32 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HandIcon, ReplyIcon, TemplateIcon } from "@heroicons/react/outline"
 import TrashIcon from "@heroicons/react/outline/TrashIcon"
+import { useTranslation } from "@modules/i18n"
+import { useAtom } from "jotai";
+import { drawServiceAtom } from "@core/atoms/smith";
+import { cn } from "@utils/styles";
+import { usePlateEditorRef } from "@udecode/plate-common";
+
+// tooltips:
+import AngleTooltip from "@tooltips/angle";
+import AnglePointsTooltip from "@tooltips/anglePoints";
+import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
+import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
 import PointTooltip from "@core/tooltips/point";
 import SegmentTooltip from "@core/tooltips/segment";
 import LineTooltip from "@core/tooltips/line";
 import CircleTooltip from "@core/tooltips/circle";
 import CircleRadiusTooltip from "@core/tooltips/circleRadius";
+import ImCircleTooltip from "@core/tooltips/imCircle";
 import CircumcircleTooltip from "@core/tooltips/circumcircle";
 import SemicircleTooltip from "@core/tooltips/semicircle";
 import ArcTooltip from "@core/tooltips/arc";
 import ReCircleTooltip from "@core/tooltips/reCircle";
-import ImCircleTooltip from "@core/tooltips/imCircle";
-import { useTranslation } from "@modules/i18n"
-import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
-import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
-import { useAtom, useAtomValue } from "jotai";
-import { drawServiceAtom } from "@core/atoms/smith";
+
+// modals:
 import createModal from "@components/molecules/createModal";
 import CircleRadiusForm from "@components/molecules/circleRadiusForm";
-import { cn } from "@utils/styles";
-import { usePlateEditorRef } from "@udecode/plate-common";
+import AngleForm from "@components/molecules/angleForm";
 
 interface PrimitivesMenuProps extends React.HTMLAttributes<HTMLDivElement> {
 };
@@ -62,7 +69,9 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
     offsetCalc(ref.current)
   }, [])
 
-  const circleRadius = createModal('circle-radius')
+  const circleRadiusModal = createModal('circle-radius')
+  const angleModal = createModal('angle')
+
 
   return (
     <div className={cn('flex flex-col', className)} {...rest}>
@@ -127,7 +136,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             {[new PointTooltip(), new SegmentTooltip(), new LineTooltip(),
             new CircleTooltip(), new CircleRadiusTooltip(), new CircumcircleTooltip(),
             new SemicircleTooltip(), new ArcTooltip(), new ReCircleTooltip(),
-            new ImCircleTooltip(), new ReCircleAdTooltip(), new ImCircleAdTooltip()].map((plugin, index) =>
+            new ImCircleTooltip(), new ReCircleAdTooltip(), new ImCircleAdTooltip(),
+            new AngleTooltip(), new AnglePointsTooltip()].map((plugin, index) =>
               // TODO: figure out how to show clipped tooltip
               <button
                 key={index}
@@ -142,9 +152,12 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           </div>
         </div>
       </div>
-      <circleRadius.Modal onCancel={() => send('CANCEL')}>
+      <circleRadiusModal.Modal className="overflow-hidden" onCancel={() => send('CANCEL')}>
         {props => <CircleRadiusForm  {...props} />}
-      </circleRadius.Modal>
+      </circleRadiusModal.Modal>
+      <angleModal.Modal className="overflow-hidden" onCancel={() => send('CANCEL')}>
+        {props => <AngleForm  {...props} />}
+      </angleModal.Modal>
       {/* toas in the corner, info of tooltip selected */}
       {current.context.tooltipSelected &&
         <div className={cn('toast toast-end items-end lg:toast-start z-50 transition-all', !showHelp ? "invisible" : '')}>

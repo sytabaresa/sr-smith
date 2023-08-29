@@ -34,6 +34,10 @@ type RootTranslation = {
 		 */
 		back: string
 		/**
+		 * C​a​n​c​e​l
+		 */
+		cancel: string
+		/**
 		 * D​o​n​e
 		 */
 		done: string
@@ -508,12 +512,52 @@ type RootTranslation = {
 			 * S​e​l​e​c​t​ ​c​e​n​t​e​r​ ​p​o​i​n​t​,​ ​t​h​e​n​ ​e​n​t​e​r​ ​r​a​d​i​u​s
 			 */
 			desc: string
+			/**
+			 * C​i​r​c​u​n​f​e​r​e​n​c​e​:​ ​c​e​n​t​e​r​ ​a​n​d​ ​r​a​d​i​u​s
+			 */
+			form_title: string
+			/**
+			 * E​n​t​e​r​ ​r​a​d​i​u​s​ ​v​a​l​u​e​ ​o​r​ ​v​a​r​i​a​b​l​e​ ​(​>​0​)
+			 */
+			placeholder: string
 		}
 		circumcircle: {
 			/**
 			 * C​i​r​c​u​m​c​i​r​c​l​e
 			 */
 			title: string
+		}
+		angle: {
+			/**
+			 * A​n​g​l​e​ ​(​l​e​g​ ​p​o​i​n​t​,​ ​v​e​r​t​e​x​,​ ​v​a​l​u​e​)
+			 */
+			title: string
+			/**
+			 * S​e​l​e​c​t​ ​l​e​g​ ​p​o​i​n​t​,​ ​t​h​e​n​ ​v​e​r​t​e​x​,​ ​a​n​d​ ​t​h​e​n​ ​a​n​g​l​e​ ​v​a​l​u​e
+			 */
+			desc: string
+			/**
+			 * A​n​g​l​e​:​ ​l​e​g​ ​p​o​i​n​t​,​ ​v​e​r​t​e​x​ ​a​n​d​ ​v​a​l​u​e
+			 */
+			form_title: string
+			/**
+			 * E​n​t​e​r​ ​a​n​g​l​e​ ​v​a​l​u​e​ ​o​r​ ​v​a​r​i​a​b​l​e​ ​(​r​a​d​i​a​n​s​)
+			 */
+			placeholder: string
+			/**
+			 * T​h​e​ ​v​a​l​u​e​ ​m​u​s​t​ ​b​e​ ​i​n​ ​r​a​d​i​a​n​s​,​ ​b​u​t​ ​c​a​n​ ​b​e​ ​w​r​i​t​t​e​n​ ​i​n​ ​g​r​a​d​s​ ​l​i​k​e​ ​<​v​a​l​u​e​ ​i​n​ ​g​r​a​d​s​>​*​P​I​/​1​8​0
+			 */
+			help: string
+		}
+		angle_points: {
+			/**
+			 * A​n​g​l​e​ ​(​l​e​g​ ​p​o​i​n​t​,​ ​v​e​r​t​e​x​,​ ​l​e​g​ ​p​o​i​n​t​)
+			 */
+			title: string
+			/**
+			 * S​e​l​e​c​t​ ​l​e​g​ ​p​o​i​n​t​,​ ​t​h​e​n​ ​v​e​r​t​e​x​,​ ​a​n​d​ ​t​h​e​n​ ​l​a​s​t​ ​l​e​g​ ​p​o​i​n​t
+			 */
+			desc: string
 		}
 	}
 }
@@ -538,6 +582,10 @@ export type TranslationFunctions = {
 		 * Back
 		 */
 		back: () => LocalizedString
+		/**
+		 * Cancel
+		 */
+		cancel: () => LocalizedString
 		/**
 		 * Done
 		 */
@@ -1013,12 +1061,52 @@ export type TranslationFunctions = {
 			 * Select center point, then enter radius
 			 */
 			desc: () => LocalizedString
+			/**
+			 * Circunference: center and radius
+			 */
+			form_title: () => LocalizedString
+			/**
+			 * Enter radius value or variable (>0)
+			 */
+			placeholder: () => LocalizedString
 		}
 		circumcircle: {
 			/**
 			 * Circumcircle
 			 */
 			title: () => LocalizedString
+		}
+		angle: {
+			/**
+			 * Angle (leg point, vertex, value)
+			 */
+			title: () => LocalizedString
+			/**
+			 * Select leg point, then vertex, and then angle value
+			 */
+			desc: () => LocalizedString
+			/**
+			 * Angle: leg point, vertex and value
+			 */
+			form_title: () => LocalizedString
+			/**
+			 * Enter angle value or variable (radians)
+			 */
+			placeholder: () => LocalizedString
+			/**
+			 * The value must be in radians, but can be written in grads like <value in grads>*PI/180
+			 */
+			help: () => LocalizedString
+		}
+		angle_points: {
+			/**
+			 * Angle (leg point, vertex, leg point)
+			 */
+			title: () => LocalizedString
+			/**
+			 * Select leg point, then vertex, and then last leg point
+			 */
+			desc: () => LocalizedString
 		}
 	}
 }

@@ -17,7 +17,8 @@ JXG.createAngle = function (board, parents: any[], attributes): Angle {
         const angle: Angle = board.create(Math.abs(an) > Math.PI ? 'reflexangle' : 'nonreflexangle', [p1, p2, auxp], rest)
         angle.setAngle(an)
         auxp.setAttribute({ fixed: true, })
-        return auxp
+        auxp.angle = angle
+        return auxp // review this
 
     } else {
         const angle: Angle = JXG.createAngleOld(board, parents, attr)

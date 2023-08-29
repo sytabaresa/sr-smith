@@ -4,24 +4,24 @@ import { deepCurrent } from "@utils/atoms"
 import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
 
-interface CircleRadiusFormProps {
+interface AngleFormProps {
     showModal: (state: boolean) => void;
     modalState: boolean;
 }
 
-const CircleRadiusForm = (props: CircleRadiusFormProps) => {
+const AngleForm = (props: AngleFormProps) => {
     const { showModal, modalState } = props
-    const [radius, setRadius] = useState("")
+    const [angle, setAngle] = useState("")
     const { t } = useTranslation()
     const [current, send] = useAtom(drawServiceAtom)
 
-    const onClickCircleCenterRadiusCancel = () => send('CANCEL')
-    const onClickCircleCenterRadiusValue = (v: string) => {
+    const onClicAngleCancel = () => send('CANCEL')
+    const onClickAngleValue = (v: string) => {
         try {
             const n = parseFloat(v)
             if (Number.isNaN(n))
                 throw ''
-            n > 0 && send({ type: "ANGLE", value: n })
+            send({ type: "ANGLE", value: n })
         } catch (err) {
             v != '' && send({ type: "ANGLE", value: v })
         }
@@ -30,31 +30,31 @@ const CircleRadiusForm = (props: CircleRadiusFormProps) => {
     const deep = deepCurrent(current.service)
     useEffect(() => {
         // console.log("showModal", deep)
-        showModal(deep == "draw.drawCircle")
+        showModal(deep == "draw.drawAngle")
     }, [deep])
 
     return <form>
         <h3 className="font-bold text-lg mb-2">
-            {t.tools.circle_radius.form_title()}
+            {t.tools.angle.form_title()}
         </h3>
         <div className="join w-full">
             <input
                 type="text"
-                placeholder={t.tools.circle_radius.placeholder()}
+                placeholder={t.tools.angle.placeholder()}
                 className="input w-full input-bordered font-mono join-item"
-                onChange={(ev: any) => setRadius(ev.target.value)}
+                onChange={(ev: any) => setAngle(ev.target.value)}
             />
-            {/* <div className="tooltip " data-tip={t.tools.circle_radius.help()}>
+            <div className="tooltip " data-tip={t.tools.angle.help()}>
                 <button className="btn normal-case join-item">?</button>
-            </div> */}
+            </div>
         </div>
         <div className="modal-action flex items-center">
-            <a href="#" className="text-gray-500" onClick={onClickCircleCenterRadiusCancel}>{t.common.cancel()}</a>
-            <a href="#" className="btn" onClick={() => onClickCircleCenterRadiusValue(radius)} >
+            <a href="#" className="text-gray-500" onClick={onClicAngleCancel}>{t.common.cancel()}</a>
+            <a href="#" className="btn" onClick={() => onClickAngleValue(angle)} >
                 {t.canvas.create()}
             </a>
         </div>
     </form>
 }
 
-export default CircleRadiusForm
+export default AngleForm

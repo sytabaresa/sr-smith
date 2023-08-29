@@ -1,4 +1,4 @@
-import JXG from "jsxgraph"
+import JXG, { Intersection } from "jsxgraph"
 import { getIndexFinger, getMouseCoords, normalizeName, stringifyJC } from "@core/utils/board";
 import { zImPart, zRePart } from "@core/utils/transforms";
 
@@ -77,7 +77,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     return { ...ctx, objectSelected, code }
 }
 
-function getParamsStrPoint(ob) {
+function getParamsStrPoint(ob) { //JXG.GeometryElement & JXG.CoordsElement
     let outStr = ''
     switch (ob.type) {
         case JXG.OBJECT_TYPE_POINT:
@@ -98,9 +98,8 @@ function getParamsStrPoint(ob) {
     return outStr
 }
 
-export function getCodefromObject(paramsStr, ob, options = null): string {
+export function getCodefromObject(paramsStr, ob: JXG.GeometryElement, options = null): string {
     // console.log(ob.name, ob, options)
-
     let outStr = `${ob.name != '' ? `${normalizeName(ob.name)} = ` : ''}${ob.elType}(`
 
     outStr += paramsStr(ob)

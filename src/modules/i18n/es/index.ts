@@ -1,4 +1,4 @@
-import type { BaseTranslation } from '../i18n-types'
+import type { BaseTranslation } from "../i18n-types"
 
 const es: BaseTranslation = {
 	// this is an example Translation, just rename or delete this folder if you want
@@ -9,6 +9,7 @@ const es: BaseTranslation = {
 	},
 	common: {
 		back: "Atrás",
+		cancel: "Cancelar",
 		done: "Hecho",
 		new: "Nuevo",
 		home: "Home",
@@ -29,10 +30,10 @@ const es: BaseTranslation = {
 		profile_picture: "Imagen de perfil"
 	},
 	offline: {
-		app_ready: 'App lista para funcionar offline',
-		new_content: 'Nuevo contenido disponeble, click en el boton de Recargar para actualizar',
-		reload: 'Recargar',
-		close: 'Cerrar',
+		app_ready: "App lista para funcionar offline",
+		new_content: "Nuevo contenido disponeble, click en el boton de Recargar para actualizar",
+		reload: "Recargar",
+		close: "Cerrar",
 	},
 	lang: {
 		es: "Español",
@@ -109,20 +110,20 @@ const es: BaseTranslation = {
 		create: "Crear",
 		code: "Code",
 		placeholder: "Escribir código...",
-		read_only: 'solo lectura',
-		fail: 'fallo',
-		uploading: 'subiendo',
-		follow_link: 'Seguir link',
-		ctrl_click: 'ctrl+click',
-		warning: 'atención',
-		error: 'error',
+		read_only: "solo lectura",
+		fail: "fallo",
+		uploading: "subiendo",
+		follow_link: "Seguir link",
+		ctrl_click: "ctrl+click",
+		warning: "atención",
+		error: "error",
 	},
 	settings: {
 		make_public: "Hacer público",
 		precision: "Precisión",
 	},
 	tools: {
-		menu: 'Menu de elementos expandido',
+		menu: "Menu de elementos expandido",
 		common: {
 			two_points: "Seleccione dos puntos",
 			three_points: "Seleccione tres puntos"
@@ -162,10 +163,23 @@ const es: BaseTranslation = {
 		},
 		circle_radius: {
 			title: "Círculo (centro, radio)",
-			desc: "Selecciones punto de centro, luego ingrerse radio"
+			desc: "Seleccione punto de centro, luego ingrerse radio",
+			form_title: "Circunferencia: centro y radio",
+			placeholder: "Ingrese valor o variable del radio (>0)",
 		},
 		circumcircle: {
 			title: "Circumcírculo"
+		},
+		angle: {
+			title: "Ángulo (lateral, vértice, valor)",
+			desc: "Seleccione punto lateral, luego punto vértice, y luego ingrese valor de ángulo",
+			form_title: "Ángulo: lateral, vertice y valor",
+			placeholder: "Ingrese valor o variable del ángulo (radianes)",
+			help: "El valor debe estar en radianes,pero se puede escribir en grados así: <valor en grados>*PI/180"
+		},
+		angle_points: {
+			title: "Ángulo (lateral, vértice, lateral)",
+			desc: "Seleccione punto lateral, luego punto vértice, y luego último punto lateral",
 		}
 	},
 }

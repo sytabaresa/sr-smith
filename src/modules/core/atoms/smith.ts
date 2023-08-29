@@ -2,19 +2,6 @@ import { atomWithMachine } from "@utils/atoms";
 import editorFSM from "@core/fsm/editorFSM";
 import savingFSM from "@core/fsm/savingFSM";
 import drawFSM from "@core/fsm/drawFSM";
-
-import PointTooltip from "@tooltips/point";
-import LineTooltip from "@tooltips/line";
-import CircleTooltip from "@tooltips/circle";
-import SegmentTooltip from "@tooltips/segment";
-import SemicircleTooltip from "@tooltips/semicircle";
-import CircleRadiusTooltip from "@tooltips/circleRadius";
-import CircumcircleTooltip from "@tooltips/circumcircle";
-import ArcTooltip from "@tooltips/arc";
-import ReCircleTooltip from "@tooltips/reCircle";
-import ImCircleTooltip from "@tooltips/imCircle";
-import ReCircleAdTooltip from "@tooltips/reCircleAd";
-import ImCircleAdTooltip from "@tooltips/imCircleAd";
 import { Getter, PrimitiveAtom, Setter, WritableAtom, atom } from "jotai";
 import { initBoard } from "@core/jxg/initBoard";
 import { getCurrentBreakpoint } from "@hooks/useScreen";
@@ -23,6 +10,22 @@ import { _dataRxdbProviderAtom } from "./db";
 import { Board, GeometryElement } from "jsxgraph";
 import { BoardConfigOptions, RuntimeProject, SmithProject } from "@localtypes/smith";
 import { DataProvider } from "@db/db";
+
+// tooltips:
+import AngleTooltip from "@tooltips/angle";
+import AnglePointsTooltip from "@tooltips/anglePoints";
+import ReCircleAdTooltip from "@core/tooltips/reCircleAd";
+import ImCircleAdTooltip from "@core/tooltips/imCircleAd";
+import PointTooltip from "@core/tooltips/point";
+import SegmentTooltip from "@core/tooltips/segment";
+import LineTooltip from "@core/tooltips/line";
+import CircleTooltip from "@core/tooltips/circle";
+import CircleRadiusTooltip from "@core/tooltips/circleRadius";
+import ImCircleTooltip from "@core/tooltips/imCircle";
+import CircumcircleTooltip from "@core/tooltips/circumcircle";
+import SemicircleTooltip from "@core/tooltips/semicircle";
+import ArcTooltip from "@core/tooltips/arc";
+import ReCircleTooltip from "@core/tooltips/reCircle";
 
 export const editorServiceAtom = atomWithMachine(editorFSM, (get) => ({
     menuService: drawServiceAtom,
@@ -48,6 +51,8 @@ export const drawServiceAtom = atomWithMachine(drawFSM as any, {
         new ImCircleTooltip(),
         new ReCircleAdTooltip(),
         new ImCircleAdTooltip(),
+        new AngleTooltip(),
+        new AnglePointsTooltip(),
     ]
 }, (get) => ({ board: get(boardAtom) }))
 

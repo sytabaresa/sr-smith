@@ -30,7 +30,7 @@ export function removeElement(board, event) {
 }
 
 export function normalizeName(name) {
-    return name.replace('}', '').replace('{', '')
+    return name.replace('}', '').replace('{', '').replace('&', '').replace(';', '')
 }
 
 export function stringifyJC(ob) {
