@@ -110,7 +110,8 @@ const en: Translation = {
 		follow_link: "Follow link",
 		ctrl_click: "ctrl+click",
 		warning: "warning",
-		error: "error"
+		error: "error",
+		close: "close"
 	},
 	settings: {
 		make_public: "Make Public",

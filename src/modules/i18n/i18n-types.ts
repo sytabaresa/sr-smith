@@ -377,6 +377,10 @@ type RootTranslation = {
 		 * e​r​r​o​r
 		 */
 		error: string
+		/**
+		 * c​l​o​s​e
+		 */
+		close: string
 	}
 	settings: {
 		/**
@@ -926,6 +930,10 @@ export type TranslationFunctions = {
 		 * error
 		 */
 		error: () => LocalizedString
+		/**
+		 * close
+		 */
+		close: () => LocalizedString
 	}
 	settings: {
 		/**

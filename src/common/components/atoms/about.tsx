@@ -6,7 +6,7 @@ export const About = () => {
     const { t } = useTranslation()
 
     return <>
-        <img src="/images/cmyk2.svg" className="absolute -z-10 w-[50rem] right-[-50%] bottom-0 opacity-50" ></img>
+        <img src="/images/cmyk2.svg" className="absolute -z-10 w-[50rem] right-[-50%] bottom-0 opacity-50 blur-sm" ></img>
         <div className="card">
             <div className="card-body">
                 <article className="prose prose-headings:uppercase prose-headings:my-4">

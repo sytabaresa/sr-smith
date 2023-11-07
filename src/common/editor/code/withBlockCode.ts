@@ -1,5 +1,4 @@
-// import { Transforms, Element, Node, Path } from '@udecode/plate-common'
-import { splitLines } from '../serializers/splitter'
+import { getJC } from "../grammar"
 import { Node, Path } from "slate"
 import { PlateEditor, isElement, liftNodes, mergeNodes, setNodes, splitNodes, wrapNodes, } from '@udecode/plate-common'
 import { ELEMENT_CODE_BLOCK } from "@udecode/plate-code-block"
@@ -15,16 +14,17 @@ const withCodeNormalizer = (editor: PlateEditor<MyValue>) => {
         if (isElement(node) && node.type === ELEMENT_CODE_BLOCK) {
             // console.log(path, node)
             const code = [...Node.texts(node)].map(([node, _path]) => node.text).join('\n')
-            const [blocks, validEnd] = splitLines(code)
-            // console.log(path, code, blocks, validEnd, editor)
+            const [validParse, dict, mr] = getJC(code)
+            const blocks = validParse ? dict.splitStatements() : []
+            // console.log(path, code, blocks, validParse, editor)
 
             // // error nodes validation
-            if (!validEnd) {
+            if (!validParse) {
                 if (Node.has(editor, Path.next(path))) {
                     // const lastBlock = blocks.slice(-1)[0]
                     mergeNodes(editor, { at: Path.next(path) })
                 }
-                setNodes(editor, { error: true }, { at: path })
+                setNodes(editor, { error: true, errorMsg: mr.message }, { at: path })
                 return
             } else {
                 setNodes(editor, { error: false }, { at: path })

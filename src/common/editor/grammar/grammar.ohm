@@ -1,0 +1,265 @@
+JessieCode {
+  
+  Program = &(Directive*) SourceElement*
+
+  // §A.1 Lexical Grammar -- https://es5.github.io/#A.1
+  sourceCharacter = any
+
+  // Override Ohm's built-in definition of space.
+  space := whitespace | lineTerminator | comment
+
+  whitespace = "\t"
+             | "\x0B"    -- verticalTab
+             | "\x0C"    -- formFeed
+             | " "
+             | "\u00A0"  -- noBreakSpace
+             | "\uFEFF"  -- byteOrderMark
+            //  | unicodeSpaceSeparator
+
+  lineTerminator = "\n" | "\r" | "\u2028" | "\u2029"
+  lineTerminatorSequence = "\n" | "\r" ~"\n" | "\u2028" | "\u2029" | "\r\n"
+
+  comment = multiLineComment | singleLineComment
+
+  multiLineComment = "/*" (~"*/" sourceCharacter)* "*/"
+  singleLineComment = "//" (~lineTerminator sourceCharacter)*
+
+  identifier (an identifier) = ~reservedWord identifierName
+  identifierName = identifierStart identifierPart*
+
+  identifierStart = letter | "$" | "_"
+  identifierPart = identifierStart
+                 | digit
+  
+  // unicodeSpaceSeparator = "\u2000".."\u200B" | "\u3000"
+
+  reservedWord = keyword | nullLiteral | booleanLiteral
+
+  // Note: keywords that are the complete prefix of another keyword should
+  // be prioritized (e.g. 'in' should come before 'instanceof')
+  // TODO: see map 
+  keyword = if | else
+          | for  | do | while
+          | function | return
+          | delete | use
+
+  /*
+    Note: Punctuator and DivPunctuator (see https://es5.github.io/x7.html#x7.7) are
+    not currently used by this grammar.
+  */
+
+  literal = nullLiteral | booleanLiteral | numericLiteral | stringLiteral
+  nullLiteral = "null" ~identifierPart
+  booleanLiteral = ("true" | "false") ~identifierPart
+
+  numericLiteral = decimalLiteral
+
+  decimalLiteral = decimalIntegerLiteral "." decimalDigit* -- bothParts
+                 |                       "." decimalDigit+ -- decimalsOnly
+                 | decimalIntegerLiteral                   -- integerOnly
+
+  decimalIntegerLiteral = nonZeroDigit decimalDigit*  -- nonZero
+                        | "0"                         -- zero
+  decimalDigit = "0".."9"
+  nonZeroDigit = "1".."9"
+
+  // For semantics on how string literals are constructed, see section 7.8.4
+  stringLiteral = "\"" doubleStringCharacter* "\""
+                | "'" singleStringCharacter* "'"
+  doubleStringCharacter = ~("\"" | "\\" | lineTerminator) sourceCharacter -- nonEscaped
+                        | "\\" escapeSequence                             -- escaped
+                        | lineContinuation                                -- lineContinuation
+  singleStringCharacter = ~("'" | "\\" | lineTerminator) sourceCharacter -- nonEscaped
+                        | "\\" escapeSequence                             -- escaped
+                        | lineContinuation                               -- lineContinuation
+  lineContinuation = "\\" lineTerminatorSequence
+  escapeSequence = characterEscapeSequence
+  characterEscapeSequence = singleEscapeCharacter
+                          | nonEscapeCharacter
+  singleEscapeCharacter = "'" | "\"" | "\\" | "b" | "f" | "n" | "r" | "t" | "v"
+  nonEscapeCharacter = ~(escapeCharacter | lineTerminator) sourceCharacter
+  escapeCharacter = singleEscapeCharacter | decimalDigit
+
+  // === Implementation-level rules (not part of the spec) ===
+
+  multiLineCommentNoNL = "/*" (~("*/" | lineTerminator) sourceCharacter)* "*/"
+
+  // does not accept lineTerminators, not even implicit ones in a multiLineComment (cf. section 7.4)
+  spacesNoNL = (whitespace | singleLineComment | multiLineCommentNoNL)*
+
+  // A semicolon is "automatically inserted" if a newline or the end of the input stream is
+  // reached, or the offending token is "}".
+  // See https://es5.github.io/#x7.9 for more information.
+  // NOTE: Applications of this rule *must* appear in a lexical context -- either in the body of a
+  // lexical rule, or inside `#()`.
+  sc = space* (";" | end)
+     | spacesNoNL (lineTerminator | ~multiLineCommentNoNL multiLineComment | &"}")
+
+  // Convenience rules for parsing keyword tokens.
+  do = "do" ~identifierPart
+  else = "else" ~identifierPart
+  var = "var" ~identifierPart
+  return = "return" ~identifierPart
+  for = "for" ~identifierPart
+  while = "while" ~identifierPart
+  function = "function" ~identifierPart
+  if = "if" ~identifierPart
+  delete = "delete" ~identifierPart
+  use = "use" ~identifierPart
+  
+  // end of lexical rules
+  withIn = 
+
+  // §A.3 Expressions -- https://es5.github.io/#A.3
+
+  PrimaryExpression = identifier
+                    | literal
+                    | ArrayLiteral
+                    | ObjectLiteral
+                    | "(" Expression ")"  -- parenExpr
+
+  ArrayLiteral = "[" ListOf<AssignmentExpressionOrElision, ","> "]"
+  AssignmentExpressionOrElision = AssignmentExpression
+                                |                       -- elision
+
+  ObjectLiteral = "<<" ListOf<PropertyAssignment, ","> ">>"              -- noTrailingComma
+                | "<<" NonemptyListOf<PropertyAssignment, ","> "," ">>"  -- trailingComma
+
+  PropertyAssignment = PropertyName ":" AssignmentExpression -- simple
+
+  PropertyName = identifierName
+               | stringLiteral
+               | numericLiteral
+
+  MemberExpression = MemberExpression "[" Expression "]"  -- arrayRefExp
+                   | MemberExpression "." identifierName  -- propRefExp
+                   | FunctionExpression
+                   | PrimaryExpression
+
+  CallExpression = CallExpression "[" Expression "]"  -- arrayRefExp
+                 | CallExpression "." identifierName  -- propRefExp
+                 | CallExpression Arguments           -- callExpExp
+                 | MemberExpression Arguments         -- memberExpExp
+
+  Arguments = "(" ListOf<AssignmentExpression, ","> ")"
+
+  LeftHandSideExpression = CallExpression
+                         | MemberExpression
+
+  UnaryExpression = delete UnaryExpression  -- deleteExp
+                  | use   UnaryExpression   -- useExp
+                  | "+"    UnaryExpression  -- unaryPlus
+                  | "-"    UnaryExpression  -- unaryMinus
+                  | "!"    UnaryExpression  -- lnot
+                  | LeftHandSideExpression
+
+  MultiplicativeExpression = MultiplicativeExpression "*" UnaryExpression -- mul
+                           | MultiplicativeExpression "/" UnaryExpression -- div
+                           | MultiplicativeExpression "%" UnaryExpression -- mod
+                           | UnaryExpression
+
+  AdditiveExpression = AdditiveExpression "+" MultiplicativeExpression -- add
+                     | AdditiveExpression "-" MultiplicativeExpression -- sub
+                     | MultiplicativeExpression
+
+  RelationalExpression
+    = RelationalExpression "<" AdditiveExpression           -- lt
+    | RelationalExpression ">" AdditiveExpression           -- gt
+    | RelationalExpression "<=" AdditiveExpression          -- le
+    | RelationalExpression ">=" AdditiveExpression          -- ge
+    | AdditiveExpression
+
+  EqualityExpression
+    = EqualityExpression "==" RelationalExpression  -- equal
+    | EqualityExpression "!=" RelationalExpression  -- notEqual
+    | EqualityExpression "~=" RelationalExpression  -- approxEqual
+    | RelationalExpression
+
+  LogicalANDExpression
+    = LogicalANDExpression "&&" EqualityExpression -- land
+    | EqualityExpression
+
+  LogicalORExpression
+    = LogicalORExpression "||" LogicalANDExpression -- lor
+    | LogicalANDExpression
+
+  ConditionalExpression
+    = LogicalORExpression "?" AssignmentExpression ":" AssignmentExpression -- conditional
+    | LogicalORExpression
+
+  InlineParamsExpression = CallExpression LeftHandSideExpression // Or ConditionalExpression if Generalizes ternary
+
+  AssignmentExpression
+    = LeftHandSideExpression assignmentOperator AssignmentExpression -- assignment
+    | InlineParamsExpression
+    | ConditionalExpression
+  
+  Expression (an expression)
+    = AssignmentExpression
+
+  assignmentOperator = "="
+
+  // §A.4 Statements -- https://es5.github.io/#A.4
+
+  Statement
+    = Block
+    | VariableStatement
+    | EmptyStatement
+    | ExpressionStatement
+    | IfStatement
+    | IterationStatement
+    | ReturnStatement
+
+  Block = "{" StatementList "}"
+
+  StatementList = Statement*
+
+  VariableStatement = var VariableDeclaration #sc
+
+  VariableDeclaration = identifier Initialiser?
+
+  Initialiser = "=" AssignmentExpression
+
+  EmptyStatement = ";" // note: this semicolon eats newlines
+
+  ExpressionStatement = ~("{" | function) Expression #sc
+
+  IfStatement = if "(" Expression ")" Statement (else Statement)?
+
+  IterationStatement = do Statement while "(" Expression ")" #sc  -- doWhile
+                     | while "(" Expression ")" Statement           -- whileDo
+                     | for "(" Expression? ";"
+                                 Expression? ";"
+                                 Expression? ")" Statement          -- for3
+                     | for "(" VariableStatement ";"
+                                 Expression? ";"
+                                 Expression? ")" Statement          -- for3var
+
+  ReturnStatement = return (#(spacesNoNL ~space) Expression)? #sc
+
+  // §A.5 Functions and Programs -- https://es5.github.io/#A.5
+
+  FunctionDeclaration
+    = function identifier "(" FormalParameterList ")" "{" FunctionBody "}"
+
+  FunctionExpression
+    = function identifier "(" FormalParameterList ")" "{" FunctionBody "}"  -- named
+    | function "(" FormalParameterList ")" "{" FunctionBody "}"             -- anonymous
+
+  FormalParameterList = ListOf<FormalParameter, ",">
+
+  FormalParameter = identifier
+
+  /*
+    Note: The Directive Prologue is the longest sequence of ExpressionStatement
+    productions occurring as the initial SourceElement (see https://es5.github.io/#x14.1)
+  */
+  FunctionBody = &(Directive*) SourceElement*
+
+  SourceElement = Declaration | Statement
+
+  // Broken out so es6 can override to include ConstDecl and LetDecl
+  Declaration = FunctionDeclaration
+
+  Directive = stringLiteral #sc
+}

@@ -117,6 +117,7 @@ const es: BaseTranslation = {
 		ctrl_click: "ctrl+click",
 		warning: "atención",
 		error: "error",
+		close: "cerrar"
 	},
 	settings: {
 		make_public: "Hacer público",
