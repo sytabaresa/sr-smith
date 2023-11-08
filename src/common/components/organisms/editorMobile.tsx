@@ -23,8 +23,6 @@ const EditorMobile = (props: EditorPopupProps) => {
     const send = useSetAtom(editorServiceAtom)
     const select = useAtomValue(selectionAtom)
 
-    const parseExecute = useCallback(() => send('PARSE'), [])
-
     useEffect(() => {
         setTimeout(() => {
             // console.log('focus')
@@ -43,7 +41,7 @@ const EditorMobile = (props: EditorPopupProps) => {
                     <EditorError />
                 </div>
                 <div className="flex items-center">
-                    <button onClick={parseExecute} className="btn btn-outline flex-1 mr-2">
+                    <button onClick={() => send('PARSE')} className="btn btn-outline flex-1 mr-2">
                         {t.canvas.run()}
                     </button>
                     <button
@@ -60,14 +58,14 @@ const EditorMobile = (props: EditorPopupProps) => {
                         aria-label={t.canvas.undo()}
                         tabIndex={0}
                         className='btn btn-outline btn-primary btn-circle mr-2'
-                        onClick={() => editor.undo()}>
+                        onClick={() => send("UNDO")}>
                         <ReplyIcon className="w-5" />
                     </button>
                     <button
                         className="btn btn-outline btn-circle"
                         tabIndex={0}
                         onClick={() => setOpen(!isOpen)}
-                        aria-label={t.canvas.undo()}
+                        aria-label={t.canvas.close()}
                     >
                         <ChevronDownIcon className="w-6" />
                     </button>

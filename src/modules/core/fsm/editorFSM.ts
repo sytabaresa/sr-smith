@@ -6,7 +6,7 @@ import { Board } from 'jsxgraph';
 import { PlateEditor } from '@udecode/plate-common';
 import { MyValue } from '@editor/types';
 import { Transforms } from 'slate';
-import { deserializeCode } from '@editor/serializers/serializers';
+import { deserializeCode, serializeCode } from '@editor/serializers/serializers';
 
 export interface EditorContextType extends JotaiContext<any, any, any> {
     errorMsg?: string;
@@ -39,7 +39,8 @@ const parseExecute = async (ctx: EditorContextType, ev) => {
 export default createMachine('idle', {
     idle: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),
-        transition("CODE", 'idle', action(setCode)),
+        transition("CODE", 'idle', action(setCodeRaw)),
+        transition("UNDO", 'parsing', reduce(clearErrorMsg), action(undo))
     ),
     parsing: invoke(parseExecute,
         transition('done', 'idle', reduce(addCounter)),
@@ -47,10 +48,12 @@ export default createMachine('idle', {
     ),
     error: state(
         transition('PARSE', 'parsing', reduce(clearErrorMsg)),
-        transition("CODE", 'clearError', action(setCode)),
+        transition("CODE", 'clearError', action(setCodeRaw)),
+        transition("UNDO", 'parsing', reduce(clearErrorMsg), action(undo))
     ),
     clearError: invoke(() => wait(200),
-        transition("CODE", 'clearError', action(setCode)),
+        transition("CODE", 'clearError', action(setCodeRaw)),
+        transition("UNDO", 'parsing', action(undo)),
         transition('done', 'idle', reduce(clearErrorMsg))
     )
 }, (ctx: EditorContextType) => ({
@@ -62,7 +65,7 @@ export default createMachine('idle', {
 function clearErrorMsg(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: '' } }
 function setError(ctx: EditorContextType, ev: any) { return { ...ctx, errorMsg: ev.error } }
 function addCounter(ctx: EditorContextType, ev: any) { return { ...ctx, counter: ctx.counter + 1 } }
-function setCode(ctx: EditorContextType, ev: { value: string, append: boolean }) {
+function setCodeRaw(ctx: EditorContextType, ev: { value: string, append: boolean }) {
     const code = ctx.getter(_codeAtom)
     const setCode = ctx.setter(_codeAtom)
     const editorRef: React.MutableRefObject<PlateEditor<MyValue>> = ctx.getter(editorAtom)
@@ -70,9 +73,19 @@ function setCode(ctx: EditorContextType, ev: { value: string, append: boolean })
         const editor = editorRef.current
         const nodes = deserializeCode(ev.value)
         // console.log(ev.value, nodes)
-        Transforms.insertNodes(editor, nodes.slice(0, -1), { at: [editor.children.length] })
+        Transforms.insertNodes(editor, nodes, { at: [editor.children.length] })
         setCode(code + ev.value)
     } else {
         setCode(ev.value)
     }
 }
+function undo(ctx: EditorContextType, ev: {}) {
+    const setCode = ctx.setter(_codeAtom)
+    const editorRef: React.MutableRefObject<PlateEditor<MyValue>> = ctx.getter(editorAtom)
+
+    editorRef.current.undo()
+    const code = serializeCode(editorRef.current.children)
+    // console.log("code")
+    setCode(code)
+}
+

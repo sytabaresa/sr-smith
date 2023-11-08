@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { HandIcon, ReplyIcon, TemplateIcon } from "@heroicons/react/outline"
 import TrashIcon from "@heroicons/react/outline/TrashIcon"
 import { useTranslation } from "@modules/i18n"
-import { useAtom } from "jotai";
-import { drawServiceAtom } from "@core/atoms/smith";
+import { useAtom, useSetAtom } from "jotai";
+import { drawServiceAtom, editorServiceAtom } from "@core/atoms/smith";
 import { cn } from "@utils/styles";
 import { usePlateEditorRef } from "@udecode/plate-common";
 
@@ -35,6 +35,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
   const { className, ...rest } = props
   const { t } = useTranslation()
   const [current, send] = useAtom(drawServiceAtom)
+  const sendEditor = useSetAtom(editorServiceAtom)
   const editor = usePlateEditorRef()
   const [offset, setOffset] = useState(0)
 
@@ -82,12 +83,8 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
             aria-label={t.canvas.undo()}
             tabIndex={0}
             className='btn btn-outline btn-primary bg-base-100 btn-square'
-            onClick={() => {
-              send('UNDO')
-              editor.undo()
-            }}>
+            onClick={() => sendEditor('UNDO')}>
             <ReplyIcon className="w-6" />
-
           </button>
         </div>
         <div className="">
