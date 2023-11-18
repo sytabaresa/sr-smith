@@ -28,19 +28,26 @@ class PointTooltip implements TooltipType {
         return this.isDrawObject
     }
 
+    checkSelected = (ctx, event) => {
+        console.log(ctx)
+        return !ctx.created
+    }
+
     machine = createMachine({
         idle: state(
             transition('CLICK', 'drawObject', reduce(selectOrDrawPoint)),
         ),
         drawObject: state(
             immediate('end', guard(this.checkDrawObject), reduce(this.drawObject.bind(this))),
-            immediate('end'),
+            immediate('idle', guard(this.checkSelected)),
+            immediate('end')
         ),
         error: final(),
         end: final(),
     }, (parentContext: any) => ({
         board: parentContext.board,
         objectSelected: [],
+        created: false,
         smithMode: parentContext.smithMode,
     }))
 }

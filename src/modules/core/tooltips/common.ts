@@ -37,7 +37,7 @@ export function selectOrDrawPoint(ctx: any, event) {
     // in that case: separate select and draw logic with states, guards and reducers
     if (point) {
         objectSelected.push(point)
-        return { ...ctx, objectSelected, code }
+        return { ...ctx, objectSelected, code, created: false }
     }
 
     // interception and slider in elements
@@ -74,7 +74,7 @@ export function selectOrDrawPoint(ctx: any, event) {
 
     //  push the new selected/created point
     objectSelected.push(point)
-    return { ...ctx, objectSelected, code }
+    return { ...ctx, objectSelected, code, created: true }
 }
 
 function getParamsStrPoint(ob) { //JXG.GeometryElement & JXG.CoordsElement
