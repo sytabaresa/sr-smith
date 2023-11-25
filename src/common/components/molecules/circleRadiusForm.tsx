@@ -21,9 +21,9 @@ const CircleRadiusForm = (props: CircleRadiusFormProps) => {
             const n = parseFloat(v)
             if (Number.isNaN(n))
                 throw ''
-            n > 0 && send({ type: "ANGLE", value: n })
+            n > 0 && send({ type: "RADIUS", value: n })
         } catch (err) {
-            v != '' && send({ type: "ANGLE", value: v })
+            v != '' && send({ type: "RADIUS", value: v })
         }
     }
 
