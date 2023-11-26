@@ -76,6 +76,7 @@ const en: Translation = {
 		prev_projects: "Previous Projects",
 		no_projects: "No Projects Saved",
 		delete: "Delete",
+		public: "Public"
 	},
 	menu: {
 		publish: "Publish",

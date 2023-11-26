@@ -54,7 +54,7 @@ export function useBoardSnapshot() {
                     try {
                         const brd = setBrd({
                             ...options,
-                            screen: [-1.5, 1.7, 1.5, -1.7],
+                            screen: [-1.2, 1.5, 1.2, -1.5],
                             axis: false,
                             renderer: 'canvas' // for PNG 
                         })

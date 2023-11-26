@@ -255,6 +255,10 @@ type RootTranslation = {
 		 * D​e​l​e​t​e
 		 */
 		'delete': string
+		/**
+		 * P​u​b​l​i​c
+		 */
+		'public': string
 	}
 	menu: {
 		/**
@@ -808,6 +812,10 @@ export type TranslationFunctions = {
 		 * Delete
 		 */
 		'delete': () => LocalizedString
+		/**
+		 * Public
+		 */
+		'public': () => LocalizedString
 	}
 	menu: {
 		/**

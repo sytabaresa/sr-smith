@@ -4,17 +4,15 @@
         @apply hover:bg-base-100 hover:text-base-content;
     }
 
-
-    .progress-multi1:indeterminate::after {
+    .progress-multi1:indeterminate {
         animation: 5s progress-loading .1s infinite ease-in-out !important;
     }
 
-    .progress-multi2:indeterminate::after {
+    .progress-multi2:indeterminate {
         animation: 5s progress-loading .2s infinite ease-in-out !important;
     }
 
-
-    .progress-multi::-webkit-progress-bar {
-        background-color: transparent !important;
+    .progress-multi {
+        @apply h-1.5 w-full z-50 bg-transparent;
     }
 }

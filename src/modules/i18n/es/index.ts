@@ -75,6 +75,7 @@ const es: BaseTranslation = {
 		prev_projects: "Proyectos Anteriores",
 		no_projects: "No tienes proyectos guardados",
 		delete: "Borrar",
+		public: "Público"
 	},
 	project: {
 		name: "Nombre del Projecto",

@@ -35,15 +35,16 @@ const ProjectCard = (props: ProjectCard) => {
 
     return (
         <div className={cn('group border-neutral border-2 hover:border-4 hover:border-primary card bg-base-100',
-            'rounded-b-none w-80 h-80 md:h-72 flex flex-col shadow-md cursor-pointer relative', className)}
+            'rounded-none w-80 h-80 md:h-72 flex flex-col shadow-md cursor-pointer relative', className)}
             onClick={(e) => { goToSavedProject(id) }}
             {...rest}>
+            {project.isPublic && <div className="z-10 badge badge-primary uppercase font-bold absolute top-0 right-0 mt-2 mr-2">{t.saved.public()}</div>}
             <Suspense fallback={<div style={{ backgroundImage: `url(${initialImage}` }} className="w-full grow bg-cover bg-center blur-[2px] animate-pulse" />}>
                 <ProjectImage code={project.data} />
             </Suspense>
-            <div className="p-2 md:h-24 bg-base-100">
+            <div className="absolute bottom-0 left-0 w-full px-3">
                 <h2 className="text-2xs md:text-md my-2 font-bold">{name}</h2>
-                <p>{description}</p>
+                <p className="mb-2">{description}</p>
                 <div className="absolute right-0 bottom-0 dropdown dropdown-end" onClick={e => e.stopPropagation()}>
                     <label tabIndex={0} className="btn btn-ghost rounded-none"><DotsVerticalIcon className="w-6" /></label>
                     <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 z-10">
