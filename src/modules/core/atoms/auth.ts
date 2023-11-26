@@ -1,4 +1,4 @@
-import firebaseProvider, { getGoogleOauthProvider, initAuth } from "@auth/firebase"
+import firebaseProvider, { initAuth } from "@auth/firebase"
 import { initApp } from "@auth/firebase/appInit"
 import { atomCacheCancelable } from "@utils/atoms"
 import { User } from "firebase/auth"
@@ -18,8 +18,7 @@ export const authProviderAtom = atomCacheCancelable((get) => {
     try {
         const app = get(appAtom)
         const _auth = initAuth(app)
-        const oauthProvider = getGoogleOauthProvider(_auth)
-        const auth = firebaseProvider(_auth, oauthProvider)
+        const auth = firebaseProvider(_auth)
         console.log('auth initialized')
         return auth
     } catch (err) {

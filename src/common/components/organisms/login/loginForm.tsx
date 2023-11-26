@@ -1,7 +1,7 @@
 import { useTranslation } from "@modules/i18n";
 import { useForm } from "react-hook-form";
 import { useAuthProvider } from "@hooks/useAuthProvider";
-import { GoogleIcon } from "@components/atoms/icons";
+import { GoogleIcon, MicrosoftIcon } from "@components/atoms/icons";
 import { cn } from "@utils/styles";
 
 type LoginFormProps = {
@@ -34,6 +34,14 @@ const LoginForm = ({ }: LoginFormProps) => {
   const onGoogleLogin = async (data) => {
     try {
       const user = await login({ provider: 'google' })
+    } catch (err) {
+      setError("root.login", { message: err })
+    }
+  }
+
+  const onMicrosoftLogin = async (data) => {
+    try {
+      const user = await login({ provider: 'microsoft' })
     } catch (err) {
       setError("root.login", { message: err })
     }
@@ -98,6 +106,13 @@ const LoginForm = ({ }: LoginFormProps) => {
           <GoogleIcon />
         </div>
         {t.login.google_login()}
+      </button>
+      <button className="group btn btn-outline bg-base-100 text-warning
+       hover:bg-warning hover:border-warning w-full lg:btn-wide mt-2 self-center" onClick={onMicrosoftLogin}>
+        <div className="w-6 h-6 fill-warning group-hover:fill-base-100 mr-4">
+          <MicrosoftIcon />
+        </div>
+        {t.login.microsoft_login()}
       </button>
     </form >
   )

@@ -21,5 +21,14 @@ S0,162.897,0,105z"/>
     </svg>
 }
 
+export function MicrosoftIcon(props) {
+    return <svg viewBox="0 0 21 21"  {...props}>
+        <path d="M0 0h10v10H0z" />
+        <path d="M11 0h10v10H11z" />
+        <path d="M0 11h10v10H0z" />
+        <path d="M11 11h10v10H11z" />
+    </svg>
+}
+
 export * from "./canvas"
 export * from "./external"

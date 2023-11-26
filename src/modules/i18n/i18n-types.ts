@@ -202,9 +202,13 @@ type RootTranslation = {
 		 */
 		password_required: string
 		/**
-		 * L​o​g​i​n​ ​w​i​t​h​ ​G​o​o​g​l​e
+		 * w​i​t​h​ ​G​o​o​g​l​e
 		 */
 		google_login: string
+		/**
+		 * w​i​t​h​ ​M​i​c​r​o​s​o​f​t
+		 */
+		microsoft_login: string
 		/**
 		 * R​e​p​e​a​t​ ​P​a​s​s​w​o​r​d
 		 */
@@ -759,9 +763,13 @@ export type TranslationFunctions = {
 		 */
 		password_required: () => LocalizedString
 		/**
-		 * Login with Google
+		 * with Google
 		 */
 		google_login: () => LocalizedString
+		/**
+		 * with Microsoft
+		 */
+		microsoft_login: () => LocalizedString
 		/**
 		 * Repeat Password
 		 */

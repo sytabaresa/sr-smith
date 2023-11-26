@@ -3,6 +3,7 @@ import {
     Auth,
     AuthProvider,
     GoogleAuthProvider,
+    OAuthProvider,
     browserPopupRedirectResolver,
     createUserWithEmailAndPassword,
     indexedDBLocalPersistence,
@@ -21,21 +22,32 @@ export function initAuth(app: FirebaseApp) {
 
 }
 
-export function getGoogleOauthProvider(auth: Auth) {
+const googleProvider = (() => {
     const provider = new GoogleAuthProvider();
 
-    auth?.useDeviceLanguage();
+    // auth?.useDeviceLanguage();
     provider.setCustomParameters({
         'login_hint': 'user@example.com'
     })
     return provider
-}
+})()
 
+const microsoftProvider = (() => {
+    const provider = new OAuthProvider('microsoft.com');
+
+    // auth?.useDeviceLanguage();
+    provider.setCustomParameters({
+        // Force re-consent.
+        // prompt: 'consent',
+        // Target specific email with login hint.
+        login_hint: 'user@example.com'
+    });
+    return provider
+})()
 
 const authProvider =
     (
         auth: Auth,
-        oauthProvider: AuthProvider
     ) => ({
         auth,
         login: async (data: { email?: string, password?: string, provider?: string }) => {
@@ -43,7 +55,7 @@ const authProvider =
             if (data.provider == 'google') {
                 try {
                     if (typeof window != 'undefined') {
-                        const result = await signInWithPopup(auth, oauthProvider, browserPopupRedirectResolver)
+                        const result = await signInWithPopup(auth, googleProvider, browserPopupRedirectResolver)
                         // This gives you a Google Access Token. You can use it to access the Google API.
                         const credential = GoogleAuthProvider.credentialFromResult(result);
                         const token = credential.accessToken;
@@ -64,6 +76,31 @@ const authProvider =
                     // ...
                     return Promise.reject(error)
                 }
+            } else if (data.provider == 'microsoft') {
+                try {
+                    if (typeof window != 'undefined') {
+                        const result = await signInWithPopup(auth, microsoftProvider, browserPopupRedirectResolver)
+                        // This gives you a Google Access Token. You can use it to access the Google API.
+                        const credential = OAuthProvider.credentialFromResult(result);
+                        const token = credential.accessToken;
+                        // The signed-in user info.
+                        const user = result.user;
+                        return user.toJSON()
+                    }
+                    // ...
+                } catch (error) {
+                    console.log('google auth provider error: ', error);
+                    // Handle Errors here.
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // The email of the user's account used.
+                    const email = error.customData.email;
+                    // The AuthCredential type that was used.
+                    const credential = GoogleAuthProvider.credentialFromError(error);
+                    // ...
+                    return Promise.reject(error)
+                }
+
             } else {
                 try {
                     const { email, password } = data;

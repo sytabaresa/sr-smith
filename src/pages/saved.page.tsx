@@ -27,13 +27,10 @@ const SavedProjects = () => {
     </div>}
   >
     <div className="w-full">
-      <div className="flex items-center justify-center mb-4 lg:mt-4 lg:mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-center uppercase">
+      <div className="flex items-center justify-left mb-4 lg:mt-4 lg:mb-8 ml-6 lg:ml-8">
+        <h1 className="text-2xl lg:text-3xl font-bold uppercase">
           {t.saved.prev_projects()}
         </h1>
-        {/* <Suspense fallback={<></>}> */}
-        <Refresh />
-        {/* </Suspense> */}
       </div>
       <ProjectList />
     </div>
