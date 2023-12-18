@@ -8,7 +8,7 @@ const SmithButton = () => {
     const { t } = useTranslation();
 
     return <label className="label py-1 cursor-pointer">
-        <span className={cn('label-text uppercase text-right w-12 mr-2 font-bold',
+        <span className={cn('label-text uppercase text-right w-12 mr-2 font-bold leading-tight',
             current.context.smithMode ? '' : 'opacity-50')}>{t.canvas.smith_mode()}</span>
         <input
             type="checkbox"

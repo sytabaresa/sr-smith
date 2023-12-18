@@ -20,7 +20,6 @@ const LoginForm = ({ }: LoginFormProps) => {
   const { login } = useAuthProvider()
 
   const onSubmitLogin = async (data) => {
-    const { email, password } = data;
 
     try {
       const user = await login(data)
@@ -31,29 +30,8 @@ const LoginForm = ({ }: LoginFormProps) => {
     }
   };
 
-  const onGoogleLogin = async (data) => {
-    try {
-      const user = await login({ provider: 'google' })
-    } catch (err) {
-      setError("root.login", { message: err })
-    }
-  }
-
-  const onMicrosoftLogin = async (data) => {
-    try {
-      const user = await login({ provider: 'microsoft' })
-    } catch (err) {
-      setError("root.login", { message: err })
-    }
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmitLogin)} className="form-control" method="post">
-      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
-        <span className="">
-          {errors?.root?.login?.message}
-        </span>
-      </div>
       <label htmlFor="user" className="label">
         <span className="label-text uppercase font-bold">
           {t.login.username()}
@@ -95,26 +73,17 @@ const LoginForm = ({ }: LoginFormProps) => {
         </label>
       )}
       <button
-        className="btn btn-primary mt-10 w-full lg:btn-wide self-center"
+        className="btn btn-primary mt-6 w-full lg:btn-wide self-center"
         type="submit"
       >
         {isSubmitting ? t.login.logging_in() + "..." : isSubmitSuccessful ? t.login.done() : t.login.login()}
       </button>
-      <button className="group btn btn-outline bg-base-100 text-secondary
-       hover:bg-secondary hover:border-secondary w-full lg:btn-wide mt-2 self-center" onClick={onGoogleLogin}>
-        <div className="w-6 h-6 fill-secondary group-hover:fill-base-100 mr-4">
-          <GoogleIcon />
-        </div>
-        {t.login.google_login()}
-      </button>
-      <button className="group btn btn-outline bg-base-100 text-warning
-       hover:bg-warning hover:border-warning w-full lg:btn-wide mt-2 self-center" onClick={onMicrosoftLogin}>
-        <div className="w-6 h-6 fill-warning group-hover:fill-base-100 mr-4">
-          <MicrosoftIcon />
-        </div>
-        {t.login.microsoft_login()}
-      </button>
-    </form >
+      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
+        <span className="">
+          {errors?.root?.login?.message}
+        </span>
+      </div>
+    </form>
   )
 }
 

@@ -11,9 +11,9 @@ export const LangMenu = (props: HTMLAttributes<HTMLDivElement>) => {
 
     // console.log("lang", locales, lang)
 
-    return <div className={cn('dropdown dropdown-end uppercase', className)} {...rest}>
+    return <div className={cn('dropdown dropdown-end uppercase text-sm', className)} {...rest}>
         {t.common.lang()}:
-        <label tabIndex={0} aria-label={t.common.lang()} className="btn btn-ghost btn-primary m-1" role="button">{lang || '--'}</label>
+        <label tabIndex={0} aria-label={t.common.lang()} className="btn btn-ghost btn-square mx-1" role="button">{lang || '--'}</label>
         <div className="dropdown-content text-base-content p-2 shadow bg-base-100 rounded-box">
             <ul tabIndex={0} className=" menu" role="menu">
                 {locales.map((item, i) =>

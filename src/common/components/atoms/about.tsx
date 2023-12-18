@@ -35,7 +35,7 @@ export const About = () => {
                             className="link"
                             href="https://www.linkedin.com/in/sytabaresa"
                         >
-                            @sytabares
+                            @syta
                         </a>
                         <br />
                         A product of <a href="https://einv.tech" className="" ><EinvLogo className="ml-1 inline fill-current w-6 h-6" /></a>

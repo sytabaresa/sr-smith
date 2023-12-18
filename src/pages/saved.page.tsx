@@ -9,7 +9,6 @@ import { ProjectList } from "@components/molecules/projectList";
 
 // custom elements
 import  "@core/elements"
-
 import '@styles/jsxgraph.css';
 
 export { Saved as Page }

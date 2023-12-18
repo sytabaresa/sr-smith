@@ -210,13 +210,21 @@ type RootTranslation = {
 		 */
 		microsoft_login: string
 		/**
+		 * w​i​t​h​ ​E​m​a​i​l
+		 */
+		email_login: string
+		/**
 		 * R​e​p​e​a​t​ ​P​a​s​s​w​o​r​d
 		 */
 		repeat_password: string
 		/**
-		 * L​o​g​i​n
+		 * L​o​g​ ​i​n
 		 */
 		login: string
+		/**
+		 * L​o​g​ ​i​n
+		 */
+		login_title: string
 		/**
 		 * S​i​g​n​ ​U​p
 		 */
@@ -771,13 +779,21 @@ export type TranslationFunctions = {
 		 */
 		microsoft_login: () => LocalizedString
 		/**
+		 * with Email
+		 */
+		email_login: () => LocalizedString
+		/**
 		 * Repeat Password
 		 */
 		repeat_password: () => LocalizedString
 		/**
-		 * Login
+		 * Log in
 		 */
 		login: () => LocalizedString
+		/**
+		 * Log in
+		 */
+		login_title: () => LocalizedString
 		/**
 		 * Sign Up
 		 */

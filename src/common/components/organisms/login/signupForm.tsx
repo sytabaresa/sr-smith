@@ -38,11 +38,6 @@ const SingUpForm = ({ }: SignUpFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitSignUp)} className="form-control">
-      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
-        <span className="">
-          {errors?.root?.login?.message}
-        </span>
-      </div>
       <label htmlFor="user" className="label">
         <span className="label-text uppercase font-bold">{t.login.username()}</span>
       </label>
@@ -93,9 +88,14 @@ const SingUpForm = ({ }: SignUpFormProps) => {
           <span className="label-text-alt uppercase" role="alert">{t.login.password_match()}</span>
         </label>
       )}
-      <button className="btn btn-primary mt-10 w-full lg:btn-wide self-center" type="submit">
+      <button className="btn btn-primary mt-6 w-full lg:btn-wide self-center" type="submit">
         {t.login.sign_up()}
       </button>
+      <div className={cn('alert alert-warning my-2 transition-opacity', errors?.root?.login ? 'opacity-100' : 'opacity-0')}>
+        <span className="">
+          {errors?.root?.login?.message}
+        </span>
+      </div>
     </form>
   );
 };

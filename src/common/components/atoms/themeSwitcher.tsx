@@ -16,7 +16,7 @@ export function ThemeSwitcher(props: LabelHTMLAttributes<HTMLLabelElement>) {
         // console.log('set', e.target.checked)
         setTheme(e.target.checked ? "dark" : "light")
     }
-    return <label className='swap swap-rotate' {...rest}>
+    return <label className='btn btn-ghost btn-square swap swap-rotate' {...rest}>
         <input
             // aria-label={t.common.theme()}
             type="checkbox"

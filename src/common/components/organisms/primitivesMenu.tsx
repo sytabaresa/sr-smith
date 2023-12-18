@@ -91,7 +91,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.delete()}
             tabIndex={0}
-            className={cn('btn btn-outline btn-secondary btn-outline-accent bg-base-100 btn-square',
+            className={cn('btn btn-outline btn-secondary bg-base-100 btn-square',
               current.name == "delete" ? 'btn-active' : '')}
             onClick={_delete}>
             <TrashIcon className="w-6" />
@@ -112,7 +112,7 @@ const PrimitivesMenu = (props: PrimitivesMenuProps) => {
           <button
             aria-label={t.canvas.move()}
             tabIndex={0}
-            className={cn('btn btn-outline btn-primary btn-outline-accent btn-square',
+            className={cn('btn btn-outline btn-primary btn-square',
               current.name == "idle" ? ' btn-active' : '')}
             onClick={() => send('EXIT')}>
             <HandIcon className="w-6" />
