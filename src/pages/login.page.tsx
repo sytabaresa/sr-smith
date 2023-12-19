@@ -3,7 +3,7 @@ import Layout from "@components/templates/default";
 import { useAuthProvider, useUser } from "@hooks/useAuthProvider";
 import { useLanguageQuery, useTranslation } from "@modules/i18n";
 import { useRouter } from "@modules/router";
-import { GoogleIcon, MicrosoftIcon } from "@components/atoms/icons";
+import { GoogleIcon, MicrosoftIcon, RMICIcon } from "@components/atoms/icons";
 import { AtSymbolIcon } from "@heroicons/react/outline";
 import { EmailLogin } from "@components/organisms/login/emailLogin";
 import { cn } from "@utils/styles";
@@ -69,8 +69,9 @@ const Login = ({ homePage = "/saved" }: LoginProps) => {
         <img className="w-40 hover:scale-110 transition ease-in-out delay-150 mb-2" src="/images/logo.png" alt="sr smith logo" />
         <h1 className="uppercase font-bold text-3xl md:text-5xl mt-2 md:mt-4">SR Smith</h1>
       </div>
-      <div className="hidden sm:block w-[3px] h-60 bg-base-content"></div>
-      <div className="px-8 w-full max-w-md flex sm:w-1/2 flex-col items-center my-8 sm:my-0  sm:ml-8">
+      {/* <div className="hidden sm:block w-[3px] h-60 bg-base-content"></div> */}
+      <RMICIcon className="-my-28 -rotate-90 sm:rotate-0 sm:static w-16 sm:w-auto h-80 fill-base-content object-cover" />
+      <div className="px-8 w-full max-w-md flex sm:w-1/2 flex-col items-center mb-8 sm:my-0 sm:ml-8">
         <h2 className="self-start uppercase font-bold text-xl mb-2">{t.login.login()}:</h2>
         <button className="group btn border-2 btn-outline bg-base-100
        hover:bg-[#EA4335] hover:border-[#EA4335] hover:text-base-100 w-full mt-2 justify-start pl-[25%] sm:pl-[30%]" onClick={onGoogleLogin}>
