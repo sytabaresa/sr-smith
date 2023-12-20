@@ -15,8 +15,8 @@ import path from "path"
         './public/images/logo.png',
         ASSETS_PATH, {
             // iconOnly: true,
-            background: '#000',
-            padding: "20%",
+            background: '#FFF',
+            padding: "10%",
             xhtml: true,
             manifest: './public/manifest.webmanifest',
             mstile: true,
@@ -30,21 +30,21 @@ import path from "path"
             iconOnly: true,
             favicon: true,
             // background: '#FFF',
-            padding: "2%",
+            padding: "5%",
             opaque: false,
             // favicon: true,
         });
 
-    await generateImages(
-        './public/images/logo.png',
-        ASSETS_PATH, {
-            iconOnly: true,
-            // favicon: true,
-            // background: '#FFF',
-            padding: "22%",
-            opaque: false,
-            // favicon: true,
-        });
+    // await generateImages(
+    //     './public/images/logo.png',
+    //     ASSETS_PATH, {
+    //         iconOnly: true,
+    //         // favicon: true,
+    //         // background: '#FFF',
+    //         padding: "5%",
+    //         opaque: false,
+    //         // favicon: true,
+    //     });
 })();
 
 // Access to static data for Apple Device specs that are used for generating launch images

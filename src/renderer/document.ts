@@ -6,7 +6,7 @@ export default document
 function document(title: string, desc: string, pageHtml: string | ReadableStream | any) {
 
     return escapeInject`<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -41,17 +41,17 @@ function document(title: string, desc: string, pageHtml: string | ReadableStream
     <link rel="stylesheet" href="./src/common/styles/fonts.css"> -->
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://sr-smith.syta.co">
+    <meta name="twitter:url" content="https://smith.syta.co">
     <meta name="twitter:title" content="${title}">
     <meta name="twitter:description" content="${desc}">
-    <meta name="twitter:image" content="https://sr-smith.syta.co/pwa/apple-icon-180.png">
+    <meta name="twitter:image" content="https://smith.syta.co/pwa/apple-icon-180.png">
     <meta name="twitter:creator" content="@sytabares">
     <meta property="og:type" content="website">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${desc}">
     <meta property="og:site_name" content="${title}">
-    <meta property="og:url" content="https://sr-smith.syta.co">
-    <meta property="og:image" content="https://sr-smith.syta.co/pwa/apple-touch-icon.png">
+    <meta property="og:url" content="https://smith.syta.co">
+    <meta property="og:image" content="https://smith.syta.co/pwa/apple-icon-180.png">
 
     <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover">
 

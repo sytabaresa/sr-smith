@@ -202,15 +202,15 @@ type RootTranslation = {
 		 */
 		password_required: string
 		/**
-		 * w​i​t​h​ ​G​o​o​g​l​e
+		 * G​o​o​g​l​e
 		 */
 		google_login: string
 		/**
-		 * w​i​t​h​ ​M​i​c​r​o​s​o​f​t
+		 * M​i​c​r​o​s​o​f​t
 		 */
 		microsoft_login: string
 		/**
-		 * w​i​t​h​ ​E​m​a​i​l
+		 * E​m​a​i​l
 		 */
 		email_login: string
 		/**
@@ -218,7 +218,7 @@ type RootTranslation = {
 		 */
 		repeat_password: string
 		/**
-		 * L​o​g​ ​i​n
+		 * L​o​g​i​n​ ​w​i​t​h
 		 */
 		login: string
 		/**
@@ -771,15 +771,15 @@ export type TranslationFunctions = {
 		 */
 		password_required: () => LocalizedString
 		/**
-		 * with Google
+		 * Google
 		 */
 		google_login: () => LocalizedString
 		/**
-		 * with Microsoft
+		 * Microsoft
 		 */
 		microsoft_login: () => LocalizedString
 		/**
-		 * with Email
+		 * Email
 		 */
 		email_login: () => LocalizedString
 		/**
@@ -787,7 +787,7 @@ export type TranslationFunctions = {
 		 */
 		repeat_password: () => LocalizedString
 		/**
-		 * Log in
+		 * Login with
 		 */
 		login: () => LocalizedString
 		/**

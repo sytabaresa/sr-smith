@@ -95,7 +95,7 @@ const Layout = (props: Props) => {
                 <LangMenu className="dropdown-top ml-4 flex-grow" />
                 <ThemeSwitcher />
               </div>
-              <img className="absolute bottom-0 left-[-15rem] max-w-none w-[30rem] opacity-20 -z-10" src="/images/logo.png"></img>
+              <img className="absolute bottom-0 left-[-15rem] max-w-none w-[40rem] opacity-20 -z-10" src="/images/logo.png"></img>
             </div>
           </div>}
       </div>
